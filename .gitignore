@@ -1,12 +1,10 @@
-# Created by https://www.toptal.com/developers/gitignore/api/swift,xcode
-# Edit at https://www.toptal.com/developers/gitignore?templates=swift,xcode
+# Created by https://www.toptal.com/developers/gitignore/api/xcode,swift,swiftpm
+# Edit at https://www.toptal.com/developers/gitignore?templates=xcode,swift,swiftpm
 
 ### Swift ###
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
-
-.DS_Store
 
 ## User settings
 xcuserdata/
@@ -87,6 +85,12 @@ fastlane/test_output
 
 iOSInjectionProject/
 
+### SwiftPM ###
+Packages
+xcuserdata
+*.xcodeproj
+
+
 ### Xcode ###
 
 ## Xcode 8 and earlier
@@ -100,4 +104,4 @@ iOSInjectionProject/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 
-# End of https://www.toptal.com/developers/gitignore/api/swift,xcode
+# End of https://www.toptal.com/developers/gitignore/api/xcode,swift,swiftpm
