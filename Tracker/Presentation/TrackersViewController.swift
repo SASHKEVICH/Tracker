@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  TrackersViewController.swift
 //  Tracker
 //
 //  Created by Александр Бекренев on 24.03.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ViewController: UIViewController {
+final class TrackersViewController: UIViewController {
     private var collectionView: UICollectionView?
         
     override func viewDidLoad() {
@@ -15,8 +15,17 @@ final class ViewController: UIViewController {
         
         setupCollectionView()
     }
+}
 
+// MARK: - Layout
+extension TrackersViewController {
     func setupCollectionView() {
+        layoutCollectionView()
+        collectionView?.dataSource = self
+        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+    }
+    
+    private func layoutCollectionView() {
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout())
@@ -31,13 +40,10 @@ final class ViewController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-        
-        collectionView.dataSource = self
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
     }
 }
 
-extension ViewController: UICollectionViewDataSource {
+extension TrackersViewController: UICollectionViewDataSource {
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
