@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "TrackersTab.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

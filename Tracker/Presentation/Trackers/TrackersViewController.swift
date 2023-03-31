@@ -13,7 +13,7 @@ final class TrackersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = .trackerBackgroundColor
         setupCollectionView()
     }
 }
@@ -22,14 +22,13 @@ final class TrackersViewController: UIViewController {
 extension TrackersViewController {
     func setupCollectionView() {
         layoutCollectionView()
-        collectionView?.dataSource = self
-        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
     }
     
     private func layoutCollectionView() {
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView.backgroundColor = .trackerBackgroundColor
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.collectionView = collectionView
 
@@ -41,23 +40,5 @@ extension TrackersViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-    }
-}
-
-extension TrackersViewController: UICollectionViewDataSource {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int
-    ) -> Int {
-        15
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath)
-        cell.backgroundColor = .red
-        return cell
     }
 }
