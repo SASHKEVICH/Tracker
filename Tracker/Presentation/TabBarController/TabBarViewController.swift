@@ -20,7 +20,7 @@ final class TabBarViewController: UITabBarController {
     
     private func setupTabBar() {
         let appearance = UITabBarAppearance()
-        appearance.backgroundColor = .trackerBackgroundColor
+        appearance.backgroundColor = .trackerWhiteDay
         tabBar.standardAppearance = appearance
     }
 }
@@ -29,6 +29,9 @@ final class TabBarViewController: UITabBarController {
 private extension TabBarViewController {
     func setupTrackersViewController() -> UINavigationController {
         let trackersViewController = TrackersViewController()
+        trackersViewController.configurePlaceholderView(
+            image: UIImage(named: "TrackersCollectionEmptyImage"),
+            text: "Что будем отслеживать?")
         let navigationController = UINavigationController(
             rootViewController: trackersViewController)
         navigationController.navigationBar.prefersLargeTitles = true

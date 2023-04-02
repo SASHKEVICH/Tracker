@@ -7,29 +7,46 @@
 
 import UIKit
 
-final class TrackersViewController: UIViewController {
+protocol TrackersViewControllerProtocol: AnyObject {
+    var presenter: TrackersViewPresenterProtocol? { get set }
+    var isPlaceholderViewHidden: Bool { get set }
+}
+
+final class TrackersViewController: UIViewController, TrackersViewControllerProtocol {
     private var collectionView: UICollectionView?
-        
+    private var collectionPlaceholderView: CollectionPlaceholderView?
+    private var placeholderImage: UIImage?
+    private var placeholderText: String?
+    
+    var presenter: TrackersViewPresenterProtocol?
+    
+    var isPlaceholderViewHidden: Bool = false {
+        didSet {
+            collectionPlaceholderView?.isHidden = isPlaceholderViewHidden
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .trackerBackgroundColor
+        view.backgroundColor = .trackerWhiteDay
         setupCollectionView()
         setupNavigationItem()
+        setupPlaceholderView()
     }
 }
 
 // MARK: - CollectionView Layout
-extension TrackersViewController {
+private extension TrackersViewController {
     func setupCollectionView() {
         layoutCollectionView()
     }
     
-    private func layoutCollectionView() {
+    func layoutCollectionView() {
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.backgroundColor = .trackerBackgroundColor
+        collectionView.backgroundColor = .trackerWhiteDay
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.collectionView = collectionView
 
@@ -45,7 +62,7 @@ extension TrackersViewController {
 }
 
 // MARK: - Setup Navigation Item
-extension TrackersViewController {
+private extension TrackersViewController {
     func setupNavigationItem() {
         navigationItem.largeTitleDisplayMode = .always
         navigationItem.title = "Трекеры"
@@ -53,7 +70,7 @@ extension TrackersViewController {
         setupRightBarButtonItem()
     }
     
-    private func setupLeftBarButtonItem() {
+    func setupLeftBarButtonItem() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(named: "AddTrackerIcon"),
             style: .plain,
@@ -62,7 +79,7 @@ extension TrackersViewController {
         navigationItem.leftBarButtonItem?.tintColor = .black
     }
     
-    private func setupRightBarButtonItem() {
+    func setupRightBarButtonItem() {
         guard let navigationController = navigationController else { return }
         let datePickerView = setupDatePickerView()
         let navigationBar = navigationController.navigationBar
@@ -76,7 +93,7 @@ extension TrackersViewController {
         ])
     }
     
-    private func setupDatePickerView() -> UIView {
+    func setupDatePickerView() -> UIView {
         let datePickerView = UIView(frame: .zero)
         datePickerView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -99,7 +116,32 @@ extension TrackersViewController {
     }
     
     @objc
-    private func didTapAddTracker() {
+    func didTapAddTracker() {
         print("Add Tracker")
+    }
+}
+
+extension TrackersViewController {
+    func configurePlaceholderView(image: UIImage?, text: String) {
+        placeholderImage = image
+        placeholderText = text
+    }
+    
+    private func setupPlaceholderView() {
+        guard let collectionView = self.collectionView else { return }
+        let placeholderView = CollectionPlaceholderView(frame: .zero)
+        placeholderView.translatesAutoresizingMaskIntoConstraints = false
+        view.insertSubview(placeholderView, aboveSubview: collectionView)
+        
+        NSLayoutConstraint.activate([
+            placeholderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            placeholderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            placeholderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            placeholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        placeholderView.isHidden = isPlaceholderViewHidden
+        placeholderView.image = placeholderImage
+        placeholderView.text = placeholderText
+        self.collectionPlaceholderView = placeholderView
     }
 }
