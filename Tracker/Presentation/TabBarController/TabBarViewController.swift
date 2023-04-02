@@ -8,7 +8,6 @@
 import UIKit
 
 final class TabBarViewController: UITabBarController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,21 +27,27 @@ final class TabBarViewController: UITabBarController {
 
 // MARK: Setup view controllers
 private extension TabBarViewController {
-    func setupTrackersViewController() -> TrackersViewController {
+    func setupTrackersViewController() -> UINavigationController {
         let trackersViewController = TrackersViewController()
+        let navigationController = UINavigationController(
+            rootViewController: trackersViewController)
+        navigationController.navigationBar.prefersLargeTitles = true
         trackersViewController.tabBarItem = UITabBarItem(
             title: "Трекеры",
             image: UIImage(named: "TrackersTabBarItem"),
             selectedImage: nil)
-        return trackersViewController
+        return navigationController
     }
     
-    func setupStatisticsViewController() -> StatisticsViewController {
+    func setupStatisticsViewController() -> UINavigationController {
         let statisticsViewController = StatisticsViewController()
+        let navigationController = UINavigationController(
+            rootViewController: statisticsViewController)
+        navigationController.navigationBar.prefersLargeTitles = true
         statisticsViewController.tabBarItem = UITabBarItem(
             title: "Статистика",
             image: UIImage(named: "StatisticsTabBarItem"),
             selectedImage: nil)
-        return statisticsViewController
+        return navigationController
     }
 }
