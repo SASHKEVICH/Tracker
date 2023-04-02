@@ -80,39 +80,13 @@ private extension TrackersViewController {
     }
     
     func setupRightBarButtonItem() {
-        guard let navigationController = navigationController else { return }
-        let datePickerView = setupDatePickerView()
-        let navigationBar = navigationController.navigationBar
-        navigationBar.addSubview(datePickerView)
-        
-        NSLayoutConstraint.activate([
-            datePickerView.widthAnchor.constraint(equalToConstant: 100),
-            datePickerView.topAnchor.constraint(equalTo: navigationBar.topAnchor),
-            datePickerView.trailingAnchor.constraint(equalTo: navigationBar.trailingAnchor, constant: -16),
-            datePickerView.heightAnchor.constraint(equalToConstant: 60),
-        ])
-    }
-    
-    func setupDatePickerView() -> UIView {
-        let datePickerView = UIView(frame: .zero)
-        datePickerView.translatesAutoresizingMaskIntoConstraints = false
-        
         let datePicker = UIDatePicker(frame: .zero)
         datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.widthAnchor.constraint(equalToConstant: 100).isActive = true
         datePicker.preferredDatePickerStyle = .compact
         datePicker.datePickerMode = .date
         datePicker.locale = Locale(identifier: "ru_RU")
-        
-        datePickerView.addSubview(datePicker)
-        
-        NSLayoutConstraint.activate([
-            datePicker.topAnchor.constraint(equalTo: datePickerView.topAnchor, constant: 52),
-            datePicker.leadingAnchor.constraint(equalTo: datePickerView.leadingAnchor),
-            datePicker.trailingAnchor.constraint(equalTo: datePickerView.trailingAnchor),
-            datePicker.heightAnchor.constraint(equalToConstant: 34)
-        ])
-        
-        return datePickerView
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
     }
     
     @objc
