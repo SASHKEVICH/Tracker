@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		9602B0EF29D9626200FD66D2 /* TrackersViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9602B0EE29D9626200FD66D2 /* TrackersViewPresenter.swift */; };
 		9602B0F229D967BB00FD66D2 /* CollectionPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9602B0F129D967BB00FD66D2 /* CollectionPlaceholderView.swift */; };
+		9602B0F729D9DD1600FD66D2 /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9602B0F629D9DD1600FD66D2 /* TrackerCollectionViewCell.swift */; };
+		9617C95429DAE0F90054987D /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9617C95329DAE0F90054987D /* Tracker.swift */; };
+		9617C95629DAE1090054987D /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9617C95529DAE1090054987D /* TrackerCategory.swift */; };
+		9617C95829DAE11E0054987D /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9617C95729DAE11E0054987D /* TrackerRecord.swift */; };
+		9617C95B29DAE5920054987D /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9617C95A29DAE5920054987D /* WeekDay.swift */; };
 		9629563729CD846900A587C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9629563629CD846900A587C5 /* AppDelegate.swift */; };
 		9629563929CD846900A587C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9629563829CD846900A587C5 /* SceneDelegate.swift */; };
 		9629563B29CD846900A587C5 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9629563A29CD846900A587C5 /* TrackersViewController.swift */; };
@@ -22,6 +27,11 @@
 /* Begin PBXFileReference section */
 		9602B0EE29D9626200FD66D2 /* TrackersViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewPresenter.swift; sourceTree = "<group>"; };
 		9602B0F129D967BB00FD66D2 /* CollectionPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionPlaceholderView.swift; sourceTree = "<group>"; };
+		9602B0F629D9DD1600FD66D2 /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
+		9617C95329DAE0F90054987D /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
+		9617C95529DAE1090054987D /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
+		9617C95729DAE11E0054987D /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
+		9617C95A29DAE5920054987D /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
 		9629563329CD846900A587C5 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9629563629CD846900A587C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9629563829CD846900A587C5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -45,12 +55,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9602B0F029D9678100FD66D2 /* PlaceholderViews */ = {
+		9602B0F029D9678100FD66D2 /* PlaceholderView */ = {
 			isa = PBXGroup;
 			children = (
 				9602B0F129D967BB00FD66D2 /* CollectionPlaceholderView.swift */,
 			);
-			path = PlaceholderViews;
+			path = PlaceholderView;
+			sourceTree = "<group>";
+		};
+		9602B0F529D9DCF900FD66D2 /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				9602B0F629D9DD1600FD66D2 /* TrackerCollectionViewCell.swift */,
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
+		9617C95929DAE5820054987D /* Trackers */ = {
+			isa = PBXGroup;
+			children = (
+				9617C95729DAE11E0054987D /* TrackerRecord.swift */,
+				9617C95529DAE1090054987D /* TrackerCategory.swift */,
+				9617C95329DAE0F90054987D /* Tracker.swift */,
+			);
+			path = Trackers;
 			sourceTree = "<group>";
 		};
 		9629562A29CD846900A587C5 = {
@@ -97,6 +125,8 @@
 		96526ADC29D4A52900329D34 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				9617C95929DAE5820054987D /* Trackers */,
+				9617C95A29DAE5920054987D /* WeekDay.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -120,7 +150,8 @@
 		96E63F4E29D735D900AA0970 /* Trackers */ = {
 			isa = PBXGroup;
 			children = (
-				9602B0F029D9678100FD66D2 /* PlaceholderViews */,
+				9602B0F529D9DCF900FD66D2 /* CollectionView */,
+				9602B0F029D9678100FD66D2 /* PlaceholderView */,
 				9629563A29CD846900A587C5 /* TrackersViewController.swift */,
 				9602B0EE29D9626200FD66D2 /* TrackersViewPresenter.swift */,
 			);
@@ -207,12 +238,17 @@
 			files = (
 				9602B0F229D967BB00FD66D2 /* CollectionPlaceholderView.swift in Sources */,
 				9629563B29CD846900A587C5 /* TrackersViewController.swift in Sources */,
+				9617C95429DAE0F90054987D /* Tracker.swift in Sources */,
 				9629563729CD846900A587C5 /* AppDelegate.swift in Sources */,
 				9602B0EF29D9626200FD66D2 /* TrackersViewPresenter.swift in Sources */,
+				9617C95829DAE11E0054987D /* TrackerRecord.swift in Sources */,
+				9602B0F729D9DD1600FD66D2 /* TrackerCollectionViewCell.swift in Sources */,
+				9617C95B29DAE5920054987D /* WeekDay.swift in Sources */,
 				9629563929CD846900A587C5 /* SceneDelegate.swift in Sources */,
 				96E63F5129D7360200AA0970 /* StatisticsViewController.swift in Sources */,
 				96E63F4D29D735D500AA0970 /* TabBarViewController.swift in Sources */,
 				96E63F4729D732F700AA0970 /* UIColor+Extensions.swift in Sources */,
+				9617C95629DAE1090054987D /* TrackerCategory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
