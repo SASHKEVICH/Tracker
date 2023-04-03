@@ -10,6 +10,7 @@ import UIKit
 protocol TrackersViewControllerProtocol: AnyObject {
     var presenter: TrackersViewPresenterProtocol? { get set }
     var isPlaceholderViewHidden: Bool { get set }
+    func didRecieveTrackers()
 }
 
 final class TrackersViewController: UIViewController, TrackersViewControllerProtocol {
@@ -34,12 +35,21 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         setupNavigationItem()
         setupPlaceholderView()
     }
+    
+    func didRecieveTrackers() {
+        collectionView?.performBatchUpdates { [weak self] in
+            self?.collectionView?.insertItems(at: [IndexPath(row: 0, section: 0)])
+        }
+    }
 }
 
 // MARK: - CollectionView Layout
 private extension TrackersViewController {
     func setupCollectionView() {
         layoutCollectionView()
+        
+        collectionView?.delegate = presenter?.collectionHelper
+        collectionView?.dataSource = presenter?.collectionHelper
     }
     
     func layoutCollectionView() {
