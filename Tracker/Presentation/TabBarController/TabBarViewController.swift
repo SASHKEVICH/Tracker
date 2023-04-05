@@ -29,16 +29,24 @@ final class TabBarViewController: UITabBarController {
 private extension TabBarViewController {
     func setupTrackersViewController() -> UINavigationController {
         let trackersViewController = TrackersViewController()
+        let presenter = TrackersViewPresenter()
+        
+        trackersViewController.presenter = presenter
+        presenter.view = trackersViewController
+        
         trackersViewController.configurePlaceholderView(
             image: UIImage(named: "TrackersCollectionEmptyImage"),
             text: "Что будем отслеживать?")
-        let navigationController = UINavigationController(
-            rootViewController: trackersViewController)
-        navigationController.navigationBar.prefersLargeTitles = true
+        
         trackersViewController.tabBarItem = UITabBarItem(
             title: "Трекеры",
             image: UIImage(named: "TrackersTabBarItem"),
             selectedImage: nil)
+        
+        let navigationController = UINavigationController(
+            rootViewController: trackersViewController)
+        navigationController.navigationBar.prefersLargeTitles = true
+        
         return navigationController
     }
     

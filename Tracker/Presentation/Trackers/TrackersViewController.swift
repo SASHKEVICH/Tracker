@@ -21,7 +21,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     
     var presenter: TrackersViewPresenterProtocol?
     
-    var isPlaceholderViewHidden: Bool = false {
+    var isPlaceholderViewHidden: Bool = true {
         didSet {
             collectionPlaceholderView?.isHidden = isPlaceholderViewHidden
         }
@@ -34,12 +34,15 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         setupCollectionView()
         setupNavigationItem()
         setupPlaceholderView()
+        
+        presenter?.requestTrackers()
     }
     
     func didRecieveTrackers() {
-        collectionView?.performBatchUpdates { [weak self] in
-            self?.collectionView?.insertItems(at: [IndexPath(row: 0, section: 0)])
-        }
+//        collectionView?.performBatchUpdates { [weak self] in
+//            self?.collectionView?.insertItems(at: [IndexPath(row: 0, section: 0)])
+//        }
+        collectionView?.reloadData()
     }
 }
 
@@ -50,6 +53,7 @@ private extension TrackersViewController {
         
         collectionView?.delegate = presenter?.collectionHelper
         collectionView?.dataSource = presenter?.collectionHelper
+        collectionView?.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: TrackerCollectionViewCell.reuseIdentifier)
     }
     
     func layoutCollectionView() {

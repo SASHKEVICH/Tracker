@@ -19,4 +19,8 @@ extension UIColor {
     static var trackerBlue: UIColor {
         UIColor(named: "TrackerBlue") ?? .red
     }
+    
+    static var trackerColorSelection5: UIColor {
+        UIColor(named: "TrackerColorSelection5") ?? .red
+    }
 }

@@ -23,12 +23,23 @@ final class TrackersViewPresenter: NSObject, TrackersViewPresenterProtocol {
     override init() {
         super.init()
         
-        collectionHelper = TrackersViewPresenterCollectionHelper()
+        setupCollectionHelper()
     }
     
     func requestTrackers() {
-        let tracker = Tracker(id: UUID(), title: "Тестовая привычка", color: .green, emoji: "🤬", schedule: [WeekDay.monday])
-        trackers.append(tracker)
+        let newTrackers = [
+            Tracker(id: UUID(), title: "Тестовая привычка 1", color: .trackerColorSelection5, emoji: "🤬", schedule: [WeekDay.monday]),
+            Tracker(id: UUID(), title: "Тестовая привычка 2", color: .trackerBlue, emoji: "🤯", schedule: [WeekDay.monday]),
+        ]
+        trackers.append(contentsOf: newTrackers)
         view?.didRecieveTrackers()
+    }
+}
+
+private extension TrackersViewPresenter {
+    func setupCollectionHelper() {
+        let collectionHelper = TrackersViewPresenterCollectionHelper()
+        collectionHelper.presenter = self
+        self.collectionHelper = collectionHelper
     }
 }
