@@ -15,6 +15,9 @@
 		9617C95829DAE11E0054987D /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9617C95729DAE11E0054987D /* TrackerRecord.swift */; };
 		9617C95B29DAE5920054987D /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9617C95A29DAE5920054987D /* WeekDay.swift */; };
 		9617C95F29DB0CF70054987D /* TrackersViewPresenterCollectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9617C95E29DB0CF70054987D /* TrackersViewPresenterCollectionHelper.swift */; };
+		9617C96229DC77620054987D /* TrackerCollectionViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9617C96129DC77620054987D /* TrackerCollectionViewConstants.swift */; };
+		9617C96629DD77180054987D /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9617C96529DD77180054987D /* Device.swift */; };
+		9617C96B29DD88860054987D /* FixTrackerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9617C96A29DD88860054987D /* FixTrackerButton.swift */; };
 		9629563729CD846900A587C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9629563629CD846900A587C5 /* AppDelegate.swift */; };
 		9629563929CD846900A587C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9629563829CD846900A587C5 /* SceneDelegate.swift */; };
 		9629563B29CD846900A587C5 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9629563A29CD846900A587C5 /* TrackersViewController.swift */; };
@@ -34,6 +37,9 @@
 		9617C95729DAE11E0054987D /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
 		9617C95A29DAE5920054987D /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
 		9617C95E29DB0CF70054987D /* TrackersViewPresenterCollectionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewPresenterCollectionHelper.swift; sourceTree = "<group>"; };
+		9617C96129DC77620054987D /* TrackerCollectionViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewConstants.swift; sourceTree = "<group>"; };
+		9617C96529DD77180054987D /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		9617C96A29DD88860054987D /* FixTrackerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixTrackerButton.swift; sourceTree = "<group>"; };
 		9629563329CD846900A587C5 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9629563629CD846900A587C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9629563829CD846900A587C5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +74,7 @@
 		9602B0F529D9DCF900FD66D2 /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				9617C96929DD88680054987D /* FixTrackerButton */,
 				9602B0F629D9DD1600FD66D2 /* TrackerCollectionViewCell.swift */,
 				9617C95E29DB0CF70054987D /* TrackersViewPresenterCollectionHelper.swift */,
 			);
@@ -89,6 +96,14 @@
 			children = (
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		9617C96929DD88680054987D /* FixTrackerButton */ = {
+			isa = PBXGroup;
+			children = (
+				9617C96A29DD88860054987D /* FixTrackerButton.swift */,
+			);
+			path = FixTrackerButton;
 			sourceTree = "<group>";
 		};
 		9629562A29CD846900A587C5 = {
@@ -146,6 +161,8 @@
 			isa = PBXGroup;
 			children = (
 				96E63F4629D732F700AA0970 /* UIColor+Extensions.swift */,
+				9617C96129DC77620054987D /* TrackerCollectionViewConstants.swift */,
+				9617C96529DD77180054987D /* Device.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -254,6 +271,9 @@
 				9602B0EF29D9626200FD66D2 /* TrackersViewPresenter.swift in Sources */,
 				9617C95829DAE11E0054987D /* TrackerRecord.swift in Sources */,
 				9602B0F729D9DD1600FD66D2 /* TrackerCollectionViewCell.swift in Sources */,
+				9617C96B29DD88860054987D /* FixTrackerButton.swift in Sources */,
+				9617C96629DD77180054987D /* Device.swift in Sources */,
+				9617C96229DC77620054987D /* TrackerCollectionViewConstants.swift in Sources */,
 				9617C95B29DAE5920054987D /* WeekDay.swift in Sources */,
 				9629563929CD846900A587C5 /* SceneDelegate.swift in Sources */,
 				96E63F5129D7360200AA0970 /* StatisticsViewController.swift in Sources */,
