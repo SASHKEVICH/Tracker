@@ -53,7 +53,13 @@ private extension TrackersViewController {
         
         collectionView?.delegate = presenter?.collectionHelper
         collectionView?.dataSource = presenter?.collectionHelper
-        collectionView?.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: TrackerCollectionViewCell.reuseIdentifier)
+        collectionView?.register(
+            TrackersCollectionViewCell.self,
+            forCellWithReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier)
+        collectionView?.register(
+            TrackersCollectionSectionHeader.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: TrackersCollectionSectionHeader.identifier)
     }
     
     func layoutCollectionView() {

@@ -51,18 +51,64 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
         collectionViewConstants.collectionViewInsets
     }
     
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        let indexPath = IndexPath(row: 0, section: section)
+        let headerView = self.collectionView(
+            collectionView,
+            viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
+            at: indexPath)
+        return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,
+                                                          height: UIView.layoutFittingExpandedSize.height),
+                                                          withHorizontalFittingPriority: .required,
+                                                          verticalFittingPriority: .fittingSizeLevel)
+    }
+    
     // MARK: - UICollectionViewDataSource
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         guard let presenter = presenter else {
             assertionFailure("Presenter is nil")
             return 0
         }
-        return presenter.trackers.count
+        return presenter.categories[section].trackers.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCollectionViewCell.reuseIdentifier, for: indexPath) as? TrackerCollectionViewCell
-        cell?.tracker = presenter?.trackers[indexPath.row]
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        guard let presenter = presenter else {
+            assertionFailure("Presenter is nil")
+            return 0
+        }
+        return presenter.categories.count
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier,
+            for: indexPath) as? TrackersCollectionViewCell
+        let section = presenter?.categories[indexPath.section]
+        cell?.tracker = section?.trackers[indexPath.row]
         return cell ?? UICollectionViewCell()
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        let view = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: TrackersCollectionSectionHeader.identifier,
+            for: indexPath) as? TrackersCollectionSectionHeader
+        view?.headerText = presenter?.categories[indexPath.section].title
+        return view ?? UICollectionReusableView()
     }
 }

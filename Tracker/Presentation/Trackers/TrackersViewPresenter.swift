@@ -11,6 +11,7 @@ protocol TrackersViewPresenterProtocol: AnyObject {
     var view: TrackersViewControllerProtocol? { get set }
     var collectionHelper: TrackersViewPresenterCollectionHelperProtocol? { get set }
     var trackers: [Tracker] { get }
+    var categories: [TrackerCategory] { get }
     func requestTrackers()
 }
 
@@ -19,6 +20,7 @@ final class TrackersViewPresenter: NSObject, TrackersViewPresenterProtocol {
     var collectionHelper: TrackersViewPresenterCollectionHelperProtocol?
     
     var trackers: [Tracker] = []
+    var categories: [TrackerCategory] = []
     
     override init() {
         super.init()
@@ -27,11 +29,18 @@ final class TrackersViewPresenter: NSObject, TrackersViewPresenterProtocol {
     }
     
     func requestTrackers() {
-        let newTrackers = [
-            Tracker(id: UUID(), title: "Тестовая привычка 1", color: .trackerColorSelection5, emoji: "🤬", schedule: [WeekDay.monday]),
-            Tracker(id: UUID(), title: "Тестовая привычка 2", color: .trackerBlue, emoji: "🤯", schedule: [WeekDay.monday]),
+        let newCategories = [
+            TrackerCategory(title: "Категория 1", trackers: [
+                Tracker(id: UUID(), title: "Тестовая привычка 1", color: .trackerColorSelection5, emoji: "🤬", schedule: [WeekDay.monday]),
+                Tracker(id: UUID(), title: "Тестовая привычка 2", color: .trackerBlue, emoji: "🤯", schedule: [WeekDay.monday]),
+            ]),
+            TrackerCategory(title: "Категория 2", trackers: [
+                Tracker(id: UUID(), title: "Тестовая привычка 1", color: .trackerColorSelection5, emoji: "🤬", schedule: [WeekDay.monday]),
+                Tracker(id: UUID(), title: "Тестовая привычка 2", color: .trackerBlue, emoji: "🤯", schedule: [WeekDay.monday]),
+            ])
         ]
-        trackers.append(contentsOf: newTrackers)
+        
+        categories.append(contentsOf: newCategories)
         view?.didRecieveTrackers()
     }
 }
