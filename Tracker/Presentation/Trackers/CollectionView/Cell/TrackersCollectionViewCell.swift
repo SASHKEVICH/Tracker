@@ -1,5 +1,5 @@
 //
-//  TrackerCollectionViewCell.swift
+//  TrackersCollectionViewCell.swift
 //  Tracker
 //
 //  Created by Александр Бекренев on 02.04.2023.
@@ -7,14 +7,14 @@
 
 import UIKit
 
-final class TrackerCollectionViewCell: UICollectionViewCell {
-    static let reuseIdentifier = String(describing: TrackerCollectionViewCell.self)
+final class TrackersCollectionViewCell: UICollectionViewCell {
+    static let reuseIdentifier = String(describing: TrackersCollectionViewCell.self)
     
     private let trackerTitleLable = UILabel()
     private let emojiLabel = UILabel()
     private let topContainerView = UIView()
     private let dayCountLabel = UILabel()
-    private let fixTrackerButton = FixTrackerButton()
+    private let completeTrackerButton = CompleteTrackerButton()
     
     private var dayCount = 0 {
         didSet {
@@ -29,7 +29,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             trackerTitleLable.text = tracker.title
             emojiLabel.text = tracker.emoji
             emojiLabel.sizeToFit()
-            fixTrackerButton.color = tracker.color
+            completeTrackerButton.color = tracker.color
         }
     }
     
@@ -46,7 +46,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
 }
 
 // MARK: - Setup and layout container view
-private extension TrackerCollectionViewCell {
+private extension TrackersCollectionViewCell {
     func setupContainerView() {
         topContainerView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(topContainerView)
@@ -66,7 +66,7 @@ private extension TrackerCollectionViewCell {
 }
 
 // MARK: - Setup and layout title label
-private extension TrackerCollectionViewCell {
+private extension TrackersCollectionViewCell {
     func setupTitleLable() {
         trackerTitleLable.translatesAutoresizingMaskIntoConstraints = false
         topContainerView.addSubview(trackerTitleLable)
@@ -108,7 +108,7 @@ private extension TrackerCollectionViewCell {
 }
 
 // MARK: - Setup and layout day count label
-private extension TrackerCollectionViewCell {
+private extension TrackersCollectionViewCell {
     func setupDayCountLabel() {
         dayCountLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(dayCountLabel)
@@ -127,23 +127,23 @@ private extension TrackerCollectionViewCell {
 }
 
 // MARK: - Setup and layout fix tracker button
-private extension TrackerCollectionViewCell {
+private extension TrackersCollectionViewCell {
     func setupFixTrackerButton() {
-        fixTrackerButton.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(fixTrackerButton)
+        completeTrackerButton.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(completeTrackerButton)
         
         NSLayoutConstraint.activate([
-            fixTrackerButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            fixTrackerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-            fixTrackerButton.widthAnchor.constraint(equalToConstant: 34),
-            fixTrackerButton.heightAnchor.constraint(equalToConstant: 34),
+            completeTrackerButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            completeTrackerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            completeTrackerButton.widthAnchor.constraint(equalToConstant: 34),
+            completeTrackerButton.heightAnchor.constraint(equalToConstant: 34),
         ])
-        fixTrackerButton.addTarget(self, action: #selector(didTapFixTrackerButton), for: .touchUpInside)
+        completeTrackerButton.addTarget(self, action: #selector(didTapFixTrackerButton), for: .touchUpInside)
     }
     
     @objc
     func didTapFixTrackerButton() {
-        if fixTrackerButton.isDone {
+        if completeTrackerButton.isDone {
             dayCount -= 1
         } else {
             dayCount += 1

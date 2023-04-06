@@ -1,5 +1,5 @@
 //
-//  FixTrackerButton.swift
+//  CompleteTrackerButton.swift
 //  Tracker
 //
 //  Created by Александр Бекренев on 05.04.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class FixTrackerButton: UIButton {
+final class CompleteTrackerButton: UIButton {
     var isDone: Bool = false
     var color: UIColor? {
         didSet {
@@ -21,7 +21,7 @@ final class FixTrackerButton: UIButton {
 }
 
 // MARK: - Setup button appearence and logic
-private extension FixTrackerButton {
+private extension CompleteTrackerButton {
     func setupButton() {
         self.layer.cornerRadius = 17
         self.layer.masksToBounds = true
