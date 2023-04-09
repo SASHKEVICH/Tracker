@@ -10,7 +10,7 @@ import UIKit
 protocol TrackersViewControllerProtocol: AnyObject {
     var presenter: TrackersViewPresenterProtocol? { get set }
     var isPlaceholderViewHidden: Bool { get set }
-    func didRecieveTrackers()
+    func didRecieveTrackers(indexPaths: [IndexPath]?)
 }
 
 final class TrackersViewController: UIViewController, TrackersViewControllerProtocol {
@@ -20,6 +20,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     private var placeholderText: String?
     
     var presenter: TrackersViewPresenterProtocol?
+    var currentDate: Date = Date()
     
     var isPlaceholderViewHidden: Bool = true {
         didSet {
@@ -34,13 +35,18 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         setupCollectionView()
         setupNavigationItem()
         setupPlaceholderView()
-        
-        presenter?.requestTrackers()
     }
     
-    func didRecieveTrackers() {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        presenter?.requestTrackers(for: currentDate)
+    }
+    
+    func didRecieveTrackers(indexPaths: [IndexPath]?) {
+//        guard let indexPaths = indexPaths else { return }
 //        collectionView?.performBatchUpdates { [weak self] in
-//            self?.collectionView?.insertItems(at: [IndexPath(row: 0, section: 0)])
+//            self?.collectionView?.insertItems(at: indexPaths)
 //        }
         collectionView?.reloadData()
     }
@@ -51,8 +57,8 @@ private extension TrackersViewController {
     func setupCollectionView() {
         layoutCollectionView()
         
-        collectionView?.delegate = presenter?.collectionHelper
-        collectionView?.dataSource = presenter?.collectionHelper
+        collectionView?.delegate = presenter?.collectionDelegate
+        collectionView?.dataSource = presenter?.collectionDelegate
         collectionView?.register(
             TrackersCollectionViewCell.self,
             forCellWithReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier)
@@ -106,12 +112,18 @@ private extension TrackersViewController {
         datePicker.preferredDatePickerStyle = .compact
         datePicker.datePickerMode = .date
         datePicker.locale = Locale(identifier: "ru_RU")
+        datePicker.addTarget(self, action: #selector(didCurrentDateValueChanged(_:)), for: .valueChanged)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
     }
     
     @objc
     func didTapAddTracker() {
         print("Add Tracker")
+    }
+    
+    @objc
+    func didCurrentDateValueChanged(_ datePicker: UIDatePicker) {
+        presenter?.currentDate = datePicker.date
     }
 }
 

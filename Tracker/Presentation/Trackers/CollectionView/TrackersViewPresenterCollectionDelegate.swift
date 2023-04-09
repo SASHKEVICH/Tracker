@@ -7,13 +7,14 @@
 
 import UIKit
 
-protocol TrackersViewPresenterCollectionHelperProtocol: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+protocol TrackersViewPresenterCollectionDelegateProtocol: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var presenter: TrackersViewPresenterProtocol? { get set }
 }
 
-final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresenterCollectionHelperProtocol {
+final class TrackersViewPresenterCollectionDelegate: NSObject, TrackersViewPresenterCollectionDelegateProtocol {
     weak var presenter: TrackersViewPresenterProtocol?
     private let collectionViewConstants = TrackerCollectionViewConstants.configuration
+    private let trackersService: TrackersServiceProtocol = TrackersService.shared
     
     // MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(
@@ -61,10 +62,11 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
             collectionView,
             viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
             at: indexPath)
-        return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,
-                                                          height: UIView.layoutFittingExpandedSize.height),
-                                                          withHorizontalFittingPriority: .required,
-                                                          verticalFittingPriority: .fittingSizeLevel)
+        let size = headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,
+                                                             height: UIView.layoutFittingExpandedSize.height),
+                                                             withHorizontalFittingPriority: .required,
+                                                             verticalFittingPriority: .fittingSizeLevel)
+        return size
     }
     
     // MARK: - UICollectionViewDataSource
@@ -76,7 +78,7 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
             assertionFailure("Presenter is nil")
             return 0
         }
-        return presenter.categories[section].trackers.count
+        return presenter.visibleCategories[section].trackers.count
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -84,7 +86,7 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
             assertionFailure("Presenter is nil")
             return 0
         }
-        return presenter.categories.count
+        return presenter.visibleCategories.count
     }
     
     func collectionView(
@@ -94,8 +96,24 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier,
             for: indexPath) as? TrackersCollectionViewCell
-        let section = presenter?.categories[indexPath.section]
-        cell?.tracker = section?.trackers[indexPath.row]
+        let section = presenter?.visibleCategories[indexPath.section]
+        let tracker = section?.trackers[indexPath.row]
+        
+        cell?.tracker = tracker
+        if let _ = trackersService.completedTrackers.first(where: { $0.trackerId == tracker?.id }) {
+            cell?.completeTrackerButton.toggleCompleted()
+            
+            let dayCount = trackersService.completedTrackers
+                .filter { $0.trackerId == tracker?.id }
+                .count
+            cell?.dayCount = dayCount
+        }
+        
+        cell?.completeTrackerButton.addTarget(
+            self,
+            action: #selector(didTapCompleteCellButton(_:)),
+            for: .touchUpInside)
+        
         return cell ?? UICollectionViewCell()
     }
     
@@ -108,7 +126,28 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
             ofKind: kind,
             withReuseIdentifier: TrackersCollectionSectionHeader.identifier,
             for: indexPath) as? TrackersCollectionSectionHeader
-        view?.headerText = presenter?.categories[indexPath.section].title
+        view?.headerText = presenter?.visibleCategories[indexPath.section].title
         return view ?? UICollectionReusableView()
+    }
+}
+
+// MARK: - Complete cell button handler
+private extension TrackersViewPresenterCollectionDelegate {
+    @objc
+    func didTapCompleteCellButton(_ sender: UIButton) {
+        guard
+            let contentView = sender.superview,
+            let cell = contentView.superview as? TrackersCollectionViewCell,
+            let tracker = cell.tracker,
+            let currentDate = presenter?.currentDate
+        else { return }
+        
+        cell.completeTrackerButton.toggleCompleted()
+        
+        if cell.completeTrackerButton.isDone {
+            trackersService.completeTracker(trackerId: tracker.id, date: currentDate)
+        } else {
+            trackersService.incompleteTracker(trackerId: tracker.id, date: currentDate)
+        }
     }
 }

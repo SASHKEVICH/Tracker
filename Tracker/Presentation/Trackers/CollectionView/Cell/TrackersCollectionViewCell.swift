@@ -14,9 +14,10 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     private let emojiLabel = UILabel()
     private let topContainerView = UIView()
     private let dayCountLabel = UILabel()
-    private let completeTrackerButton = CompleteTrackerButton()
     
-    private var dayCount = 0 {
+    let completeTrackerButton = CompleteTrackerButton()
+    
+    var dayCount = 0 {
         didSet {
             dayCountLabel.text = "\(dayCount) дней"
         }
@@ -138,9 +139,12 @@ private extension TrackersCollectionViewCell {
             completeTrackerButton.widthAnchor.constraint(equalToConstant: 34),
             completeTrackerButton.heightAnchor.constraint(equalToConstant: 34),
         ])
-        completeTrackerButton.addTarget(self, action: #selector(didTapFixTrackerButton), for: .touchUpInside)
+        completeTrackerButton.addTarget(
+            self,
+            action: #selector(didTapFixTrackerButton),
+            for: .touchUpInside)
     }
-    
+
     @objc
     func didTapFixTrackerButton() {
         if completeTrackerButton.isDone {

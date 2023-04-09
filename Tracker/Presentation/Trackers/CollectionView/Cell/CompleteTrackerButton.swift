@@ -8,7 +8,12 @@
 import UIKit
 
 final class CompleteTrackerButton: UIButton {
-    var isDone: Bool = false
+    private(set) var isDone: Bool = false {
+        didSet {
+            isDone ? setTrackerDone() : setTrackerUndone()
+        }
+    }
+    
     var color: UIColor? {
         didSet {
             self.backgroundColor = color
@@ -17,6 +22,10 @@ final class CompleteTrackerButton: UIButton {
     
     override func draw(_ rect: CGRect) {
         setupButton()
+    }
+    
+    func toggleCompleted() {
+        isDone.toggle()
     }
 }
 
@@ -30,13 +39,6 @@ private extension CompleteTrackerButton {
         imageView?.contentMode = .center
         imageView?.tintColor = .trackerWhiteDay
 
-        isDone ? setTrackerDone() : setTrackerUndone()
-        self.addTarget(self, action: #selector(onPress), for: .touchUpInside)
-    }
-    
-    @objc
-    func onPress() {
-        isDone.toggle()
         isDone ? setTrackerDone() : setTrackerUndone()
     }
     
