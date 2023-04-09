@@ -9,46 +9,49 @@ import Foundation
 
 protocol TrackersViewPresenterProtocol: AnyObject {
     var view: TrackersViewControllerProtocol? { get set }
-    var collectionHelper: TrackersViewPresenterCollectionHelperProtocol? { get set }
-    var trackers: [Tracker] { get }
-    var categories: [TrackerCategory] { get }
-    func requestTrackers()
+    var collectionDelegate: TrackersViewPresenterCollectionDelegateProtocol? { get set }
+    var currentDate: Date { get set }
+    var visibleCategories: [TrackerCategory] { get }
+    func requestTrackers(for date: Date)
 }
 
-final class TrackersViewPresenter: NSObject, TrackersViewPresenterProtocol {
+final class TrackersViewPresenter: TrackersViewPresenterProtocol {
+    private var trackersService: TrackersServiceProtocol = TrackersService()
+    
     weak var view: TrackersViewControllerProtocol?
-    var collectionHelper: TrackersViewPresenterCollectionHelperProtocol?
+    var collectionDelegate: TrackersViewPresenterCollectionDelegateProtocol?
+
+    var completedTrackers: [TrackerRecord] = []
+    var visibleCategories: [TrackerCategory] = []
+    var currentDate: Date = Date()
     
-    var trackers: [Tracker] = []
-    var categories: [TrackerCategory] = []
-    
-    override init() {
-        super.init()
-        
-        setupCollectionHelper()
+    init() {
+        setupCollectionDelegate()
     }
     
-    func requestTrackers() {
-        let newCategories = [
-            TrackerCategory(title: "Категория 1", trackers: [
-                Tracker(id: UUID(), title: "Тестовая привычка 1", color: .trackerColorSelection5, emoji: "🤬", schedule: [WeekDay.monday]),
-                Tracker(id: UUID(), title: "Тестовая привычка 2", color: .trackerBlue, emoji: "🤯", schedule: [WeekDay.monday]),
-            ]),
-            TrackerCategory(title: "Категория 2", trackers: [
-                Tracker(id: UUID(), title: "Тестовая привычка 1", color: .trackerColorSelection5, emoji: "🤬", schedule: [WeekDay.monday]),
-                Tracker(id: UUID(), title: "Тестовая привычка 2", color: .trackerBlue, emoji: "🤯", schedule: [WeekDay.monday]),
-            ])
-        ]
-        
-        categories.append(contentsOf: newCategories)
-        view?.didRecieveTrackers()
+    func requestTrackers(for date: Date) {
+        self.currentDate = date
+        let fetchedCategories = trackersService.fetchTrackers(for: date)
+        self.visibleCategories = fetchedCategories
+        let indexPaths = getIndexPathsForTrackers()
+        view?.didRecieveTrackers(indexPaths: indexPaths)
     }
 }
 
 private extension TrackersViewPresenter {
-    func setupCollectionHelper() {
-        let collectionHelper = TrackersViewPresenterCollectionHelper()
-        collectionHelper.presenter = self
-        self.collectionHelper = collectionHelper
+    func setupCollectionDelegate() {
+        let collectionDelegate = TrackersViewPresenterCollectionDelegate()
+        collectionDelegate.presenter = self
+        self.collectionDelegate = collectionDelegate
+    }
+    
+    func getIndexPathsForTrackers() -> [IndexPath]? {
+        let indexPaths = visibleCategories.enumerated().flatMap { categoryIndex, category in
+            let enumeratedTrackers = category.trackers.enumerated()
+            return enumeratedTrackers.map { trackerIndex, _ in
+                IndexPath(row: trackerIndex, section: categoryIndex)
+            }
+        }
+        return indexPaths
     }
 }
