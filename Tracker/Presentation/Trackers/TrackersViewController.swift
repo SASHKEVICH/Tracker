@@ -15,12 +15,14 @@ protocol TrackersViewControllerProtocol: AnyObject {
 
 final class TrackersViewController: UIViewController, TrackersViewControllerProtocol {
     private var collectionView: UICollectionView?
-    private var collectionPlaceholderView: CollectionPlaceholderView?
     private var placeholderImage: UIImage?
     private var placeholderText: String?
+    private var searchController: UISearchController?
+    private var collectionPlaceholderView: CollectionPlaceholderView?
+    
+    private var currentDate: Date = Date()
     
     var presenter: TrackersViewPresenterProtocol?
-    var currentDate: Date = Date()
     
     var isPlaceholderViewHidden: Bool = true {
         didSet {
@@ -52,7 +54,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     }
 }
 
-// MARK: - CollectionView Layout
+// MARK: - Setup CollectionView
 private extension TrackersViewController {
     func setupCollectionView() {
         layoutCollectionView()
@@ -76,7 +78,6 @@ private extension TrackersViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.collectionView = collectionView
 
-        guard let collectionView = self.collectionView else { return }
         view.addSubview(collectionView)
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -94,6 +95,7 @@ private extension TrackersViewController {
         navigationItem.title = "Трекеры"
         setupLeftBarButtonItem()
         setupRightBarButtonItem()
+        setupSearchController()
     }
     
     func setupLeftBarButtonItem() {
@@ -127,6 +129,7 @@ private extension TrackersViewController {
     }
 }
 
+// MARK: - Setup PlaceholderView
 extension TrackersViewController {
     func configurePlaceholderView(image: UIImage?, text: String) {
         placeholderImage = image
@@ -149,5 +152,19 @@ extension TrackersViewController {
         placeholderView.image = placeholderImage
         placeholderView.text = placeholderText
         self.collectionPlaceholderView = placeholderView
+    }
+}
+
+// MARK: - Setup SearchController
+extension TrackersViewController {
+    func setupSearchController() {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = presenter?.searchControllerDelegate
+        searchController.searchBar.delegate = presenter?.searchControllerDelegate
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Поиск"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+        self.searchController = searchController
     }
 }

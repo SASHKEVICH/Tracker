@@ -7,6 +7,11 @@
 
 import UIKit
 
+enum TrackersCollectionViewCellState {
+    case completed
+    case incompleted
+}
+
 final class TrackersCollectionViewCell: UICollectionViewCell {
     static let reuseIdentifier = String(describing: TrackersCollectionViewCell.self)
     
@@ -34,6 +39,12 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    var state: TrackersCollectionViewCellState = .incompleted {
+        didSet {
+            completeTrackerButton.isDone = state == .completed
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupContainerView()
@@ -43,6 +54,11 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    override func prepareForReuse() {
+        self.dayCount = 0
+        self.completeTrackerButton.isDone = false
     }
 }
 

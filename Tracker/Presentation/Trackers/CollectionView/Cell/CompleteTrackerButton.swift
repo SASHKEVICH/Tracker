@@ -8,7 +8,7 @@
 import UIKit
 
 final class CompleteTrackerButton: UIButton {
-    private(set) var isDone: Bool = false {
+    var isDone: Bool = false {
         didSet {
             isDone ? setTrackerDone() : setTrackerUndone()
         }
@@ -22,10 +22,6 @@ final class CompleteTrackerButton: UIButton {
     
     override func draw(_ rect: CGRect) {
         setupButton()
-    }
-    
-    func toggleCompleted() {
-        isDone.toggle()
     }
 }
 

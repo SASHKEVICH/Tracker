@@ -57,16 +57,19 @@ final class TrackersViewPresenterCollectionDelegate: NSObject, TrackersViewPrese
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        let indexPath = IndexPath(row: 0, section: section)
-        let headerView = self.collectionView(
-            collectionView,
-            viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
-            at: indexPath)
-        let size = headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,
-                                                             height: UIView.layoutFittingExpandedSize.height),
-                                                             withHorizontalFittingPriority: .required,
-                                                             verticalFittingPriority: .fittingSizeLevel)
-        return size
+//        let indexPath = IndexPath(row: 0, section: section)
+//        let headerView = self.collectionView(
+//            collectionView,
+//            viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
+//            at: indexPath)
+//        let size = headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,
+//                                                             height: UIView.layoutFittingExpandedSize.height),
+//                                                             withHorizontalFittingPriority: .required,
+//                                                             verticalFittingPriority: .fittingSizeLevel)
+//        return size
+        
+        // Почему-то не работает UIView.layoutFittingExpandedSize.height
+        CGSize(width: collectionView.frame.width, height: 51)
     }
     
     // MARK: - UICollectionViewDataSource
@@ -100,13 +103,15 @@ final class TrackersViewPresenterCollectionDelegate: NSObject, TrackersViewPrese
         let tracker = section?.trackers[indexPath.row]
         
         cell?.tracker = tracker
-        if let _ = trackersService.completedTrackers.first(where: { $0.trackerId == tracker?.id }) {
-            cell?.completeTrackerButton.toggleCompleted()
+        let doesTrackerStoredInCompletedTrackers = presenter?.completedTrackersRecords.first(where: { $0.trackerId == tracker?.id }) != nil
+              
+        if doesTrackerStoredInCompletedTrackers {
+            cell?.state = .completed
             
-            let dayCount = trackersService.completedTrackers
+            let dayCount = presenter?.completedTrackersRecords
                 .filter { $0.trackerId == tracker?.id }
                 .count
-            cell?.dayCount = dayCount
+            cell?.dayCount = dayCount ?? -1
         }
         
         cell?.completeTrackerButton.addTarget(
@@ -142,9 +147,9 @@ private extension TrackersViewPresenterCollectionDelegate {
             let currentDate = presenter?.currentDate
         else { return }
         
-        cell.completeTrackerButton.toggleCompleted()
+        cell.state = cell.state == .completed ? .incompleted : .completed
         
-        if cell.completeTrackerButton.isDone {
+        if cell.state == .completed {
             trackersService.completeTracker(trackerId: tracker.id, date: currentDate)
         } else {
             trackersService.incompleteTracker(trackerId: tracker.id, date: currentDate)

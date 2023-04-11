@@ -24,6 +24,7 @@
 		9629563B29CD846900A587C5 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9629563A29CD846900A587C5 /* TrackersViewController.swift */; };
 		9629564029CD846B00A587C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9629563F29CD846B00A587C5 /* Assets.xcassets */; };
 		9629564329CD846B00A587C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9629564129CD846B00A587C5 /* LaunchScreen.storyboard */; };
+		9686FA5929E2829500BE2BC0 /* TrackersViewPresenterSearchControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9686FA5829E2829500BE2BC0 /* TrackersViewPresenterSearchControllerDelegate.swift */; };
 		969BE48429DFBE9A0056D813 /* TrackersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969BE48329DFBE9A0056D813 /* TrackersService.swift */; };
 		96E63F4729D732F700AA0970 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E63F4629D732F700AA0970 /* UIColor+Extensions.swift */; };
 		96E63F4D29D735D500AA0970 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E63F4C29D735D500AA0970 /* TabBarViewController.swift */; };
@@ -50,6 +51,7 @@
 		9629563F29CD846B00A587C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9629564229CD846B00A587C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9629564429CD846B00A587C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9686FA5829E2829500BE2BC0 /* TrackersViewPresenterSearchControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewPresenterSearchControllerDelegate.swift; sourceTree = "<group>"; };
 		969BE48329DFBE9A0056D813 /* TrackersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersService.swift; sourceTree = "<group>"; };
 		96E63F4629D732F700AA0970 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		96E63F4C29D735D500AA0970 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
@@ -154,6 +156,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		9686FA5729E2826C00BE2BC0 /* SearchField */ = {
+			isa = PBXGroup;
+			children = (
+				9686FA5829E2829500BE2BC0 /* TrackersViewPresenterSearchControllerDelegate.swift */,
+			);
+			path = SearchField;
+			sourceTree = "<group>";
+		};
 		969BE48229DE88A90056D813 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,6 +194,7 @@
 		96E63F4E29D735D900AA0970 /* Trackers */ = {
 			isa = PBXGroup;
 			children = (
+				9686FA5729E2826C00BE2BC0 /* SearchField */,
 				9602B0F529D9DCF900FD66D2 /* CollectionView */,
 				9602B0F029D9678100FD66D2 /* PlaceholderView */,
 				9629563A29CD846900A587C5 /* TrackersViewController.swift */,
@@ -282,6 +293,7 @@
 				9617C96629DD77180054987D /* Device.swift in Sources */,
 				9617C96229DC77620054987D /* TrackerCollectionViewConstants.swift in Sources */,
 				9617C95B29DAE5920054987D /* WeekDay.swift in Sources */,
+				9686FA5929E2829500BE2BC0 /* TrackersViewPresenterSearchControllerDelegate.swift in Sources */,
 				9629563929CD846900A587C5 /* SceneDelegate.swift in Sources */,
 				96E63F5129D7360200AA0970 /* StatisticsViewController.swift in Sources */,
 				9617C96D29DDCCE30054987D /* TrackersCollectionSectionHeader.swift in Sources */,
