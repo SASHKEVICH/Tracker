@@ -70,6 +70,14 @@ extension TrackersViewPresenter {
     }
 }
 
+extension TrackersViewPresenter: TrackersViewPresetnerCollectionProtocol {
+    func requestChosenFutureDateAlert() {
+        let alertPresenter = AlertPresenterService(delegate: view)
+        let alertModel = AlertModel(title: "Некорректная дата", message: "Вы отмечаете трекер в будущем >:[", actionTitles: ["OK"])
+        alertPresenter.requestAlert(alertModel)
+    }
+}
+
 // MARK: - Setup delegates
 private extension TrackersViewPresenter {
     func setupCollectionDelegate() {

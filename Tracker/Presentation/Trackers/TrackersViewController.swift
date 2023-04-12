@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TrackersViewControllerProtocol: AnyObject {
+protocol TrackersViewControllerProtocol: AnyObject, AlertPresenterServiceDelegate {
     var presenter: TrackersViewPresenterProtocol? { get set }
     var isPlaceholderViewHidden: Bool { get set }
     func didRecieveTrackers(indexPaths: [IndexPath]?)
@@ -166,5 +166,12 @@ extension TrackersViewController {
         navigationItem.searchController = searchController
         definesPresentationContext = true
         self.searchController = searchController
+    }
+}
+
+// MARK: Alert Presenter Delegate
+extension TrackersViewController: AlertPresenterServiceDelegate {
+    func didRecieve(alert: UIAlertController) {
+        present(alert, animated: true)
     }
 }
