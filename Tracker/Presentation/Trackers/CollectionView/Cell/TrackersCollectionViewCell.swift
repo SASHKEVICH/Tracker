@@ -155,18 +155,5 @@ private extension TrackersCollectionViewCell {
             completeTrackerButton.widthAnchor.constraint(equalToConstant: 34),
             completeTrackerButton.heightAnchor.constraint(equalToConstant: 34),
         ])
-        completeTrackerButton.addTarget(
-            self,
-            action: #selector(didTapFixTrackerButton),
-            for: .touchUpInside)
-    }
-
-    @objc
-    func didTapFixTrackerButton() {
-        if completeTrackerButton.isDone {
-            dayCount -= 1
-        } else {
-            dayCount += 1
-        }
     }
 }

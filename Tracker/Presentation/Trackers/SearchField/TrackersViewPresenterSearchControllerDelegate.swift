@@ -20,7 +20,6 @@ final class TrackersViewPresenterSearchControllerDelegate: NSObject, TrackersVie
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        print("cancel button tapped")
         presenter?.requestShowAllCategoriesForCurrentDay()
     }
 }

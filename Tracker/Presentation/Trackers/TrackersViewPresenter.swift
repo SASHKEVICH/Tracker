@@ -7,9 +7,11 @@
 
 import Foundation
 
-protocol TrackersViewPresetnerCollectionProtocol {
+protocol TrackersViewPresetnerCollectionProtocol: AnyObject {
     var visibleCategories: [TrackerCategory] { get }
     var completedTrackersRecords: Set<TrackerRecord> { get }
+    var currentDate: Date { get set }
+    func requestChosenFutureDateAlert()
 }
 
 protocol TrackersViewPresetnerSearchControllerProtocol: AnyObject {
@@ -21,12 +23,11 @@ protocol TrackersViewPresenterProtocol: AnyObject, TrackersViewPresetnerCollecti
     var view: TrackersViewControllerProtocol? { get set }
     var collectionDelegate: TrackersViewPresenterCollectionDelegateProtocol? { get }
     var searchControllerDelegate: TrackersViewPresenterSearchControllerDelegateProtocol? { get }
-    var currentDate: Date { get set }
     func requestTrackers(for date: Date)
 }
 
 final class TrackersViewPresenter: TrackersViewPresenterProtocol {
-    private var trackersService: TrackersServiceProtocol = TrackersService()
+    private let trackersService: TrackersServiceProtocol = TrackersService.shared
     
     weak var view: TrackersViewControllerProtocol?
     var collectionDelegate: TrackersViewPresenterCollectionDelegateProtocol?
@@ -40,29 +41,28 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
         setupCollectionDelegate()
         setupSearchControllerDelegate()
     }
-    
+}
+
+// MARK: - Requesting trackers
+extension TrackersViewPresenter {
     func requestTrackers(for date: Date) {
         let fetchedCategories = trackersService.fetchTrackers(for: date)
         self.visibleCategories = fetchedCategories
-        self.currentDate = date
         self.completedTrackersRecords = trackersService.completedTrackers
+        self.currentDate = date
         
         let indexPaths = getIndexPathsForTrackers()
         view?.didRecieveTrackers(indexPaths: indexPaths)
     }
-}
-
-extension TrackersViewPresenter {
+    
     func requestFilteredTrackers(for searchText: String?) {
         guard let searchText = searchText else { return }
-//         TODO: let filteredTrackers = trackersService.requestFilteredTrackers(for: searchText)
         let categoriesWithDesiredTrackers = trackersService.requestFilterDesiredTrackers(searchText: searchText)
         self.visibleCategories = categoriesWithDesiredTrackers
         self.completedTrackersRecords = trackersService.completedTrackers
         
         let indexPaths = getIndexPathsForTrackers()
         view?.didRecieveTrackers(indexPaths: indexPaths)
-        // TODO: self.visibleCategories = filteredTrackers
     }
     
     func requestShowAllCategoriesForCurrentDay() {

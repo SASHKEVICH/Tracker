@@ -8,11 +8,11 @@
 import UIKit
 
 protocol TrackersViewPresenterCollectionDelegateProtocol: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    var presenter: TrackersViewPresenterProtocol? { get set }
+    var presenter: TrackersViewPresetnerCollectionProtocol? { get set }
 }
 
 final class TrackersViewPresenterCollectionDelegate: NSObject, TrackersViewPresenterCollectionDelegateProtocol {
-    weak var presenter: TrackersViewPresenterProtocol?
+    weak var presenter: TrackersViewPresetnerCollectionProtocol?
     private let collectionViewConstants = TrackerCollectionViewConstants.configuration
     private let trackersService: TrackersServiceProtocol = TrackersService.shared
     
@@ -67,8 +67,8 @@ final class TrackersViewPresenterCollectionDelegate: NSObject, TrackersViewPrese
 //                                                             withHorizontalFittingPriority: .required,
 //                                                             verticalFittingPriority: .fittingSizeLevel)
 //        return size
-        
-        // Почему-то не работает UIView.layoutFittingExpandedSize.height
+//
+        // Почему-то вылезает ошибка при UIView.layoutFittingExpandedSize.height
         CGSize(width: collectionView.frame.width, height: 51)
     }
     
@@ -147,11 +147,18 @@ private extension TrackersViewPresenterCollectionDelegate {
             let currentDate = presenter?.currentDate
         else { return }
         
+        guard currentDate <= Date() else {
+            presenter?.requestChosenFutureDateAlert()
+            return
+        }
+        
         cell.state = cell.state == .completed ? .incompleted : .completed
         
         if cell.state == .completed {
+            cell.dayCount += 1
             trackersService.completeTracker(trackerId: tracker.id, date: currentDate)
         } else {
+            cell.dayCount -= 1
             trackersService.incompleteTracker(trackerId: tracker.id, date: currentDate)
         }
     }
