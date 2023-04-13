@@ -11,6 +11,9 @@ protocol TrackersViewControllerProtocol: AnyObject, AlertPresenterServiceDelegat
     var presenter: TrackersViewPresenterProtocol? { get set }
     var isPlaceholderViewHidden: Bool { get set }
     func didRecieveTrackers(indexPaths: [IndexPath]?)
+    func showPlaceholderViewForCurrentDay()
+    func showPlaceholderViewForEmptySearch()
+    func showOrHidePlaceholderView(isHide: Bool)
 }
 
 final class TrackersViewController: UIViewController, TrackersViewControllerProtocol {
@@ -131,9 +134,34 @@ private extension TrackersViewController {
 
 // MARK: - Setup PlaceholderView
 extension TrackersViewController {
-    func configurePlaceholderView(image: UIImage?, text: String) {
-        placeholderImage = image
-        placeholderText = text
+    func showPlaceholderViewForCurrentDay() {
+        configurePlaceholderView(
+            image: UIImage(named: "TrackersCollectionEmptyImage"),
+            text: "Что будем отслеживать?")
+        showOrHidePlaceholderView(isHide: false)
+    }
+    
+    func showPlaceholderViewForEmptySearch() {
+        configurePlaceholderView(
+            image: UIImage(named: "TrackersCollectionEmptyTrackersListSearch"),
+            text: "Ничего не найдено")
+        showOrHidePlaceholderView(isHide: false)
+    }
+    
+    func showOrHidePlaceholderView(isHide: Bool) {
+        guard let placeholderView = collectionPlaceholderView else { return }
+        UIView.transition(
+            with: placeholderView,
+            duration: 0.3,
+            options: .transitionCrossDissolve
+        ) {
+            placeholderView.isHidden = isHide
+        }
+    }
+    
+    private func configurePlaceholderView(image: UIImage?, text: String) {
+        collectionPlaceholderView?.image = image
+        collectionPlaceholderView?.text = text
     }
     
     private func setupPlaceholderView() {

@@ -47,22 +47,36 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
 extension TrackersViewPresenter {
     func requestTrackers(for date: Date) {
         let fetchedCategories = trackersService.fetchTrackers(for: date)
+        
         self.visibleCategories = fetchedCategories
         self.completedTrackersRecords = trackersService.completedTrackers
         self.currentDate = date
         
         let indexPaths = getIndexPathsForTrackers()
         view?.didRecieveTrackers(indexPaths: indexPaths)
+        
+        if fetchedCategories.isEmpty {
+            view?.showPlaceholderViewForCurrentDay()
+            return
+        }
+        view?.showOrHidePlaceholderView(isHide: true)
     }
     
     func requestFilteredTrackers(for searchText: String?) {
         guard let searchText = searchText else { return }
         let categoriesWithDesiredTrackers = trackersService.requestFilterDesiredTrackers(searchText: searchText)
+        
         self.visibleCategories = categoriesWithDesiredTrackers
         self.completedTrackersRecords = trackersService.completedTrackers
         
         let indexPaths = getIndexPathsForTrackers()
         view?.didRecieveTrackers(indexPaths: indexPaths)
+        
+        if categoriesWithDesiredTrackers.isEmpty {
+            view?.showPlaceholderViewForEmptySearch()
+            return
+        }
+        view?.showOrHidePlaceholderView(isHide: true)
     }
     
     func requestShowAllCategoriesForCurrentDay() {

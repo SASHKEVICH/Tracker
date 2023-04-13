@@ -34,10 +34,6 @@ private extension TabBarViewController {
         trackersViewController.presenter = presenter
         presenter.view = trackersViewController
         
-        trackersViewController.configurePlaceholderView(
-            image: UIImage(named: "TrackersCollectionEmptyImage"),
-            text: "Что будем отслеживать?")
-        
         trackersViewController.tabBarItem = UITabBarItem(
             title: "Трекеры",
             image: UIImage(named: "TrackersTabBarItem"),

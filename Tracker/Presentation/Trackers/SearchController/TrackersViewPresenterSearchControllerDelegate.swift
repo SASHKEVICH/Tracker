@@ -16,7 +16,8 @@ final class TrackersViewPresenterSearchControllerDelegate: NSObject, TrackersVie
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
-        presenter?.requestFilteredTrackers(for: searchBar.text)
+        guard let text = searchBar.text, !text.isEmpty else { return }
+        presenter?.requestFilteredTrackers(for: text)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

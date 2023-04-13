@@ -164,12 +164,12 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		9686FA5729E2826C00BE2BC0 /* SearchField */ = {
+		9686FA5729E2826C00BE2BC0 /* SearchController */ = {
 			isa = PBXGroup;
 			children = (
 				9686FA5829E2829500BE2BC0 /* TrackersViewPresenterSearchControllerDelegate.swift */,
 			);
-			path = SearchField;
+			path = SearchController;
 			sourceTree = "<group>";
 		};
 		969BE48229DE88A90056D813 /* Cell */ = {
@@ -211,7 +211,7 @@
 		96E63F4E29D735D900AA0970 /* Trackers */ = {
 			isa = PBXGroup;
 			children = (
-				9686FA5729E2826C00BE2BC0 /* SearchField */,
+				9686FA5729E2826C00BE2BC0 /* SearchController */,
 				9602B0F529D9DCF900FD66D2 /* CollectionView */,
 				9602B0F029D9678100FD66D2 /* PlaceholderView */,
 				9629563A29CD846900A587C5 /* TrackersViewController.swift */,

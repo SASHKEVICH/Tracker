@@ -39,14 +39,20 @@ final class TrackersService: TrackersServiceProtocol {
     }
     
     func requestFilterDesiredTrackers(searchText: String) -> [TrackerCategory] {
-        guard !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return categories }
+        guard !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        else { return [] }
+        
         let lowercasedSearchText = searchText.lowercased()
-        let filteredCategories: [TrackerCategory] = categories.compactMap { (category: TrackerCategory) -> TrackerCategory? in
-            let filteredTrackers = category.trackers.filter { $0.title.lowercased().contains(lowercasedSearchText) }
+        let filteredCategories: [TrackerCategory] = categories.compactMap { category -> TrackerCategory? in
+            let filteredTrackers = category.trackers.filter {
+                $0.title.lowercased().hasPrefix(lowercasedSearchText)
+            }
+            
             guard !filteredTrackers.isEmpty else { return nil }
             
             return TrackerCategory(title: category.title, trackers: filteredTrackers)
         }
+        
         return filteredCategories
     }
 }
