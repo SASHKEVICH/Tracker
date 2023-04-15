@@ -123,7 +123,7 @@ private extension TrackersViewController {
     
     @objc
     func didTapAddTracker() {
-        let vc = ChooseTypeOfTrackerViewController()
+        let vc = ChooseTrackerTypeViewController()
         present(vc, animated: true)
     }
     
