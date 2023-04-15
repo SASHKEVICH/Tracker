@@ -11,7 +11,7 @@ protocol TrackersViewPresenterSearchControllerDelegateProtocol: UISearchTextFiel
     var presenter: TrackersViewPresetnerSearchControllerProtocol? { get set }
 }
 
-final class TrackersViewPresenterSearchControllerDelegate: NSObject, TrackersViewPresenterSearchControllerDelegateProtocol {
+final class TrackersViewPresenterSearchControllerHelper: NSObject, TrackersViewPresenterSearchControllerDelegateProtocol {
     weak var presenter: TrackersViewPresetnerSearchControllerProtocol?
     
     func updateSearchResults(for searchController: UISearchController) {

@@ -11,7 +11,7 @@ protocol TrackersViewPresenterCollectionDelegateProtocol: UICollectionViewDataSo
     var presenter: TrackersViewPresetnerCollectionProtocol? { get set }
 }
 
-final class TrackersViewPresenterCollectionDelegate: NSObject, TrackersViewPresenterCollectionDelegateProtocol {
+final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresenterCollectionDelegateProtocol {
     weak var presenter: TrackersViewPresetnerCollectionProtocol?
     private let collectionViewConstants = TrackerCollectionViewConstants.configuration
     private let trackersService: TrackersServiceProtocol = TrackersService.shared
@@ -137,7 +137,7 @@ final class TrackersViewPresenterCollectionDelegate: NSObject, TrackersViewPrese
 }
 
 // MARK: - Complete cell button handler
-private extension TrackersViewPresenterCollectionDelegate {
+private extension TrackersViewPresenterCollectionHelper {
     @objc
     func didTapCompleteCellButton(_ sender: UIButton) {
         guard
