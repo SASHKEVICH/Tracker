@@ -21,8 +21,8 @@ protocol TrackersViewPresetnerSearchControllerProtocol: AnyObject {
 
 protocol TrackersViewPresenterProtocol: AnyObject, TrackersViewPresetnerCollectionProtocol, TrackersViewPresetnerSearchControllerProtocol {
     var view: TrackersViewControllerProtocol? { get set }
-    var collectionDelegate: TrackersViewPresenterCollectionDelegateProtocol? { get }
-    var searchControllerDelegate: TrackersViewPresenterSearchControllerDelegateProtocol? { get }
+    var collectionHelper: TrackersViewPresenterCollectionHelperProtocol? { get }
+    var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol? { get }
     func requestTrackers(for date: Date)
 }
 
@@ -30,8 +30,8 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
     private let trackersService: TrackersServiceProtocol = TrackersService.shared
     
     weak var view: TrackersViewControllerProtocol?
-    var collectionDelegate: TrackersViewPresenterCollectionDelegateProtocol?
-    var searchControllerDelegate: TrackersViewPresenterSearchControllerDelegateProtocol?
+    var collectionHelper: TrackersViewPresenterCollectionHelperProtocol?
+    var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol?
 
     var completedTrackersRecords: Set<TrackerRecord> = []
     var visibleCategories: [TrackerCategory] = []
@@ -95,15 +95,15 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionProtocol {
 // MARK: - Setup delegates
 private extension TrackersViewPresenter {
     func setupCollectionDelegate() {
-        let collectionDelegate = TrackersViewPresenterCollectionDelegate()
-        collectionDelegate.presenter = self
-        self.collectionDelegate = collectionDelegate
+        let collectionHelper = TrackersViewPresenterCollectionHelper()
+        collectionHelper.presenter = self
+        self.collectionHelper = collectionHelper
     }
     
     func setupSearchControllerDelegate() {
-        let searchControllerDelegate = TrackersViewPresenterSearchControllerDelegate()
-        searchControllerDelegate.presenter = self
-        self.searchControllerDelegate = searchControllerDelegate
+        let searchControllerHelper = TrackersViewPresenterSearchControllerHelper()
+        searchControllerHelper.presenter = self
+        self.searchControllerHelper = searchControllerHelper
     }
 }
 

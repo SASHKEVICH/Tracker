@@ -7,11 +7,11 @@
 
 import UIKit
 
-protocol TrackersViewPresenterCollectionDelegateProtocol: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+protocol TrackersViewPresenterCollectionHelperProtocol: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var presenter: TrackersViewPresetnerCollectionProtocol? { get set }
 }
 
-final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresenterCollectionDelegateProtocol {
+final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresenterCollectionHelperProtocol {
     weak var presenter: TrackersViewPresetnerCollectionProtocol?
     private let collectionViewConstants = TrackerCollectionViewConstants.configuration
     private let trackersService: TrackersServiceProtocol = TrackersService.shared

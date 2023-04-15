@@ -23,8 +23,6 @@ final class TrackersService: TrackersServiceProtocol {
         TrackerCategory(title: "Категория 1", trackers: [
             Tracker(id: UUID(uuidString: "7E5D6688-A3F1-480E-8EE1-485A7E441E38")!, title: "Купить молоко", color: .trackerColorSelection5, emoji: "🤬", schedule: [WeekDay.monday]),
             Tracker(id: UUID(), title: "Сделать домашку", color: .trackerBlue, emoji: "🤯", schedule: [WeekDay.monday]),
-        ]),
-        TrackerCategory(title: "Категория 2", trackers: [
             Tracker(id: UUID(), title: "Покормить кота", color: .trackerColorSelection5, emoji: "🤬", schedule: [WeekDay.monday]),
             Tracker(id: UUID(), title: "Склеить гитару", color: .trackerBlue, emoji: "🤯", schedule: [WeekDay.monday]),
         ])

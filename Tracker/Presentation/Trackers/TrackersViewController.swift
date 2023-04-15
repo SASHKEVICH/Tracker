@@ -62,8 +62,8 @@ private extension TrackersViewController {
     func setupCollectionView() {
         layoutCollectionView()
         
-        collectionView?.delegate = presenter?.collectionDelegate
-        collectionView?.dataSource = presenter?.collectionDelegate
+        collectionView?.delegate = presenter?.collectionHelper
+        collectionView?.dataSource = presenter?.collectionHelper
         collectionView?.register(
             TrackersCollectionViewCell.self,
             forCellWithReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier)
@@ -123,7 +123,8 @@ private extension TrackersViewController {
     
     @objc
     func didTapAddTracker() {
-        print("Add Tracker")
+        let vc = ChooseTypeOfTrackerViewController()
+        present(vc, animated: true)
     }
     
     @objc
@@ -187,8 +188,8 @@ extension TrackersViewController {
 extension TrackersViewController {
     func setupSearchController() {
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = presenter?.searchControllerDelegate
-        searchController.searchBar.delegate = presenter?.searchControllerDelegate
+        searchController.searchResultsUpdater = presenter?.searchControllerHelper
+        searchController.searchBar.delegate = presenter?.searchControllerHelper
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Поиск"
         navigationItem.searchController = searchController
