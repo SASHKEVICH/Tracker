@@ -8,6 +8,10 @@
 import UIKit
 
 extension UIColor {
+    static var trackerBackgroundDay: UIColor {
+        UIColor(named: "TrackerBackgroundDay") ?? .red
+    }
+    
     static var trackerWhiteDay: UIColor {
         UIColor(named: "TrackerWhiteDay") ?? .red
     }
@@ -18,6 +22,10 @@ extension UIColor {
     
     static var trackerBlue: UIColor {
         UIColor(named: "TrackerBlue") ?? .red
+    }
+    
+    static var trackerGray: UIColor {
+        UIColor(named: "TrackerGray") ?? .red
     }
     
     static var trackerColorSelection5: UIColor {
