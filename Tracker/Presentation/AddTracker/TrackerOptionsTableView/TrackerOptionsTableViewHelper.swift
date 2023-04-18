@@ -27,6 +27,13 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         didSelectRowAt indexPath: IndexPath
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
+        guard let cell = tableView.cellForRow(at: indexPath) as? TrackerOptionsTableViewCell else { return }
+        
+        if cell.cellTitle == "Расписание" {
+            presenter?.didTapSetTrackerScheduleButton()
+        } else if cell.cellTitle == "Категория" {
+            print("Категория tapped")
+        }
     }
     
     // MARK: UITableViewDataSource
@@ -68,4 +75,3 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         return cell
     }
 }
-
