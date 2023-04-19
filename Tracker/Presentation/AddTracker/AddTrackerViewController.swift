@@ -17,8 +17,8 @@ protocol AddTrackerViewControllerProtocol: AnyObject, TrackerScheduleViewControl
     var trackerScheduleViewController: TrackerScheduleViewController? { get set }
     var trackerType: TrackerType? { get set }
     func didTapTrackerScheduleCell(_ vc: TrackerScheduleViewController)
-    func showErrorLabel()
-    func hideErrorLabel()
+    func showError()
+    func hideError()
 }
 
 enum TrackerType {
@@ -225,7 +225,7 @@ private extension AddTrackerViewController {
         guard let text = textField.text else { return }
         presenter?.didChangeTrackerTitleTextField(text: text)
         
-        if !text.isEmpty {
+        if !text.isEmpty && errorLabel.isHidden {
             addTrackerButton.buttonState = .normal
         }
     }
@@ -245,8 +245,10 @@ private extension AddTrackerViewController {
 
 // MARK: - Showing and Hiding error label
 extension AddTrackerViewController {
-    func showErrorLabel() {
+    func showError() {
         guard errorLabel.isHidden else { return }
+        errorLabel.isHidden = false
+        addTrackerButton.buttonState = .disabled
         tableViewTopConstraint?.constant = 54
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
             self?.view.layoutIfNeeded()
@@ -255,8 +257,9 @@ extension AddTrackerViewController {
         }
     }
     
-    func hideErrorLabel() {
+    func hideError() {
         guard !errorLabel.isHidden else { return }
+        addTrackerButton.buttonState = .normal
         tableViewTopConstraint?.constant = 24
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
             self?.view.layoutIfNeeded()

@@ -63,12 +63,13 @@ extension AddTrackerViewPresenter {
     }
     
     func didChangeTrackerTitleTextField(text: String?) {
-        guard let text = text, text.count < 38 else {
-            view?.showErrorLabel()
+        let maxSymbolsCount = 38
+        guard let text = text, text.count < maxSymbolsCount else {
+            view?.showError()
             return
         }
         
-        view?.hideErrorLabel()
+        view?.hideError()
         self.trackerTitle = text
     }
     

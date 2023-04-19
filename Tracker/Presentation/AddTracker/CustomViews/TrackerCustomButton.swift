@@ -42,9 +42,19 @@ final class TrackerCustomButton: UIButton {
 }
 
 private extension TrackerCustomButton {
+    func setNeededButtonState() {
+        switch buttonState {
+        case .cancel:
+            setCancelState()
+        case .normal:
+            setNormalState()
+        case .disabled:
+            setDisabledState()
+        }
+    }
+    
     func setCancelState() {
         self.isEnabled = true
-        backgroundColor = .trackerWhiteDay
         
         let border = CAShapeLayer()
         border.frame = self.bounds
@@ -66,30 +76,18 @@ private extension TrackerCustomButton {
         setTitleColor(.trackerWhiteDay, for: .normal)
     }
     
-    func setupDisabledState() {
+    func setDisabledState() {
         self.isEnabled = false
         layer.backgroundColor = UIColor.trackerGray.cgColor
         
-        setAttributedButtonTitle()
         setTitleColor(.trackerWhiteDay, for: .normal)
-    }
-    
-    func setNeededButtonState() {
-        switch buttonState {
-        case .cancel:
-            setCancelState()
-        case .normal:
-            setNormalState()
-        case .disabled:
-            setupDisabledState()
-        }
     }
     
     func setAttributedButtonTitle() {
         let font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        let mySelectedAttributedTitle =
-            NSAttributedString(string: title,
-                               attributes: [NSAttributedString.Key.font: font])
-        setAttributedTitle(mySelectedAttributedTitle, for: .normal)
+        let attributedTitle = NSAttributedString(
+            string: title,
+            attributes: [NSAttributedString.Key.font: font])
+        setAttributedTitle(attributedTitle, for: .normal)
     }
 }
