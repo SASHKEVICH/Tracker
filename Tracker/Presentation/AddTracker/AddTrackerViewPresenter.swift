@@ -19,9 +19,9 @@ protocol AddTrackerViewPresenterProtocol: AnyObject, AddTrackerViewPresenterTabl
     var tableViewHelper: TrackerOptionsTableViewHelperProtocol? { get }
     var textFieldHelper: TrackerTitleTextFieldHelperProtocol? { get }
     func viewDidLoad(type: TrackerType)
-    func didChangeTrackerTitleTextField(text: String?)
+    func didChangeTrackerTitle(_ title: String?)
     func didConfirmAddTracker()
-    func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>)
+    func didRecieveSelectedTrackerSchedule(_ weekDays: Set<WeekDay>)
 }
 
 final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
@@ -36,8 +36,23 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
     var tableViewHelper: TrackerOptionsTableViewHelperProtocol?
     var textFieldHelper: TrackerTitleTextFieldHelperProtocol?
     
-    var trackerTitle: String?
-    var selectedWeekDays: Set<WeekDay>?
+    private var isErrorLabelHidden: Bool? {
+        didSet {
+            checkToEnablingAddTrackerButton()
+        }
+    }
+    
+    var trackerTitle: String? {
+        didSet {
+            checkToEnablingAddTrackerButton()
+        }
+    }
+    
+    var selectedWeekDays: Set<WeekDay>? {
+        didSet {
+            checkToEnablingAddTrackerButton()
+        }
+    }
 
     init() {
         setupTableViewHelper()
@@ -63,15 +78,15 @@ extension AddTrackerViewPresenter {
         view?.didTapTrackerScheduleCell(vc)
     }
     
-    func didChangeTrackerTitleTextField(text: String?) {
+    func didChangeTrackerTitle(_ title: String?) {
         let maxSymbolsCount = 38
-        guard let text = text, text.count < maxSymbolsCount else {
-            view?.showError()
+        guard let title = title, title.count < maxSymbolsCount else {
+            isErrorLabelHidden = view?.showError()
             return
         }
         
-        view?.hideError()
-        self.trackerTitle = text
+        isErrorLabelHidden = view?.hideError()
+        self.trackerTitle = title
     }
     
     func didConfirmAddTracker() {
@@ -80,7 +95,7 @@ extension AddTrackerViewPresenter {
         postAddingTrackerNotification()
     }
     
-    func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
+    func didRecieveSelectedTrackerSchedule(_ weekDays: Set<WeekDay>) {
         selectedWeekDays = weekDays
     }
 }
@@ -105,6 +120,15 @@ private extension AddTrackerViewPresenter {
             self.optionsTitles = ["Категория", "Расписание"]
         case .irregularEvent:
             self.optionsTitles = ["Категория"]
+        }
+    }
+    
+    func checkToEnablingAddTrackerButton() {
+        guard let trackerTitle = trackerTitle, let isErrorLabelHidden = isErrorLabelHidden else { return }
+        if !trackerTitle.isEmpty && isErrorLabelHidden && selectedWeekDays != nil {
+            view?.enableAddButton()
+        } else {
+            view?.disableAddButton()
         }
     }
     
