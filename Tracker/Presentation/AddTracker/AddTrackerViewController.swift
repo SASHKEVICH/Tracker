@@ -9,7 +9,7 @@ import UIKit
 
 protocol TrackerScheduleViewControllerDelegate: AnyObject {
     func dismissTrackerScheduleViewController()
-    func transferSelectedWeekDays(_ weekDays: Set<WeekDay>)
+    func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>)
 }
 
 protocol AddTrackerViewControllerProtocol: AnyObject, TrackerScheduleViewControllerDelegate {
@@ -278,8 +278,9 @@ extension AddTrackerViewController {
 
 // MARK: - TrackerScheduleViewControllerDelegate
 extension AddTrackerViewController: TrackerScheduleViewControllerDelegate {
-    func transferSelectedWeekDays(_ weekDays: Set<WeekDay>) {
-        presenter?.selectedWeekDays = weekDays
+    func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
+        presenter?.didRecieveSelectedWeekDays(weekDays)
+        trackerOptionsTableView.reloadData()
     }
     
     func dismissTrackerScheduleViewController() {

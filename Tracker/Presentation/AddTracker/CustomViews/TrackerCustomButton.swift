@@ -14,13 +14,13 @@ enum TrackerCustomButtonState {
 }
 
 final class TrackerCustomButton: UIButton {
+    private var title: String
+    
     var buttonState: TrackerCustomButtonState {
         didSet {
             setNeededButtonState()
         }
     }
-    
-    private var title: String
     
     init(state: TrackerCustomButtonState, title: String) {
         self.buttonState = state
@@ -80,6 +80,7 @@ private extension TrackerCustomButton {
         self.isEnabled = false
         layer.backgroundColor = UIColor.trackerGray.cgColor
         
+        setAttributedButtonTitle()
         setTitleColor(.trackerWhiteDay, for: .normal)
     }
     

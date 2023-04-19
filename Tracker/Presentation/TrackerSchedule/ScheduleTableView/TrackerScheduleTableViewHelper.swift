@@ -52,7 +52,7 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
         
         let weekDay = presenter?.weekDays[indexPath.row]
         cell.weekDay = weekDay
-        cell.cellTitle = weekDay?.rawValue
+        cell.cellTitle = weekDay?.fullStringRepresentaion
         cell.delegate = self
         
         if indexPath.row == 0 {

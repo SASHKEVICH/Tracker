@@ -60,6 +60,8 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         cell.cellTitle = optionsTitles[indexPath.row]
         cell.accessoryType = .disclosureIndicator
         
+        configureAdditionalInfo(for: cell)
+
         if optionsTitles.count == 1 {
             return cell.setupSingleCellInTableView(tableViewWidth: tableView.bounds.width)
         }
@@ -73,5 +75,27 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         }
         
         return cell
+    }
+}
+
+// MARK: - Configuring additional info for cell
+private extension TrackerOptionsTableViewHelper {
+    func configureAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
+        if cell.cellTitle == "Расписание" {
+            configureSchduleAdditionalInfo(for: cell)
+        }
+    }
+    
+    func configureSchduleAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
+        guard let selectedWeekDays = presenter?.selectedWeekDays else { return }
+        let selectedWeekDaysArray = Array(selectedWeekDays).sorted()
+        
+        guard selectedWeekDaysArray.count != 7 else {
+            cell.additionalInfo = "Каждый день"
+            return
+        }
+        
+        let additionalInfo = selectedWeekDaysArray.reduce("") { (result: String, weekDay: WeekDay) in result + weekDay.shortStringRepresentaion + ", " }
+        cell.additionalInfo = String(additionalInfo.prefix(additionalInfo.count - 2))
     }
 }

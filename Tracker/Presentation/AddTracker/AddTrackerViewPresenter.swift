@@ -9,18 +9,19 @@ import Foundation
 
 protocol AddTrackerViewPresenterTableViewHelperProtocol: AnyObject {
     var optionsTitles: [String]? { get }
+    var selectedWeekDays: Set<WeekDay>? { get }
     func didTapTrackerScheduleCell()
 }
 
 protocol AddTrackerViewPresenterProtocol: AnyObject, AddTrackerViewPresenterTableViewHelperProtocol {
     var view: AddTrackerViewControllerProtocol? { get set }
     var trackerTitle: String? { get set }
-    var selectedWeekDays: Set<WeekDay>? { get set }
     var tableViewHelper: TrackerOptionsTableViewHelperProtocol? { get }
     var textFieldHelper: TrackerTitleTextFieldHelperProtocol? { get }
     func viewDidLoad(type: TrackerType)
     func didChangeTrackerTitleTextField(text: String?)
     func didConfirmAddTracker()
+    func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>)
 }
 
 final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
@@ -77,6 +78,10 @@ extension AddTrackerViewPresenter {
         guard let title = trackerTitle, let schedule = selectedWeekDays else { return }
         trackersService.addTracker(title: title, schedule: schedule)
         postAddingTrackerNotification()
+    }
+    
+    func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
+        selectedWeekDays = weekDays
     }
 }
 

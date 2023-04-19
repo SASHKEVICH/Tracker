@@ -86,7 +86,7 @@ private extension TrackerScheduleViewController {
     @objc
     func didTapAddScheduleButton() {
         guard let selectedWeekDays = presenter?.selectedWeekDays else { return }
-        delegate?.transferSelectedWeekDays(selectedWeekDays)
+        delegate?.didRecieveSelectedWeekDays(selectedWeekDays)
         delegate?.dismissTrackerScheduleViewController()
     }
 }
