@@ -49,10 +49,6 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     }
     
     func didRecieveTrackers(indexPaths: [IndexPath]?) {
-//        guard let indexPaths = indexPaths else { return }
-//        collectionView?.performBatchUpdates { [weak self] in
-//            self?.collectionView?.insertItems(at: indexPaths)
-//        }
         collectionView?.reloadData()
     }
 }

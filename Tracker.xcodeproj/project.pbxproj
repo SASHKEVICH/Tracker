@@ -216,18 +216,10 @@
 		966DD3AE29E9BA8600296CDF /* TrackerOptionsTableView */ = {
 			isa = PBXGroup;
 			children = (
-				966DD3AF29E9BABA00296CDF /* Cell */,
+				966DD3B029E9BACE00296CDF /* TrackerOptionsTableViewCell.swift */,
 				966DD3B629E9BF6A00296CDF /* TrackerOptionsTableViewHelper.swift */,
 			);
 			path = TrackerOptionsTableView;
-			sourceTree = "<group>";
-		};
-		966DD3AF29E9BABA00296CDF /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				966DD3B029E9BACE00296CDF /* TrackerOptionsTableViewCell.swift */,
-			);
-			path = Cell;
 			sourceTree = "<group>";
 		};
 		966DD3B429E9BB3C00296CDF /* CustomViews */ = {

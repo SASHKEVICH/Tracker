@@ -101,6 +101,7 @@ private extension TrackerScheduleTableViewCell {
             daySwitch.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
         
+        daySwitch.onTintColor = .trackerSwitchBackgroundColor
         daySwitch.addTarget(self, action: #selector(didChangeSwitchValue), for: .valueChanged)
     }
 }
