@@ -14,14 +14,21 @@ protocol AddTrackerViewPresenterTableViewHelperProtocol: AnyObject {
 
 protocol AddTrackerViewPresenterProtocol: AnyObject, AddTrackerViewPresenterTableViewHelperProtocol {
     var view: AddTrackerViewControllerProtocol? { get set }
+    var trackerTitle: String? { get set }
+    var selectedWeekDays: Set<WeekDay>? { get set }
     var tableViewHelper: TrackerOptionsTableViewHelperProtocol? { get }
     var textFieldHelper: TrackerTitleTextFieldHelperProtocol? { get }
     func viewDidLoad(type: TrackerType)
     func didChangeTrackerTitleTextField(text: String?)
+    func didConfirmAddTracker()
 }
 
 final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
+    static let didAddTrackerNotificationName = Notification.Name(rawValue: "NewTrackerAdded")
+    
     weak var view: AddTrackerViewControllerProtocol?
+    
+    private var trackersService: TrackersServiceAddingProtocol = TrackersService.shared
     
     var optionsTitles: [String]?
     
@@ -29,14 +36,18 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
     var textFieldHelper: TrackerTitleTextFieldHelperProtocol?
     
     var trackerTitle: String?
-    
-    func viewDidLoad(type: TrackerType) {
-        setupOptionsTitles(type: type)
-    }
-    
+    var selectedWeekDays: Set<WeekDay>?
+
     init() {
         setupTableViewHelper()
         setupTextFieldHelper()
+    }
+}
+
+// MARK: - Internal methods
+extension AddTrackerViewPresenter {
+    func viewDidLoad(type: TrackerType) {
+        setupOptionsTitles(type: type)
     }
     
     func didTapTrackerScheduleCell() {
@@ -60,8 +71,15 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
         view?.hideErrorLabel()
         self.trackerTitle = text
     }
+    
+    func didConfirmAddTracker() {
+        guard let title = trackerTitle, let schedule = selectedWeekDays else { return }
+        trackersService.addTracker(title: title, schedule: schedule)
+        postAddingTrackerNotification()
+    }
 }
 
+// MARK: - Private methods
 private extension AddTrackerViewPresenter {
     func setupTableViewHelper() {
         let tableViewHelper = TrackerOptionsTableViewHelper()
@@ -82,5 +100,11 @@ private extension AddTrackerViewPresenter {
         case .irregularEvent:
             self.optionsTitles = ["Категория"]
         }
+    }
+    
+    func postAddingTrackerNotification() {
+        NotificationCenter.default
+            .post(name: AddTrackerViewPresenter.didAddTrackerNotificationName,
+                  object: self)
     }
 }

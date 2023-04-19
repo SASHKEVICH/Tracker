@@ -14,7 +14,7 @@ protocol TrackersViewPresenterCollectionHelperProtocol: UICollectionViewDataSour
 final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresenterCollectionHelperProtocol {
     weak var presenter: TrackersViewPresetnerCollectionProtocol?
     private let collectionViewConstants = TrackerCollectionViewConstants.configuration
-    private let trackersService: TrackersServiceProtocol = TrackersService.shared
+    private let trackersService: TrackersServiceFetchingProtocol & TrackersServiceCompletingProtocol = TrackersService.shared
     
     // MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(

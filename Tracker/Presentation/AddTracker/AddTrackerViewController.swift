@@ -53,6 +53,7 @@ final class AddTrackerViewController: UIViewController, AddTrackerViewController
         super.viewDidLoad()
 
         view.backgroundColor = .trackerWhiteDay
+        isModalInPresentation = true
         
         setupScrollView()
         setupTitleLabel()
@@ -210,14 +211,13 @@ private extension AddTrackerViewController {
 private extension AddTrackerViewController {
     @objc
     func didTapCancelTrackerButton() {
-        print("cancel tracker")
-//        UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true, completion: nil)
+        UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true, completion: nil)
     }
     
     @objc
     func didTapAddTrackerButton() {
-        print("add tracker")
-//        UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true, completion: nil)
+        presenter?.didConfirmAddTracker()
+        UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true, completion: nil)
     }
     
     @objc
@@ -276,7 +276,7 @@ extension AddTrackerViewController {
 // MARK: - TrackerScheduleViewControllerDelegate
 extension AddTrackerViewController: TrackerScheduleViewControllerDelegate {
     func transferSelectedWeekDays(_ weekDays: Set<WeekDay>) {
-        print(weekDays)
+        presenter?.selectedWeekDays = weekDays
     }
     
     func dismissTrackerScheduleViewController() {

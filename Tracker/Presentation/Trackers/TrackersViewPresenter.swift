@@ -27,7 +27,8 @@ protocol TrackersViewPresenterProtocol: AnyObject, TrackersViewPresetnerCollecti
 }
 
 final class TrackersViewPresenter: TrackersViewPresenterProtocol {
-    private let trackersService: TrackersServiceProtocol = TrackersService.shared
+    private let trackersService: TrackersServiceFetchingProtocol & TrackersServiceCompletingProtocol = TrackersService.shared
+    private var newTrackerNotifacationObserver: NSObjectProtocol?
     
     weak var view: TrackersViewControllerProtocol?
     var collectionHelper: TrackersViewPresenterCollectionHelperProtocol?
@@ -40,6 +41,7 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
     init() {
         setupCollectionDelegate()
         setupSearchControllerDelegate()
+        addNewTrackerNotificationObserver()
     }
 }
 
@@ -52,8 +54,7 @@ extension TrackersViewPresenter {
         self.completedTrackersRecords = trackersService.completedTrackers
         self.currentDate = date
         
-        let indexPaths = getIndexPathsForTrackers()
-        view?.didRecieveTrackers(indexPaths: indexPaths)
+        didRecieveTrackers()
         
         if fetchedCategories.isEmpty {
             view?.showPlaceholderViewForCurrentDay()
@@ -69,8 +70,7 @@ extension TrackersViewPresenter {
         self.visibleCategories = categoriesWithDesiredTrackers
         self.completedTrackersRecords = trackersService.completedTrackers
         
-        let indexPaths = getIndexPathsForTrackers()
-        view?.didRecieveTrackers(indexPaths: indexPaths)
+        didRecieveTrackers()
         
         if categoriesWithDesiredTrackers.isEmpty {
             view?.showPlaceholderViewForEmptySearch()
@@ -108,6 +108,11 @@ private extension TrackersViewPresenter {
 }
 
 private extension TrackersViewPresenter {
+    func didRecieveTrackers() {
+        let indexPaths = getIndexPathsForTrackers()
+        view?.didRecieveTrackers(indexPaths: indexPaths)
+    }
+    
     func getIndexPathsForTrackers() -> [IndexPath]? {
         let indexPaths = visibleCategories.enumerated().flatMap { categoryIndex, category in
             let enumeratedTrackers = category.trackers.enumerated()
@@ -116,5 +121,17 @@ private extension TrackersViewPresenter {
             }
         }
         return indexPaths
+    }
+    
+    func addNewTrackerNotificationObserver() {
+        newTrackerNotifacationObserver = NotificationCenter.default
+            .addObserver(
+                forName: AddTrackerViewPresenter.didAddTrackerNotificationName,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.requestTrackers(for: self.currentDate)
+            }
     }
 }
