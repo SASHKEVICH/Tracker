@@ -30,7 +30,7 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         guard let cell = tableView.cellForRow(at: indexPath) as? TrackerOptionsTableViewCell else { return }
         
         if cell.cellTitle == "Расписание" {
-            presenter?.didTapSetTrackerScheduleButton()
+            presenter?.didTapTrackerScheduleCell()
         } else if cell.cellTitle == "Категория" {
             print("Категория tapped")
         }

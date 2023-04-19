@@ -7,9 +7,16 @@
 
 import UIKit
 
-protocol AddTrackerViewControllerProtocol: AnyObject {
+protocol TrackerScheduleViewControllerDelegate: AnyObject {
+    func dismissTrackerScheduleViewController()
+    func transferSelectedWeekDays(_ weekDays: Set<WeekDay>)
+}
+
+protocol AddTrackerViewControllerProtocol: AnyObject, TrackerScheduleViewControllerDelegate {
     var presenter: AddTrackerViewPresenterProtocol? { get set }
+    var trackerScheduleViewController: TrackerScheduleViewController? { get set }
     var trackerType: TrackerType? { get set }
+    func didTapTrackerScheduleCell(_ vc: TrackerScheduleViewController)
     func showErrorLabel()
     func hideErrorLabel()
 }
@@ -25,8 +32,8 @@ final class AddTrackerViewController: UIViewController, AddTrackerViewController
     private let titleLabel = UILabel()
     private let trackerTitleTextField = TrackerTitleTextField()
     private let errorLabel = UILabel()
-    private let cancelTrackerButton = AddTrackerButton(state: .cancel)
-    private let addTrackerButton = AddTrackerButton(state: .disabled)
+    private let cancelTrackerButton = TrackerCustomButton(state: .cancel, title: "Отменить")
+    private let addTrackerButton = TrackerCustomButton(state: .disabled, title: "Создать")
     private let trackerOptionsTableView = UITableView()
     
     private var tableViewTopConstraint: NSLayoutConstraint?
@@ -40,6 +47,7 @@ final class AddTrackerViewController: UIViewController, AddTrackerViewController
     
     var trackerType: TrackerType?
     var presenter: AddTrackerViewPresenterProtocol?
+    var trackerScheduleViewController: TrackerScheduleViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -255,5 +263,23 @@ extension AddTrackerViewController {
         }) { [weak self] _ in
             self?.errorLabel.isHidden = true
         }
+    }
+}
+
+// MARK: - Cells callbacks
+extension AddTrackerViewController {
+    func didTapTrackerScheduleCell(_ vc: TrackerScheduleViewController) {
+        present(vc, animated: true)
+    }
+}
+
+// MARK: - TrackerScheduleViewControllerDelegate
+extension AddTrackerViewController: TrackerScheduleViewControllerDelegate {
+    func transferSelectedWeekDays(_ weekDays: Set<WeekDay>) {
+        print(weekDays)
+    }
+    
+    func dismissTrackerScheduleViewController() {
+        dismiss(animated: true)
     }
 }

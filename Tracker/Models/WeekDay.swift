@@ -7,12 +7,12 @@
 
 import Foundation
 
-enum WeekDay {
-    case monday
-    case tuesday
-    case whensday
-    case thursday
-    case friday
-    case saturday
-    case sunday
+enum WeekDay: String {
+    case monday = "Понедельник"
+    case tuesday = "Вторник"
+    case wednesday = "Среда"
+    case thursday = "Четверг"
+    case friday = "Пятница"
+    case saturday = "Суббота"
+    case sunday = "Воскресенье"
 }

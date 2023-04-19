@@ -9,7 +9,7 @@ import Foundation
 
 protocol AddTrackerViewPresenterTableViewHelperProtocol: AnyObject {
     var optionsTitles: [String]? { get }
-    func didTapSetTrackerScheduleButton()
+    func didTapTrackerScheduleCell()
 }
 
 protocol AddTrackerViewPresenterProtocol: AnyObject, AddTrackerViewPresenterTableViewHelperProtocol {
@@ -39,9 +39,16 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
         setupTextFieldHelper()
     }
     
-    func didTapSetTrackerScheduleButton() {
-//        let vc = SetTrackerScheduleViewController()
-        print("Расписание tapped")
+    func didTapTrackerScheduleCell() {
+        let vc = TrackerScheduleViewController()
+        vc.delegate = view
+        view?.trackerScheduleViewController = vc
+        
+        let presenter = TrackerSchedulePresenter()
+        vc.presenter = presenter
+        presenter.view = vc
+        
+        view?.didTapTrackerScheduleCell(vc)
     }
     
     func didChangeTrackerTitleTextField(text: String?) {

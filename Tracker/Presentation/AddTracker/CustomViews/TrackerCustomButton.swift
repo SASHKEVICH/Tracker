@@ -1,5 +1,5 @@
 //
-//  AddTrackerButton.swift
+//  TrackerCustomButton.swift
 //  Tracker
 //
 //  Created by Александр Бекренев on 15.04.2023.
@@ -7,21 +7,24 @@
 
 import UIKit
 
-enum AddTrackerButtonState {
+enum TrackerCustomButtonState {
     case cancel
     case normal
     case disabled
 }
 
-final class AddTrackerButton: UIButton {
-    var buttonState: AddTrackerButtonState {
+final class TrackerCustomButton: UIButton {
+    var buttonState: TrackerCustomButtonState {
         didSet {
             setNeededButtonState()
         }
     }
     
-    init(state: AddTrackerButtonState) {
+    private var title: String
+    
+    init(state: TrackerCustomButtonState, title: String) {
         self.buttonState = state
+        self.title = title
         super.init(frame: .zero)
     }
     
@@ -38,7 +41,7 @@ final class AddTrackerButton: UIButton {
     }
 }
 
-private extension AddTrackerButton {
+private extension TrackerCustomButton {
     func setCancelState() {
         self.isEnabled = true
         backgroundColor = .trackerWhiteDay
@@ -51,7 +54,7 @@ private extension AddTrackerButton {
         border.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: layer.cornerRadius).cgPath
         self.layer.addSublayer(border)
         
-        setAttributedButtonTitle(title: "Отменить")
+        setAttributedButtonTitle()
         setTitleColor(.trackerRed, for: .normal)
     }
     
@@ -59,7 +62,7 @@ private extension AddTrackerButton {
         self.isEnabled = true
         layer.backgroundColor = UIColor.trackerBlackDay.cgColor
         
-        setAttributedButtonTitle(title: "Создать")
+        setAttributedButtonTitle()
         setTitleColor(.trackerWhiteDay, for: .normal)
     }
     
@@ -67,7 +70,7 @@ private extension AddTrackerButton {
         self.isEnabled = false
         layer.backgroundColor = UIColor.trackerGray.cgColor
         
-        setAttributedButtonTitle(title: "Создать")
+        setAttributedButtonTitle()
         setTitleColor(.trackerWhiteDay, for: .normal)
     }
     
@@ -82,7 +85,7 @@ private extension AddTrackerButton {
         }
     }
     
-    func setAttributedButtonTitle(title: String) {
+    func setAttributedButtonTitle() {
         let font = UIFont.systemFont(ofSize: 16, weight: .medium)
         let mySelectedAttributedTitle =
             NSAttributedString(string: title,
