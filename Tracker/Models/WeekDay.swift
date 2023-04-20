@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum WeekDay: Int, Comparable {
+enum WeekDay: Int, Comparable, CaseIterable {
     case monday = 1
     case tuesday
     case wednesday

@@ -16,10 +16,10 @@ protocol TrackerSchedulePresenterProtocol: AnyObject {
 }
 
 final class TrackerSchedulePresenter: TrackerSchedulePresenterProtocol {
-    var view: TrackerScheduleViewControllerProtocol?
+    weak var view: TrackerScheduleViewControllerProtocol?
     var scheduleTableViewHelper: TrackerScheduleTableViewHelperProtocol?
     
-    var weekDays: [WeekDay] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+    var weekDays: [WeekDay] = WeekDay.allCases
     var selectedWeekDays: Set<WeekDay> = []
     
     init() {

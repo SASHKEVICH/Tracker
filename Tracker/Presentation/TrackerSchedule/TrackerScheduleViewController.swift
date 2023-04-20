@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TrackerScheduleViewControllerProtocol {
+protocol TrackerScheduleViewControllerProtocol: AnyObject {
     var presenter: TrackerSchedulePresenterProtocol? { get set }
     var delegate: TrackerScheduleViewControllerDelegate? { get set }
 }

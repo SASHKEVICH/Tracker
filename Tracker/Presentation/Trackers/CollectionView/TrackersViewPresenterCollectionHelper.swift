@@ -57,18 +57,6 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-//        let indexPath = IndexPath(row: 0, section: section)
-//        let headerView = self.collectionView(
-//            collectionView,
-//            viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
-//            at: indexPath)
-//        let size = headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,
-//                                                             height: UIView.layoutFittingExpandedSize.height),
-//                                                             withHorizontalFittingPriority: .required,
-//                                                             verticalFittingPriority: .fittingSizeLevel)
-//        return size
-//
-        // Почему-то вылезает ошибка при UIView.layoutFittingExpandedSize.height
         CGSize(width: collectionView.frame.width, height: 51)
     }
     
@@ -96,30 +84,31 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
+        guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier,
             for: indexPath) as? TrackersCollectionViewCell
+        else { return UICollectionViewCell() }
         let section = presenter?.visibleCategories[indexPath.section]
         let tracker = section?.trackers[indexPath.row]
         
-        cell?.tracker = tracker
+        cell.tracker = tracker
         let doesTrackerStoredInCompletedTrackers = presenter?.completedTrackersRecords.first(where: { $0.trackerId == tracker?.id }) != nil
               
         if doesTrackerStoredInCompletedTrackers {
-            cell?.state = .completed
+            cell.state = .completed
             
             let dayCount = presenter?.completedTrackersRecords
                 .filter { $0.trackerId == tracker?.id }
                 .count
-            cell?.dayCount = dayCount ?? -1
+            cell.dayCount = dayCount ?? -1
         }
         
-        cell?.completeTrackerButton.addTarget(
+        cell.completeTrackerButton.addTarget(
             self,
             action: #selector(didTapCompleteCellButton(_:)),
             for: .touchUpInside)
         
-        return cell ?? UICollectionViewCell()
+        return cell
     }
     
     func collectionView(
