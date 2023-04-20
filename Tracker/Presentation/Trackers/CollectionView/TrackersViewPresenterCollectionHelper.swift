@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol TrackersViewPresenterCollectionHelperCellDelegate {
+    func didTapCompleteCellButton(_ cell: TrackersCollectionViewCell)
+}
+
 protocol TrackersViewPresenterCollectionHelperProtocol: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var presenter: TrackersViewPresetnerCollectionProtocol? { get set }
 }
@@ -111,10 +115,7 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
             cell.dayCount = dayCount
         }
         
-        cell.completeTrackerButton.addTarget(
-            self,
-            action: #selector(didTapCompleteCellButton(_:)),
-            for: .touchUpInside)
+        cell.delegate = self
         
         return cell
     }
@@ -139,12 +140,9 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
 }
 
 // MARK: - Complete cell button handler
-private extension TrackersViewPresenterCollectionHelper {
-    @objc
-    func didTapCompleteCellButton(_ sender: UIButton) {
+extension TrackersViewPresenterCollectionHelper: TrackersViewPresenterCollectionHelperCellDelegate {
+    func didTapCompleteCellButton(_ cell: TrackersCollectionViewCell) {
         guard
-            let contentView = sender.superview,
-            let cell = contentView.superview as? TrackersCollectionViewCell,
             let tracker = cell.tracker,
             let currentDate = presenter?.currentDate
         else { return }

@@ -19,8 +19,9 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     private let emojiLabel = UILabel()
     private let topContainerView = UIView()
     private let dayCountLabel = UILabel()
+    private let completeTrackerButton = CompleteTrackerButton()
     
-    let completeTrackerButton = CompleteTrackerButton()
+    var delegate: TrackersViewPresenterCollectionHelperCellDelegate?
     
     var dayCount = 0 {
         didSet {
@@ -49,7 +50,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         super.init(frame: .zero)
         setupContainerView()
         setupDayCountLabel()
-        setupFixTrackerButton()
+        setupCompleteTrackerButton()
     }
     
     required init?(coder: NSCoder) {
@@ -145,7 +146,7 @@ private extension TrackersCollectionViewCell {
 
 // MARK: - Setup and layout fix tracker button
 private extension TrackersCollectionViewCell {
-    func setupFixTrackerButton() {
+    func setupCompleteTrackerButton() {
         completeTrackerButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(completeTrackerButton)
         
@@ -155,5 +156,12 @@ private extension TrackersCollectionViewCell {
             completeTrackerButton.widthAnchor.constraint(equalToConstant: 34),
             completeTrackerButton.heightAnchor.constraint(equalToConstant: 34),
         ])
+        
+        completeTrackerButton.addTarget(self, action: #selector(didTapCompleteTrackerButton), for: .touchUpInside)
+    }
+    
+    @objc
+    func didTapCompleteTrackerButton() {
+        delegate?.didTapCompleteCellButton(self)
     }
 }
