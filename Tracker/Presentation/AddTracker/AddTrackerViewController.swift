@@ -245,9 +245,11 @@ private extension AddTrackerViewController {
 extension AddTrackerViewController {
     func showError() -> Bool {
         guard errorLabel.isHidden else { return errorLabel.isHidden }
+        
         errorLabel.isHidden = false
         addTrackerButton.buttonState = .disabled
         tableViewTopConstraint?.constant = 54
+        
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
             self?.view.layoutIfNeeded()
         }) { [weak self] _ in
@@ -259,8 +261,10 @@ extension AddTrackerViewController {
     
     func hideError() -> Bool {
         guard !errorLabel.isHidden else { return errorLabel.isHidden }
+        
         addTrackerButton.buttonState = .normal
         tableViewTopConstraint?.constant = 24
+        
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
             self?.view.layoutIfNeeded()
         }) { [weak self] _ in

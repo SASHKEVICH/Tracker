@@ -48,15 +48,16 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
 // MARK: - Requesting trackers
 extension TrackersViewPresenter {
     func requestTrackers(for date: Date) {
-        let fetchedCategories = trackersService.fetchTrackers(for: date)
+        guard let weekDay = date.weekDay else { return }
+        let fetchedCategories = trackersService.fetchTrackers(for: weekDay)
         
-        self.visibleCategories = fetchedCategories
+        self.visibleCategories = fetchedCategories ?? []
         self.completedTrackersRecords = trackersService.completedTrackers
         self.currentDate = date
         
         didRecieveTrackers()
         
-        if fetchedCategories.isEmpty {
+        if let fetchedCategories = fetchedCategories, fetchedCategories.isEmpty {
             view?.showPlaceholderViewForCurrentDay()
             return
         }

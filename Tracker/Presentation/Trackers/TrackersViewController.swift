@@ -126,6 +126,7 @@ private extension TrackersViewController {
     @objc
     func didCurrentDateValueChanged(_ datePicker: UIDatePicker) {
         presenter?.currentDate = datePicker.date
+        presenter?.requestTrackers(for: datePicker.date)
     }
 }
 

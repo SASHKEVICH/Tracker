@@ -84,23 +84,31 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
+        guard
+            let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier,
-            for: indexPath) as? TrackersCollectionViewCell
-        else { return UICollectionViewCell() }
-        let section = presenter?.visibleCategories[indexPath.section]
-        let tracker = section?.trackers[indexPath.row]
+            for: indexPath) as? TrackersCollectionViewCell,
+            let presenter = presenter
+        else {
+            assertionFailure("Cannot dequeue cell or presenter is nil")
+            return UICollectionViewCell()
+        }
+        
+        let section = presenter.visibleCategories[indexPath.section]
+        let tracker = section.trackers[indexPath.row]
         
         cell.tracker = tracker
-        let doesTrackerStoredInCompletedTrackers = presenter?.completedTrackersRecords.first(where: { $0.trackerId == tracker?.id }) != nil
+        let doesTrackerStoredInCompletedTrackersForCurrentDate = presenter
+            .completedTrackersRecords
+            .first(where: { $0.trackerId == tracker.id && $0.date.isDayEqualTo(presenter.currentDate) }) != nil
               
-        if doesTrackerStoredInCompletedTrackers {
+        if doesTrackerStoredInCompletedTrackersForCurrentDate {
             cell.state = .completed
             
-            let dayCount = presenter?.completedTrackersRecords
-                .filter { $0.trackerId == tracker?.id }
+            let dayCount = presenter.completedTrackersRecords
+                .filter { $0.trackerId == tracker.id }
                 .count
-            cell.dayCount = dayCount ?? -1
+            cell.dayCount = dayCount
         }
         
         cell.completeTrackerButton.addTarget(
@@ -116,12 +124,17 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryView(
+        guard let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
             withReuseIdentifier: TrackersCollectionSectionHeader.identifier,
             for: indexPath) as? TrackersCollectionSectionHeader
-        view?.headerText = presenter?.visibleCategories[indexPath.section].title
-        return view ?? UICollectionReusableView()
+        else {
+            assertionFailure("Cannot dequeue header view")
+            return UICollectionReusableView()
+        }
+        
+        view.headerText = presenter?.visibleCategories[indexPath.section].title
+        return view
     }
 }
 

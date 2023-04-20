@@ -19,7 +19,7 @@ protocol TrackersServiceCompletingProtocol {
 protocol TrackersServiceFetchingProtocol {
     var categories: [TrackerCategory] { get }
     var completedTrackers: Set<TrackerRecord> { get }
-    func fetchTrackers(for date: Date) -> [TrackerCategory]
+    func fetchTrackers(for weekDay: WeekDay) -> [TrackerCategory]?
     func requestFilterDesiredTrackers(searchText: String) -> [TrackerCategory]
 }
 
@@ -39,25 +39,25 @@ final class TrackersService {
                 title: "Купить молоко",
                 color: .trackerColorSelection5,
                 emoji: "🤬",
-                schedule: [WeekDay.monday]),
+                schedule: [.monday, .thursday]),
             Tracker(
                 id: UUID(),
                 title: "Сделать домашку",
                 color: .trackerBlue,
                 emoji: "🤯",
-                schedule: [WeekDay.monday]),
+                schedule: [.friday]),
             Tracker(
                 id: UUID(),
                 title: "Покормить кота",
                 color: .trackerColorSelection5,
                 emoji: "🤬",
-                schedule: [WeekDay.monday]),
+                schedule: [.thursday]),
             Tracker(
                 id: UUID(),
                 title: "Склеить гитару",
                 color: .trackerBlue,
                 emoji: "🤯",
-                schedule: [WeekDay.monday])
+                schedule: [.monday])
         ])
     ]
 }
@@ -76,8 +76,19 @@ extension TrackersService: TrackersServiceFetchingProtocol {
         }
     }
     
-    func fetchTrackers(for date: Date) -> [TrackerCategory] {
-        categories
+    func fetchTrackers(for weekDay: WeekDay) -> [TrackerCategory]? {
+        let filteredCategories = categories.compactMap { (oldCategory: TrackerCategory) -> TrackerCategory? in
+            let categoryTrackers = oldCategory.trackers.compactMap { (tracker: Tracker) -> Tracker? in
+                guard let schedule = tracker.schedule, schedule.contains(weekDay) else { return nil }
+                return tracker
+            }
+            
+            if categoryTrackers.isEmpty { return nil }
+            
+            return TrackerCategory(title: oldCategory.title, trackers: categoryTrackers)
+        }
+        
+        return filteredCategories
     }
     
     func requestFilterDesiredTrackers(searchText: String) -> [TrackerCategory] {
@@ -108,7 +119,7 @@ extension TrackersService: TrackersServiceCompletingProtocol {
     
     func incompleteTracker(trackerId: UUID, date: Date) {
         guard let trackerToRemove = completedTrackers.first(
-            where: { $0.trackerId == trackerId && Calendar.current.isDate($0.date, equalTo: date, toGranularity: .day) }
+            where: { $0.trackerId == trackerId && $0.date.isDayEqualTo(date) }
         ) else { return }
         privateCompletedTrackers.remove(trackerToRemove)
     }
