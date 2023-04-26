@@ -26,8 +26,12 @@ protocol TrackersViewPresenterProtocol: AnyObject, TrackersViewPresetnerCollecti
     func requestTrackers(for date: Date)
 }
 
+typealias TrackersServiceFetchingCompletingProtocol =
+    TrackersServiceFetchingProtocol
+    & TrackersServiceCompletingProtocol
+
 final class TrackersViewPresenter: TrackersViewPresenterProtocol {
-    private let trackersService: TrackersServiceFetchingProtocol & TrackersServiceCompletingProtocol = TrackersService.shared
+    private let trackersService: TrackersServiceFetchingCompletingProtocol
     private var newTrackerNotifacationObserver: NSObjectProtocol?
     
     weak var view: TrackersViewControllerProtocol?
@@ -38,7 +42,9 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
     var visibleCategories: [TrackerCategory] = []
     var currentDate: Date = Date()
     
-    init() {
+    init(trackersService: TrackersServiceFetchingCompletingProtocol) {
+        self.trackersService = trackersService
+        
         setupCollectionDelegate()
         setupSearchControllerDelegate()
         addNewTrackerNotificationObserver()

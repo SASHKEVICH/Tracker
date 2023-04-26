@@ -15,17 +15,12 @@ protocol TrackerScheduleViewControllerDelegate: AnyObject {
 protocol AddTrackerViewControllerProtocol: AnyObject, TrackerScheduleViewControllerDelegate {
     var presenter: AddTrackerViewPresenterProtocol? { get set }
     var trackerScheduleViewController: TrackerScheduleViewController? { get set }
-    var trackerType: TrackerType? { get set }
     func didTapTrackerScheduleCell(_ vc: TrackerScheduleViewController)
+    func setViewControllerTitle(_ title: String)
     func showError() -> Bool
     func hideError() -> Bool
     func enableAddButton()
     func disableAddButton()
-}
-
-enum TrackerType {
-    case tracker
-    case irregularEvent
 }
 
 final class AddTrackerViewController: UIViewController, AddTrackerViewControllerProtocol {
@@ -47,7 +42,6 @@ final class AddTrackerViewController: UIViewController, AddTrackerViewController
         }
     }
     
-    var trackerType: TrackerType?
     var presenter: AddTrackerViewPresenterProtocol?
     var trackerScheduleViewController: TrackerScheduleViewController?
 
@@ -59,15 +53,12 @@ final class AddTrackerViewController: UIViewController, AddTrackerViewController
         
         setupScrollView()
         setupTitleLabel()
-        setupViewControllerForGivenType()
         setupTrackerTitleTextField()
         setupErrorLabel()
         setupTableView()
         
-        if let trackerType = trackerType {
-            presenter?.viewDidLoad(type: trackerType)
-            trackerOptionsTableView.reloadData()
-        }
+        presenter?.viewDidLoad()
+        trackerOptionsTableView.reloadData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -229,15 +220,9 @@ private extension AddTrackerViewController {
     }
 }
 
-private extension AddTrackerViewController {
-    func setupViewControllerForGivenType() {
-        guard let type = trackerType else { return }
-        switch type {
-        case .tracker:
-            titleText = "Новая привычка"
-        case .irregularEvent:
-            titleText = "Новое нерегулярное событие"
-        }
+extension AddTrackerViewController {
+    func setViewControllerTitle(_ title: String) {
+        titleText = title
     }
 }
 

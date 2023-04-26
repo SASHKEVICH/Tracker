@@ -18,7 +18,7 @@ protocol AddTrackerViewPresenterProtocol: AnyObject, AddTrackerViewPresenterTabl
     var trackerTitle: String? { get set }
     var tableViewHelper: TrackerOptionsTableViewHelperProtocol? { get }
     var textFieldHelper: TrackerTitleTextFieldHelperProtocol? { get }
-    func viewDidLoad(type: TrackerType)
+    func viewDidLoad()
     func didChangeTrackerTitle(_ title: String?)
     func didConfirmAddTracker()
     func didRecieveSelectedTrackerSchedule(_ weekDays: Set<WeekDay>)
@@ -29,7 +29,8 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
     
     weak var view: AddTrackerViewControllerProtocol?
     
-    private var trackersService: TrackersServiceAddingProtocol = TrackersService.shared
+    private let trackersService: TrackersServiceAddingProtocol
+    private let trackerType: TrackerType
     
     var optionsTitles: [String]?
     
@@ -54,7 +55,13 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
         }
     }
 
-    init() {
+    init(
+        trackersService: TrackersServiceAddingProtocol,
+        trackerType: TrackerType
+    ) {
+        self.trackerType = trackerType
+        self.trackersService = trackersService
+        
         setupTableViewHelper()
         setupTextFieldHelper()
     }
@@ -62,8 +69,8 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
 
 // MARK: - Internal methods
 extension AddTrackerViewPresenter {
-    func viewDidLoad(type: TrackerType) {
-        setupOptionsTitles(type: type)
+    func viewDidLoad() {
+        setupViewController(for: trackerType)
     }
     
     func didTapTrackerScheduleCell() {
@@ -91,7 +98,7 @@ extension AddTrackerViewPresenter {
     
     func didConfirmAddTracker() {
         guard let title = trackerTitle, let schedule = selectedWeekDays else { return }
-        trackersService.addTracker(title: title, schedule: schedule)
+        trackersService.addTracker(title: title, schedule: schedule, type: trackerType)
         postAddingTrackerNotification()
     }
     
@@ -114,12 +121,14 @@ private extension AddTrackerViewPresenter {
         self.textFieldHelper = textFieldHelper
     }
     
-    func setupOptionsTitles(type: TrackerType) {
+    func setupViewController(for type: TrackerType) {
         switch type {
         case .tracker:
             self.optionsTitles = ["Категория", "Расписание"]
+            view?.setViewControllerTitle("Новая привычка")
         case .irregularEvent:
             self.optionsTitles = ["Категория"]
+            view?.setViewControllerTitle("Новое нерегулярное событие")
         }
     }
     

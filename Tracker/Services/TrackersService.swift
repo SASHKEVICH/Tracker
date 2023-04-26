@@ -8,7 +8,7 @@
 import Foundation
 
 protocol TrackersServiceAddingProtocol {
-    func addTracker(title: String, schedule: Set<WeekDay>)
+    func addTracker(title: String, schedule: Set<WeekDay>, type: TrackerType)
 }
 
 protocol TrackersServiceCompletingProtocol {
@@ -23,8 +23,13 @@ protocol TrackersServiceFetchingProtocol {
     func requestFilterDesiredTrackers(searchText: String) -> [TrackerCategory]
 }
 
+typealias TrackersServiceProtocol =
+    TrackersServiceAddingProtocol
+    & TrackersServiceCompletingProtocol
+    & TrackersServiceFetchingProtocol
+
 final class TrackersService {
-    static var shared: TrackersService = TrackersService()
+    static var shared: TrackersServiceProtocol = TrackersService()
     
     private var privateCompletedTrackers: Set<TrackerRecord> = [
         TrackerRecord(
@@ -36,24 +41,28 @@ final class TrackersService {
         TrackerCategory(title: "Категория 1", trackers: [
             Tracker(
                 id: UUID(uuidString: "7E5D6688-A3F1-480E-8EE1-485A7E441E38")!,
+                type: .tracker,
                 title: "Купить молоко",
                 color: .trackerColorSelection5,
                 emoji: "🤬",
                 schedule: [.monday, .thursday]),
             Tracker(
                 id: UUID(),
+                type: .tracker,
                 title: "Сделать домашку",
                 color: .trackerBlue,
                 emoji: "🤯",
                 schedule: [.friday]),
             Tracker(
                 id: UUID(),
+                type: .tracker,
                 title: "Покормить кота",
                 color: .trackerColorSelection5,
                 emoji: "🤬",
                 schedule: [.thursday]),
             Tracker(
                 id: UUID(),
+                type: .tracker,
                 title: "Склеить гитару",
                 color: .trackerBlue,
                 emoji: "🤯",
@@ -126,10 +135,11 @@ extension TrackersService: TrackersServiceCompletingProtocol {
 }
 
 extension TrackersService: TrackersServiceAddingProtocol {
-    func addTracker(title: String, schedule: Set<WeekDay>) {
+    func addTracker(title: String, schedule: Set<WeekDay>, type: TrackerType) {
         let scheduleArray = schedule.map { $0 }
         let newTracker = Tracker(
             id: UUID(),
+            type: type,
             title: title,
             color: .trackerColorSelection5,
             emoji: "🤯",

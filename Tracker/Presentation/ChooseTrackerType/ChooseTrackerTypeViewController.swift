@@ -64,8 +64,10 @@ private extension ChooseTrackerTypeViewController {
         addTrackerButton.setTitle("Привычка", for: .normal)
         addIrregularEventButton.setTitle("Нерегулярное событие", for: .normal)
         
-        addIrregularEventButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -247).isActive = true
-        addTrackerButton.bottomAnchor.constraint(equalTo: addIrregularEventButton.topAnchor, constant: -16).isActive = true
+        NSLayoutConstraint.activate([
+            addIrregularEventButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -247),
+            addTrackerButton.bottomAnchor.constraint(equalTo: addIrregularEventButton.topAnchor, constant: -16)
+        ])
         
         addTrackerButton.addTarget(self, action: #selector(didTapAddTrackerButton), for: .touchUpInside)
         addIrregularEventButton.addTarget(self, action: #selector(didTapAddIrregularEventButton), for: .touchUpInside)
@@ -74,22 +76,24 @@ private extension ChooseTrackerTypeViewController {
     @objc
     func didTapAddTrackerButton() {
         let vc = AddTrackerViewController()
-        let presenter = AddTrackerViewPresenter()
+        let presenter = AddTrackerViewPresenter(
+            trackersService: TrackersService.shared,
+            trackerType: .tracker)
         vc.presenter = presenter
         presenter.view = vc
         
-        vc.trackerType = .tracker
         present(vc, animated: true)
     }
     
     @objc
     func didTapAddIrregularEventButton() {
         let vc = AddTrackerViewController()
-        let presenter = AddTrackerViewPresenter()
+        let presenter = AddTrackerViewPresenter(
+            trackersService: TrackersService.shared,
+            trackerType: .irregularEvent)
         vc.presenter = presenter
         presenter.view = vc
         
-        vc.trackerType = .irregularEvent
         present(vc, animated: true)
     }
 }
