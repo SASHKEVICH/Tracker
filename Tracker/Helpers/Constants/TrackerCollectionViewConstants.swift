@@ -12,7 +12,7 @@ struct TrackerCollectionViewConstants {
     let horizontalCellSpacing: CGFloat
     let verticalCellSpacing: CGFloat
     
-    private static var iPhoneXConfiguration: TrackerCollectionViewConstants {
+    private static var iPhoneXTrackerConfiguration: TrackerCollectionViewConstants {
         let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         return TrackerCollectionViewConstants(
             collectionViewInsets: insets,
@@ -20,7 +20,7 @@ struct TrackerCollectionViewConstants {
             verticalCellSpacing: 0)
     }
         
-    private static var iPhoneSEConfiguration: TrackerCollectionViewConstants {
+    private static var iPhoneSETrackerConfiguration: TrackerCollectionViewConstants {
         let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         return TrackerCollectionViewConstants(
             collectionViewInsets: insets,
@@ -28,13 +28,41 @@ struct TrackerCollectionViewConstants {
             verticalCellSpacing: 0)
     }
     
-    static var configuration: TrackerCollectionViewConstants {
+    private static var iPhoneXAddTrackerConfiguration: TrackerCollectionViewConstants {
+        let insets = UIEdgeInsets(top: 24, left: 18, bottom: 24, right: 19)
+        return TrackerCollectionViewConstants(
+            collectionViewInsets: insets,
+            horizontalCellSpacing: 5,
+            verticalCellSpacing: 0)
+    }
+    
+    private static var iPhoneSEAddTrackerConfiguration: TrackerCollectionViewConstants {
+        let insets = UIEdgeInsets(top: 24, left: 16, bottom: 24, right: 16)
+        return TrackerCollectionViewConstants(
+            collectionViewInsets: insets,
+            horizontalCellSpacing: 0,
+            verticalCellSpacing: 0)
+    }
+}
+
+extension TrackerCollectionViewConstants {
+    static var trackersCollectionConfiguration: TrackerCollectionViewConstants {
         let currentDeviceType = Device.type
         switch currentDeviceType {
         case .iphoneSE:
-            return iPhoneSEConfiguration
+            return iPhoneSETrackerConfiguration
         default:
-            return iPhoneXConfiguration
+            return iPhoneXTrackerConfiguration
+        }
+    }
+    
+    static var addTrackerCollectionsConfiguration: TrackerCollectionViewConstants {
+        let currentDeviceType = Device.type
+        switch currentDeviceType {
+        case .iphoneSE:
+            return iPhoneSEAddTrackerConfiguration
+        default:
+            return iPhoneXAddTrackerConfiguration
         }
     }
 }

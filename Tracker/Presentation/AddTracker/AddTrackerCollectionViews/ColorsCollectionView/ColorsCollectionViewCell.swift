@@ -11,7 +11,7 @@ final class ColorsCollectionViewCell: UICollectionViewCell {
     static let identifier = String(describing: ColorsCollectionViewCell.self)
     
     private let colorView = UIView()
-    private let borderLayer = CALayer()
+    private let borderView = UIView()
     
     var color: UIColor? {
         didSet {
@@ -22,7 +22,7 @@ final class ColorsCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupColorView()
-        addSelectionBorder()
+        setupSelectionBorder()
     }
     
     required init?(coder: NSCoder) {
@@ -42,17 +42,17 @@ private extension ColorsCollectionViewCell {
             colorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             colorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
         ])
-    }
-    
-    func addSelectionBorder() {
-        borderLayer.cornerRadius = 8
-        borderLayer.borderColor = UIColor.trackerBlackDay.withAlphaComponent(0.5).cgColor
-        borderLayer.borderWidth = 3
         
-        layer.addSublayer(borderLayer)
+        colorView.layer.cornerRadius = 8
+        colorView.layer.masksToBounds = true
     }
     
-    func removeSelectionBorder() {
-        borderLayer.removeFromSuperlayer()
+    func setupSelectionBorder() {
+        borderView.layer.cornerRadius = 12
+        borderView.layer.borderColor = UIColor.trackerBlackDay.withAlphaComponent(0.4).cgColor
+        borderView.layer.borderWidth = 3
+        
+        selectedBackgroundView = borderView
     }
+    
 }

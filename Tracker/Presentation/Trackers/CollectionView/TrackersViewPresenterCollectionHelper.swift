@@ -17,10 +17,13 @@ protocol TrackersViewPresenterCollectionHelperProtocol: UICollectionViewDataSour
 
 final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresenterCollectionHelperProtocol {
     weak var presenter: TrackersViewPresetnerCollectionProtocol?
-    private let collectionViewConstants = TrackerCollectionViewConstants.configuration
+    private let collectionViewConstants = TrackerCollectionViewConstants.trackersCollectionConfiguration
     private let trackersService: TrackersServiceFetchingProtocol & TrackersServiceCompletingProtocol = TrackersService.shared
     
-    // MARK: - UICollectionViewDelegateFlowLayout
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension TrackersViewPresenterCollectionHelper {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -63,8 +66,10 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
     ) -> CGSize {
         CGSize(width: collectionView.frame.width, height: 51)
     }
-    
-    // MARK: - UICollectionViewDataSource
+}
+
+// MARK: - UICollectionViewDataSource
+extension TrackersViewPresenterCollectionHelper {
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int

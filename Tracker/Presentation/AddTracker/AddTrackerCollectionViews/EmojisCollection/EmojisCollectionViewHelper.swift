@@ -14,6 +14,8 @@ protocol EmojisCollectionViewHelperProtocol: UICollectionViewDelegateFlowLayout,
 final class EmojisCollectionViewHelper: NSObject, EmojisCollectionViewHelperProtocol {
     weak var presenter: AddTrackerViewPresenterEmojisCollectionViewHelperProtocol?
     
+    private let configuration = TrackerCollectionViewConstants.addTrackerCollectionsConfiguration
+    
     private let emojis: [String] = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
         "😇", "😡", "🥶", "🤔", "🙌", "🍔",
@@ -28,6 +30,46 @@ extension EmojisCollectionViewHelper {
         didSelectItemAt indexPath: IndexPath
     ) {
         print("tap")
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let leftInset = configuration.collectionViewInsets.left
+        let rightInset = configuration.collectionViewInsets.right
+        let horizontalCellSpacing = configuration.horizontalCellSpacing
+        
+        let cellsPerRow: CGFloat = 6
+        let cellsHorizontalSpace = leftInset + rightInset + horizontalCellSpacing * cellsPerRow
+        
+        let width = (collectionView.bounds.width - cellsHorizontalSpace) / cellsPerRow
+        return CGSize(width: width, height: width)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        configuration.horizontalCellSpacing
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        configuration.verticalCellSpacing
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        configuration.collectionViewInsets
     }
 }
 
