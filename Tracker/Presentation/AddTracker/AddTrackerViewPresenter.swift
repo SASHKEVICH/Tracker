@@ -5,7 +5,15 @@
 //  Created by Александр Бекренев on 14.04.2023.
 //
 
-import Foundation
+import UIKit
+
+protocol AddTrackerViewPresenterEmojisCollectionViewHelperProtocol: AnyObject {
+    func didSelectEmoji()
+}
+
+protocol AddTrackerViewPresenterCollectionColorsViewHelperProtocol: AnyObject {
+    func didSelectColor()
+}
 
 protocol AddTrackerViewPresenterTableViewHelperProtocol: AnyObject {
     var optionsTitles: [String]? { get }
@@ -13,11 +21,12 @@ protocol AddTrackerViewPresenterTableViewHelperProtocol: AnyObject {
     func didTapTrackerScheduleCell()
 }
 
-protocol AddTrackerViewPresenterProtocol: AnyObject, AddTrackerViewPresenterTableViewHelperProtocol {
+protocol AddTrackerViewPresenterProtocol: AnyObject {
     var view: AddTrackerViewControllerProtocol? { get set }
-    var trackerTitle: String? { get set }
     var tableViewHelper: TrackerOptionsTableViewHelperProtocol? { get }
     var textFieldHelper: TrackerTitleTextFieldHelperProtocol? { get }
+    var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol? { get }
+    var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol? { get }
     func viewDidLoad()
     func didChangeTrackerTitle(_ title: String?)
     func didConfirmAddTracker()
@@ -36,6 +45,8 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
     
     var tableViewHelper: TrackerOptionsTableViewHelperProtocol?
     var textFieldHelper: TrackerTitleTextFieldHelperProtocol?
+    var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol?
+    var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol?
     
     private var isErrorLabelHidden: Bool? {
         didSet {
@@ -43,7 +54,7 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
         }
     }
     
-    var trackerTitle: String? {
+    private var trackerTitle: String? {
         didSet {
             checkToEnablingAddTrackerButton()
         }
@@ -54,7 +65,10 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
             checkToEnablingAddTrackerButton()
         }
     }
-
+    
+    private var selectedTrackerEmoji: String?
+    private var selectedTrackerColor: UIColor?
+    
     init(
         trackersService: TrackersServiceAddingProtocol,
         trackerType: TrackerType
@@ -64,15 +78,13 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
         
         setupTableViewHelper()
         setupTextFieldHelper()
+        setupColorsCollectionViewHelper()
+        setupEmojisCollectionViewHelper()
     }
 }
 
-// MARK: - Internal methods
-extension AddTrackerViewPresenter {
-    func viewDidLoad() {
-        setupViewController(for: trackerType)
-    }
-    
+// MARK: - AddTrackerViewPresenterTableViewHelperProtocol
+extension AddTrackerViewPresenter: AddTrackerViewPresenterTableViewHelperProtocol {
     func didTapTrackerScheduleCell() {
         let vc = TrackerScheduleViewController()
         vc.delegate = view
@@ -83,6 +95,27 @@ extension AddTrackerViewPresenter {
         presenter.view = vc
         
         view?.didTapTrackerScheduleCell(vc)
+    }
+}
+
+// MARK: - AddTrackerViewPresenterCollectionColorsViewHelperProtocol
+extension AddTrackerViewPresenter: AddTrackerViewPresenterCollectionColorsViewHelperProtocol {
+    func didSelectColor() {
+        
+    }
+}
+
+// MARK: - AddTrackerViewPresenterEmojisCollectionViewHelperProtocol
+extension AddTrackerViewPresenter: AddTrackerViewPresenterEmojisCollectionViewHelperProtocol {
+    func didSelectEmoji() {
+        
+    }
+}
+
+// MARK: - Internal methods
+extension AddTrackerViewPresenter {
+    func viewDidLoad() {
+        setupViewController(for: trackerType)
     }
     
     func didChangeTrackerTitle(_ title: String?) {
@@ -119,6 +152,18 @@ private extension AddTrackerViewPresenter {
         let textFieldHelper = TrackerTitleTextFieldHelper()
         textFieldHelper.presenter = self
         self.textFieldHelper = textFieldHelper
+    }
+    
+    func setupColorsCollectionViewHelper() {
+        let colorsCollectionViewHelper = ColorsCollectionViewHelper()
+        colorsCollectionViewHelper.presenter = self
+        self.colorsCollectionViewHelper = colorsCollectionViewHelper
+    }
+    
+    func setupEmojisCollectionViewHelper() {
+        let emojisCollectionViewHelper = EmojisCollectionViewHelper()
+        emojisCollectionViewHelper.presenter = self
+        self.emojisCollectionViewHelper = emojisCollectionViewHelper
     }
     
     func setupViewController(for type: TrackerType) {
