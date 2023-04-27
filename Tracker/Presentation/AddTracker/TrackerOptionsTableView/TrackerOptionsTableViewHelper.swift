@@ -87,7 +87,7 @@ private extension TrackerOptionsTableViewHelper {
     }
     
     func configureSchduleAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
-        guard let selectedWeekDays = presenter?.selectedWeekDays else { return }
+        guard let selectedWeekDays = presenter?.selectedWeekDays, !selectedWeekDays.isEmpty else { return }
         let selectedWeekDaysArray = Array(selectedWeekDays).sorted()
         
         guard selectedWeekDaysArray.count != 7 else {
