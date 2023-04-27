@@ -29,7 +29,14 @@ extension EmojisCollectionViewHelper {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        print("tap")
+        guard
+            let cell = collectionView.cellForItem(at: indexPath) as? EmojisCollectionViewCell,
+            let emoji = cell.emoji
+        else {
+            return
+        }
+        
+        presenter?.didSelect(emoji: emoji)
     }
     
     func collectionView(

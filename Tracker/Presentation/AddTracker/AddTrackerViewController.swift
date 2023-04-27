@@ -45,6 +45,7 @@ final class AddTrackerViewController: UIViewController, AddTrackerViewController
     private let addTrackerButton = TrackerCustomButton(state: .disabled, title: "Создать")
     
     private var tableViewTopConstraint: NSLayoutConstraint?
+    private var tableViewHeightConstraint: NSLayoutConstraint?
     private var emojisCollectionViewHeightConstraint: NSLayoutConstraint?
     private var colorsCollectionViewHeightConstraint: NSLayoutConstraint?
     
@@ -76,8 +77,10 @@ final class AddTrackerViewController: UIViewController, AddTrackerViewController
         guard contentScrollView.frame.width != 0 else { return }
         setupCancelAndAddTrackerButton()
         
+        tableViewHeightConstraint?.constant = trackerOptionsTableView.contentSize.height
         emojisCollectionViewHeightConstraint?.constant = emojisCollectionView.contentSize.height
         colorsCollectionViewHeightConstraint?.constant = colorsCollectionView.contentSize.height
+        
         view.setNeedsLayout()
     }
 }
@@ -158,7 +161,7 @@ private extension AddTrackerViewController {
         contentScrollView.addSubview(trackerOptionsTableView)
         trackerOptionsTableView.translatesAutoresizingMaskIntoConstraints = false
         
-        tableViewTopConstraint = NSLayoutConstraint(
+        let tableViewTopConstraint = NSLayoutConstraint(
             item: trackerOptionsTableView,
             attribute: .top,
             relatedBy: .equal,
@@ -167,19 +170,29 @@ private extension AddTrackerViewController {
             multiplier: 1,
             constant: 24)
         
-        guard let tableViewTopConstraint = tableViewTopConstraint else { return }
+        let tableViewHeightConstraint = NSLayoutConstraint(
+            item: trackerOptionsTableView,
+            attribute: .height,
+            relatedBy: .equal,
+            toItem: nil,
+            attribute: .height,
+            multiplier: 1,
+            constant: 75)
         
         NSLayoutConstraint.activate([
             trackerOptionsTableView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor, constant: 16),
             trackerOptionsTableView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor, constant: -16),
             tableViewTopConstraint,
-            trackerOptionsTableView.heightAnchor.constraint(equalToConstant: 150)
+            tableViewHeightConstraint
         ])
         
         trackerOptionsTableView.dataSource = presenter?.tableViewHelper
         trackerOptionsTableView.delegate = presenter?.tableViewHelper
         trackerOptionsTableView.register(TrackerOptionsTableViewCell.self, forCellReuseIdentifier: TrackerOptionsTableViewCell.identifier)
         trackerOptionsTableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        
+        self.tableViewTopConstraint = tableViewTopConstraint
+        self.tableViewHeightConstraint = tableViewHeightConstraint
     }
     
     func setupCollectionViews() {

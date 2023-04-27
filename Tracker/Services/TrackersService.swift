@@ -5,10 +5,10 @@
 //  Created by Александр Бекренев on 07.04.2023.
 //
 
-import Foundation
+import UIKit
 
 protocol TrackersServiceAddingProtocol {
-    func addTracker(title: String, schedule: Set<WeekDay>, type: TrackerType)
+    func addTracker(title: String, schedule: Set<WeekDay>, type: TrackerType, color: UIColor, emoji: String)
 }
 
 protocol TrackersServiceCompletingProtocol {
@@ -135,14 +135,20 @@ extension TrackersService: TrackersServiceCompletingProtocol {
 }
 
 extension TrackersService: TrackersServiceAddingProtocol {
-    func addTracker(title: String, schedule: Set<WeekDay>, type: TrackerType) {
+    func addTracker(
+        title: String,
+        schedule: Set<WeekDay>,
+        type: TrackerType,
+        color: UIColor,
+        emoji: String
+    ) {
         let scheduleArray = schedule.map { $0 }
         let newTracker = Tracker(
             id: UUID(),
             type: type,
             title: title,
-            color: .trackerColorSelection5,
-            emoji: "🤯",
+            color: color,
+            emoji: emoji,
             schedule: scheduleArray)
         
         let oldCategory = privateCategories[0]

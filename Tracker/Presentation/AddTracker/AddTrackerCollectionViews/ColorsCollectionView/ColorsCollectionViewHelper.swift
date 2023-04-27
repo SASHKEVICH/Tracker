@@ -32,7 +32,14 @@ extension ColorsCollectionViewHelper {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        print("tap")
+        guard
+            let cell = collectionView.cellForItem(at: indexPath) as? ColorsCollectionViewCell,
+            let color = cell.color
+        else {
+            return
+        }
+        
+        presenter?.didSelect(color: color)
     }
     
     func collectionView(
