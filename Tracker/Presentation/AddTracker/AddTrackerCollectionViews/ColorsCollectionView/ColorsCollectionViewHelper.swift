@@ -74,6 +74,14 @@ extension ColorsCollectionViewHelper {
     ) -> UIEdgeInsets {
         configuration.collectionViewInsets
     }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        CGSize(width: collectionView.frame.width, height: 18)
+    }
 }
 
 // MARK: UICollectionViewDataSource
@@ -100,5 +108,23 @@ extension ColorsCollectionViewHelper {
         cell.color = colors[indexPath.row]
         
         return cell
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        guard let view = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: TrackersCollectionSectionHeader.identifier,
+            for: indexPath) as? TrackersCollectionSectionHeader
+        else {
+            assertionFailure("Cannot dequeue header view")
+            return UICollectionReusableView()
+        }
+        
+        view.headerText = "Цвет"
+        return view
     }
 }

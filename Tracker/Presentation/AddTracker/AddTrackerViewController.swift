@@ -224,12 +224,20 @@ private extension AddTrackerViewController {
         emojisCollectionView.register(
             EmojisCollectionViewCell.self,
             forCellWithReuseIdentifier: EmojisCollectionViewCell.identifier)
+        emojisCollectionView.register(
+            TrackersCollectionSectionHeader.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: TrackersCollectionSectionHeader.identifier)
         
         colorsCollectionView.dataSource = presenter?.colorsCollectionViewHelper
         colorsCollectionView.delegate = presenter?.colorsCollectionViewHelper
         colorsCollectionView.register(
             ColorsCollectionViewCell.self,
             forCellWithReuseIdentifier: ColorsCollectionViewCell.identifier)
+        colorsCollectionView.register(
+            TrackersCollectionSectionHeader.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: TrackersCollectionSectionHeader.identifier)
         
         self.emojisCollectionViewHeightConstraint = emojisCollectionViewHeightConstraint
         self.colorsCollectionViewHeightConstraint = colorsCollectionViewHeightConstraint

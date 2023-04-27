@@ -13,7 +13,7 @@ struct TrackerCollectionViewConstants {
     let verticalCellSpacing: CGFloat
     
     private static var iPhoneXTrackerConfiguration: TrackerCollectionViewConstants {
-        let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        let insets = UIEdgeInsets(top: 12, left: 16, bottom: 0, right: 16)
         return TrackerCollectionViewConstants(
             collectionViewInsets: insets,
             horizontalCellSpacing: 9,
@@ -21,7 +21,7 @@ struct TrackerCollectionViewConstants {
     }
         
     private static var iPhoneSETrackerConfiguration: TrackerCollectionViewConstants {
-        let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        let insets = UIEdgeInsets(top: 12, left: 16, bottom: 0, right: 16)
         return TrackerCollectionViewConstants(
             collectionViewInsets: insets,
             horizontalCellSpacing: 10,

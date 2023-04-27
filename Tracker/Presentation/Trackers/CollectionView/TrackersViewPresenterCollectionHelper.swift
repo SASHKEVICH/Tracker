@@ -64,7 +64,7 @@ extension TrackersViewPresenterCollectionHelper {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        CGSize(width: collectionView.frame.width, height: 51)
+        CGSize(width: collectionView.frame.width, height: 18)
     }
 }
 
