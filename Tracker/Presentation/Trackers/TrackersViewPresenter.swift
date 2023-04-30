@@ -7,11 +7,15 @@
 
 import Foundation
 
-protocol TrackersViewPresetnerCollectionProtocol: AnyObject {
+protocol TrackersViewPresetnerCollectionViewProtocol: AnyObject {
     var visibleCategories: [TrackerCategory] { get }
     var completedTrackersRecords: Set<TrackerRecord> { get }
-    var currentDate: Date { get set }
-    func requestChosenFutureDateAlert()
+    var currentDate: Date { get }
+    // TODO: var numberOfSections: Int { get }
+    // TODO: var numberOfRowsInSection: Int { get }
+    // TODO: func object(at indexPath: IndexPath)
+    func complete(tracker: Tracker) throws
+    func incomplete(tracker: Tracker) throws
 }
 
 protocol TrackersViewPresetnerSearchControllerProtocol: AnyObject {
@@ -19,23 +23,29 @@ protocol TrackersViewPresetnerSearchControllerProtocol: AnyObject {
     func requestShowAllCategoriesForCurrentDay()
 }
 
-protocol TrackersViewPresenterProtocol: AnyObject, TrackersViewPresetnerCollectionProtocol, TrackersViewPresetnerSearchControllerProtocol {
+protocol TrackersViewPresenterProtocol: AnyObject {
     var view: TrackersViewControllerProtocol? { get set }
-    var collectionHelper: TrackersViewPresenterCollectionHelperProtocol? { get }
+    var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol? { get }
     var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol? { get }
+    var currentDate: Date { get set }
     func requestTrackers(for date: Date)
 }
 
-typealias TrackersServiceFetchingCompletingProtocol =
-    TrackersServiceFetchingProtocol
-    & TrackersServiceCompletingProtocol
+typealias TrackersViewPresenterFullProtocol =
+    TrackersViewPresenterProtocol
+    & TrackersViewPresetnerCollectionViewProtocol
+    & TrackersViewPresetnerSearchControllerProtocol
 
 final class TrackersViewPresenter: TrackersViewPresenterProtocol {
-    private let trackersService: TrackersServiceFetchingCompletingProtocol
+    enum TrackersViewPresenterError: Error {
+        case currentDateLaterThanToday
+    }
+    
+    private let trackersService: TrackersServiceFetchingCompletingProtocol & TrackersServiceCompletingProtocol
     private var newTrackerNotifacationObserver: NSObjectProtocol?
     
     weak var view: TrackersViewControllerProtocol?
-    var collectionHelper: TrackersViewPresenterCollectionHelperProtocol?
+    var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol?
     var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol?
 
     var completedTrackersRecords: Set<TrackerRecord> = []
@@ -52,7 +62,7 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
 }
 
 // MARK: - Requesting trackers
-extension TrackersViewPresenter {
+extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
     func requestTrackers(for date: Date) {
         guard let weekDay = date.weekDay else { return }
         let fetchedCategories = trackersService.fetchTrackers(for: weekDay)
@@ -91,11 +101,30 @@ extension TrackersViewPresenter {
     }
 }
 
-extension TrackersViewPresenter: TrackersViewPresetnerCollectionProtocol {
+extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
+    func complete(tracker: Tracker) throws {
+        if isCurrentDateLaterThanToday { throw TrackersViewPresenterError.currentDateLaterThanToday }
+        trackersService.completeTracker(trackerId: tracker.id, date: currentDate)
+    }
+    
+    func incomplete(tracker: Tracker) throws {
+        if isCurrentDateLaterThanToday { throw TrackersViewPresenterError.currentDateLaterThanToday }
+        trackersService.incompleteTracker(trackerId: tracker.id, date: currentDate)
+    }
+    
     func requestChosenFutureDateAlert() {
         let alertPresenter = AlertPresenterService(delegate: view)
-        let alertModel = AlertModel(title: "Некорректная дата", message: "Вы отмечаете трекер в будущем >:[", actionTitles: ["OK"])
+        let alertModel = AlertModel(
+            title: "Некорректная дата",
+            message: "Вы отмечаете трекер в будущем >:[",
+            actionTitles: ["OK"])
         alertPresenter.requestAlert(alertModel)
+    }
+    
+    private var isCurrentDateLaterThanToday: Bool {
+        guard currentDate > Date() else { return false }
+        requestChosenFutureDateAlert()
+        return true
     }
 }
 

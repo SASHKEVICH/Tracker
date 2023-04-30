@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TrackersViewControllerProtocol: AnyObject, AlertPresenterServiceDelegate {
-    var presenter: TrackersViewPresenterProtocol? { get set }
+    var presenter: TrackersViewPresenterFullProtocol? { get set }
     var isPlaceholderViewHidden: Bool { get set }
     func didRecieveTrackers(indexPaths: [IndexPath]?)
     func showPlaceholderViewForCurrentDay()
@@ -25,7 +25,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     
     private var currentDate: Date = Date()
     
-    var presenter: TrackersViewPresenterProtocol?
+    var presenter: TrackersViewPresenterFullProtocol?
     
     var isPlaceholderViewHidden: Bool = true {
         didSet {

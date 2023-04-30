@@ -11,15 +11,13 @@ protocol TrackersViewPresenterCollectionHelperCellDelegate {
     func didTapCompleteCellButton(_ cell: TrackersCollectionViewCell)
 }
 
-protocol TrackersViewPresenterCollectionHelperProtocol: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    var presenter: TrackersViewPresetnerCollectionProtocol? { get set }
+protocol TrackersViewPresenterCollectionViewHelperProtocol: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    var presenter: TrackersViewPresetnerCollectionViewProtocol? { get set }
 }
 
-final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresenterCollectionHelperProtocol {
-    weak var presenter: TrackersViewPresetnerCollectionProtocol?
+final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresenterCollectionViewHelperProtocol {
+    weak var presenter: TrackersViewPresetnerCollectionViewProtocol?
     private let collectionViewConstants = TrackerCollectionViewConstants.trackersCollectionConfiguration
-    private let trackersService: TrackersServiceFetchingProtocol & TrackersServiceCompletingProtocol = TrackersService.shared
-    
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -95,8 +93,8 @@ extension TrackersViewPresenterCollectionHelper {
     ) -> UICollectionViewCell {
         guard
             let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier,
-            for: indexPath) as? TrackersCollectionViewCell,
+                withReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier,
+                for: indexPath) as? TrackersCollectionViewCell,
             let presenter = presenter
         else {
             assertionFailure("Cannot dequeue cell or presenter is nil")
@@ -147,24 +145,16 @@ extension TrackersViewPresenterCollectionHelper {
 // MARK: - Complete cell button handler
 extension TrackersViewPresenterCollectionHelper: TrackersViewPresenterCollectionHelperCellDelegate {
     func didTapCompleteCellButton(_ cell: TrackersCollectionViewCell) {
-        guard
-            let tracker = cell.tracker,
-            let currentDate = presenter?.currentDate
-        else { return }
+        guard let tracker = cell.tracker else { return }
         
-        guard currentDate <= Date() else {
-            presenter?.requestChosenFutureDateAlert()
-            return
+        if cell.state == .completed {
+            guard let _ = try? presenter?.incomplete(tracker: tracker) else { return }
+            cell.dayCount -= 1
+        } else {
+            guard let _ = try? presenter?.complete(tracker: tracker) else { return }
+            cell.dayCount += 1
         }
         
         cell.state = cell.state == .completed ? .incompleted : .completed
-        
-        if cell.state == .completed {
-            cell.dayCount += 1
-            trackersService.completeTracker(trackerId: tracker.id, date: currentDate)
-        } else {
-            cell.dayCount -= 1
-            trackersService.incompleteTracker(trackerId: tracker.id, date: currentDate)
-        }
     }
 }
