@@ -23,6 +23,10 @@ protocol TrackersServiceFetchingProtocol {
     func requestFilterDesiredTrackers(searchText: String) -> [TrackerCategory]
 }
 
+typealias TrackersServiceFetchingCompletingProtocol =
+    TrackersServiceFetchingProtocol
+    & TrackersServiceCompletingProtocol
+
 typealias TrackersServiceProtocol =
     TrackersServiceAddingProtocol
     & TrackersServiceCompletingProtocol
