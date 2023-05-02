@@ -60,14 +60,17 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
         }
     }
     
-    var selectedWeekDays: Set<WeekDay>? {
+    private var selectedTrackerEmoji: String? {
         didSet {
             checkToEnablingAddTrackerButton()
         }
     }
     
-    private var selectedTrackerEmoji: String?
-    private var selectedTrackerColor: UIColor?
+    private var selectedTrackerColor: UIColor? {
+        didSet {
+            checkToEnablingAddTrackerButton()
+        }
+    }
     
     private var doesItNeedToWaitSelectedWeekdays: Bool {
         switch trackerType {
@@ -75,6 +78,12 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
             return selectedWeekDays == nil
         case .irregularEvent:
             return false
+        }
+    }
+    
+    var selectedWeekDays: Set<WeekDay>? {
+        didSet {
+            checkToEnablingAddTrackerButton()
         }
     }
     
@@ -102,6 +111,8 @@ extension AddTrackerViewPresenter: AddTrackerViewPresenterTableViewHelperProtoco
         let presenter = TrackerSchedulePresenter()
         vc.presenter = presenter
         presenter.view = vc
+        
+        presenter.selectedWeekDays = selectedWeekDays ?? []
         
         view?.didTapTrackerScheduleCell(vc)
     }
