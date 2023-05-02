@@ -41,7 +41,7 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
         case currentDateLaterThanToday
     }
     
-    private let trackersService: TrackersServiceFetchingCompletingProtocol & TrackersServiceCompletingProtocol
+    private let trackersService: TrackersServiceProtocol
     private var newTrackerNotifacationObserver: NSObjectProtocol?
     
     weak var view: TrackersViewControllerProtocol?
@@ -52,7 +52,7 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
     var visibleCategories: [TrackerCategory] = []
     var currentDate: Date = Date()
     
-    init(trackersService: TrackersServiceFetchingCompletingProtocol) {
+    init(trackersService: TrackersServiceProtocol) {
         self.trackersService = trackersService
         
         setupCollectionDelegate()
@@ -64,20 +64,69 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
 // MARK: - Requesting trackers
 extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
     func requestTrackers(for date: Date) {
-        guard let weekDay = date.weekDay else { return }
-        let fetchedCategories = trackersService.fetchTrackers(for: weekDay)
+//        guard let weekDay = date.weekDay else { return }
+//        let fetchedCategories = trackersService.fetchTrackers(for: weekDay)
+//
+//        self.visibleCategories = fetchedCategories ?? []
+//        self.completedTrackersRecords = trackersService.completedTrackers
+//        self.currentDate = date
+//
+//        didRecieveTrackers()
+//
+//        if let fetchedCategories = fetchedCategories, fetchedCategories.isEmpty {
+//            view?.showPlaceholderViewForCurrentDay()
+//            return
+//        }
+//        view?.showPlaceholderViewForCurrentDay()
         
-        self.visibleCategories = fetchedCategories ?? []
-        self.completedTrackersRecords = trackersService.completedTrackers
-        self.currentDate = date
+//        trackersService.addCategory(title: "Категория 1", trackers: [
+//            Tracker(
+//                id: UUID(),
+//                type: .tracker,
+//                title: "Трекер 1",
+//                color: .trackerColorSelection1,
+//                emoji: "1",
+//                schedule: [.monday, .sunday]),
+//            Tracker(
+//                id: UUID(),
+//                type: .tracker,
+//                title: "Трекер 2",
+//                color: .trackerColorSelection1,
+//                emoji: "1",
+//                schedule: [.sunday, .tuesday])
+//        ])
+//        trackersService.addCategory(title: "Категория 2", trackers: [
+//            Tracker(
+//                id: UUID(),
+//                type: .tracker,
+//                title: "Трекер 3",
+//                color: .trackerColorSelection2,
+//                emoji: "2",
+//                schedule: [.friday, .thursday]),
+//            Tracker(
+//                id: UUID(),
+//                type: .tracker,
+//                title: "Трекер 4",
+//                color: .trackerColorSelection2,
+//                emoji: "2",
+//                schedule: [.monday]),
+//        ])
         
-        didRecieveTrackers()
+//        print(category)
+//        trackersService.removeCategory(at: IndexPath(item: 0, section: 0))
+//        trackersService.removeCategory(at: IndexPath(item: 1, section: 0))
+//        let category = trackersService.category(at: IndexPath(item: 0, section: 0))
+//        print(category)
+//        print(trackersService.allCategories())
+//        trackersService.fetchTrackers(for: currentDate)
         
-        if let fetchedCategories = fetchedCategories, fetchedCategories.isEmpty {
-            view?.showPlaceholderViewForCurrentDay()
-            return
-        }
-        view?.showOrHidePlaceholderView(isHide: true)
+//        print(trackersService.category(at: IndexPath(item: 0, section: 0)))
+//        print(trackersService.category(at: IndexPath(item: 1, section: 0)))
+        
+//        trackersService.removeCategory(at: IndexPath(item: 0, section: 0))
+//        trackersService.removeCategory(at: IndexPath(item: 0, section: 0))
+        
+//        view?.showOrHidePlaceholderView(isHide: true)
     }
     
     func requestFilteredTrackers(for searchText: String?) {
@@ -101,6 +150,7 @@ extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
     }
 }
 
+// MARK: - TrackersViewPresetnerCollectionViewProtocol
 extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     func complete(tracker: Tracker) throws {
         if isCurrentDateLaterThanToday { throw TrackersViewPresenterError.currentDateLaterThanToday }
@@ -125,6 +175,15 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
         guard currentDate > Date() else { return false }
         requestChosenFutureDateAlert()
         return true
+    }
+}
+
+extension TrackersViewPresenter: TrackersDataProviderDelegate {
+    func didUpdateCategories(insertedIndexes: IndexSet) {
+        insertedIndexes.forEach {
+            let category = trackersService.category(at: IndexPath(item: $0, section: 0))
+            print(category)
+        }
     }
 }
 

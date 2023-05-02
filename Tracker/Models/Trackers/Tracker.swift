@@ -7,9 +7,9 @@
 
 import UIKit
 
-enum TrackerType {
-    case tracker
-    case irregularEvent
+enum TrackerType: Int {
+    case tracker = 1
+    case irregularEvent = 2
 }
 
 struct Tracker {
