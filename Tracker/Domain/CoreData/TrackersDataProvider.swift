@@ -100,7 +100,9 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
         trackerCoreData.colorHex = UIColorMarshalling.serilizeToHex(color: tracker.color)
         trackerCoreData.id = tracker.id.uuidString
         trackerCoreData.type = Int16(tracker.type.rawValue)
-        trackerCoreData.weekDays = "monday,wednesday,friday"
+        
+        let schedule = tracker.schedule.reduce("") { $0 + ", " + $1.englishStringRepresentation }
+        trackerCoreData.weekDays = schedule
         
         guard let categoryCoreData = trackerCategoryDataStore.category(with: categoryName) else {
             throw TrackersDataProviderError.cannotFindCategory

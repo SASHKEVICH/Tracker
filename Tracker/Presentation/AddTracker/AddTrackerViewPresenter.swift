@@ -17,7 +17,7 @@ protocol AddTrackerViewPresenterCollectionColorsViewHelperProtocol: AnyObject {
 
 protocol AddTrackerViewPresenterTableViewHelperProtocol: AnyObject {
     var optionsTitles: [String]? { get }
-    var selectedWeekDays: Set<WeekDay>? { get }
+    var selectedWeekDays: Set<WeekDay> { get }
     func didTapTrackerScheduleCell()
 }
 
@@ -75,13 +75,13 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
     private var doesItNeedToWaitSelectedWeekdays: Bool {
         switch trackerType {
         case .tracker:
-            return selectedWeekDays == nil
+            return selectedWeekDays.isEmpty
         case .irregularEvent:
             return false
         }
     }
     
-    var selectedWeekDays: Set<WeekDay>? {
+    var selectedWeekDays: Set<WeekDay> = [] {
         didSet {
             checkToEnablingAddTrackerButton()
         }
@@ -112,7 +112,7 @@ extension AddTrackerViewPresenter: AddTrackerViewPresenterTableViewHelperProtoco
         vc.presenter = presenter
         presenter.view = vc
         
-        presenter.selectedWeekDays = selectedWeekDays ?? []
+        presenter.selectedWeekDays = selectedWeekDays
         
         view?.didTapTrackerScheduleCell(vc)
     }
@@ -152,10 +152,11 @@ extension AddTrackerViewPresenter {
     func didConfirmAddTracker() {
         guard
             let title = trackerTitle,
-            let schedule = selectedWeekDays,
             let color = selectedTrackerColor,
             let emoji = selectedTrackerEmoji
         else { return }
+        
+        let schedule: Set<WeekDay> = trackerType == .irregularEvent ? Set(WeekDay.allCases) : selectedWeekDays
         
         trackersService.addTracker(
             title: title,

@@ -39,6 +39,7 @@ typealias TrackersViewPresenterFullProtocol =
     & TrackersViewPresetnerCollectionViewProtocol
     & TrackersViewPresetnerSearchControllerProtocol
 
+// MARK: - TrackersViewPresenter
 final class TrackersViewPresenter: TrackersViewPresenterProtocol {
     enum TrackersViewPresenterError: Error {
         case currentDateLaterThanToday
@@ -150,6 +151,14 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     }
 }
 
+// MARK: - TrackersDataProviderDelegate
+extension TrackersViewPresenter: TrackersDataProviderDelegate {
+    func didUpdate(_ update: TrackersStoreUpdate) {
+        view?.didRecieveTrackers(update)
+        view?.showOrHidePlaceholderView(isHide: true)
+    }
+}
+
 // MARK: - Setup delegates
 private extension TrackersViewPresenter {
     func setupCollectionDelegate() {
@@ -162,13 +171,6 @@ private extension TrackersViewPresenter {
         let searchControllerHelper = TrackersViewPresenterSearchControllerHelper()
         searchControllerHelper.presenter = self
         self.searchControllerHelper = searchControllerHelper
-    }
-}
-
-extension TrackersViewPresenter: TrackersDataProviderDelegate {
-    func didUpdate(_ update: TrackersStoreUpdate) {
-        view?.didRecieveTrackers(update)
-        view?.showOrHidePlaceholderView(isHide: true)
     }
 }
 

@@ -76,7 +76,7 @@ extension TrackersViewPresenterCollectionHelper {
             assertionFailure("Presenter is nil")
             return 0
         }
-//        return presenter.visibleCategories[section].trackers.count
+
         return presenter.numberOfItemsInSection(section)
     }
     
@@ -85,7 +85,7 @@ extension TrackersViewPresenterCollectionHelper {
             assertionFailure("Presenter is nil")
             return 0
         }
-//        return presenter.visibleCategories.count
+        
         return presenter.numberOfSections
     }
     
@@ -103,9 +103,6 @@ extension TrackersViewPresenterCollectionHelper {
             assertionFailure("Cannot dequeue cell or presenter is nil")
             return UICollectionViewCell()
         }
-        
-//        let section = presenter.visibleCategories[indexPath.section]
-//        let tracker = section.trackers[indexPath.row]
         
         cell.tracker = tracker
         let doesTrackerStoredInCompletedTrackersForCurrentDate = presenter

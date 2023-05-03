@@ -16,7 +16,7 @@ public class TrackerCoreData: NSManagedObject {
     @NSManaged public var id: String
     @NSManaged public var title: String
     @NSManaged public var type: Int16
-    @NSManaged public var weekDays: String?
+    @NSManaged public var weekDays: String
     @NSManaged public var category: TrackerCategoryCoreData
     @NSManaged public var records: NSSet
 }

@@ -135,7 +135,7 @@ extension TrackersService: TrackersServiceFetchingProtocol {
     func fetchTrackers(for weekDay: WeekDay) -> [TrackerCategory]? {
         let filteredCategories = categories.compactMap { (oldCategory: TrackerCategory) -> TrackerCategory? in
             let categoryTrackers = oldCategory.trackers.compactMap { (tracker: Tracker) -> Tracker? in
-                guard let schedule = tracker.schedule, schedule.contains(weekDay) else { return nil }
+                guard tracker.schedule.contains(weekDay) else { return nil }
                 return tracker
             }
             
@@ -181,33 +181,7 @@ extension TrackersService: TrackersServiceCompletingProtocol {
     }
 }
 
-extension TrackersService: TrackersServiceAddingProtocol {
-//    func addTracker(
-//        title: String,
-//        schedule: Set<WeekDay>,
-//        type: TrackerType,
-//        color: UIColor,
-//        emoji: String
-//    ) {
-//        let scheduleArray = schedule.map { $0 }
-//        let newTracker = Tracker(
-//            id: UUID(),
-//            type: type,
-//            title: title,
-//            color: color,
-//            emoji: emoji,
-//            schedule: scheduleArray)
-//
-//        let oldCategory = privateCategories[0]
-//        var trackers = oldCategory.trackers
-//        trackers.append(newTracker)
-//
-//        let newCategory = TrackerCategory(title: oldCategory.title, trackers: trackers)
-//
-//        privateCategories.removeAll(where: { $0.title == oldCategory.title })
-//        privateCategories.append(newCategory)
-//    }
-    
+extension TrackersService: TrackersServiceAddingProtocol {    
     func addTracker(
         title: String,
         schedule: Set<WeekDay>,
@@ -216,13 +190,14 @@ extension TrackersService: TrackersServiceAddingProtocol {
         emoji: String
     ) {
         let categoryName = "Категория 1"
+        let schedule = Array(schedule)
         let tracker = Tracker(
             id: UUID(),
             type: type,
             title: title,
             color: color,
             emoji: emoji,
-            schedule: Array(schedule))
+            schedule: schedule)
         
         try? trackersDataProvider?.add(tracker: tracker, for: categoryName)
     }
@@ -248,13 +223,16 @@ extension TrackersService: TrackersServiceDataSourceProtocol {
             let type = TrackerType(rawValue: Int(trackerCoreData.type)),
             let color = UIColorMarshalling.deserilizeFrom(hex: trackerCoreData.colorHex)
         else { return nil }
-        
+                
+        let splittedWeekDays = trackerCoreData.weekDays.components(separatedBy: ", ")
+        let schedule = splittedWeekDays.compactMap { String($0).weekDay }
+
         return Tracker(
             id: id,
             type: type,
             title: trackerCoreData.title,
             color: color,
             emoji: trackerCoreData.emoji,
-            schedule: nil)
+            schedule: schedule)
     }
 }

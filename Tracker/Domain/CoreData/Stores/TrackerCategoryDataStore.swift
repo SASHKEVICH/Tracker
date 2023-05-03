@@ -53,29 +53,7 @@ extension TrackerCategoryDataStore {
         return categoriesCoreData?.first
     }
     
-    func add(newCategory: TrackerCategory) throws {
-        try performSync { context in
-            Result {
-                let category = TrackerCategoryCoreData(context: context)
-                category.id = UUID().uuidString
-                category.title = newCategory.title
-                newCategory.trackers.forEach {
-                    let trackerCoreData = TrackerCoreData(context: context)
-                    trackerCoreData.id = $0.id.uuidString
-                    trackerCoreData.title = $0.title
-                    trackerCoreData.colorHex = UIColorMarshalling.serilizeToHex(color: $0.color)
-                    trackerCoreData.emoji = $0.emoji
-                    trackerCoreData.type = Int16($0.type.rawValue)
-                    
-                    let schedule = $0.schedule?.reduce("") { $0 + "," + $1.englishStringRepresentation }
-                    trackerCoreData.weekDays = schedule
-                    
-                    category.addToTrackers(trackerCoreData)
-                }
-                try context.save()
-            }
-        }
-    }
+    func add(newCategory: TrackerCategory) throws {}
     
     func delete(_ record: NSManagedObject) throws {
         try performSync { context in
