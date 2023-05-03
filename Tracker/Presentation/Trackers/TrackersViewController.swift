@@ -11,6 +11,7 @@ protocol TrackersViewControllerProtocol: AnyObject, AlertPresenterServiceDelegat
     var presenter: TrackersViewPresenterFullProtocol? { get set }
     var isPlaceholderViewHidden: Bool { get set }
     func didRecieveTrackers(indexPaths: [IndexPath]?)
+    func didRecieveTrackers(_ update: TrackersStoreUpdate)
     func showPlaceholderViewForCurrentDay()
     func showPlaceholderViewForEmptySearch()
     func showOrHidePlaceholderView(isHide: Bool)
@@ -45,11 +46,20 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        presenter?.requestTrackers(for: currentDate)
+//        presenter?.requestTrackers(for: currentDate)
     }
     
     func didRecieveTrackers(indexPaths: [IndexPath]?) {
         collectionView?.reloadData()
+    }
+    
+    func didRecieveTrackers(_ update: TrackersStoreUpdate) {
+        collectionView?.performBatchUpdates {
+            let insertedIndexPaths = update.insertedIndexes.map { IndexPath(item: $0, section: 0) }
+            let deletedIndexPaths = update.deletedIndexes.map { IndexPath(item: $0, section: 0) }
+            collectionView?.insertItems(at: insertedIndexPaths)
+            collectionView?.deleteItems(at: deletedIndexPaths)
+        }
     }
 }
 

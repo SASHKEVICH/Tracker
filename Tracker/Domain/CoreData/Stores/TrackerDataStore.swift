@@ -40,5 +40,9 @@ extension TrackerDataStore {
     var managedObjectContext: NSManagedObjectContext {
         context
     }
+    
+    func add(tracker: TrackerCoreData, in category: TrackerCategoryCoreData) throws {
+        category.addToTrackers(tracker)
+        try context.save()
     }
 }

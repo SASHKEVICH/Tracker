@@ -76,7 +76,8 @@ extension TrackersViewPresenterCollectionHelper {
             assertionFailure("Presenter is nil")
             return 0
         }
-        return presenter.visibleCategories[section].trackers.count
+//        return presenter.visibleCategories[section].trackers.count
+        return presenter.numberOfItemsInSection(section)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -84,7 +85,8 @@ extension TrackersViewPresenterCollectionHelper {
             assertionFailure("Presenter is nil")
             return 0
         }
-        return presenter.visibleCategories.count
+//        return presenter.visibleCategories.count
+        return presenter.numberOfSections
     }
     
     func collectionView(
@@ -95,14 +97,15 @@ extension TrackersViewPresenterCollectionHelper {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier,
                 for: indexPath) as? TrackersCollectionViewCell,
-            let presenter = presenter
+            let presenter = presenter,
+            let tracker = presenter.tracker(at: indexPath)
         else {
             assertionFailure("Cannot dequeue cell or presenter is nil")
             return UICollectionViewCell()
         }
         
-        let section = presenter.visibleCategories[indexPath.section]
-        let tracker = section.trackers[indexPath.row]
+//        let section = presenter.visibleCategories[indexPath.section]
+//        let tracker = section.trackers[indexPath.row]
         
         cell.tracker = tracker
         let doesTrackerStoredInCompletedTrackersForCurrentDate = presenter
@@ -137,7 +140,7 @@ extension TrackersViewPresenterCollectionHelper {
             return UICollectionReusableView()
         }
         
-        view.headerText = presenter?.visibleCategories[indexPath.section].title
+        view.headerText = presenter?.categoryTitle(at: indexPath)
         return view
     }
 }

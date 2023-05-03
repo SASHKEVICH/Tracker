@@ -7,13 +7,15 @@
 
 import UIKit
 
+protocol TrackersServiceDataSourceProtocol {
+    var numberOfSections: Int { get }
+    func numberOfItemsInSection(_ section: Int) -> Int
+    func tracker(at indexPath: IndexPath) -> Tracker?
+    func categoryTitle(at indexPath: IndexPath) -> String?
+}
+
 protocol TrackersServiceAddingProtocol {
     func addTracker(title: String, schedule: Set<WeekDay>, type: TrackerType, color: UIColor, emoji: String)
-    func addCategory(title: String, trackers: [Tracker])
-    func category(at indexPath: IndexPath) -> TrackerCategory?
-    func allCategories() -> [TrackerCategory]
-    func removeCategory(at indexPath: IndexPath)
-    func fetchTrackers(for currentDate: Date)
 }
 
 protocol TrackersServiceCompletingProtocol {
@@ -22,10 +24,13 @@ protocol TrackersServiceCompletingProtocol {
 }
 
 protocol TrackersServiceFetchingProtocol {
+    var trackersDataProviderDelegate: TrackersDataProviderDelegate? { get set }
     var categories: [TrackerCategory] { get }
     var completedTrackers: Set<TrackerRecord> { get }
     func fetchTrackers(for weekDay: WeekDay) -> [TrackerCategory]?
     func requestFilterDesiredTrackers(searchText: String) -> [TrackerCategory]
+    
+    func requestDataProviderErrorAlert()
 }
 
 typealias TrackersServiceFetchingCompletingProtocol =
@@ -36,12 +41,18 @@ typealias TrackersServiceProtocol =
     TrackersServiceAddingProtocol
     & TrackersServiceCompletingProtocol
     & TrackersServiceFetchingProtocol
+    & TrackersServiceDataSourceProtocol
 
 final class TrackersService {
     static var shared: TrackersServiceProtocol = TrackersService()
     
-    private var trackersDataProvider: TrackersDataProviderProtocol?
-    weak var dataProviderDelegate: TrackersDataProviderDelegate?
+    private let trackersDataProvider: TrackersDataProvider?
+    
+    var trackersDataProviderDelegate: TrackersDataProviderDelegate? {
+        didSet {
+            trackersDataProvider?.delegate = trackersDataProviderDelegate
+        }
+    }
     
     private var privateCompletedTrackers: Set<TrackerRecord> = [
         TrackerRecord(
@@ -50,7 +61,7 @@ final class TrackersService {
     ]
     
     private var privateCategories: [TrackerCategory] = [
-        TrackerCategory(title: "Категория 1", trackers: [
+        TrackerCategory(id: UUID(), title: "Категория 1", trackers: [
             Tracker(
                 id: UUID(uuidString: "7E5D6688-A3F1-480E-8EE1-485A7E441E38")!,
                 type: .tracker,
@@ -82,19 +93,33 @@ final class TrackersService {
         ])
     ]
     
-    init(trackersDataProvider: TrackersDataProviderProtocol?) {
-        self.trackersDataProvider = trackersDataProvider
+    private init(trackerDataProvider: TrackersDataProvider?) {
+        self.trackersDataProvider = trackerDataProvider
     }
     
-    convenience init() {
-        self.init(trackersDataProvider: try? TrackersDataProvider())
+    private convenience init() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let trackerDataStore = appDelegate.trackerDataStore
+        let trackerCategoryDataStore = appDelegate.trackerCategoryDataStore
+        let trackerRecordDataStore = appDelegate.trackerRecordDataStore
         
-        self.trackersDataProvider?.delegate = dataProviderDelegate
+        if let trackerDataProvider = TrackersDataProvider(
+            trackerDataStore: trackerDataStore,
+            trackerCategoryDataStore: trackerCategoryDataStore,
+            trackerRecordDataStore: trackerRecordDataStore
+        ) {
+            self.init(trackerDataProvider: trackerDataProvider)
+        } else {
+            self.init(trackerDataProvider: nil)
+            self.requestDataProviderErrorAlert()
+        }
     }
 }
 
 // MARK: - Fetching methods
 extension TrackersService: TrackersServiceFetchingProtocol {
+    func requestDataProviderErrorAlert() { print("data provider error") }
+    
     var categories: [TrackerCategory] {
         get {
             privateCategories
@@ -116,7 +141,7 @@ extension TrackersService: TrackersServiceFetchingProtocol {
             
             if categoryTrackers.isEmpty { return nil }
             
-            return TrackerCategory(title: oldCategory.title, trackers: categoryTrackers)
+            return TrackerCategory(id: oldCategory.id, title: oldCategory.title, trackers: categoryTrackers)
         }
         
         return filteredCategories
@@ -134,7 +159,7 @@ extension TrackersService: TrackersServiceFetchingProtocol {
             
             guard !filteredTrackers.isEmpty else { return nil }
             
-            return TrackerCategory(title: category.title, trackers: filteredTrackers)
+            return TrackerCategory(id: category.id, title: category.title, trackers: filteredTrackers)
         }
         
         return filteredCategories
@@ -157,6 +182,32 @@ extension TrackersService: TrackersServiceCompletingProtocol {
 }
 
 extension TrackersService: TrackersServiceAddingProtocol {
+//    func addTracker(
+//        title: String,
+//        schedule: Set<WeekDay>,
+//        type: TrackerType,
+//        color: UIColor,
+//        emoji: String
+//    ) {
+//        let scheduleArray = schedule.map { $0 }
+//        let newTracker = Tracker(
+//            id: UUID(),
+//            type: type,
+//            title: title,
+//            color: color,
+//            emoji: emoji,
+//            schedule: scheduleArray)
+//
+//        let oldCategory = privateCategories[0]
+//        var trackers = oldCategory.trackers
+//        trackers.append(newTracker)
+//
+//        let newCategory = TrackerCategory(title: oldCategory.title, trackers: trackers)
+//
+//        privateCategories.removeAll(where: { $0.title == oldCategory.title })
+//        privateCategories.append(newCategory)
+//    }
+    
     func addTracker(
         title: String,
         schedule: Set<WeekDay>,
@@ -164,44 +215,46 @@ extension TrackersService: TrackersServiceAddingProtocol {
         color: UIColor,
         emoji: String
     ) {
-        let scheduleArray = schedule.map { $0 }
-        let newTracker = Tracker(
+        let categoryName = "Категория 1"
+        let tracker = Tracker(
             id: UUID(),
             type: type,
             title: title,
             color: color,
             emoji: emoji,
-            schedule: scheduleArray)
+            schedule: Array(schedule))
         
-        let oldCategory = privateCategories[0]
-        var trackers = oldCategory.trackers
-        trackers.append(newTracker)
+        try? trackersDataProvider?.add(tracker: tracker, for: categoryName)
+    }
+}
+
+extension TrackersService: TrackersServiceDataSourceProtocol {
+    var numberOfSections: Int {
+        trackersDataProvider?.numberOfSections ?? 0
+    }
+    
+    func numberOfItemsInSection(_ section: Int) -> Int {
+        trackersDataProvider?.numberOfItemsInSection(section) ?? 0
+    }
+    
+    func categoryTitle(at indexPath: IndexPath) -> String? {
+        trackersDataProvider?.categoryTitle(at: indexPath)
+    }
+    
+    func tracker(at indexPath: IndexPath) -> Tracker? {
+        guard
+            let trackerCoreData = trackersDataProvider?.tracker(at: indexPath),
+            let id = UUID(uuidString: trackerCoreData.id),
+            let type = TrackerType(rawValue: Int(trackerCoreData.type)),
+            let color = UIColorMarshalling.deserilizeFrom(hex: trackerCoreData.colorHex)
+        else { return nil }
         
-        let newCategory = TrackerCategory(title: oldCategory.title, trackers: trackers)
-        
-        privateCategories.removeAll(where: { $0.title == oldCategory.title })
-        privateCategories.append(newCategory)
-    }
-    
-    func addCategory(title: String, trackers: [Tracker]) {
-        let category = TrackerCategory(title: title, trackers: trackers)
-        trackersDataProvider?.add(category: category)
-    }
-    
-    func category(at indexPath: IndexPath) -> TrackerCategory? {
-        trackersDataProvider?.object(at: indexPath)
-    }
-    
-    func removeCategory(at indexPath: IndexPath) {
-        trackersDataProvider?.removeCategory(at: indexPath)
-    }
-    
-    func allCategories() -> [TrackerCategory] {
-        trackersDataProvider?.allCategories() ?? []
-    }
-    
-    func fetchTrackers(for currentDate: Date) {
-        guard let weekday = currentDate.weekDay else { return }
-        trackersDataProvider?.fetchTrackers(for: weekday.englishStringRepresentation)
+        return Tracker(
+            id: id,
+            type: type,
+            title: trackerCoreData.title,
+            color: color,
+            emoji: trackerCoreData.emoji,
+            schedule: nil)
     }
 }

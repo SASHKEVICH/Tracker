@@ -30,6 +30,7 @@ final class TrackerCategoryDataStore {
         self.container = container
         self.context = container.viewContext
         
+        checkCategoryExistence()
     }
     
     deinit {
@@ -41,6 +42,17 @@ extension TrackerCategoryDataStore {
     var managedObjectContext: NSManagedObjectContext {
         context
     }
+    
+    func category(with name: String) -> TrackerCategoryCoreData? {
+        let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
+        let predicate = NSPredicate(format: "%K MATCHES[cd] %@", #keyPath(TrackerCategoryCoreData.title), name)
+        request.predicate = predicate
+        request.fetchLimit = 1
+        
+        let categoriesCoreData = try? context.fetch(request)
+        return categoriesCoreData?.first
+    }
+    
     func add(newCategory: TrackerCategory) throws {
         try performSync { context in
             Result {
@@ -75,3 +87,21 @@ extension TrackerCategoryDataStore {
     }
 }
 
+private extension TrackerCategoryDataStore {
+    func checkCategoryExistence() {
+        let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
+        let count = try? context.count(for: request)
+        
+        if let count = count, count == 0 {
+            createDefaultCategory()
+        }
+    }
+    
+    func createDefaultCategory() {
+        let trackerCategoryCoreData = TrackerCategoryCoreData(context: context)
+        trackerCategoryCoreData.id = UUID().uuidString
+        trackerCategoryCoreData.title = "Категория 1"
+        trackerCategoryCoreData.trackers = NSSet()
+        try? context.save()
+    }
+}
