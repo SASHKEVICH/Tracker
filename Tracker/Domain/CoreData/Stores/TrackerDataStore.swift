@@ -12,11 +12,6 @@ final class TrackerDataStore {
     private let container: NSPersistentContainer
     private let context: NSManagedObjectContext
     
-    init(context: NSManagedObjectContext, container: NSPersistentContainer) {
-        self.container = container
-        self.context = context
-    }
-    
     private func performSync<R>(_ action: (NSManagedObjectContext) -> Result<R, Error>) throws -> R {
         let context = self.context
         var result: Result<R, Error>!
@@ -31,13 +26,19 @@ final class TrackerDataStore {
         }
     }
     
+    init(container: NSPersistentContainer) {
+        self.container = container
+        self.context = container.viewContext
+    }
+    
     deinit {
         cleanUpReferencesToPersistentStores()
     }
 }
 
 extension TrackerDataStore {
-    func add(tracker: TrackerCoreData, for category: TrackerCategoryCoreData) throws {
-        
+    var managedObjectContext: NSManagedObjectContext {
+        context
+    }
     }
 }

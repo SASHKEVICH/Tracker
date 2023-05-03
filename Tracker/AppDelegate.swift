@@ -30,13 +30,26 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
     
-    func getPersistentContainer() throws -> NSPersistentContainer {
+    lazy var persistentContainer: NSPersistentContainer? = {
         let containerCreater = PersistentContainerCreater()
-        do {
-            let container = try containerCreater.persistentContainer()
-            return container
-        } catch {
-            throw PersistentContainerError.cannotLoadPersistentContainer
-        }
-    }
+        return try? containerCreater.persistentContainer()
+    }()
+    
+    lazy var trackerDataStore: TrackerDataStore? = {
+        guard let container = self.persistentContainer else { return nil }
+        let trackerDataStore = TrackerDataStore(container: container)
+        return trackerDataStore
+    }()
+    
+    lazy var trackerCategoryDataStore: TrackerCategoryDataStore? = {
+        guard let container = self.persistentContainer else { return nil }
+        let trackerCategoryDataStore = TrackerCategoryDataStore(container: container)
+        return trackerCategoryDataStore
+    }()
+    
+    lazy var trackerRecordDataStore: TrackerRecordDataStore? = {
+        guard let container = self.persistentContainer else { return nil }
+        let trackerRecordDataStore = TrackerRecordDataStore(container: container)
+        return trackerRecordDataStore
+    }()
 }

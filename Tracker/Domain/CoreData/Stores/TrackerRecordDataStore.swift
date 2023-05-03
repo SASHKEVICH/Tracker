@@ -12,8 +12,14 @@ final class TrackerRecordDataStore {
     private let container: NSPersistentContainer
     private let context: NSManagedObjectContext
     
-    init(context: NSManagedObjectContext, container: NSPersistentContainer) {
+    init(container: NSPersistentContainer) {
         self.container = container
-        self.context = context
+        self.context = container.viewContext
+    }
+}
+
+extension TrackerRecordDataStore {
+    var managedObjectContext: NSManagedObjectContext {
+        context
     }
 }
