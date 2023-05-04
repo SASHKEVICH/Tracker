@@ -9,12 +9,10 @@ import Foundation
 import CoreData
 
 final class TrackerRecordDataStore {
-    private let container: NSPersistentContainer
     private let context: NSManagedObjectContext
     
-    init(container: NSPersistentContainer) {
-        self.container = container
-        self.context = container.viewContext
+    init(context: NSManagedObjectContext) {
+        self.context = context
     }
 }
 

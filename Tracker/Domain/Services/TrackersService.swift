@@ -43,6 +43,7 @@ typealias TrackersServiceProtocol =
     & TrackersServiceFetchingProtocol
     & TrackersServiceDataSourceProtocol
 
+// MARK: - TrackersService
 final class TrackersService {
     static var shared: TrackersServiceProtocol = TrackersService()
     
@@ -77,18 +78,18 @@ final class TrackersService {
     }
 }
 
-// MARK: - Fetching methods
+// MARK: - TrackersServiceFetchingProtocol
 extension TrackersService: TrackersServiceFetchingProtocol {
     func requestDataProviderErrorAlert() { print("data provider error") }
     
     func fetchTrackers(weekDay: WeekDay) {
         trackersDataProvider?.fetchTrackers(currentWeekDay: weekDay)
-//        trackersDataProviderDelegate?.didRecievedTrackers()
+        trackersDataProviderDelegate?.didRecievedTrackers()
     }
     
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay) {
         trackersDataProvider?.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: currentWeekDay)
-//        trackersDataProviderDelegate?.didRecievedTrackers()
+        trackersDataProviderDelegate?.didRecievedTrackers()
     }
     
     func fetchCompletedRecords(date: Date) -> [TrackerRecord] {
@@ -105,7 +106,7 @@ extension TrackersService: TrackersServiceFetchingProtocol {
     }
 }
 
-// MARK: Completing and incompleting trackers
+// MARK: - TrackersServiceCompletingProtocol
 extension TrackersService: TrackersServiceCompletingProtocol {
     func completeTracker(trackerId: UUID, date: Date) {
         trackersDataProvider?.completeTracker(with: trackerId.uuidString, date: date)
@@ -116,6 +117,7 @@ extension TrackersService: TrackersServiceCompletingProtocol {
     }
 }
 
+// MARK: - TrackersServiceAddingProtocol
 extension TrackersService: TrackersServiceAddingProtocol {    
     func addTracker(
         title: String,
@@ -138,6 +140,7 @@ extension TrackersService: TrackersServiceAddingProtocol {
     }
 }
 
+// MARK: - TrackersServiceDataSourceProtocol
 extension TrackersService: TrackersServiceDataSourceProtocol {
     var numberOfSections: Int {
         trackersDataProvider?.numberOfSections ?? 0

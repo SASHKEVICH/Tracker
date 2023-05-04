@@ -16,9 +16,13 @@ protocol AlertPresenterSerivceProtocol {
     func requestAlert(_ alertModel: AlertModel)
 }
 
-struct AlertPresenterService: AlertPresenterSerivceProtocol {
+// MARK: - AlertPresenterService
+struct AlertPresenterService {
     weak var delegate: AlertPresenterServiceDelegate?
-    
+}
+
+// MARK: - AlertPresenterSerivceProtocol
+extension AlertPresenterService: AlertPresenterSerivceProtocol {
     func requestAlert(_ alertModel: AlertModel) {
         guard let delegate = delegate else { return }
         let alertController = UIAlertController(

@@ -9,32 +9,12 @@ import Foundation
 import CoreData
 
 final class TrackerCategoryDataStore {
-    private let container: NSPersistentContainer
     private let context: NSManagedObjectContext
     
-    private func performSync<R>(_ action: (NSManagedObjectContext) -> Result<R, Error>) throws -> R {
-        let context = self.context
-        var result: Result<R, Error>!
-        context.performAndWait { result = action(context) }
-        return try result.get()
-    }
-    
-    private func cleanUpReferencesToPersistentStores() {
-        context.performAndWait {
-            let coordinator = self.container.persistentStoreCoordinator
-            try? coordinator.persistentStores.forEach(coordinator.remove)
-        }
-    }
-    
-    init(container: NSPersistentContainer) {
-        self.container = container
-        self.context = container.viewContext
+    init(context: NSManagedObjectContext) {
+        self.context = context
         
         checkCategoryExistence()
-    }
-    
-    deinit {
-        cleanUpReferencesToPersistentStores()
     }
 }
 
@@ -56,12 +36,8 @@ extension TrackerCategoryDataStore {
     func add(newCategory: TrackerCategory) throws {}
     
     func delete(_ record: NSManagedObject) throws {
-        try performSync { context in
-            Result {
-                context.delete(record)
-                try context.save()
-            }
-        }
+        context.delete(record)
+        try context.save()
     }
 }
 

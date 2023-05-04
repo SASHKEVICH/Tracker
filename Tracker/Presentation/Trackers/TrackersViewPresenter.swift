@@ -33,7 +33,7 @@ protocol TrackersViewPresenterProtocol: AnyObject {
     var view: TrackersViewControllerProtocol? { get set }
     var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol? { get }
     var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol? { get }
-    var currentDate: Date { get set }
+    var currentDate: Date { get }
     func requestTrackers(for date: Date)
     func viewDidLoad()
 }
@@ -75,23 +75,25 @@ extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
         guard let weekDay = date.weekDay else { return }
         self.currentDate = date
         
-        fetchCompletedTrackersForCurrentDate()
-        
-        trackersService.fetchTrackers(weekDay: weekDay)
-        view?.didRecieveTrackers()
+        DispatchQueue.global().async { [weak self] in
+            self?.trackersService.fetchTrackers(weekDay: weekDay)
+            self?.fetchCompletedTrackersForCurrentDate()
+        }
     }
     
     func requestFilteredTrackers(for searchText: String?) {
         guard let titleSearchString = searchText, let weekDay = currentDate.weekDay else { return }
-        trackersService.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: weekDay)
         
-        fetchCompletedTrackersForCurrentDate()
-        
-        view?.didRecieveTrackers()
+        DispatchQueue.global().async { [weak self] in
+            self?.trackersService.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: weekDay)
+            self?.fetchCompletedTrackersForCurrentDate()
+        }
     }
     
     func viewDidLoad() {
-        fetchCompletedTrackersForCurrentDate()
+        DispatchQueue.global().async { [weak self] in
+            self?.fetchCompletedTrackersForCurrentDate()
+        }
     }
     
     func requestShowAllCategoriesForCurrentDay() {
@@ -172,7 +174,9 @@ extension TrackersViewPresenter: TrackersDataProviderDelegate {
     }
     
     func didRecievedTrackers() {
-        view?.didRecieveTrackers()
+        DispatchQueue.main.async { [weak self] in
+            self?.view?.didRecieveTrackers()
+        }
     }
 }
 
