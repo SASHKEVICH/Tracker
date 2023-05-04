@@ -20,6 +20,7 @@ protocol TrackersDataProviderDelegate: AnyObject {
 protocol TrackersDataProviderProtocol {
     var numberOfSections: Int { get }
     func numberOfItemsInSection(_ section: Int) -> Int
+    func fetchTrackers(for currentWeekDay: WeekDay)
     func tracker(at indexPath: IndexPath) -> TrackerCoreData?
     func categoryTitle(at indexPath: IndexPath) -> String?
     func add(tracker: Tracker, for categoryName: String) throws
@@ -42,6 +43,8 @@ final class TrackersDataProvider: NSObject {
     private var insertedIndexes: IndexSet?
     private var deletedIndexes: IndexSet?
     
+    private var currentWeekDay = Date().weekDay?.englishStringRepresentation
+    
     private lazy var fetchedResultsController: NSFetchedResultsController = {
         let request = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
         let sortDescriptors = [
@@ -49,6 +52,9 @@ final class TrackersDataProvider: NSObject {
             NSSortDescriptor(key: #keyPath(TrackerCoreData.title), ascending: true)
         ]
         request.sortDescriptors = sortDescriptors
+        
+        let predicate = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(TrackerCoreData.weekDays), currentWeekDay ?? "")
+        request.predicate = predicate
         
         let fetchedResultsController = NSFetchedResultsController(
             fetchRequest: request,
@@ -87,6 +93,13 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
     
     func numberOfItemsInSection(_ section: Int) -> Int {
         fetchedResultsController.sections?[section].numberOfObjects ?? 0
+    }
+    
+    func fetchTrackers(for currentWeekDay: WeekDay) {
+        fetchedResultsController.fetchRequest.predicate = NSPredicate(
+            format: "%K CONTAINS[cd] %@",
+            #keyPath(TrackerCoreData.weekDays), currentWeekDay.englishStringRepresentation)
+        try? fetchedResultsController.performFetch()
     }
     
     func tracker(at indexPath: IndexPath) -> TrackerCoreData? {

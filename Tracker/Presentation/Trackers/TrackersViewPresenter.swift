@@ -17,6 +17,9 @@ protocol TrackersViewPresetnerCollectionViewProtocol: AnyObject {
     func tracker(at indexPath: IndexPath) -> Tracker?
     func categoryTitle(at indexPath: IndexPath) -> String?
     
+    func didRecievedEmptyTrackers()
+    func didRecievedNonEmptyTrackers()
+    
     func complete(tracker: Tracker) throws
     func incomplete(tracker: Tracker) throws
 }
@@ -70,20 +73,22 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
 extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
     func requestTrackers(for date: Date) {
         guard let weekDay = date.weekDay else { return }
-        let fetchedCategories = trackersService.fetchTrackers(for: weekDay)
-
-        self.visibleCategories = fetchedCategories ?? []
-        self.completedTrackersRecords = trackersService.completedTrackers
-        self.currentDate = date
-
-        didRecieveTrackers()
-
-        if let fetchedCategories = fetchedCategories, fetchedCategories.isEmpty {
-            view?.showPlaceholderViewForCurrentDay()
-            return
-        }
-
-        view?.showOrHidePlaceholderView(isHide: true)
+//        let fetchedCategories = trackersService.fetchTrackers(for: weekDay)
+//
+//        self.visibleCategories = fetchedCategories ?? []
+//        self.completedTrackersRecords = trackersService.completedTrackers
+//        self.currentDate = date
+//
+//        didRecieveTrackers()
+//
+//        if let fetchedCategories = fetchedCategories, fetchedCategories.isEmpty {
+//            view?.showPlaceholderViewForCurrentDay()
+//            return
+//        }
+//
+//        view?.showOrHidePlaceholderView(isHide: true)
+        trackersService.fetchTrackers(for: weekDay)
+        view?.didRecieveTrackers(indexPaths: nil)
     }
     
     func requestFilteredTrackers(for searchText: String?) {
@@ -99,7 +104,7 @@ extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
             view?.showPlaceholderViewForEmptySearch()
             return
         }
-        view?.showOrHidePlaceholderView(isHide: true)
+        view?.shouldHidePlaceholderView(true)
     }
     
     func requestShowAllCategoriesForCurrentDay() {
@@ -123,6 +128,14 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     
     func categoryTitle(at indexPath: IndexPath) -> String? {
         trackersService.categoryTitle(at: indexPath)
+    }
+    
+    func didRecievedEmptyTrackers() {
+        view?.showPlaceholderViewForCurrentDay()
+    }
+    
+    func didRecievedNonEmptyTrackers() {
+        view?.shouldHidePlaceholderView(true)
     }
     
     func complete(tracker: Tracker) throws {
@@ -155,7 +168,6 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 extension TrackersViewPresenter: TrackersDataProviderDelegate {
     func didUpdate(_ update: TrackersStoreUpdate) {
         view?.didRecieveTrackers(update)
-        view?.showOrHidePlaceholderView(isHide: true)
     }
 }
 

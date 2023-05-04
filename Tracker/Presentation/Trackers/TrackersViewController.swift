@@ -14,7 +14,7 @@ protocol TrackersViewControllerProtocol: AnyObject, AlertPresenterServiceDelegat
     func didRecieveTrackers(_ update: TrackersStoreUpdate)
     func showPlaceholderViewForCurrentDay()
     func showPlaceholderViewForEmptySearch()
-    func showOrHidePlaceholderView(isHide: Bool)
+    func shouldHidePlaceholderView(_ isHide: Bool)
 }
 
 final class TrackersViewController: UIViewController, TrackersViewControllerProtocol {
@@ -49,7 +49,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
 //        presenter?.requestTrackers(for: currentDate)
     }
     
-    func didRecieveTrackers(indexPaths: [IndexPath]?) {
+    func didRecieveTrackers(indexPaths: [IndexPath]? = nil) {
         collectionView?.reloadData()
     }
     
@@ -146,17 +146,17 @@ extension TrackersViewController {
         configurePlaceholderView(
             image: UIImage(named: "TrackersCollectionEmptyImage"),
             text: "Что будем отслеживать?")
-        showOrHidePlaceholderView(isHide: false)
+        shouldHidePlaceholderView(false)
     }
     
     func showPlaceholderViewForEmptySearch() {
         configurePlaceholderView(
             image: UIImage(named: "TrackersCollectionEmptyTrackersListSearch"),
             text: "Ничего не найдено")
-        showOrHidePlaceholderView(isHide: false)
+        shouldHidePlaceholderView(false)
     }
     
-    func showOrHidePlaceholderView(isHide: Bool) {
+    func shouldHidePlaceholderView(_ isHide: Bool) {
         guard let placeholderView = collectionPlaceholderView else { return }
         UIView.transition(
             with: placeholderView,

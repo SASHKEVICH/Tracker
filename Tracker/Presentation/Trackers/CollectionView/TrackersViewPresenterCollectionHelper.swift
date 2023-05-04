@@ -86,6 +86,12 @@ extension TrackersViewPresenterCollectionHelper {
             return 0
         }
         
+        if presenter.numberOfSections == 0 {
+            presenter.didRecievedEmptyTrackers()
+        } else {
+            presenter.didRecievedNonEmptyTrackers()
+        }
+        
         return presenter.numberOfSections
     }
     

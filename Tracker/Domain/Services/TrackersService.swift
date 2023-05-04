@@ -27,7 +27,7 @@ protocol TrackersServiceFetchingProtocol {
     var trackersDataProviderDelegate: TrackersDataProviderDelegate? { get set }
     var categories: [TrackerCategory] { get }
     var completedTrackers: Set<TrackerRecord> { get }
-    func fetchTrackers(for weekDay: WeekDay) -> [TrackerCategory]?
+    func fetchTrackers(for weekDay: WeekDay)
     func requestFilterDesiredTrackers(searchText: String) -> [TrackerCategory]
     
     func requestDataProviderErrorAlert()
@@ -132,19 +132,20 @@ extension TrackersService: TrackersServiceFetchingProtocol {
         }
     }
     
-    func fetchTrackers(for weekDay: WeekDay) -> [TrackerCategory]? {
-        let filteredCategories = categories.compactMap { (oldCategory: TrackerCategory) -> TrackerCategory? in
-            let categoryTrackers = oldCategory.trackers.compactMap { (tracker: Tracker) -> Tracker? in
-                guard tracker.schedule.contains(weekDay) else { return nil }
-                return tracker
-            }
-            
-            if categoryTrackers.isEmpty { return nil }
-            
-            return TrackerCategory(id: oldCategory.id, title: oldCategory.title, trackers: categoryTrackers)
-        }
-        
-        return filteredCategories
+    func fetchTrackers(for weekDay: WeekDay) {
+//        let filteredCategories = categories.compactMap { (oldCategory: TrackerCategory) -> TrackerCategory? in
+//            let categoryTrackers = oldCategory.trackers.compactMap { (tracker: Tracker) -> Tracker? in
+//                guard tracker.schedule.contains(weekDay) else { return nil }
+//                return tracker
+//            }
+//
+//            if categoryTrackers.isEmpty { return nil }
+//
+//            return TrackerCategory(id: oldCategory.id, title: oldCategory.title, trackers: categoryTrackers)
+//        }
+//
+//        return filteredCategories
+        trackersDataProvider?.fetchTrackers(for: weekDay)
     }
     
     func requestFilterDesiredTrackers(searchText: String) -> [TrackerCategory] {
