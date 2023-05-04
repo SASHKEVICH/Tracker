@@ -25,10 +25,10 @@ protocol TrackersServiceCompletingProtocol {
 
 protocol TrackersServiceFetchingProtocol {
     var trackersDataProviderDelegate: TrackersDataProviderDelegate? { get set }
-    var categories: [TrackerCategory] { get }
-    var completedTrackers: Set<TrackerRecord> { get }
-    func fetchTrackers(for weekDay: WeekDay)
-    func requestFilterDesiredTrackers(searchText: String) -> [TrackerCategory]
+    func fetchTrackers(weekDay: WeekDay)
+    func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay)
+    func fetchCompletedRecords(date: Date) -> [TrackerRecord]
+    func completedTimesCount(trackerId: UUID) -> Int
     
     func requestDataProviderErrorAlert()
 }
@@ -53,45 +53,6 @@ final class TrackersService {
             trackersDataProvider?.delegate = trackersDataProviderDelegate
         }
     }
-    
-    private var privateCompletedTrackers: Set<TrackerRecord> = [
-        TrackerRecord(
-            trackerId: UUID(uuidString: "7E5D6688-A3F1-480E-8EE1-485A7E441E38")!,
-            date: Date())
-    ]
-    
-    private var privateCategories: [TrackerCategory] = [
-        TrackerCategory(id: UUID(), title: "Категория 1", trackers: [
-            Tracker(
-                id: UUID(uuidString: "7E5D6688-A3F1-480E-8EE1-485A7E441E38")!,
-                type: .tracker,
-                title: "Купить молоко",
-                color: .trackerColorSelection5,
-                emoji: "🤬",
-                schedule: [.monday, .thursday]),
-            Tracker(
-                id: UUID(),
-                type: .tracker,
-                title: "Сделать домашку",
-                color: .trackerBlue,
-                emoji: "🤯",
-                schedule: [.friday]),
-            Tracker(
-                id: UUID(),
-                type: .tracker,
-                title: "Покормить кота",
-                color: .trackerColorSelection5,
-                emoji: "🤬",
-                schedule: [.thursday]),
-            Tracker(
-                id: UUID(),
-                type: .tracker,
-                title: "Склеить гитару",
-                color: .trackerBlue,
-                emoji: "🤯",
-                schedule: [.monday])
-        ])
-    ]
     
     private init(trackerDataProvider: TrackersDataProvider?) {
         self.trackersDataProvider = trackerDataProvider
@@ -120,65 +81,38 @@ final class TrackersService {
 extension TrackersService: TrackersServiceFetchingProtocol {
     func requestDataProviderErrorAlert() { print("data provider error") }
     
-    var categories: [TrackerCategory] {
-        get {
-            privateCategories
-        }
+    func fetchTrackers(weekDay: WeekDay) {
+        trackersDataProvider?.fetchTrackers(currentWeekDay: weekDay)
+//        trackersDataProviderDelegate?.didRecievedTrackers()
     }
     
-    var completedTrackers: Set<TrackerRecord> {
-        get {
-            privateCompletedTrackers
-        }
+    func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay) {
+        trackersDataProvider?.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: currentWeekDay)
+//        trackersDataProviderDelegate?.didRecievedTrackers()
     }
     
-    func fetchTrackers(for weekDay: WeekDay) {
-//        let filteredCategories = categories.compactMap { (oldCategory: TrackerCategory) -> TrackerCategory? in
-//            let categoryTrackers = oldCategory.trackers.compactMap { (tracker: Tracker) -> Tracker? in
-//                guard tracker.schedule.contains(weekDay) else { return nil }
-//                return tracker
-//            }
-//
-//            if categoryTrackers.isEmpty { return nil }
-//
-//            return TrackerCategory(id: oldCategory.id, title: oldCategory.title, trackers: categoryTrackers)
-//        }
-//
-//        return filteredCategories
-        trackersDataProvider?.fetchTrackers(for: weekDay)
+    func fetchCompletedRecords(date: Date) -> [TrackerRecord] {
+        let trackerRecordsCoreData = trackersDataProvider?.fetchCompletedRecords(date: date)
+        let trackerRecords = trackerRecordsCoreData?.compactMap { trackerRecordCoreData -> TrackerRecord? in
+            guard let id = UUID(uuidString: trackerRecordCoreData.id) else { return nil }
+            return TrackerRecord(trackerId: id, date: trackerRecordCoreData.date)
+        }
+        return trackerRecords ?? []
     }
     
-    func requestFilterDesiredTrackers(searchText: String) -> [TrackerCategory] {
-        guard !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        else { return [] }
-        
-        let lowercasedSearchText = searchText.lowercased()
-        let filteredCategories: [TrackerCategory] = categories.compactMap { category -> TrackerCategory? in
-            let filteredTrackers = category.trackers.filter {
-                $0.title.lowercased().hasPrefix(lowercasedSearchText)
-            }
-            
-            guard !filteredTrackers.isEmpty else { return nil }
-            
-            return TrackerCategory(id: category.id, title: category.title, trackers: filteredTrackers)
-        }
-        
-        return filteredCategories
+    func completedTimesCount(trackerId: UUID) -> Int {
+        trackersDataProvider?.completedTimesCount(trackerId: trackerId.uuidString) ?? 0
     }
 }
 
 // MARK: Completing and incompleting trackers
 extension TrackersService: TrackersServiceCompletingProtocol {
     func completeTracker(trackerId: UUID, date: Date) {
-        let newRecord = TrackerRecord(trackerId: trackerId, date: date)
-        privateCompletedTrackers.insert(newRecord)
+        trackersDataProvider?.completeTracker(with: trackerId.uuidString, date: date)
     }
     
     func incompleteTracker(trackerId: UUID, date: Date) {
-        guard let trackerToRemove = completedTrackers.first(
-            where: { $0.trackerId == trackerId && $0.date.isDayEqualTo(date) }
-        ) else { return }
-        privateCompletedTrackers.remove(trackerToRemove)
+        trackersDataProvider?.incompleteTracker(with: trackerId.uuidString, date: date)
     }
 }
 

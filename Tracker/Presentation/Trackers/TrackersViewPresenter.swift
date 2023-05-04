@@ -8,13 +8,13 @@
 import Foundation
 
 protocol TrackersViewPresetnerCollectionViewProtocol: AnyObject {
-    var visibleCategories: [TrackerCategory] { get }
     var completedTrackersRecords: Set<TrackerRecord> { get }
     var currentDate: Date { get }
     
     var numberOfSections: Int { get }
     func numberOfItemsInSection(_ section: Int) -> Int
     func tracker(at indexPath: IndexPath) -> Tracker?
+    func completedTimesCount(trackerId: UUID) -> Int
     func categoryTitle(at indexPath: IndexPath) -> String?
     
     func didRecievedEmptyTrackers()
@@ -35,6 +35,7 @@ protocol TrackersViewPresenterProtocol: AnyObject {
     var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol? { get }
     var currentDate: Date { get set }
     func requestTrackers(for date: Date)
+    func viewDidLoad()
 }
 
 typealias TrackersViewPresenterFullProtocol =
@@ -54,9 +55,8 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
     weak var view: TrackersViewControllerProtocol?
     var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol?
     var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol?
-
+    
     var completedTrackersRecords: Set<TrackerRecord> = []
-    var visibleCategories: [TrackerCategory] = []
     var currentDate: Date = Date()
     
     init(trackersService: TrackersServiceProtocol) {
@@ -73,42 +73,34 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
 extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
     func requestTrackers(for date: Date) {
         guard let weekDay = date.weekDay else { return }
-//        let fetchedCategories = trackersService.fetchTrackers(for: weekDay)
-//
-//        self.visibleCategories = fetchedCategories ?? []
-//        self.completedTrackersRecords = trackersService.completedTrackers
-//        self.currentDate = date
-//
-//        didRecieveTrackers()
-//
-//        if let fetchedCategories = fetchedCategories, fetchedCategories.isEmpty {
-//            view?.showPlaceholderViewForCurrentDay()
-//            return
-//        }
-//
-//        view?.showOrHidePlaceholderView(isHide: true)
-        trackersService.fetchTrackers(for: weekDay)
-        view?.didRecieveTrackers(indexPaths: nil)
+        self.currentDate = date
+        
+        fetchCompletedTrackersForCurrentDate()
+        
+        trackersService.fetchTrackers(weekDay: weekDay)
+        view?.didRecieveTrackers()
     }
     
     func requestFilteredTrackers(for searchText: String?) {
-        guard let searchText = searchText else { return }
-        let categoriesWithDesiredTrackers = trackersService.requestFilterDesiredTrackers(searchText: searchText)
+        guard let titleSearchString = searchText, let weekDay = currentDate.weekDay else { return }
+        trackersService.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: weekDay)
         
-        self.visibleCategories = categoriesWithDesiredTrackers
-        self.completedTrackersRecords = trackersService.completedTrackers
+        fetchCompletedTrackersForCurrentDate()
         
-        didRecieveTrackers()
-        
-        if categoriesWithDesiredTrackers.isEmpty {
-            view?.showPlaceholderViewForEmptySearch()
-            return
-        }
-        view?.shouldHidePlaceholderView(true)
+        view?.didRecieveTrackers()
+    }
+    
+    func viewDidLoad() {
+        fetchCompletedTrackersForCurrentDate()
     }
     
     func requestShowAllCategoriesForCurrentDay() {
         requestTrackers(for: currentDate)
+    }
+    
+    private func fetchCompletedTrackersForCurrentDate() {
+        let completedTrackersForCurrentDate = trackersService.fetchCompletedRecords(date: currentDate)
+        self.completedTrackersRecords = Set(completedTrackersForCurrentDate)
     }
 }
 
@@ -130,6 +122,10 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
         trackersService.categoryTitle(at: indexPath)
     }
     
+    func completedTimesCount(trackerId: UUID) -> Int {
+        trackersService.completedTimesCount(trackerId: trackerId)
+    }
+    
     func didRecievedEmptyTrackers() {
         view?.showPlaceholderViewForCurrentDay()
     }
@@ -139,12 +135,18 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     }
     
     func complete(tracker: Tracker) throws {
-        if isCurrentDateLaterThanToday { throw TrackersViewPresenterError.currentDateLaterThanToday }
+        if isCurrentDateLaterThanToday {
+            requestChosenFutureDateAlert()
+            throw TrackersViewPresenterError.currentDateLaterThanToday
+        }
         trackersService.completeTracker(trackerId: tracker.id, date: currentDate)
     }
     
     func incomplete(tracker: Tracker) throws {
-        if isCurrentDateLaterThanToday { throw TrackersViewPresenterError.currentDateLaterThanToday }
+        if isCurrentDateLaterThanToday {
+            requestChosenFutureDateAlert()
+            throw TrackersViewPresenterError.currentDateLaterThanToday
+        }
         trackersService.incompleteTracker(trackerId: tracker.id, date: currentDate)
     }
     
@@ -159,15 +161,18 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     
     private var isCurrentDateLaterThanToday: Bool {
         guard currentDate > Date() else { return false }
-        requestChosenFutureDateAlert()
         return true
     }
 }
 
 // MARK: - TrackersDataProviderDelegate
 extension TrackersViewPresenter: TrackersDataProviderDelegate {
-    func didUpdate(_ update: TrackersStoreUpdate) {
-        view?.didRecieveTrackers(update)
+    func didUpdate(update: TrackersStoreUpdate) {
+        view?.didRecieveTrackers()
+    }
+    
+    func didRecievedTrackers() {
+        view?.didRecieveTrackers()
     }
 }
 
@@ -187,21 +192,6 @@ private extension TrackersViewPresenter {
 }
 
 private extension TrackersViewPresenter {
-    func didRecieveTrackers() {
-        let indexPaths = getIndexPathsForTrackers()
-        view?.didRecieveTrackers(indexPaths: indexPaths)
-    }
-    
-    func getIndexPathsForTrackers() -> [IndexPath]? {
-        let indexPaths = visibleCategories.enumerated().flatMap { categoryIndex, category in
-            let enumeratedTrackers = category.trackers.enumerated()
-            return enumeratedTrackers.map { trackerIndex, _ in
-                IndexPath(row: trackerIndex, section: categoryIndex)
-            }
-        }
-        return indexPaths
-    }
-    
     func addNewTrackerNotificationObserver() {
         newTrackerNotifacationObserver = NotificationCenter.default
             .addObserver(

@@ -117,13 +117,9 @@ extension TrackersViewPresenterCollectionHelper {
               
         if doesTrackerStoredInCompletedTrackersForCurrentDate {
             cell.state = .completed
-            
-            let dayCount = presenter.completedTrackersRecords
-                .filter { $0.trackerId == tracker.id }
-                .count
-            cell.dayCount = dayCount
         }
         
+        cell.dayCount = completedTimesCount(trackerId: tracker.id)
         cell.delegate = self
         
         return cell
@@ -154,13 +150,21 @@ extension TrackersViewPresenterCollectionHelper: TrackersViewPresenterCollection
         guard let tracker = cell.tracker else { return }
         
         if cell.state == .completed {
-            guard let _ = try? presenter?.incomplete(tracker: tracker) else { return }
-            cell.dayCount -= 1
+            try? presenter?.incomplete(tracker: tracker)
         } else {
-            guard let _ = try? presenter?.complete(tracker: tracker) else { return }
-            cell.dayCount += 1
+            try? presenter?.complete(tracker: tracker)
         }
         
+        cell.dayCount = completedTimesCount(trackerId: tracker.id)
         cell.state = cell.state == .completed ? .incompleted : .completed
+    }
+    
+    private func completedTimesCount(trackerId: UUID) -> Int {
+        guard let presenter = presenter else {
+            assertionFailure("presenter is nil")
+            return 0
+        }
+        
+        return presenter.completedTimesCount(trackerId: trackerId)
     }
 }
