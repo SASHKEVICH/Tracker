@@ -46,14 +46,19 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: TrackerScheduleTableViewCell.identifier,
-            for: indexPath) as? TrackerScheduleTableViewCell
+                withIdentifier: TrackerScheduleTableViewCell.identifier,
+                for: indexPath) as? TrackerScheduleTableViewCell,
+              let presenter = presenter
         else { return UITableViewCell() }
         
-        let weekDay = presenter?.weekDays[indexPath.row]
+        let weekDay = presenter.weekDays[indexPath.row]
         cell.weekDay = weekDay
-        cell.cellTitle = weekDay?.fullStringRepresentaion
+        cell.cellTitle = weekDay.fullStringRepresentaion
         cell.delegate = self
+        
+        if presenter.selectedWeekDays.contains(weekDay) {
+            cell.isDaySwitchOn = true
+        }
         
         if indexPath.row == 0 {
             return cell.setupFirstCellInTableView()

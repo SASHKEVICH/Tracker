@@ -30,6 +30,13 @@ final class TrackerScheduleTableViewCell: UITableViewCell {
             cellTitleLabel.sizeToFit()
         }
     }
+    
+    var isDaySwitchOn: Bool {
+        get { daySwitch.isOn }
+        set {
+            daySwitch.isOn = newValue
+        }
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

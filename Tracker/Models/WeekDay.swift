@@ -7,14 +7,14 @@
 
 import Foundation
 
-enum WeekDay: Int, Comparable, CaseIterable {
-    case monday = 1
+enum WeekDay: Int, Comparable, CaseIterable, Codable {
+    case sunday = 1
+    case monday
     case tuesday
     case wednesday
     case thursday
     case friday
     case saturday
-    case sunday
     
     var fullStringRepresentaion: String {
         switch self {
@@ -37,6 +37,18 @@ enum WeekDay: Int, Comparable, CaseIterable {
         case .friday: return "Пт"
         case .saturday: return "Сб"
         case .sunday: return "Вс"
+        }
+    }
+    
+    var englishStringRepresentation: String {
+        switch self {
+        case .monday: return "monday"
+        case .tuesday: return "tuesday"
+        case .wednesday: return "wednesday"
+        case .thursday: return "thursday"
+        case .friday: return "friday"
+        case .saturday: return "saturday"
+        case .sunday: return "sunday"
         }
     }
     

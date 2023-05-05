@@ -5,20 +5,29 @@
 //  Created by Александр Бекренев on 14.04.2023.
 //
 
-import Foundation
+import UIKit
+
+protocol AddTrackerViewPresenterEmojisCollectionViewHelperProtocol: AnyObject {
+    func didSelect(emoji: String)
+}
+
+protocol AddTrackerViewPresenterCollectionColorsViewHelperProtocol: AnyObject {
+    func didSelect(color: UIColor)
+}
 
 protocol AddTrackerViewPresenterTableViewHelperProtocol: AnyObject {
     var optionsTitles: [String]? { get }
-    var selectedWeekDays: Set<WeekDay>? { get }
+    var selectedWeekDays: Set<WeekDay> { get }
     func didTapTrackerScheduleCell()
 }
 
-protocol AddTrackerViewPresenterProtocol: AnyObject, AddTrackerViewPresenterTableViewHelperProtocol {
+protocol AddTrackerViewPresenterProtocol: AnyObject {
     var view: AddTrackerViewControllerProtocol? { get set }
-    var trackerTitle: String? { get set }
     var tableViewHelper: TrackerOptionsTableViewHelperProtocol? { get }
     var textFieldHelper: TrackerTitleTextFieldHelperProtocol? { get }
-    func viewDidLoad(type: TrackerType)
+    var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol? { get }
+    var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol? { get }
+    func viewDidLoad()
     func didChangeTrackerTitle(_ title: String?)
     func didConfirmAddTracker()
     func didRecieveSelectedTrackerSchedule(_ weekDays: Set<WeekDay>)
@@ -29,12 +38,15 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
     
     weak var view: AddTrackerViewControllerProtocol?
     
-    private var trackersService: TrackersServiceAddingProtocol = TrackersService.shared
+    private let trackersService: TrackersServiceAddingProtocol
+    private let trackerType: TrackerType
     
     var optionsTitles: [String]?
     
     var tableViewHelper: TrackerOptionsTableViewHelperProtocol?
     var textFieldHelper: TrackerTitleTextFieldHelperProtocol?
+    var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol?
+    var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol?
     
     private var isErrorLabelHidden: Bool? {
         didSet {
@@ -42,30 +54,55 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
         }
     }
     
-    var trackerTitle: String? {
+    private var trackerTitle: String? {
         didSet {
             checkToEnablingAddTrackerButton()
         }
     }
     
-    var selectedWeekDays: Set<WeekDay>? {
+    private var selectedTrackerEmoji: String? {
         didSet {
             checkToEnablingAddTrackerButton()
         }
     }
-
-    init() {
+    
+    private var selectedTrackerColor: UIColor? {
+        didSet {
+            checkToEnablingAddTrackerButton()
+        }
+    }
+    
+    private var doesItNeedToWaitSelectedWeekdays: Bool {
+        switch trackerType {
+        case .tracker:
+            return selectedWeekDays.isEmpty
+        case .irregularEvent:
+            return false
+        }
+    }
+    
+    var selectedWeekDays: Set<WeekDay> = [] {
+        didSet {
+            checkToEnablingAddTrackerButton()
+        }
+    }
+    
+    init(
+        trackersService: TrackersServiceAddingProtocol,
+        trackerType: TrackerType
+    ) {
+        self.trackerType = trackerType
+        self.trackersService = trackersService
+        
         setupTableViewHelper()
         setupTextFieldHelper()
+        setupColorsCollectionViewHelper()
+        setupEmojisCollectionViewHelper()
     }
 }
 
-// MARK: - Internal methods
-extension AddTrackerViewPresenter {
-    func viewDidLoad(type: TrackerType) {
-        setupOptionsTitles(type: type)
-    }
-    
+// MARK: - AddTrackerViewPresenterTableViewHelperProtocol
+extension AddTrackerViewPresenter: AddTrackerViewPresenterTableViewHelperProtocol {
     func didTapTrackerScheduleCell() {
         let vc = TrackerScheduleViewController()
         vc.delegate = view
@@ -75,7 +112,30 @@ extension AddTrackerViewPresenter {
         vc.presenter = presenter
         presenter.view = vc
         
+        presenter.selectedWeekDays = selectedWeekDays
+        
         view?.didTapTrackerScheduleCell(vc)
+    }
+}
+
+// MARK: - AddTrackerViewPresenterCollectionColorsViewHelperProtocol
+extension AddTrackerViewPresenter: AddTrackerViewPresenterCollectionColorsViewHelperProtocol {
+    func didSelect(color: UIColor) {
+        selectedTrackerColor = color
+    }
+}
+
+// MARK: - AddTrackerViewPresenterEmojisCollectionViewHelperProtocol
+extension AddTrackerViewPresenter: AddTrackerViewPresenterEmojisCollectionViewHelperProtocol {
+    func didSelect(emoji: String) {
+        selectedTrackerEmoji = emoji
+    }
+}
+
+// MARK: - Internal methods
+extension AddTrackerViewPresenter {
+    func viewDidLoad() {
+        setupViewController(for: trackerType)
     }
     
     func didChangeTrackerTitle(_ title: String?) {
@@ -90,8 +150,20 @@ extension AddTrackerViewPresenter {
     }
     
     func didConfirmAddTracker() {
-        guard let title = trackerTitle, let schedule = selectedWeekDays else { return }
-        trackersService.addTracker(title: title, schedule: schedule)
+        guard
+            let title = trackerTitle,
+            let color = selectedTrackerColor,
+            let emoji = selectedTrackerEmoji
+        else { return }
+        
+        let schedule: Set<WeekDay> = trackerType == .irregularEvent ? Set(WeekDay.allCases) : selectedWeekDays
+        
+        trackersService.addTracker(
+            title: title,
+            schedule: schedule,
+            type: trackerType,
+            color: color,
+            emoji: emoji)
         postAddingTrackerNotification()
     }
     
@@ -114,21 +186,26 @@ private extension AddTrackerViewPresenter {
         self.textFieldHelper = textFieldHelper
     }
     
-    func setupOptionsTitles(type: TrackerType) {
+    func setupColorsCollectionViewHelper() {
+        let colorsCollectionViewHelper = ColorsCollectionViewHelper()
+        colorsCollectionViewHelper.presenter = self
+        self.colorsCollectionViewHelper = colorsCollectionViewHelper
+    }
+    
+    func setupEmojisCollectionViewHelper() {
+        let emojisCollectionViewHelper = EmojisCollectionViewHelper()
+        emojisCollectionViewHelper.presenter = self
+        self.emojisCollectionViewHelper = emojisCollectionViewHelper
+    }
+    
+    func setupViewController(for type: TrackerType) {
         switch type {
         case .tracker:
             self.optionsTitles = ["Категория", "Расписание"]
+            view?.setViewControllerTitle("Новая привычка")
         case .irregularEvent:
             self.optionsTitles = ["Категория"]
-        }
-    }
-    
-    func checkToEnablingAddTrackerButton() {
-        guard let trackerTitle = trackerTitle, let isErrorLabelHidden = isErrorLabelHidden else { return }
-        if !trackerTitle.isEmpty && isErrorLabelHidden && selectedWeekDays != nil {
-            view?.enableAddButton()
-        } else {
-            view?.disableAddButton()
+            view?.setViewControllerTitle("Новое нерегулярное событие")
         }
     }
     
@@ -136,5 +213,23 @@ private extension AddTrackerViewPresenter {
         NotificationCenter.default
             .post(name: AddTrackerViewPresenter.didAddTrackerNotificationName,
                   object: self)
+    }
+}
+
+// MARK: - Checking enabling add tracker button
+private extension AddTrackerViewPresenter {
+    func checkToEnablingAddTrackerButton() {
+        guard
+            let trackerTitle = trackerTitle,
+            let isErrorLabelHidden = isErrorLabelHidden,
+            let _ = selectedTrackerColor,
+            let _ = selectedTrackerEmoji
+        else { return }
+    
+        if !trackerTitle.isEmpty && isErrorLabelHidden && !doesItNeedToWaitSelectedWeekdays {
+            view?.enableAddButton()
+        } else {
+            view?.disableAddButton()
+        }
     }
 }

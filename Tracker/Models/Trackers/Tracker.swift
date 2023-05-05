@@ -7,10 +7,16 @@
 
 import UIKit
 
+enum TrackerType: Int {
+    case tracker = 1
+    case irregularEvent = 2
+}
+
 struct Tracker {
     let id: UUID
+    let type: TrackerType
     let title: String
     let color: UIColor
     let emoji: String
-    let schedule: [WeekDay]?
+    let schedule: [WeekDay]
 }

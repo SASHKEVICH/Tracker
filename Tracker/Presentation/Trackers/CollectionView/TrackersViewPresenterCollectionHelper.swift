@@ -11,16 +11,17 @@ protocol TrackersViewPresenterCollectionHelperCellDelegate {
     func didTapCompleteCellButton(_ cell: TrackersCollectionViewCell)
 }
 
-protocol TrackersViewPresenterCollectionHelperProtocol: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    var presenter: TrackersViewPresetnerCollectionProtocol? { get set }
+protocol TrackersViewPresenterCollectionViewHelperProtocol: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    var presenter: TrackersViewPresetnerCollectionViewProtocol? { get set }
 }
 
-final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresenterCollectionHelperProtocol {
-    weak var presenter: TrackersViewPresetnerCollectionProtocol?
-    private let collectionViewConstants = TrackerCollectionViewConstants.configuration
-    private let trackersService: TrackersServiceFetchingProtocol & TrackersServiceCompletingProtocol = TrackersService.shared
-    
-    // MARK: - UICollectionViewDelegateFlowLayout
+final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresenterCollectionViewHelperProtocol {
+    weak var presenter: TrackersViewPresetnerCollectionViewProtocol?
+    private let collectionViewConstants = TrackerCollectionViewConstants.trackersCollectionConfiguration
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension TrackersViewPresenterCollectionHelper {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -61,10 +62,12 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        CGSize(width: collectionView.frame.width, height: 51)
+        CGSize(width: collectionView.frame.width, height: 18)
     }
-    
-    // MARK: - UICollectionViewDataSource
+}
+
+// MARK: - UICollectionViewDataSource
+extension TrackersViewPresenterCollectionHelper {
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
@@ -73,7 +76,8 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
             assertionFailure("Presenter is nil")
             return 0
         }
-        return presenter.visibleCategories[section].trackers.count
+
+        return presenter.numberOfItemsInSection(section)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -81,7 +85,14 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
             assertionFailure("Presenter is nil")
             return 0
         }
-        return presenter.visibleCategories.count
+        
+        if presenter.numberOfSections == 0 {
+            presenter.didRecievedEmptyTrackers()
+        } else {
+            presenter.didRecievedNonEmptyTrackers()
+        }
+        
+        return presenter.numberOfSections
     }
     
     func collectionView(
@@ -90,16 +101,14 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
     ) -> UICollectionViewCell {
         guard
             let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier,
-            for: indexPath) as? TrackersCollectionViewCell,
-            let presenter = presenter
+                withReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier,
+                for: indexPath) as? TrackersCollectionViewCell,
+            let presenter = presenter,
+            let tracker = presenter.tracker(at: indexPath)
         else {
             assertionFailure("Cannot dequeue cell or presenter is nil")
             return UICollectionViewCell()
         }
-        
-        let section = presenter.visibleCategories[indexPath.section]
-        let tracker = section.trackers[indexPath.row]
         
         cell.tracker = tracker
         let doesTrackerStoredInCompletedTrackersForCurrentDate = presenter
@@ -108,13 +117,9 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
               
         if doesTrackerStoredInCompletedTrackersForCurrentDate {
             cell.state = .completed
-            
-            let dayCount = presenter.completedTrackersRecords
-                .filter { $0.trackerId == tracker.id }
-                .count
-            cell.dayCount = dayCount
         }
         
+        cell.dayCount = completedTimesCount(trackerId: tracker.id)
         cell.delegate = self
         
         return cell
@@ -134,7 +139,7 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
             return UICollectionReusableView()
         }
         
-        view.headerText = presenter?.visibleCategories[indexPath.section].title
+        view.headerText = presenter?.categoryTitle(at: indexPath)
         return view
     }
 }
@@ -142,24 +147,24 @@ final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresent
 // MARK: - Complete cell button handler
 extension TrackersViewPresenterCollectionHelper: TrackersViewPresenterCollectionHelperCellDelegate {
     func didTapCompleteCellButton(_ cell: TrackersCollectionViewCell) {
-        guard
-            let tracker = cell.tracker,
-            let currentDate = presenter?.currentDate
-        else { return }
-        
-        guard currentDate <= Date() else {
-            presenter?.requestChosenFutureDateAlert()
-            return
-        }
-        
-        cell.state = cell.state == .completed ? .incompleted : .completed
+        guard let tracker = cell.tracker else { return }
         
         if cell.state == .completed {
-            cell.dayCount += 1
-            trackersService.completeTracker(trackerId: tracker.id, date: currentDate)
+            guard let _ = try? presenter?.incomplete(tracker: tracker) else { return }
         } else {
-            cell.dayCount -= 1
-            trackersService.incompleteTracker(trackerId: tracker.id, date: currentDate)
+            guard let _ = try? presenter?.complete(tracker: tracker) else { return }
         }
+        
+        cell.dayCount = completedTimesCount(trackerId: tracker.id)
+        cell.state = cell.state == .completed ? .incompleted : .completed
+    }
+    
+    private func completedTimesCount(trackerId: UUID) -> Int {
+        guard let presenter = presenter else {
+            assertionFailure("presenter is nil")
+            return 0
+        }
+        
+        return presenter.completedTimesCount(trackerId: trackerId)
     }
 }

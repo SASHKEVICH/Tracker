@@ -35,9 +35,8 @@ private extension TrackersCollectionSectionHeader {
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            headerLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
             headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
-            headerLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+            headerLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
         
         headerLabel.font = UIFont.boldSystemFont(ofSize: 19)

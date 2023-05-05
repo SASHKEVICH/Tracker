@@ -8,16 +8,19 @@
 import UIKit
 
 protocol TrackersViewControllerProtocol: AnyObject, AlertPresenterServiceDelegate {
-    var presenter: TrackersViewPresenterProtocol? { get set }
+    var presenter: TrackersViewPresenterFullProtocol? { get set }
     var isPlaceholderViewHidden: Bool { get set }
-    func didRecieveTrackers(indexPaths: [IndexPath]?)
+    func didRecieveTrackers()
     func showPlaceholderViewForCurrentDay()
     func showPlaceholderViewForEmptySearch()
-    func showOrHidePlaceholderView(isHide: Bool)
+    func shouldHidePlaceholderView(_ isHide: Bool)
 }
 
 final class TrackersViewController: UIViewController, TrackersViewControllerProtocol {
-    private var collectionView: UICollectionView?
+    private let collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout())
+    
     private var placeholderImage: UIImage?
     private var placeholderText: String?
     private var searchController: UISearchController?
@@ -25,7 +28,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     
     private var currentDate: Date = Date()
     
-    var presenter: TrackersViewPresenterProtocol?
+    var presenter: TrackersViewPresenterFullProtocol?
     
     var isPlaceholderViewHidden: Bool = true {
         didSet {
@@ -35,21 +38,17 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .trackerWhiteDay
+        
+        presenter?.viewDidLoad()
+        
         setupCollectionView()
         setupNavigationItem()
         setupPlaceholderView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        presenter?.requestTrackers(for: currentDate)
-    }
-    
-    func didRecieveTrackers(indexPaths: [IndexPath]?) {
-        collectionView?.reloadData()
+    func didRecieveTrackers() {
+        collectionView.reloadData()
     }
 }
 
@@ -58,29 +57,25 @@ private extension TrackersViewController {
     func setupCollectionView() {
         layoutCollectionView()
         
-        collectionView?.delegate = presenter?.collectionHelper
-        collectionView?.dataSource = presenter?.collectionHelper
-        collectionView?.register(
+        collectionView.delegate = presenter?.collectionHelper
+        collectionView.dataSource = presenter?.collectionHelper
+        collectionView.register(
             TrackersCollectionViewCell.self,
             forCellWithReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier)
-        collectionView?.register(
+        collectionView.register(
             TrackersCollectionSectionHeader.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: TrackersCollectionSectionHeader.identifier)
     }
     
     func layoutCollectionView() {
-        let collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.backgroundColor = .trackerWhiteDay
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        self.collectionView = collectionView
 
         view.addSubview(collectionView)
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
@@ -125,7 +120,6 @@ private extension TrackersViewController {
     
     @objc
     func didCurrentDateValueChanged(_ datePicker: UIDatePicker) {
-        presenter?.currentDate = datePicker.date
         presenter?.requestTrackers(for: datePicker.date)
     }
 }
@@ -136,17 +130,17 @@ extension TrackersViewController {
         configurePlaceholderView(
             image: UIImage(named: "TrackersCollectionEmptyImage"),
             text: "Что будем отслеживать?")
-        showOrHidePlaceholderView(isHide: false)
+        shouldHidePlaceholderView(false)
     }
     
     func showPlaceholderViewForEmptySearch() {
         configurePlaceholderView(
             image: UIImage(named: "TrackersCollectionEmptyTrackersListSearch"),
             text: "Ничего не найдено")
-        showOrHidePlaceholderView(isHide: false)
+        shouldHidePlaceholderView(false)
     }
     
-    func showOrHidePlaceholderView(isHide: Bool) {
+    func shouldHidePlaceholderView(_ isHide: Bool) {
         guard let placeholderView = collectionPlaceholderView else { return }
         UIView.transition(
             with: placeholderView,
@@ -163,7 +157,6 @@ extension TrackersViewController {
     }
     
     private func setupPlaceholderView() {
-        guard let collectionView = self.collectionView else { return }
         let placeholderView = CollectionPlaceholderView(frame: .zero)
         placeholderView.translatesAutoresizingMaskIntoConstraints = false
         view.insertSubview(placeholderView, aboveSubview: collectionView)
@@ -174,6 +167,7 @@ extension TrackersViewController {
             placeholderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             placeholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+        
         placeholderView.isHidden = isPlaceholderViewHidden
         placeholderView.image = placeholderImage
         placeholderView.text = placeholderText

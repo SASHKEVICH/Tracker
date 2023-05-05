@@ -14,7 +14,7 @@ final class TrackerOptionsTableViewCell: UITableViewCell {
     private let additionalInfoLabel = UILabel()
     private let selectBackgroundView = {
         let view = UIView()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .trackerLightGray
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         return view

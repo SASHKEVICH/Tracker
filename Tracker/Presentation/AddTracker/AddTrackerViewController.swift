@@ -15,39 +15,40 @@ protocol TrackerScheduleViewControllerDelegate: AnyObject {
 protocol AddTrackerViewControllerProtocol: AnyObject, TrackerScheduleViewControllerDelegate {
     var presenter: AddTrackerViewPresenterProtocol? { get set }
     var trackerScheduleViewController: TrackerScheduleViewController? { get set }
-    var trackerType: TrackerType? { get set }
     func didTapTrackerScheduleCell(_ vc: TrackerScheduleViewController)
+    func setViewControllerTitle(_ title: String)
     func showError() -> Bool
     func hideError() -> Bool
     func enableAddButton()
     func disableAddButton()
 }
 
-enum TrackerType {
-    case tracker
-    case irregularEvent
-}
-
 final class AddTrackerViewController: UIViewController, AddTrackerViewControllerProtocol {
     private let scrollView = UIScrollView()
     private let contentScrollView = UIView()
+    
     private let titleLabel = UILabel()
+    
     private let trackerTitleTextField = TrackerTitleTextField()
     private let errorLabel = UILabel()
+    
     private let trackerOptionsTableView = UITableView()
+    
+    private let emojisCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout())
+    private let colorsCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout())
+    
     private let cancelTrackerButton = TrackerCustomButton(state: .cancel, title: "Отменить")
     private let addTrackerButton = TrackerCustomButton(state: .disabled, title: "Создать")
     
     private var tableViewTopConstraint: NSLayoutConstraint?
+    private var tableViewHeightConstraint: NSLayoutConstraint?
+    private var emojisCollectionViewHeightConstraint: NSLayoutConstraint?
+    private var colorsCollectionViewHeightConstraint: NSLayoutConstraint?
     
-    private var titleText: String? {
-        didSet {
-            titleLabel.text = titleText
-            titleLabel.sizeToFit()
-        }
-    }
-    
-    var trackerType: TrackerType?
     var presenter: AddTrackerViewPresenterProtocol?
     var trackerScheduleViewController: TrackerScheduleViewController?
 
@@ -59,15 +60,15 @@ final class AddTrackerViewController: UIViewController, AddTrackerViewController
         
         setupScrollView()
         setupTitleLabel()
-        setupViewControllerForGivenType()
         setupTrackerTitleTextField()
         setupErrorLabel()
-        setupTableView()
+        setupTrackerOptionsTableView()
+        setupCollectionViews()
         
-        if let trackerType = trackerType {
-            presenter?.viewDidLoad(type: trackerType)
-            trackerOptionsTableView.reloadData()
-        }
+        presenter?.viewDidLoad()
+        trackerOptionsTableView.reloadData()
+        emojisCollectionView.reloadData()
+        colorsCollectionView.reloadData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -75,6 +76,12 @@ final class AddTrackerViewController: UIViewController, AddTrackerViewController
         
         guard contentScrollView.frame.width != 0 else { return }
         setupCancelAndAddTrackerButton()
+        
+        tableViewHeightConstraint?.constant = trackerOptionsTableView.contentSize.height
+        emojisCollectionViewHeightConstraint?.constant = emojisCollectionView.contentSize.height
+        colorsCollectionViewHeightConstraint?.constant = colorsCollectionView.contentSize.height
+        
+        view.setNeedsLayout()
     }
 }
 
@@ -96,10 +103,8 @@ private extension AddTrackerViewController {
             contentScrollView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
             contentScrollView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             contentScrollView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            contentScrollView.centerXAnchor.constraint(equalTo: scrollView.contentLayoutGuide.centerXAnchor),
-            contentScrollView.centerYAnchor.constraint(equalTo: scrollView.contentLayoutGuide.centerYAnchor),
-            contentScrollView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
-            contentScrollView.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor)
+            
+            contentScrollView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
         ])
     }
     
@@ -152,11 +157,11 @@ private extension AddTrackerViewController {
         errorLabel.textColor = .trackerRed
     }
     
-    func setupTableView() {
+    func setupTrackerOptionsTableView() {
         contentScrollView.addSubview(trackerOptionsTableView)
         trackerOptionsTableView.translatesAutoresizingMaskIntoConstraints = false
         
-        tableViewTopConstraint = NSLayoutConstraint(
+        let tableViewTopConstraint = NSLayoutConstraint(
             item: trackerOptionsTableView,
             attribute: .top,
             relatedBy: .equal,
@@ -165,19 +170,90 @@ private extension AddTrackerViewController {
             multiplier: 1,
             constant: 24)
         
-        guard let tableViewTopConstraint = tableViewTopConstraint else { return }
+        let tableViewHeightConstraint = NSLayoutConstraint(
+            item: trackerOptionsTableView,
+            attribute: .height,
+            relatedBy: .equal,
+            toItem: nil,
+            attribute: .height,
+            multiplier: 1,
+            constant: 75)
         
         NSLayoutConstraint.activate([
             trackerOptionsTableView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor, constant: 16),
             trackerOptionsTableView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor, constant: -16),
             tableViewTopConstraint,
-            trackerOptionsTableView.heightAnchor.constraint(equalToConstant: 150)
+            tableViewHeightConstraint
         ])
         
         trackerOptionsTableView.dataSource = presenter?.tableViewHelper
         trackerOptionsTableView.delegate = presenter?.tableViewHelper
         trackerOptionsTableView.register(TrackerOptionsTableViewCell.self, forCellReuseIdentifier: TrackerOptionsTableViewCell.identifier)
         trackerOptionsTableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        
+        self.tableViewTopConstraint = tableViewTopConstraint
+        self.tableViewHeightConstraint = tableViewHeightConstraint
+    }
+    
+    func setupCollectionViews() {
+        let emojisCollectionViewHeightConstraint = NSLayoutConstraint(
+            item: emojisCollectionView,
+            attribute: .height,
+            relatedBy: .equal,
+            toItem: nil,
+            attribute: .height,
+            multiplier: 1,
+            constant: 100)
+        
+        let colorsCollectionViewHeightConstraint = NSLayoutConstraint(
+            item: colorsCollectionView,
+            attribute: .height,
+            relatedBy: .equal,
+            toItem: nil,
+            attribute: .height,
+            multiplier: 1,
+            constant: 100)
+        
+        contentScrollView.addSubview(emojisCollectionView)
+        emojisCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentScrollView.addSubview(colorsCollectionView)
+        colorsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            emojisCollectionView.topAnchor.constraint(equalTo: trackerOptionsTableView.bottomAnchor, constant: 32),
+            emojisCollectionView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
+            emojisCollectionView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor),
+            emojisCollectionViewHeightConstraint,
+            
+            colorsCollectionView.topAnchor.constraint(equalTo: emojisCollectionView.bottomAnchor, constant: 16),
+            colorsCollectionView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
+            colorsCollectionView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor),
+            colorsCollectionViewHeightConstraint
+        ])
+        
+        emojisCollectionView.dataSource = presenter?.emojisCollectionViewHelper
+        emojisCollectionView.delegate = presenter?.emojisCollectionViewHelper
+        emojisCollectionView.register(
+            EmojisCollectionViewCell.self,
+            forCellWithReuseIdentifier: EmojisCollectionViewCell.identifier)
+        emojisCollectionView.register(
+            TrackersCollectionSectionHeader.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: TrackersCollectionSectionHeader.identifier)
+        
+        colorsCollectionView.dataSource = presenter?.colorsCollectionViewHelper
+        colorsCollectionView.delegate = presenter?.colorsCollectionViewHelper
+        colorsCollectionView.register(
+            ColorsCollectionViewCell.self,
+            forCellWithReuseIdentifier: ColorsCollectionViewCell.identifier)
+        colorsCollectionView.register(
+            TrackersCollectionSectionHeader.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: TrackersCollectionSectionHeader.identifier)
+        
+        self.emojisCollectionViewHeightConstraint = emojisCollectionViewHeightConstraint
+        self.colorsCollectionViewHeightConstraint = colorsCollectionViewHeightConstraint
     }
     
     func setupCancelAndAddTrackerButton() {
@@ -197,9 +273,11 @@ private extension AddTrackerViewController {
         }
         
         NSLayoutConstraint.activate([
+            cancelTrackerButton.topAnchor.constraint(equalTo: colorsCollectionView.bottomAnchor, constant: 16),
             cancelTrackerButton.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor, constant: 20),
             cancelTrackerButton.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),
             
+            addTrackerButton.topAnchor.constraint(equalTo: colorsCollectionView.bottomAnchor, constant: 16),
             addTrackerButton.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor, constant: -20),
             addTrackerButton.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),
         ])
@@ -229,15 +307,10 @@ private extension AddTrackerViewController {
     }
 }
 
-private extension AddTrackerViewController {
-    func setupViewControllerForGivenType() {
-        guard let type = trackerType else { return }
-        switch type {
-        case .tracker:
-            titleText = "Новая привычка"
-        case .irregularEvent:
-            titleText = "Новое нерегулярное событие"
-        }
+extension AddTrackerViewController {
+    func setViewControllerTitle(_ title: String) {
+        titleLabel.text = title
+        titleLabel.sizeToFit()
     }
 }
 

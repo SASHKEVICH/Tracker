@@ -7,6 +7,14 @@
 
 import Foundation
 
+let dateTimeDefaultFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .full
+    dateFormatter.timeStyle = .none
+    dateFormatter.timeZone = TimeZone.current
+    return dateFormatter
+}()
+
 extension Date {
     var weekDay: WeekDay? {
         let weekDay = Calendar.current.component(.weekday, from: self)
@@ -32,5 +40,14 @@ extension Date {
     
     func isDayEqualTo(_ otherDate: Date) -> Bool {
         Calendar.current.isDate(self, equalTo: otherDate, toGranularity: .day)
+    }
+    
+    var onlyDate: Date? {
+        get {
+            let calender = Calendar.current
+            var dateComponents = calender.dateComponents([.year, .month, .day], from: self)
+            dateComponents.timeZone = NSTimeZone.system
+            return calender.date(from: dateComponents)
+        }
     }
 }
