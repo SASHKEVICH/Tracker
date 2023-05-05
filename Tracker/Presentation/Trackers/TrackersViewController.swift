@@ -17,7 +17,10 @@ protocol TrackersViewControllerProtocol: AnyObject, AlertPresenterServiceDelegat
 }
 
 final class TrackersViewController: UIViewController, TrackersViewControllerProtocol {
-    private var collectionView: UICollectionView?
+    private let collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout())
+    
     private var placeholderImage: UIImage?
     private var placeholderText: String?
     private var searchController: UISearchController?
@@ -45,7 +48,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     }
     
     func didRecieveTrackers() {
-        collectionView?.reloadData()
+        collectionView.reloadData()
     }
 }
 
@@ -54,29 +57,25 @@ private extension TrackersViewController {
     func setupCollectionView() {
         layoutCollectionView()
         
-        collectionView?.delegate = presenter?.collectionHelper
-        collectionView?.dataSource = presenter?.collectionHelper
-        collectionView?.register(
+        collectionView.delegate = presenter?.collectionHelper
+        collectionView.dataSource = presenter?.collectionHelper
+        collectionView.register(
             TrackersCollectionViewCell.self,
             forCellWithReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier)
-        collectionView?.register(
+        collectionView.register(
             TrackersCollectionSectionHeader.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: TrackersCollectionSectionHeader.identifier)
     }
     
     func layoutCollectionView() {
-        let collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.backgroundColor = .trackerWhiteDay
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        self.collectionView = collectionView
 
         view.addSubview(collectionView)
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
@@ -158,7 +157,6 @@ extension TrackersViewController {
     }
     
     private func setupPlaceholderView() {
-        guard let collectionView = self.collectionView else { return }
         let placeholderView = CollectionPlaceholderView(frame: .zero)
         placeholderView.translatesAutoresizingMaskIntoConstraints = false
         view.insertSubview(placeholderView, aboveSubview: collectionView)
@@ -169,6 +167,7 @@ extension TrackersViewController {
             placeholderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             placeholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+        
         placeholderView.isHidden = isPlaceholderViewHidden
         placeholderView.image = placeholderImage
         placeholderView.text = placeholderText
