@@ -49,8 +49,15 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
         case currentDateLaterThanToday
     }
     
+    private enum TrackersViewPresenterState {
+        case search
+        case normal
+    }
+    
     private var trackersService: TrackersServiceProtocol
     private var newTrackerNotifacationObserver: NSObjectProtocol?
+    
+    private var state: TrackersViewPresenterState = .normal
     
     weak var view: TrackersViewControllerProtocol?
     var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol?
@@ -75,6 +82,8 @@ extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
         guard let weekDay = date.weekDay else { return }
         self.currentDate = date
         
+        self.state = .normal
+        
         DispatchQueue.global().async { [weak self] in
             self?.trackersService.fetchTrackers(weekDay: weekDay)
             self?.fetchCompletedTrackersForCurrentDate()
@@ -83,6 +92,8 @@ extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
     
     func requestFilteredTrackers(for searchText: String?) {
         guard let titleSearchString = searchText, let weekDay = currentDate.weekDay else { return }
+        
+        self.state = .search
         
         DispatchQueue.global().async { [weak self] in
             self?.trackersService.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: weekDay)
@@ -129,7 +140,12 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     }
     
     func didRecievedEmptyTrackers() {
-        view?.showPlaceholderViewForCurrentDay()
+        switch state {
+        case .normal:
+            view?.showPlaceholderViewForCurrentDay()
+        case .search:
+            view?.showPlaceholderViewForEmptySearch()
+        }
     }
     
     func didRecievedNonEmptyTrackers() {

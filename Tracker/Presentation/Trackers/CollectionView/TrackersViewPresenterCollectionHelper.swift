@@ -150,9 +150,9 @@ extension TrackersViewPresenterCollectionHelper: TrackersViewPresenterCollection
         guard let tracker = cell.tracker else { return }
         
         if cell.state == .completed {
-            try? presenter?.incomplete(tracker: tracker)
+            guard let _ = try? presenter?.incomplete(tracker: tracker) else { return }
         } else {
-            try? presenter?.complete(tracker: tracker)
+            guard let _ = try? presenter?.complete(tracker: tracker) else { return }
         }
         
         cell.dayCount = completedTimesCount(trackerId: tracker.id)
