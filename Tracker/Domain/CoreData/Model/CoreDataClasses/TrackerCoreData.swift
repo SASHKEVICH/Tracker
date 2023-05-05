@@ -10,28 +10,28 @@ import Foundation
 import CoreData
 
 @objc(TrackerCoreData)
-public class TrackerCoreData: NSManagedObject {
-    @NSManaged public var colorHex: String
-    @NSManaged public var emoji: String
-    @NSManaged public var id: String
-    @NSManaged public var title: String
-    @NSManaged public var type: Int16
-    @NSManaged public var weekDays: String
-    @NSManaged public var category: TrackerCategoryCoreData
-    @NSManaged public var records: NSSet
+class TrackerCoreData: NSManagedObject {
+    @NSManaged var colorHex: String
+    @NSManaged var emoji: String
+    @NSManaged var id: String
+    @NSManaged var title: String
+    @NSManaged var type: Int16
+    @NSManaged var weekDays: String
+    @NSManaged var category: TrackerCategoryCoreData
+    @NSManaged var records: NSSet
 }
 
 // MARK: Generated accessors for records
 extension TrackerCoreData {
     @objc(addRecordsObject:)
-    @NSManaged public func addToRecords(_ value: TrackerRecordCoreData)
+    @NSManaged func addToRecords(_ value: TrackerRecordCoreData)
 
     @objc(removeRecordsObject:)
-    @NSManaged public func removeFromRecords(_ value: TrackerRecordCoreData)
+    @NSManaged func removeFromRecords(_ value: TrackerRecordCoreData)
 
     @objc(addRecords:)
-    @NSManaged public func addToRecords(_ values: NSSet)
+    @NSManaged func addToRecords(_ values: NSSet)
 
     @objc(removeRecords:)
-    @NSManaged public func removeFromRecords(_ values: NSSet)
+    @NSManaged func removeFromRecords(_ values: NSSet)
 }

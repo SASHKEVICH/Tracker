@@ -10,25 +10,25 @@ import Foundation
 import CoreData
 
 @objc(TrackerCategoryCoreData)
-public class TrackerCategoryCoreData: NSManagedObject {
-    @NSManaged public var id: String
-    @NSManaged public var title: String
-    @NSManaged public var trackers: NSSet
+class TrackerCategoryCoreData: NSManagedObject {
+    @NSManaged var id: String
+    @NSManaged var title: String
+    @NSManaged var trackers: NSSet
 }
 
 // MARK: Generated accessors for trackers
 extension TrackerCategoryCoreData {
     @objc(addTrackersObject:)
-    @NSManaged public func addToTrackers(_ value: TrackerCoreData)
+    @NSManaged func addToTrackers(_ value: TrackerCoreData)
 
     @objc(removeTrackersObject:)
-    @NSManaged public func removeFromTrackers(_ value: TrackerCoreData)
+    @NSManaged func removeFromTrackers(_ value: TrackerCoreData)
 
     @objc(addTrackers:)
-    @NSManaged public func addToTrackers(_ values: NSSet)
+    @NSManaged func addToTrackers(_ values: NSSet)
 
     @objc(removeTrackers:)
-    @NSManaged public func removeFromTrackers(_ values: NSSet)
+    @NSManaged func removeFromTrackers(_ values: NSSet)
     
     func trackers(for weekDay: String) -> [TrackerCoreData] {
         let predicate = NSPredicate(format: "weekDays CONTAINS[c] %@", weekDay)
