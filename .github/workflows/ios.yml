@@ -3,7 +3,8 @@ name: iOS starter workflow
 on:
   push:
   pull_request:
-    branches: [ "main" ]
+    branches: 
+      - main
   workflow_dispatch:
 
 jobs:
