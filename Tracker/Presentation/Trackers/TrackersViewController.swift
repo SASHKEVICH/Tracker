@@ -9,7 +9,6 @@ import UIKit
 
 protocol TrackersViewControllerProtocol: AnyObject, AlertPresenterServiceDelegate {
     var presenter: TrackersViewPresenterFullProtocol? { get set }
-    var isPlaceholderViewHidden: Bool { get set }
     func didRecieveTrackers()
     func showPlaceholderViewForCurrentDay()
     func showPlaceholderViewForEmptySearch()
@@ -25,16 +24,8 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     private var placeholderText: String?
     private var searchController: UISearchController?
     private var collectionPlaceholderView: CollectionPlaceholderView?
-    
-    private var currentDate: Date = Date()
-    
+
     var presenter: TrackersViewPresenterFullProtocol?
-    
-    var isPlaceholderViewHidden: Bool = true {
-        didSet {
-            collectionPlaceholderView?.isHidden = isPlaceholderViewHidden
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -168,7 +159,7 @@ extension TrackersViewController {
             placeholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
-        placeholderView.isHidden = isPlaceholderViewHidden
+        placeholderView.isHidden = true
         placeholderView.image = placeholderImage
         placeholderView.text = placeholderText
         self.collectionPlaceholderView = placeholderView
