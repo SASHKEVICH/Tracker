@@ -27,8 +27,8 @@ final class ChoosingTrackerTypeViewController: UIViewController {
         return stackView
     }()
     
-    private let addTrackerButton = UIButton(type: .system)
-    private let addIrregularEventButton = UIButton(type: .system)
+	private let addTrackerButton = TrackerCustomButton(state: .normal, title: "Привычка")
+	private let addIrregularEventButton = TrackerCustomButton(state: .normal, title: "Нерегулярное событие")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,19 +68,6 @@ private extension ChoosingTrackerTypeViewController {
     }
     
     func setupButtons() {
-        [addTrackerButton, addIrregularEventButton].forEach {
-            $0.backgroundColor = .trackerBlackDay
-            
-            $0.setTitleColor(.trackerWhiteDay, for: .normal)
-            $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-            
-            $0.layer.cornerRadius = 16
-            $0.layer.masksToBounds = true
-        }
-        
-        addTrackerButton.setTitle("Привычка", for: .normal)
-        addIrregularEventButton.setTitle("Нерегулярное событие", for: .normal)
-        
         addTrackerButton.addTarget(self, action: #selector(didTapAddTrackerButton), for: .touchUpInside)
         addIrregularEventButton.addTarget(self, action: #selector(didTapAddIrregularEventButton), for: .touchUpInside)
     }

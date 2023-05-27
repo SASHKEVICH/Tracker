@@ -7,22 +7,22 @@
 
 import UIKit
 
-enum TrackerCustomButtonState {
-    case cancel
-    case normal
-    case disabled
-}
-
 final class TrackerCustomButton: UIButton {
+	enum State {
+		case cancel
+		case normal
+		case disabled
+	}
+	
     private var title: String
     
-    var buttonState: TrackerCustomButtonState {
+	var buttonState: TrackerCustomButton.State {
         didSet {
             setNeededButtonState()
         }
     }
     
-    init(state: TrackerCustomButtonState, title: String) {
+	init(state: TrackerCustomButton.State, title: String) {
         self.buttonState = state
         self.title = title
         super.init(frame: .zero)
