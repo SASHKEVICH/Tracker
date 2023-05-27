@@ -1,5 +1,5 @@
 //
-//  ChooseTrackerTypeViewController.swift
+//  ChoosingTrackerTypeViewController.swift
 //  Tracker
 //
 //  Created by Александр Бекренев on 13.04.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ChooseTrackerTypeViewController: UIViewController {
+final class ChoosingTrackerTypeViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +41,7 @@ final class ChooseTrackerTypeViewController: UIViewController {
 }
 
 // MARK: - Setupping layout
-private extension ChooseTrackerTypeViewController {
+private extension ChoosingTrackerTypeViewController {
     func addSubviews() {
         view.addSubview(titleLabel)
         view.addSubview(stackView)
@@ -87,7 +87,7 @@ private extension ChooseTrackerTypeViewController {
 }
 
 // MARK: - Buttons callbacks
-private extension ChooseTrackerTypeViewController {
+private extension ChoosingTrackerTypeViewController {
     @objc
     func didTapAddTrackerButton() {
         let vc = AddTrackerViewController()
