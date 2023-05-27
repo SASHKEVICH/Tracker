@@ -42,6 +42,7 @@
 		968A7E722A1E2029007D75A5 /* OnboardingSecondPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968A7E712A1E2029007D75A5 /* OnboardingSecondPageViewController.swift */; };
 		968A7E742A1E21C2007D75A5 /* OnboardingViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968A7E732A1E21C2007D75A5 /* OnboardingViewPresenter.swift */; };
 		968A7E772A1E238A007D75A5 /* OnboardingViewControllerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968A7E762A1E238A007D75A5 /* OnboardingViewControllerHelper.swift */; };
+		969509B52A21D0DC00DC1DF3 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969509B42A21D0DC00DC1DF3 /* UIImage+Extensions.swift */; };
 		969BE48429DFBE9A0056D813 /* TrackersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969BE48329DFBE9A0056D813 /* TrackersService.swift */; };
 		96BAA8A62A02B1D000513D83 /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BAA8A52A02B1D000513D83 /* UIColorMarshalling.swift */; };
 		96C7E76529E65ED200BA7F67 /* AlertPresenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C7E76429E65ED200BA7F67 /* AlertPresenterService.swift */; };
@@ -108,6 +109,7 @@
 		968A7E712A1E2029007D75A5 /* OnboardingSecondPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSecondPageViewController.swift; sourceTree = "<group>"; };
 		968A7E732A1E21C2007D75A5 /* OnboardingViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewPresenter.swift; sourceTree = "<group>"; };
 		968A7E762A1E238A007D75A5 /* OnboardingViewControllerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewControllerHelper.swift; sourceTree = "<group>"; };
+		969509B42A21D0DC00DC1DF3 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		969BE48329DFBE9A0056D813 /* TrackersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersService.swift; sourceTree = "<group>"; };
 		96BAA8A52A02B1D000513D83 /* UIColorMarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
 		96C7E76429E65ED200BA7F67 /* AlertPresenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterService.swift; sourceTree = "<group>"; };
@@ -378,6 +380,7 @@
 				9661855229F1746E0003C57A /* Date+Extensions.swift */,
 				96E067812A00252D000AC4C8 /* String+WeekDay.swift */,
 				96BAA8A52A02B1D000513D83 /* UIColorMarshalling.swift */,
+				969509B42A21D0DC00DC1DF3 /* UIImage+Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -601,6 +604,7 @@
 				9661855329F1746E0003C57A /* Date+Extensions.swift in Sources */,
 				968A7E702A1E2013007D75A5 /* OnboardingFirstPageViewController.swift in Sources */,
 				9617C96B29DD88860054987D /* CompleteTrackerButton.swift in Sources */,
+				969509B52A21D0DC00DC1DF3 /* UIImage+Extensions.swift in Sources */,
 				9617C96629DD77180054987D /* Device.swift in Sources */,
 				96F7032C29FA45C400BBFF5C /* EmojisCollectionViewHelper.swift in Sources */,
 				96C7E77329E92B6D00BA7F67 /* TrackerTitleTextField.swift in Sources */,
