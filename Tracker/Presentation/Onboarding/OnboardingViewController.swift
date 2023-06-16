@@ -9,12 +9,13 @@ import UIKit
 
 protocol OnboardingViewControllerProtocol: AnyObject {
     var presenter: OnboardingViewPresenterProtocol? { get set }
+	func setCurrentPage(index: Int)
 }
 
 final class OnboardingViewController: UIPageViewController {
     var presenter: OnboardingViewPresenterProtocol?
     
-    lazy var confirmOnboardingButton: TrackerCustomButton = {
+    private let confirmOnboardingButton: TrackerCustomButton = {
 		let button = TrackerCustomButton(state: .normal, title: "Вот это технологии!")
 		button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -45,7 +46,9 @@ final class OnboardingViewController: UIPageViewController {
 }
 
 extension OnboardingViewController: OnboardingViewControllerProtocol {
-    
+	func setCurrentPage(index: Int) {
+		pageControl.currentPage = index
+	}
 }
 
 private extension OnboardingViewController {

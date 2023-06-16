@@ -5,13 +5,14 @@
 //  Created by Александр Бекренев on 24.05.2023.
 //
 
-import UIKit
+import Foundation
 
 protocol OnboardingViewPresenterProtocol: AnyObject {
     var view: OnboardingViewControllerProtocol? { get set }
 	var pagesViewControllerHelper: OnboardingViewControllerHelperProtocol? { get }
 	var pagesCount: Int { get }
     func viewDidLoad()
+	func setCurrentPage(index: Int)
 }
 
 final class OnboardingViewPresenter {
@@ -26,6 +27,10 @@ final class OnboardingViewPresenter {
 extension OnboardingViewPresenter: OnboardingViewPresenterProtocol {
 	var pagesCount: Int {
 		pagesViewControllerHelper?.pagesCount ?? 0
+	}
+	
+	func setCurrentPage(index: Int) {
+		view?.setCurrentPage(index: index)
 	}
 	
     func viewDidLoad() {

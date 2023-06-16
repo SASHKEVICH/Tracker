@@ -16,12 +16,15 @@ protocol OnboardingViewControllerHelperProtocol: UIPageViewControllerDelegate, U
 final class OnboardingViewControllerHelper: NSObject {
     weak var presenter: OnboardingViewPresenterProtocol?
 	
-	lazy var pages: [UIViewController] = {
-		let firstPage = OnboardingFirstPageViewController()
-		firstPage.view.backgroundColor = .red
+	private let pages: [UIViewController] = {
+		let firstPage = OnboardingPageViewController()
+		let secondPage = OnboardingPageViewController()
 		
-		let secondPage = OnboardingSecondPageViewController()
-		secondPage.view.backgroundColor = .blue
+		firstPage.image = .Onboarding.first
+		secondPage.image = .Onboarding.second
+		
+		firstPage.onboardingText = "Отслеживайте только то, что хотите"
+		secondPage.onboardingText = "Даже если это не литры воды и йога"
 		
 		return [firstPage, secondPage]
 	}()
@@ -37,6 +40,18 @@ extension OnboardingViewControllerHelper: OnboardingViewControllerHelperProtocol
 	}
 	
 	// UIPageViewControllerDelegate
+	func pageViewController(
+		_ pageViewController: UIPageViewController,
+		didFinishAnimating finished: Bool,
+		previousViewControllers: [UIViewController],
+		transitionCompleted completed: Bool
+	) {
+		if let currentViewController = pageViewController.viewControllers?.first,
+		   let currentIndex = pages.firstIndex(of: currentViewController)
+		{
+			presenter?.setCurrentPage(index: currentIndex)
+		}
+	}
 	
 	// UIPageViewControllerDataSource
     func pageViewController(
