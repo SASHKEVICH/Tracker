@@ -11,7 +11,6 @@ protocol OnboardingViewPresenterProtocol: AnyObject {
     var view: OnboardingViewControllerProtocol? { get set }
 	var pagesViewControllerHelper: OnboardingViewControllerHelperProtocol? { get }
 	var pagesCount: Int { get }
-    func viewDidLoad()
 	func setCurrentPage(index: Int)
 }
 
@@ -32,10 +31,6 @@ extension OnboardingViewPresenter: OnboardingViewPresenterProtocol {
 	func setCurrentPage(index: Int) {
 		view?.setCurrentPage(index: index)
 	}
-	
-    func viewDidLoad() {
-        
-    }
 }
 
 private extension OnboardingViewPresenter {
