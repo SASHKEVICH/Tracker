@@ -8,11 +8,13 @@
 import UIKit
 
 extension UIImage {
-	var onboardingFirst: UIImage? {
-		UIImage(named: "Onboarding_1")
-	}
-	
-	var onboardingSecond: UIImage? {
-		UIImage(named: "Onboarding_2")
+	struct Onboarding {
+		static var first: UIImage? {
+			UIImage(named: "Onboarding_1")
+		}
+		
+		static var second: UIImage? {
+			UIImage(named: "Onboarding_2")
+		}
 	}
 }
