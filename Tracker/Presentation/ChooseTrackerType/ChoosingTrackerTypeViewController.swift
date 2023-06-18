@@ -77,25 +77,22 @@ private extension ChoosingTrackerTypeViewController {
 private extension ChoosingTrackerTypeViewController {
     @objc
     func didTapAddTrackerButton() {
-        let vc = AddTrackerViewController()
-        let presenter = AddTrackerViewPresenter(
-            trackersService: TrackersService.shared,
-            trackerType: .tracker)
-        vc.presenter = presenter
-        presenter.view = vc
-        
-        present(vc, animated: true)
+		presentAddingViewController(trackerType: .tracker)
     }
     
     @objc
     func didTapAddIrregularEventButton() {
-        let vc = AddTrackerViewController()
-        let presenter = AddTrackerViewPresenter(
-            trackersService: TrackersService.shared,
-            trackerType: .irregularEvent)
-        vc.presenter = presenter
-        presenter.view = vc
-        
-        present(vc, animated: true)
+		presentAddingViewController(trackerType: .irregularEvent)
     }
+	
+	func presentAddingViewController(trackerType: TrackerType) {
+		let vc = AddTrackerViewController()
+		let presenter = AddTrackerViewPresenter(
+			trackersService: TrackersService.shared,
+			trackerType: trackerType)
+		vc.presenter = presenter
+		presenter.view = vc
+		
+		present(vc, animated: true)
+	}
 }
