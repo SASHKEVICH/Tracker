@@ -44,6 +44,7 @@
 		969509B52A21D0DC00DC1DF3 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969509B42A21D0DC00DC1DF3 /* UIImage+Extensions.swift */; };
 		969BE48429DFBE9A0056D813 /* TrackersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969BE48329DFBE9A0056D813 /* TrackersService.swift */; };
 		96A606D92A3C4D34007C5262 /* OnboardingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606D82A3C4D34007C5262 /* OnboardingConstants.swift */; };
+		96A606DB2A3C8D9F007C5262 /* TrackersCategoriesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606DA2A3C8D9F007C5262 /* TrackersCategoriesService.swift */; };
 		96A606DE2A3C8FBC007C5262 /* FirstLaunchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */; };
 		96BAA8A62A02B1D000513D83 /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BAA8A52A02B1D000513D83 /* UIColorMarshalling.swift */; };
 		96C7E76529E65ED200BA7F67 /* AlertPresenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C7E76429E65ED200BA7F67 /* AlertPresenterService.swift */; };
@@ -112,6 +113,7 @@
 		969509B42A21D0DC00DC1DF3 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		969BE48329DFBE9A0056D813 /* TrackersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersService.swift; sourceTree = "<group>"; };
 		96A606D82A3C4D34007C5262 /* OnboardingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConstants.swift; sourceTree = "<group>"; };
+		96A606DA2A3C8D9F007C5262 /* TrackersCategoriesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCategoriesService.swift; sourceTree = "<group>"; };
 		96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstLaunchService.swift; sourceTree = "<group>"; };
 		96BAA8A52A02B1D000513D83 /* UIColorMarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
 		96C7E76429E65ED200BA7F67 /* AlertPresenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterService.swift; sourceTree = "<group>"; };
@@ -173,7 +175,7 @@
 		9617C96029DB10320054987D /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				969BE48329DFBE9A0056D813 /* TrackersService.swift */,
+				96A606DC2A3C8F9D007C5262 /* Trackers */,
 				96C7E76429E65ED200BA7F67 /* AlertPresenterService.swift */,
 				96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */,
 			);
@@ -341,6 +343,15 @@
 				9602B0F629D9DD1600FD66D2 /* TrackersCollectionViewCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		96A606DC2A3C8F9D007C5262 /* Trackers */ = {
+			isa = PBXGroup;
+			children = (
+				969BE48329DFBE9A0056D813 /* TrackersService.swift */,
+				96A606DA2A3C8D9F007C5262 /* TrackersCategoriesService.swift */,
+			);
+			path = Trackers;
 			sourceTree = "<group>";
 		};
 		96C7E76629E65F2C00BA7F67 /* AlertModel */ = {
@@ -617,6 +628,7 @@
 				96F703AC29FEB56700BBFF5C /* TrackerCategoryCoreData.swift in Sources */,
 				968A7E6D2A1E1F88007D75A5 /* OnboardingViewController.swift in Sources */,
 				9686FA5929E2829500BE2BC0 /* TrackersViewPresenterSearchControllerHelper.swift in Sources */,
+				96A606DB2A3C8D9F007C5262 /* TrackersCategoriesService.swift in Sources */,
 				96F7032529FA44F900BBFF5C /* ColorsCollectionViewHelper.swift in Sources */,
 				9629563929CD846900A587C5 /* SceneDelegate.swift in Sources */,
 				966DD3B729E9BF6A00296CDF /* TrackerOptionsTableViewHelper.swift in Sources */,
