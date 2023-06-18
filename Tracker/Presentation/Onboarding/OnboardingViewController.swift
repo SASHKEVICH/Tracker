@@ -14,12 +14,6 @@ protocol OnboardingViewControllerProtocol: AnyObject {
 
 final class OnboardingViewController: UIPageViewController {
     var presenter: OnboardingViewPresenterProtocol?
-    
-    private let confirmOnboardingButton: TrackerCustomButton = {
-		let button = TrackerCustomButton(state: .normal, title: "Вот это технологии!")
-		button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
 	
 	private lazy var pageControl: UIPageControl = {
 		let pageControl = UIPageControl()
@@ -33,6 +27,12 @@ final class OnboardingViewController: UIPageViewController {
 		return pageControl
 	}()
 
+	private let confirmOnboardingButton: TrackerCustomButton = {
+		let button = TrackerCustomButton(state: .normal, title: "Вот это технологии!")
+		button.translatesAutoresizingMaskIntoConstraints = false
+		return button
+	}()
+	
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,12 +42,26 @@ final class OnboardingViewController: UIPageViewController {
         setViewControllers()
 		addSubviews()
 		addConstraints()
+		
+		confirmOnboardingButton.addTarget(self, action: #selector(didTapOnboardingButton), for: .touchUpInside)
     }
 }
 
+// MARK: - OnboardingViewControllerProtocol
 extension OnboardingViewController: OnboardingViewControllerProtocol {
 	func setCurrentPage(index: Int) {
 		pageControl.currentPage = index
+	}
+}
+
+// MARK: - Onboarding button callback
+extension OnboardingViewController {
+	@objc
+	private func didTapOnboardingButton() {
+		let tabBarController = TabBarViewController()
+		tabBarController.modalPresentationStyle = .fullScreen
+		tabBarController.modalTransitionStyle = .coverVertical
+		present(tabBarController, animated: true)
 	}
 }
 
