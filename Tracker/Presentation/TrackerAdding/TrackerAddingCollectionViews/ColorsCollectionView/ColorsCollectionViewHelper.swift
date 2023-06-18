@@ -8,11 +8,11 @@
 import UIKit
 
 protocol ColorsCollectionViewHelperProtocol: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    var presenter: AddTrackerViewPresenterCollectionColorsViewHelperProtocol? { get set }
+    var presenter: TrackerAddingViewPresenterCollectionColorsViewHelperProtocol? { get set }
 }
 
 final class ColorsCollectionViewHelper: NSObject, ColorsCollectionViewHelperProtocol {
-    weak var presenter: AddTrackerViewPresenterCollectionColorsViewHelperProtocol?
+    weak var presenter: TrackerAddingViewPresenterCollectionColorsViewHelperProtocol?
     
     private var configuration = TrackerCollectionViewConstants.addTrackerCollectionsConfiguration
     

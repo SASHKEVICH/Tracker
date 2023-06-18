@@ -8,11 +8,11 @@
 import UIKit
 
 protocol TrackerTitleTextFieldHelperProtocol: UITextFieldDelegate {
-    var presenter: AddTrackerViewPresenterProtocol? { get set }
+    var presenter: TrackerAddingViewPresenterProtocol? { get set }
 }
 
 final class TrackerTitleTextFieldHelper: NSObject, TrackerTitleTextFieldHelperProtocol {
-    weak var presenter: AddTrackerViewPresenterProtocol?
+    weak var presenter: TrackerAddingViewPresenterProtocol?
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

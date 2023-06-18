@@ -8,11 +8,11 @@
 import UIKit
 
 protocol TrackerOptionsTableViewHelperProtocol: UITableViewDataSource, UITableViewDelegate {
-    var presenter: AddTrackerViewPresenterTableViewHelperProtocol? { get set }
+    var presenter: TrackerAddingViewPresenterTableViewHelperProtocol? { get set }
 }
 
 final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelperProtocol {
-    weak var presenter: AddTrackerViewPresenterTableViewHelperProtocol?
+    weak var presenter: TrackerAddingViewPresenterTableViewHelperProtocol?
     
     // MARK: UITableViewDelegate    
     func tableView(

@@ -1,5 +1,5 @@
 //
-//  AddTrackerViewPresenter.swift
+//  TrackerAddingViewPresenter.swift
 //  Tracker
 //
 //  Created by Александр Бекренев on 14.04.2023.
@@ -7,22 +7,22 @@
 
 import UIKit
 
-protocol AddTrackerViewPresenterEmojisCollectionViewHelperProtocol: AnyObject {
+protocol TrackerAddingViewPresenterEmojisCollectionViewHelperProtocol: AnyObject {
     func didSelect(emoji: String)
 }
 
-protocol AddTrackerViewPresenterCollectionColorsViewHelperProtocol: AnyObject {
+protocol TrackerAddingViewPresenterCollectionColorsViewHelperProtocol: AnyObject {
     func didSelect(color: UIColor)
 }
 
-protocol AddTrackerViewPresenterTableViewHelperProtocol: AnyObject {
+protocol TrackerAddingViewPresenterTableViewHelperProtocol: AnyObject {
     var optionsTitles: [String]? { get }
     var selectedWeekDays: Set<WeekDay> { get }
     func didTapTrackerScheduleCell()
 }
 
-protocol AddTrackerViewPresenterProtocol: AnyObject {
-    var view: AddTrackerViewControllerProtocol? { get set }
+protocol TrackerAddingViewPresenterProtocol: AnyObject {
+    var view: TrackerAddingViewControllerProtocol? { get set }
     var tableViewHelper: TrackerOptionsTableViewHelperProtocol? { get }
     var textFieldHelper: TrackerTitleTextFieldHelperProtocol? { get }
     var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol? { get }
@@ -33,10 +33,10 @@ protocol AddTrackerViewPresenterProtocol: AnyObject {
     func didRecieveSelectedTrackerSchedule(_ weekDays: Set<WeekDay>)
 }
 
-final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
+final class TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     static let didAddTrackerNotificationName = Notification.Name(rawValue: "NewTrackerAdded")
     
-    weak var view: AddTrackerViewControllerProtocol?
+    weak var view: TrackerAddingViewControllerProtocol?
     
     private let trackersService: TrackersServiceAddingProtocol
     private let trackerType: TrackerType
@@ -102,7 +102,7 @@ final class AddTrackerViewPresenter: AddTrackerViewPresenterProtocol {
 }
 
 // MARK: - AddTrackerViewPresenterTableViewHelperProtocol
-extension AddTrackerViewPresenter: AddTrackerViewPresenterTableViewHelperProtocol {
+extension TrackerAddingViewPresenter: TrackerAddingViewPresenterTableViewHelperProtocol {
     func didTapTrackerScheduleCell() {
         let vc = TrackerScheduleViewController()
         vc.delegate = view
@@ -119,21 +119,21 @@ extension AddTrackerViewPresenter: AddTrackerViewPresenterTableViewHelperProtoco
 }
 
 // MARK: - AddTrackerViewPresenterCollectionColorsViewHelperProtocol
-extension AddTrackerViewPresenter: AddTrackerViewPresenterCollectionColorsViewHelperProtocol {
+extension TrackerAddingViewPresenter: TrackerAddingViewPresenterCollectionColorsViewHelperProtocol {
     func didSelect(color: UIColor) {
         selectedTrackerColor = color
     }
 }
 
 // MARK: - AddTrackerViewPresenterEmojisCollectionViewHelperProtocol
-extension AddTrackerViewPresenter: AddTrackerViewPresenterEmojisCollectionViewHelperProtocol {
+extension TrackerAddingViewPresenter: TrackerAddingViewPresenterEmojisCollectionViewHelperProtocol {
     func didSelect(emoji: String) {
         selectedTrackerEmoji = emoji
     }
 }
 
 // MARK: - Internal methods
-extension AddTrackerViewPresenter {
+extension TrackerAddingViewPresenter {
     func viewDidLoad() {
         setupViewController(for: trackerType)
     }
@@ -173,7 +173,7 @@ extension AddTrackerViewPresenter {
 }
 
 // MARK: - Private methods
-private extension AddTrackerViewPresenter {
+private extension TrackerAddingViewPresenter {
     func setupTableViewHelper() {
         let tableViewHelper = TrackerOptionsTableViewHelper()
         tableViewHelper.presenter = self
@@ -211,13 +211,13 @@ private extension AddTrackerViewPresenter {
     
     func postAddingTrackerNotification() {
         NotificationCenter.default
-            .post(name: AddTrackerViewPresenter.didAddTrackerNotificationName,
+            .post(name: TrackerAddingViewPresenter.didAddTrackerNotificationName,
                   object: self)
     }
 }
 
 // MARK: - Checking enabling add tracker button
-private extension AddTrackerViewPresenter {
+private extension TrackerAddingViewPresenter {
     func checkToEnablingAddTrackerButton() {
         guard
             let trackerTitle = trackerTitle,

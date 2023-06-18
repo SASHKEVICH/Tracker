@@ -215,7 +215,7 @@ private extension TrackersViewPresenter {
     func addNewTrackerNotificationObserver() {
         newTrackerNotifacationObserver = NotificationCenter.default
             .addObserver(
-                forName: AddTrackerViewPresenter.didAddTrackerNotificationName,
+                forName: TrackerAddingViewPresenter.didAddTrackerNotificationName,
                 object: nil,
                 queue: .main
             ) { [weak self] _ in

@@ -1,5 +1,5 @@
 //
-//  AddTrackerViewController.swift
+//  TrackerAddingViewController.swift
 //  Tracker
 //
 //  Created by Александр Бекренев on 14.04.2023.
@@ -12,8 +12,8 @@ protocol TrackerScheduleViewControllerDelegate: AnyObject {
     func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>)
 }
 
-protocol AddTrackerViewControllerProtocol: AnyObject, TrackerScheduleViewControllerDelegate {
-    var presenter: AddTrackerViewPresenterProtocol? { get set }
+protocol TrackerAddingViewControllerProtocol: AnyObject, TrackerScheduleViewControllerDelegate {
+    var presenter: TrackerAddingViewPresenterProtocol? { get set }
     var trackerScheduleViewController: TrackerScheduleViewController? { get set }
     func didTapTrackerScheduleCell(_ vc: TrackerScheduleViewController)
     func setViewControllerTitle(_ title: String)
@@ -23,7 +23,7 @@ protocol AddTrackerViewControllerProtocol: AnyObject, TrackerScheduleViewControl
     func disableAddButton()
 }
 
-final class AddTrackerViewController: UIViewController, AddTrackerViewControllerProtocol {
+final class TrackerAddingViewController: UIViewController, TrackerAddingViewControllerProtocol {
     private let scrollView = UIScrollView()
     private let contentScrollView = UIView()
     
@@ -49,7 +49,7 @@ final class AddTrackerViewController: UIViewController, AddTrackerViewController
     private var emojisCollectionViewHeightConstraint: NSLayoutConstraint?
     private var colorsCollectionViewHeightConstraint: NSLayoutConstraint?
     
-    var presenter: AddTrackerViewPresenterProtocol?
+    var presenter: TrackerAddingViewPresenterProtocol?
     var trackerScheduleViewController: TrackerScheduleViewController?
 
     override func viewDidLoad() {
@@ -86,7 +86,7 @@ final class AddTrackerViewController: UIViewController, AddTrackerViewController
 }
 
 // MARK: - Setup and layout views
-private extension AddTrackerViewController {
+private extension TrackerAddingViewController {
     func setupScrollView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentScrollView)
@@ -288,7 +288,7 @@ private extension AddTrackerViewController {
 }
 
 // MARK: - Callbacks
-private extension AddTrackerViewController {
+private extension TrackerAddingViewController {
     @objc
     func didTapCancelTrackerButton() {
         UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true, completion: nil)
@@ -307,7 +307,7 @@ private extension AddTrackerViewController {
     }
 }
 
-extension AddTrackerViewController {
+extension TrackerAddingViewController {
     func setViewControllerTitle(_ title: String) {
         titleLabel.text = title
         titleLabel.sizeToFit()
@@ -315,7 +315,7 @@ extension AddTrackerViewController {
 }
 
 // MARK: - Showing and Hiding error label
-extension AddTrackerViewController {
+extension TrackerAddingViewController {
     func showError() -> Bool {
         guard errorLabel.isHidden else { return errorLabel.isHidden }
         
@@ -349,7 +349,7 @@ extension AddTrackerViewController {
 }
 
 // MARK: - Toggle enabling add tracker button
-extension AddTrackerViewController {
+extension TrackerAddingViewController {
     func enableAddButton() {
         addTrackerButton.buttonState = .normal
     }
@@ -360,14 +360,14 @@ extension AddTrackerViewController {
 }
 
 // MARK: - Cells callbacks
-extension AddTrackerViewController {
+extension TrackerAddingViewController {
     func didTapTrackerScheduleCell(_ vc: TrackerScheduleViewController) {
         present(vc, animated: true)
     }
 }
 
 // MARK: - TrackerScheduleViewControllerDelegate
-extension AddTrackerViewController: TrackerScheduleViewControllerDelegate {
+extension TrackerAddingViewController: TrackerScheduleViewControllerDelegate {
     func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
         presenter?.didRecieveSelectedTrackerSchedule(weekDays)
         trackerOptionsTableView.reloadData()

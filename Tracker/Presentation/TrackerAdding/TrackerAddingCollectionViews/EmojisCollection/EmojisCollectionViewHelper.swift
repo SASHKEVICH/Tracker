@@ -8,11 +8,11 @@
 import UIKit
 
 protocol EmojisCollectionViewHelperProtocol: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    var presenter: AddTrackerViewPresenterEmojisCollectionViewHelperProtocol? { get set }
+    var presenter: TrackerAddingViewPresenterEmojisCollectionViewHelperProtocol? { get set }
 }
 
 final class EmojisCollectionViewHelper: NSObject, EmojisCollectionViewHelperProtocol {
-    weak var presenter: AddTrackerViewPresenterEmojisCollectionViewHelperProtocol?
+    weak var presenter: TrackerAddingViewPresenterEmojisCollectionViewHelperProtocol?
     
     private let configuration = TrackerCollectionViewConstants.addTrackerCollectionsConfiguration
     
