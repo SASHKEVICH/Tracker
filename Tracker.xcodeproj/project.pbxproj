@@ -219,7 +219,6 @@
 			children = (
 				968A7E6B2A1E1F50007D75A5 /* Onboarding */,
 				96F7032D29FA7A5200BBFF5C /* CustomViews */,
-				966DD3BA29EA74A900296CDF /* TrackerSchedule */,
 				96C7E76F29E917E700BA7F67 /* TrackerAdding */,
 				96C7E76C29E802BE00BA7F67 /* TrackerType */,
 				96E63F4F29D735E800AA0970 /* Statistics */,
@@ -373,6 +372,7 @@
 		96C7E76F29E917E700BA7F67 /* TrackerAdding */ = {
 			isa = PBXGroup;
 			children = (
+				966DD3BA29EA74A900296CDF /* TrackerSchedule */,
 				96F7031329F9795500BBFF5C /* TrackerAddingCollectionViews */,
 				9654A96E29ED70E600B4A718 /* TrackerTitleTextField */,
 				966DD3B429E9BB3C00296CDF /* CustomViews */,
