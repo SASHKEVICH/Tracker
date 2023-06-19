@@ -12,6 +12,7 @@ protocol OnboardingViewControllerProtocol: AnyObject {
 	func setCurrentPage(index: Int)
 }
 
+// MARK: - OnboardingViewController
 final class OnboardingViewController: UIPageViewController {
     var presenter: OnboardingViewPresenterProtocol?
 	
