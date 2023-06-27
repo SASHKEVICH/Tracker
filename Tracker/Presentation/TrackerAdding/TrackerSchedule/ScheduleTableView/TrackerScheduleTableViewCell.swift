@@ -50,34 +50,6 @@ final class TrackerScheduleTableViewCell: UITableViewCell {
     }
 }
 
-extension TrackerScheduleTableViewCell {
-    func setupFirstCellInTableView() -> TrackerScheduleTableViewCell {
-        selectBackgroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        
-        self.layer.masksToBounds = true
-        self.layer.cornerRadius = 16
-        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        
-        return self
-    }
-    
-    func setupLastCellWithoutBottomSeparator(
-        tableViewWidth: CGFloat
-    ) -> TrackerScheduleTableViewCell {
-        selectBackgroundView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        
-        self.layer.masksToBounds = true
-        self.layer.cornerRadius = 16
-        self.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        self.separatorInset = UIEdgeInsets(
-            top: 0,
-            left: tableViewWidth + 1,
-            bottom: 0,
-            right: 0)
-        return self
-    }
-}
-
 private extension TrackerScheduleTableViewCell {
     func setupCellTitleLabel() {
         contentView.addSubview(cellTitleLabel)
