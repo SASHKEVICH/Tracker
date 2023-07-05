@@ -92,6 +92,10 @@ private extension TrackerTypeViewController {
 			trackerType: trackerType)
 		vc.presenter = presenter
 		presenter.view = vc
+
+		vc.emptyTap = {
+			vc.view.endEditing(true)
+		}
 		
 		present(vc, animated: true)
 	}
