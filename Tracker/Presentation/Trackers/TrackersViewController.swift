@@ -8,24 +8,25 @@
 import UIKit
 
 protocol TrackersViewControllerProtocol: AnyObject, AlertPresenterServiceDelegate {
-    var presenter: TrackersViewPresenterFullProtocol? { get set }
+	var presenter: TrackersViewPresenterFullProtocol? { get set }
     func didRecieveTrackers()
     func showPlaceholderViewForCurrentDay()
     func showPlaceholderViewForEmptySearch()
     func shouldHidePlaceholderView(_ isHide: Bool)
 }
 
-final class TrackersViewController: UIViewController, TrackersViewControllerProtocol {
+final class TrackersViewController: UIViewController {
+	var presenter: TrackersViewPresenterFullProtocol?
+
     private let collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout())
+
+	private let searchController = UISearchController()
+	private let collectionPlaceholderView = TrackerPlaceholderView()
     
     private var placeholderImage: UIImage?
     private var placeholderText: String?
-    private var searchController: UISearchController?
-    private var collectionPlaceholderView: CollectionPlaceholderView?
-
-    var presenter: TrackersViewPresenterFullProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,82 +38,13 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         setupNavigationItem()
         setupPlaceholderView()
     }
-    
-    func didRecieveTrackers() {
-        collectionView.reloadData()
-    }
 }
 
-// MARK: - Setup CollectionView
-private extension TrackersViewController {
-    func setupCollectionView() {
-        layoutCollectionView()
-        
-        collectionView.delegate = presenter?.collectionHelper
-        collectionView.dataSource = presenter?.collectionHelper
-        collectionView.register(
-            TrackersCollectionViewCell.self,
-            forCellWithReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier)
-        collectionView.register(
-            TrackersCollectionSectionHeader.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TrackersCollectionSectionHeader.identifier)
-    }
-    
-    func layoutCollectionView() {
-        collectionView.backgroundColor = .trackerWhiteDay
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-
-        view.addSubview(collectionView)
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-    }
-}
-
-// MARK: - Setup Navigation Item
-private extension TrackersViewController {
-    func setupNavigationItem() {
-        navigationItem.largeTitleDisplayMode = .always
-        navigationItem.title = "Трекеры"
-        setupLeftBarButtonItem()
-        setupRightBarButtonItem()
-        setupSearchController()
-    }
-    
-    func setupLeftBarButtonItem() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(named: "AddTrackerIcon"),
-            style: .plain,
-            target: self,
-            action: #selector(didTapAddTracker))
-        navigationItem.leftBarButtonItem?.tintColor = .black
-    }
-    
-    func setupRightBarButtonItem() {
-        let datePicker = UIDatePicker(frame: .zero)
-        datePicker.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        datePicker.preferredDatePickerStyle = .compact
-        datePicker.datePickerMode = .date
-        datePicker.locale = Locale(identifier: "ru_RU")
-        datePicker.addTarget(self, action: #selector(didCurrentDateValueChanged(_:)), for: .valueChanged)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
-    }
-    
-    @objc
-    func didTapAddTracker() {
-        let vc = TrackerTypeViewController()
-        present(vc, animated: true)
-    }
-    
-    @objc
-    func didCurrentDateValueChanged(_ datePicker: UIDatePicker) {
-        presenter?.requestTrackers(for: datePicker.date)
-    }
+// MARK: - TrackersViewControllerProtocol
+extension TrackersViewController: TrackersViewControllerProtocol {
+	func didRecieveTrackers() {
+		collectionView.reloadData()
+	}
 }
 
 // MARK: - Setup PlaceholderView
@@ -132,51 +64,46 @@ extension TrackersViewController {
     }
     
     func shouldHidePlaceholderView(_ isHide: Bool) {
-        guard let placeholderView = collectionPlaceholderView else { return }
         UIView.transition(
-            with: placeholderView,
+            with: collectionPlaceholderView,
             duration: 0.3,
             options: .transitionCrossDissolve
-        ) {
-            placeholderView.isHidden = isHide
+        ) { [weak self] in
+			self?.collectionPlaceholderView.isHidden = isHide
         }
     }
     
     private func configurePlaceholderView(image: UIImage?, text: String) {
-        collectionPlaceholderView?.image = image
-        collectionPlaceholderView?.text = text
+        collectionPlaceholderView.image = image
+        collectionPlaceholderView.text = text
     }
     
     private func setupPlaceholderView() {
-        let placeholderView = CollectionPlaceholderView(frame: .zero)
-        placeholderView.translatesAutoresizingMaskIntoConstraints = false
-        view.insertSubview(placeholderView, aboveSubview: collectionView)
+		collectionPlaceholderView.translatesAutoresizingMaskIntoConstraints = false
+		view.insertSubview(self.collectionPlaceholderView, aboveSubview: collectionView)
         
         NSLayoutConstraint.activate([
-            placeholderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            placeholderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            placeholderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            placeholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+			collectionPlaceholderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+			collectionPlaceholderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			collectionPlaceholderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+			collectionPlaceholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
-        placeholderView.isHidden = true
-        placeholderView.image = placeholderImage
-        placeholderView.text = placeholderText
-        self.collectionPlaceholderView = placeholderView
+		collectionPlaceholderView.isHidden = true
+		collectionPlaceholderView.image = placeholderImage
+		collectionPlaceholderView.text = placeholderText
     }
 }
 
 // MARK: - Setup SearchController
 extension TrackersViewController {
     func setupSearchController() {
-        let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = presenter?.searchControllerHelper
         searchController.searchBar.delegate = presenter?.searchControllerHelper
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Поиск"
         navigationItem.searchController = searchController
         definesPresentationContext = true
-        self.searchController = searchController
     }
 }
 
@@ -185,4 +112,79 @@ extension TrackersViewController: AlertPresenterServiceDelegate {
     func didRecieve(alert: UIAlertController) {
         present(alert, animated: true)
     }
+}
+
+// MARK: - Setup CollectionView
+private extension TrackersViewController {
+	func setupCollectionView() {
+		layoutCollectionView()
+
+		collectionView.delegate = presenter?.collectionHelper
+		collectionView.dataSource = presenter?.collectionHelper
+		collectionView.register(
+			TrackersCollectionViewCell.self,
+			forCellWithReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier)
+		collectionView.register(
+			TrackersCollectionSectionHeader.self,
+			forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+			withReuseIdentifier: TrackersCollectionSectionHeader.identifier)
+	}
+
+	func layoutCollectionView() {
+		collectionView.backgroundColor = .trackerWhiteDay
+		collectionView.translatesAutoresizingMaskIntoConstraints = false
+
+		view.addSubview(collectionView)
+		NSLayoutConstraint.activate([
+			collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+			collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+			collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+		])
+	}
+}
+
+// MARK: - Setup Navigation Item
+private extension TrackersViewController {
+	func setupNavigationItem() {
+		navigationItem.largeTitleDisplayMode = .always
+		navigationItem.title = "Трекеры"
+		setupLeftBarButtonItem()
+		setupRightBarButtonItem()
+		setupSearchController()
+	}
+
+	func setupLeftBarButtonItem() {
+		navigationItem.leftBarButtonItem = UIBarButtonItem(
+			image: UIImage(named: "AddTrackerIcon"),
+			style: .plain,
+			target: self,
+			action: #selector(didTapAddTracker))
+		navigationItem.leftBarButtonItem?.tintColor = .black
+	}
+
+	func setupRightBarButtonItem() {
+		let datePicker = UIDatePicker(frame: .zero)
+		datePicker.translatesAutoresizingMaskIntoConstraints = false
+		datePicker.widthAnchor.constraint(equalToConstant: 100).isActive = true
+		datePicker.preferredDatePickerStyle = .compact
+		datePicker.datePickerMode = .date
+		datePicker.locale = Locale(identifier: "ru_RU")
+		datePicker.addTarget(self, action: #selector(didCurrentDateValueChanged(_:)), for: .valueChanged)
+		navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
+	}
+}
+
+// MARK: - Callbacks
+private extension TrackersViewController {
+	@objc
+	func didTapAddTracker() {
+		let vc = TrackerTypeViewController()
+		present(vc, animated: true)
+	}
+
+	@objc
+	func didCurrentDateValueChanged(_ datePicker: UIDatePicker) {
+		presenter?.requestTrackers(for: datePicker.date)
+	}
 }
