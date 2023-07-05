@@ -8,16 +8,19 @@
 import UIKit
 
 final class EmojisCollectionViewCell: UICollectionViewCell {
-    static let identifier = String(describing: EmojisCollectionViewCell.self)
-    
-    private let emojiLabel = UILabel()
-    
-    var emoji: String? {
-        didSet {
-            emojiLabel.text = emoji
-        }
-    }
-        
+	var emoji: String? {
+		didSet {
+			emojiLabel.text = emoji
+		}
+	}
+
+	private let emojiLabel: UILabel = {
+		let label = UILabel()
+		label.translatesAutoresizingMaskIntoConstraints = false
+		label.font = .systemFont(ofSize: 32, weight: .bold)
+		return label
+	}()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -33,14 +36,11 @@ final class EmojisCollectionViewCell: UICollectionViewCell {
 private extension EmojisCollectionViewCell {
     func setupEmojiLabel() {
         contentView.addSubview(emojiLabel)
-        emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             emojiLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             emojiLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
-        
-        emojiLabel.font = .systemFont(ofSize: 32, weight: .bold)
     }
     
     func setupBackgroundView() {

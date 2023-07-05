@@ -102,7 +102,7 @@ extension EmojisCollectionViewHelper {
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: EmojisCollectionViewCell.identifier,
+            withReuseIdentifier: EmojisCollectionViewCell.reuseIdentifier,
             for: indexPath) as? EmojisCollectionViewCell
         else {
             assertionFailure("cannot dequeue emojis cell")

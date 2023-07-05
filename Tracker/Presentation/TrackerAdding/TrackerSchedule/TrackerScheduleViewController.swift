@@ -61,7 +61,10 @@ private extension TrackerScheduleViewController {
         
         scheduleTableView.delegate = presenter?.scheduleTableViewHelper
         scheduleTableView.dataSource = presenter?.scheduleTableViewHelper
-        scheduleTableView.register(TrackerScheduleTableViewCell.self, forCellReuseIdentifier: TrackerScheduleTableViewCell.identifier)
+        scheduleTableView.register(
+			TrackerScheduleTableViewCell.self,
+			forCellReuseIdentifier: TrackerScheduleTableViewCell.reuseIdentifier
+		)
         scheduleTableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
     

@@ -52,10 +52,13 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        guard
-            let cell = tableView.dequeueReusableCell(withIdentifier: TrackerOptionsTableViewCell.identifier, for: indexPath) as? TrackerOptionsTableViewCell,
-            let optionsTitles = presenter?.optionsTitles
-        else { return UITableViewCell() }
+
+        guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: TrackerOptionsTableViewCell.reuseIdentifier,
+			for: indexPath) as? TrackerOptionsTableViewCell
+		else { return UITableViewCell() }
+
+		guard let optionsTitles = presenter?.optionsTitles else { return UITableViewCell() }
         
         cell.cellTitle = optionsTitles[indexPath.row]
         cell.accessoryType = .disclosureIndicator

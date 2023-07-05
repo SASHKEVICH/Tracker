@@ -105,7 +105,7 @@ extension ColorsCollectionViewHelper {
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ColorsCollectionViewCell.identifier,
+            withReuseIdentifier: ColorsCollectionViewCell.reuseIdentifier,
             for: indexPath) as? ColorsCollectionViewCell
         else {
             assertionFailure("cannot dequeue colors cell")

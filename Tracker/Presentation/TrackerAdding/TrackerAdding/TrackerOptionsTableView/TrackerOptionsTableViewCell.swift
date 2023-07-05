@@ -8,8 +8,21 @@
 import UIKit
 
 final class TrackerOptionsTableViewCell: UITableViewCell {
-    static let identifier = String(describing: TrackerOptionsTableViewCell.self)
-    
+	var cellTitle: String? {
+		didSet {
+			cellTitleLabel.text = cellTitle
+			cellTitleLabel.sizeToFit()
+		}
+	}
+
+	var additionalInfo: String? {
+		didSet {
+			relayoutCellTitleLabel()
+			additionalInfoLabel.text = additionalInfo
+			additionalInfoLabel.isHidden = false
+		}
+	}
+
     private let cellTitleLabel = UILabel()
     private let additionalInfoLabel = UILabel()
     private let selectBackgroundView = {
@@ -19,21 +32,6 @@ final class TrackerOptionsTableViewCell: UITableViewCell {
         view.layer.masksToBounds = true
         return view
     }()
-    
-    var cellTitle: String? {
-        didSet {
-            cellTitleLabel.text = cellTitle
-            cellTitleLabel.sizeToFit()
-        }
-    }
-    
-    var additionalInfo: String? {
-        didSet {
-            relayoutCellTitleLabel()
-            additionalInfoLabel.text = additionalInfo
-            additionalInfoLabel.isHidden = false
-        }
-    }
     
     private var titleLableTopConstraint: NSLayoutConstraint?
     private var titleLableBottomConstraint: NSLayoutConstraint?

@@ -47,3 +47,9 @@ extension UITableViewCell {
 		return self
 	}
 }
+
+extension UITableViewCell {
+	static var reuseIdentifier: String {
+		String(describing: Self.self)
+	}
+}

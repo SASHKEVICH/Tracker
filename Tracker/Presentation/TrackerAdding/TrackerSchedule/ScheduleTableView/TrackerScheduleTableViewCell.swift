@@ -8,35 +8,46 @@
 import UIKit
 
 final class TrackerScheduleTableViewCell: UITableViewCell {
-    static let identifier = String(describing: TrackerScheduleTableViewCell.self)
-    
-    private let cellTitleLabel = UILabel()
-    private let daySwitch = UISwitch()
-    
-    private let selectBackgroundView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        view.layer.cornerRadius = 16
-        view.layer.masksToBounds = true
-        return view
-    }()
-    
-    var delegate: TrackerScheduleTableViewHelperDelegateProtocol?
-    var weekDay: WeekDay?
-    
-    var cellTitle: String? {
-        didSet {
-            cellTitleLabel.text = cellTitle
-            cellTitleLabel.sizeToFit()
-        }
-    }
-    
-    var isDaySwitchOn: Bool {
-        get { daySwitch.isOn }
-        set {
-            daySwitch.isOn = newValue
-        }
-    }
+	var delegate: TrackerScheduleTableViewHelperDelegateProtocol?
+	var weekDay: WeekDay?
+
+	var cellTitle: String? {
+		didSet {
+			cellTitleLabel.text = cellTitle
+			cellTitleLabel.sizeToFit()
+		}
+	}
+
+	var isDaySwitchOn: Bool {
+		get { daySwitch.isOn }
+		set {
+			daySwitch.isOn = newValue
+		}
+	}
+
+	private let cellTitleLabel: UILabel = {
+		let label = UILabel()
+		label.translatesAutoresizingMaskIntoConstraints = false
+		label.textColor = .trackerBlackDay
+		label.font = .systemFont(ofSize: 17)
+		return label
+	}()
+
+	private let selectBackgroundView = {
+		let view = UIView()
+		view.backgroundColor = .lightGray
+		view.layer.cornerRadius = 16
+		view.layer.masksToBounds = true
+		return view
+	}()
+
+	private lazy var daySwitch: UISwitch = {
+		let daySwitch = UISwitch()
+		daySwitch.translatesAutoresizingMaskIntoConstraints = false
+		daySwitch.onTintColor = .trackerSwitchBackgroundColor
+		daySwitch.addTarget(self, action: #selector(didChangeSwitchValue), for: .valueChanged)
+		return daySwitch
+	}()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,7 +64,6 @@ final class TrackerScheduleTableViewCell: UITableViewCell {
 private extension TrackerScheduleTableViewCell {
     func setupCellTitleLabel() {
         contentView.addSubview(cellTitleLabel)
-        cellTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             cellTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -61,28 +71,22 @@ private extension TrackerScheduleTableViewCell {
             cellTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 26),
             cellTitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25)
         ])
-        
-        cellTitleLabel.textColor = .trackerBlackDay
-        cellTitleLabel.font = .systemFont(ofSize: 17)
-    }
-    
-    func setupDefaultCellBackground() {
-        backgroundColor = .trackerBackgroundDay
-        selectedBackgroundView = selectBackgroundView
     }
     
     func setupDaySwitch() {
         contentView.addSubview(daySwitch)
-        daySwitch.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             daySwitch.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             daySwitch.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
-        
-        daySwitch.onTintColor = .trackerSwitchBackgroundColor
-        daySwitch.addTarget(self, action: #selector(didChangeSwitchValue), for: .valueChanged)
     }
+
+
+	func setupDefaultCellBackground() {
+		backgroundColor = .trackerBackgroundDay
+		selectedBackgroundView = selectBackgroundView
+	}
 }
 
 private extension TrackerScheduleTableViewCell {

@@ -264,7 +264,10 @@ private extension TrackerAddingViewController {
 
 		trackerOptionsTableView.dataSource = presenter?.tableViewHelper
 		trackerOptionsTableView.delegate = presenter?.tableViewHelper
-		trackerOptionsTableView.register(TrackerOptionsTableViewCell.self, forCellReuseIdentifier: TrackerOptionsTableViewCell.identifier)
+		trackerOptionsTableView.register(
+			TrackerOptionsTableViewCell.self,
+			forCellReuseIdentifier: TrackerOptionsTableViewCell.reuseIdentifier
+		)
 		trackerOptionsTableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 
 		self.tableViewTopConstraint = tableViewTopConstraint
@@ -312,21 +315,25 @@ private extension TrackerAddingViewController {
 		emojisCollectionView.delegate = presenter?.emojisCollectionViewHelper
 		emojisCollectionView.register(
 			EmojisCollectionViewCell.self,
-			forCellWithReuseIdentifier: EmojisCollectionViewCell.identifier)
+			forCellWithReuseIdentifier: EmojisCollectionViewCell.reuseIdentifier
+		)
 		emojisCollectionView.register(
 			TrackersCollectionSectionHeader.self,
 			forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-			withReuseIdentifier: TrackersCollectionSectionHeader.identifier)
+			withReuseIdentifier: TrackersCollectionSectionHeader.identifier
+		)
 
 		colorsCollectionView.dataSource = presenter?.colorsCollectionViewHelper
 		colorsCollectionView.delegate = presenter?.colorsCollectionViewHelper
 		colorsCollectionView.register(
 			ColorsCollectionViewCell.self,
-			forCellWithReuseIdentifier: ColorsCollectionViewCell.identifier)
+			forCellWithReuseIdentifier: ColorsCollectionViewCell.reuseIdentifier
+		)
 		colorsCollectionView.register(
 			TrackersCollectionSectionHeader.self,
 			forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-			withReuseIdentifier: TrackersCollectionSectionHeader.identifier)
+			withReuseIdentifier: TrackersCollectionSectionHeader.identifier
+		)
 
 		self.emojisCollectionViewHeightConstraint = emojisCollectionViewHeightConstraint
 		self.colorsCollectionViewHeightConstraint = colorsCollectionViewHeightConstraint

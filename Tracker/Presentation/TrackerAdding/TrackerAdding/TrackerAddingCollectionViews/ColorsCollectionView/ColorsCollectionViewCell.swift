@@ -8,16 +8,27 @@
 import UIKit
 
 final class ColorsCollectionViewCell: UICollectionViewCell {
-    static let identifier = String(describing: ColorsCollectionViewCell.self)
-    
-    private let colorView = UIView()
-    private let borderView = UIView()
-    
-    var color: UIColor? {
-        didSet {
-            colorView.backgroundColor = color
-        }
-    }
+	var color: UIColor? {
+		didSet {
+			colorView.backgroundColor = color
+		}
+	}
+
+	private let colorView: UIView = {
+		let view = UIView()
+		view.translatesAutoresizingMaskIntoConstraints = false
+		view.layer.cornerRadius = 8
+		view.layer.masksToBounds = true
+		return view
+	}()
+
+	private let borderView: UIView = {
+		let view = UIView()
+		view.layer.cornerRadius = 12
+		view.layer.borderColor = UIColor.trackerBlackDay.withAlphaComponent(0.4).cgColor
+		view.layer.borderWidth = 3
+		return view
+	}()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,7 +44,6 @@ final class ColorsCollectionViewCell: UICollectionViewCell {
 private extension ColorsCollectionViewCell {
     func setupColorView() {
         contentView.addSubview(colorView)
-        colorView.translatesAutoresizingMaskIntoConstraints = false
         
         let padding: CGFloat = 6
         NSLayoutConstraint.activate([
@@ -42,16 +52,9 @@ private extension ColorsCollectionViewCell {
             colorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             colorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
         ])
-        
-        colorView.layer.cornerRadius = 8
-        colorView.layer.masksToBounds = true
     }
     
     func setupSelectionBorder() {
-        borderView.layer.cornerRadius = 12
-        borderView.layer.borderColor = UIColor.trackerBlackDay.withAlphaComponent(0.4).cgColor
-        borderView.layer.borderWidth = 3
-        
         selectedBackgroundView = borderView
     }
     

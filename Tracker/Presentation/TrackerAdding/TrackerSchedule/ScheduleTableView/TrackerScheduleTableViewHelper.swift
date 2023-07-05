@@ -46,7 +46,7 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: TrackerScheduleTableViewCell.identifier,
+                withIdentifier: TrackerScheduleTableViewCell.reuseIdentifier,
                 for: indexPath) as? TrackerScheduleTableViewCell,
               let presenter = presenter
         else { return UITableViewCell() }
