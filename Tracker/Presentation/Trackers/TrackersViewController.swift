@@ -25,9 +25,6 @@ final class TrackersViewController: UIViewController {
 	private let searchController = UISearchController()
 	private let collectionPlaceholderView = TrackerPlaceholderView()
     
-    private var placeholderImage: UIImage?
-    private var placeholderText: String?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .trackerWhiteDay
@@ -50,16 +47,12 @@ extension TrackersViewController: TrackersViewControllerProtocol {
 // MARK: - Setup PlaceholderView
 extension TrackersViewController {
     func showPlaceholderViewForCurrentDay() {
-        configurePlaceholderView(
-            image: UIImage(named: "TrackersCollectionEmptyImage"),
-            text: "Что будем отслеживать?")
+		collectionPlaceholderView.set(state: .emptyForDay)
         shouldHidePlaceholderView(false)
     }
     
     func showPlaceholderViewForEmptySearch() {
-        configurePlaceholderView(
-            image: UIImage(named: "TrackersCollectionEmptyTrackersListSearch"),
-            text: "Ничего не найдено")
+		collectionPlaceholderView.set(state: .emptySearch)
         shouldHidePlaceholderView(false)
     }
     
@@ -71,11 +64,6 @@ extension TrackersViewController {
         ) { [weak self] in
 			self?.collectionPlaceholderView.isHidden = isHide
         }
-    }
-    
-    private func configurePlaceholderView(image: UIImage?, text: String) {
-        collectionPlaceholderView.image = image
-        collectionPlaceholderView.text = text
     }
     
     private func setupPlaceholderView() {
@@ -90,8 +78,6 @@ extension TrackersViewController {
         ])
         
 		collectionPlaceholderView.isHidden = true
-		collectionPlaceholderView.image = placeholderImage
-		collectionPlaceholderView.text = placeholderText
     }
 }
 

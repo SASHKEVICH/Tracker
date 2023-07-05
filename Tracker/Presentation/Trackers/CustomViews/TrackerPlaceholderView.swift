@@ -8,16 +8,9 @@
 import UIKit
 
 final class TrackerPlaceholderView: UIView {
-	var image: UIImage? {
-		didSet {
-			imageView.image = image
-		}
-	}
-
-	var text: String? {
-		didSet {
-			textLabel.text = text
-		}
+	enum State {
+		case emptyForDay
+		case emptySearch
 	}
 
 	private let imageView: UIImageView = {
@@ -35,6 +28,18 @@ final class TrackerPlaceholderView: UIView {
 		return textLabel
 	}()
 
+	private var image: UIImage? {
+		didSet {
+			imageView.image = image
+		}
+	}
+
+	private var text: String? {
+		didSet {
+			textLabel.text = text
+		}
+	}
+
 	init() {
 		super.init(frame: .zero)
 		self.addSubviews()
@@ -44,6 +49,22 @@ final class TrackerPlaceholderView: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+}
+
+extension TrackerPlaceholderView {
+	func set(state: TrackerPlaceholderView.State) {
+		switch state {
+		case .emptyForDay:
+			self.set(image: .Placeholder.emptyForDay, text: "Что будем отслеживать?")
+		case .emptySearch:
+			self.set(image: .Placeholder.emptySearch, text: "Ничего не найдено")
+		}
+	}
+
+	func set(image: UIImage?, text: String?) {
+		self.image = image
+		self.text = text
+	}
 }
 
 private extension TrackerPlaceholderView {
