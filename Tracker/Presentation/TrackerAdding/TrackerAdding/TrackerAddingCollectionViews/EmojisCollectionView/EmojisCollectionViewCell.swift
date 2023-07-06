@@ -21,12 +21,19 @@ final class EmojisCollectionViewCell: UICollectionViewCell {
 		return label
 	}()
 
+	private let selectBackgroundView = CellSelectBackgroundView()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        setupEmojiLabel()
-        setupBackgroundView()
+
+		addSubviews()
+        addConstraints()
     }
+
+	override func draw(_ rect: CGRect) {
+		super.draw(rect)
+		setupBackgroundView()
+	}
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -34,9 +41,11 @@ final class EmojisCollectionViewCell: UICollectionViewCell {
 }
 
 private extension EmojisCollectionViewCell {
-    func setupEmojiLabel() {
-        contentView.addSubview(emojiLabel)
-        
+	func addSubviews() {
+		contentView.addSubview(emojiLabel)
+	}
+
+    func addConstraints() {
         NSLayoutConstraint.activate([
             emojiLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             emojiLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
@@ -44,12 +53,6 @@ private extension EmojisCollectionViewCell {
     }
     
     func setupBackgroundView() {
-        let backgroundView = UIView()
-        
-        backgroundView.backgroundColor = .trackerLightGray
-        backgroundView.layer.cornerRadius = 16
-        backgroundView.layer.masksToBounds = true
-        
-        selectedBackgroundView = backgroundView
+        selectedBackgroundView = selectBackgroundView
     }
 }

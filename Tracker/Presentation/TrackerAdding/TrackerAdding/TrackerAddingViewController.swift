@@ -24,129 +24,215 @@ protocol TrackerAddingViewControllerProtocol: AnyObject, TrackerScheduleViewCont
     func disableAddButton()
 }
 
-final class TrackerAddingViewController: UIViewController, TrackerAddingViewControllerProtocol {
+final class TrackerAddingViewController: UIViewController {
 	var presenter: TrackerAddingViewPresenterProtocol?
 	var trackerScheduleViewController: TrackerScheduleViewController?
-
+	
 	var emptyTap: (() -> Void)?
+	
+	private let scrollView: UIScrollView = {
+		let scrollView = UIScrollView()
+		scrollView.translatesAutoresizingMaskIntoConstraints = false
+		return scrollView
+	}()
+	
+	private let contentView: UIView = {
+		let view = UIView()
+		view.translatesAutoresizingMaskIntoConstraints = false
+		return view
+	}()
+	
+	private let titleLabel: UILabel = {
+		let label = UILabel()
+		label.translatesAutoresizingMaskIntoConstraints = false
+		label.font = .Medium.big
+		label.textColor = .Dynamic.blackDay
+		return label
+	}()
+	
+	private lazy var trackerTitleTextField: TrackerTitleTextField = {
+		let textField = TrackerTitleTextField()
+		textField.translatesAutoresizingMaskIntoConstraints = false
+		textField.placeholder = "Введите название трекера"
+		textField.delegate = self.presenter?.textFieldHelper
+		textField.clearButtonMode = .whileEditing
+		textField.addTarget(self, action: #selector(self.didChangeTrackerTitleTextField(_:)), for: .editingChanged)
+		return textField
+	}()
+	
+	private let errorLabel: UILabel = {
+		let label = UILabel()
+		label.translatesAutoresizingMaskIntoConstraints = false
+		label.isHidden = true
+		label.text = "Ограничение 38 символов"
+		label.font = .Regular.medium
+		label.textColor = .Static.red
+		label.sizeToFit()
+		return label
+	}()
+	
+	private lazy var trackerOptionsTableView: UITableView = {
+		let tableView = UITableView()
+		tableView.translatesAutoresizingMaskIntoConstraints = false
+		tableView.dataSource = self.presenter?.tableViewHelper
+		tableView.delegate = self.presenter?.tableViewHelper
+		tableView.register(
+			TrackerOptionsTableViewCell.self,
+			forCellReuseIdentifier: TrackerOptionsTableViewCell.reuseIdentifier
+		)
+		tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+		return tableView
+	}()
+	
+	private lazy var emojisCollectionView: UICollectionView = {
+		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+		collectionView.translatesAutoresizingMaskIntoConstraints = false
+		collectionView.dataSource = self.presenter?.emojisCollectionViewHelper
+		collectionView.delegate = self.presenter?.emojisCollectionViewHelper
+		collectionView.register(
+			EmojisCollectionViewCell.self,
+			forCellWithReuseIdentifier: EmojisCollectionViewCell.reuseIdentifier
+		)
+		collectionView.register(
+			TrackersCollectionSectionHeader.self,
+			forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+			withReuseIdentifier: TrackersCollectionSectionHeader.identifier
+		)
+		return collectionView
+	}()
+	
+	private lazy var colorsCollectionView: UICollectionView = {
+		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+		collectionView.translatesAutoresizingMaskIntoConstraints = false
+		collectionView.dataSource = presenter?.colorsCollectionViewHelper
+		collectionView.delegate = presenter?.colorsCollectionViewHelper
+		collectionView.register(
+			ColorsCollectionViewCell.self,
+			forCellWithReuseIdentifier: ColorsCollectionViewCell.reuseIdentifier
+		)
+		collectionView.register(
+			TrackersCollectionSectionHeader.self,
+			forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+			withReuseIdentifier: TrackersCollectionSectionHeader.identifier
+		)
+		return collectionView
+	}()
+	
+	private lazy var cancelTrackerButton: TrackerCustomButton = {
+		let button = TrackerCustomButton(state: .cancel, title: "Отменить")
+		button.translatesAutoresizingMaskIntoConstraints = false
+		button.addTarget(self, action: #selector(self.didTapCancelTrackerButton), for: .touchUpInside)
+		return button
+	}()
+	
+	private lazy var addTrackerButton: TrackerCustomButton = {
+		let button = TrackerCustomButton(state: .disabled, title: "Создать")
+		button.translatesAutoresizingMaskIntoConstraints = false
+		button.addTarget(self, action: #selector(self.didTapAddTrackerButton), for: .touchUpInside)
+		return button
+	}()
+    
+	private lazy var tableViewTopConstraint = NSLayoutConstraint(
+		item: self.trackerOptionsTableView,
+		attribute: .top,
+		relatedBy: .equal,
+		toItem: self.trackerTitleTextField,
+		attribute: .bottom,
+		multiplier: 1,
+		constant: 24)
 
-    private let scrollView = UIScrollView()
-    private let contentScrollView = UIView()
-    
-    private let titleLabel = UILabel()
-    
-    private let trackerTitleTextField = TrackerTitleTextField()
-    private let errorLabel = UILabel()
-    
-    private let trackerOptionsTableView = UITableView()
-    
-    private let emojisCollectionView = UICollectionView(
-        frame: .zero,
-        collectionViewLayout: UICollectionViewFlowLayout())
-    private let colorsCollectionView = UICollectionView(
-        frame: .zero,
-        collectionViewLayout: UICollectionViewFlowLayout())
-    
-    private let cancelTrackerButton = TrackerCustomButton(state: .cancel, title: "Отменить")
-    private let addTrackerButton = TrackerCustomButton(state: .disabled, title: "Создать")
-    
-    private var tableViewTopConstraint: NSLayoutConstraint?
-    private var tableViewHeightConstraint: NSLayoutConstraint?
-    private var emojisCollectionViewHeightConstraint: NSLayoutConstraint?
-    private var colorsCollectionViewHeightConstraint: NSLayoutConstraint?
+    private lazy var tableViewHeightConstraint = NSLayoutConstraint(
+		item: self.trackerOptionsTableView,
+		attribute: .height,
+		relatedBy: .equal,
+		toItem: nil,
+		attribute: .height,
+		multiplier: 1,
+		constant: 75)
+
+    private lazy var emojisCollectionViewHeightConstraint = NSLayoutConstraint(
+		item: self.emojisCollectionView,
+		attribute: .height,
+		relatedBy: .equal,
+		toItem: nil,
+		attribute: .height,
+		multiplier: 1,
+		constant: 100)
+
+    private lazy var colorsCollectionViewHeightConstraint = NSLayoutConstraint(
+		item: self.colorsCollectionView,
+		attribute: .height,
+		relatedBy: .equal,
+		toItem: nil,
+		attribute: .height,
+		multiplier: 1,
+		constant: 100)
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .trackerWhiteDay
+		view.backgroundColor = .Dynamic.whiteDay
         isModalInPresentation = true
         
-        setupScrollView()
-        setupTitleLabel()
-        setupTrackerTitleTextField()
-        setupErrorLabel()
-        setupTrackerOptionsTableView()
-        setupCollectionViews()
-
+		self.addSubviews()
+		self.addConstraints()
 		self.addGestureRecognizers()
         
-        presenter?.viewDidLoad()
-        trackerOptionsTableView.reloadData()
-        emojisCollectionView.reloadData()
-        colorsCollectionView.reloadData()
+		self.presenter?.viewDidLoad()
+		self.reloadData()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        guard contentScrollView.frame.width != 0 else { return }
-        setupCancelAndAddTrackerButton()
+        guard contentView.frame.width != 0 else { return }
+		self.addConstraintsToButtons()
         
-        tableViewHeightConstraint?.constant = trackerOptionsTableView.contentSize.height
-        emojisCollectionViewHeightConstraint?.constant = emojisCollectionView.contentSize.height
-        colorsCollectionViewHeightConstraint?.constant = colorsCollectionView.contentSize.height
+		self.tableViewHeightConstraint.constant = self.trackerOptionsTableView.contentSize.height
+		self.emojisCollectionViewHeightConstraint.constant = self.emojisCollectionView.contentSize.height
+		self.colorsCollectionViewHeightConstraint.constant = self.colorsCollectionView.contentSize.height
         
         view.setNeedsLayout()
     }
 }
 
-extension TrackerAddingViewController {
+// MARK: - TrackerAddingViewControllerProtocol
+extension TrackerAddingViewController: TrackerAddingViewControllerProtocol {
     func setViewControllerTitle(_ title: String) {
         titleLabel.text = title
         titleLabel.sizeToFit()
     }
-}
 
-// MARK: - Showing and Hiding error label
-extension TrackerAddingViewController {
-    func showError() -> Bool {
-        guard errorLabel.isHidden else { return errorLabel.isHidden }
-        
-        errorLabel.isHidden = false
-        addTrackerButton.buttonState = .disabled
-        tableViewTopConstraint?.constant = 54
-        
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.view.layoutIfNeeded()
-        }) { [weak self] _ in
-            self?.errorLabel.isHidden = false
-        }
-        
-        return errorLabel.isHidden
-    }
-    
-    func hideError() -> Bool {
-        guard !errorLabel.isHidden else { return errorLabel.isHidden }
-        
-        addTrackerButton.buttonState = .normal
-        tableViewTopConstraint?.constant = 24
-        
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.view.layoutIfNeeded()
-        }) { [weak self] _ in
-            self?.errorLabel.isHidden = true
-        }
-        
-        return errorLabel.isHidden
-    }
-}
+	func showError() -> Bool {
+		guard errorLabel.isHidden else { return errorLabel.isHidden }
 
-// MARK: - Toggle enabling add tracker button
-extension TrackerAddingViewController {
-    func enableAddButton() {
-        addTrackerButton.buttonState = .normal
-    }
-    
-    func disableAddButton() {
-        addTrackerButton.buttonState = .disabled
-    }
-}
+		errorLabel.isHidden = false
+		addTrackerButton.buttonState = .disabled
+		tableViewTopConstraint.constant = 54
 
-// MARK: - Cells callbacks
-extension TrackerAddingViewController {
-    func didTapTrackerScheduleCell(_ vc: TrackerScheduleViewController) {
-        present(vc, animated: true)
-    }
+		return shouldHideErrorLabelWithAnimation(false)
+	}
+
+	func hideError() -> Bool {
+		guard !errorLabel.isHidden else { return errorLabel.isHidden }
+
+		addTrackerButton.buttonState = .normal
+		tableViewTopConstraint.constant = 24
+
+		return shouldHideErrorLabelWithAnimation(true)
+	}
+
+	func enableAddButton() {
+		addTrackerButton.buttonState = .normal
+	}
+
+	func disableAddButton() {
+		addTrackerButton.buttonState = .disabled
+	}
+
+	func didTapTrackerScheduleCell(_ vc: TrackerScheduleViewController) {
+		present(vc, animated: true)
+	}
 }
 
 // MARK: - TrackerScheduleViewControllerDelegate
@@ -161,192 +247,79 @@ extension TrackerAddingViewController: TrackerScheduleViewControllerDelegate {
     }
 }
 
-// MARK: - Setup and layout views
+// MARK: - Layout views
 private extension TrackerAddingViewController {
-	func setupScrollView() {
+	func addSubviews() {
 		view.addSubview(scrollView)
-		scrollView.addSubview(contentScrollView)
-		scrollView.translatesAutoresizingMaskIntoConstraints = false
-		contentScrollView.translatesAutoresizingMaskIntoConstraints = false
+		scrollView.addSubview(contentView)
 
+		contentView.addSubview(titleLabel)
+		contentView.addSubview(trackerTitleTextField)
+		contentView.addSubview(errorLabel)
+		contentView.addSubview(trackerOptionsTableView)
+		contentView.addSubview(emojisCollectionView)
+		contentView.addSubview(colorsCollectionView)
+		contentView.addSubview(addTrackerButton)
+		contentView.addSubview(cancelTrackerButton)
+	}
+
+	func addConstraints() {
 		NSLayoutConstraint.activate([
 			scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
 			scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
 			scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 			scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
-			contentScrollView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-			contentScrollView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-			contentScrollView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-			contentScrollView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+			contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+			contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+			contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+			contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
 
-			contentScrollView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
+			contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
 		])
-	}
-
-	func setupTitleLabel() {
-		contentScrollView.addSubview(titleLabel)
-		titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-		NSLayoutConstraint.activate([
-			titleLabel.topAnchor.constraint(equalTo: contentScrollView.topAnchor, constant: 30),
-			titleLabel.centerXAnchor.constraint(equalTo: contentScrollView.centerXAnchor)
-		])
-
-		titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-		titleLabel.textColor = .trackerBlackDay
-	}
-
-	func setupTrackerTitleTextField() {
-		contentScrollView.addSubview(trackerTitleTextField)
-		trackerTitleTextField.translatesAutoresizingMaskIntoConstraints = false
-
-		NSLayoutConstraint.activate([
-			trackerTitleTextField.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor, constant: 16),
-			trackerTitleTextField.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor, constant: -16),
-			trackerTitleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
-			trackerTitleTextField.heightAnchor.constraint(equalToConstant: 75)
-		])
-
-		trackerTitleTextField.placeholder = "Введите название трекера"
-		trackerTitleTextField.delegate = presenter?.textFieldHelper
-		trackerTitleTextField.clearButtonMode = .whileEditing
-		trackerTitleTextField.addTarget(self, action: #selector(didChangeTrackerTitleTextField(_:)), for: .editingChanged)
-	}
-
-	func setupErrorLabel() {
-		contentScrollView.addSubview(errorLabel)
-		errorLabel.translatesAutoresizingMaskIntoConstraints = false
 
 		NSLayoutConstraint.activate([
 			errorLabel.topAnchor.constraint(equalTo: trackerTitleTextField.bottomAnchor, constant: 8),
 			errorLabel.heightAnchor.constraint(equalToConstant: 22),
-			errorLabel.centerXAnchor.constraint(equalTo: contentScrollView.centerXAnchor),
+			errorLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 		])
 
-		errorLabel.isHidden = true
-
-		errorLabel.text = "Ограничение 38 символов"
-		errorLabel.font = .systemFont(ofSize: 17)
-		errorLabel.sizeToFit()
-
-		errorLabel.textColor = .trackerRed
-	}
-
-	func setupTrackerOptionsTableView() {
-		contentScrollView.addSubview(trackerOptionsTableView)
-		trackerOptionsTableView.translatesAutoresizingMaskIntoConstraints = false
-
-		let tableViewTopConstraint = NSLayoutConstraint(
-			item: trackerOptionsTableView,
-			attribute: .top,
-			relatedBy: .equal,
-			toItem: trackerTitleTextField,
-			attribute: .bottom,
-			multiplier: 1,
-			constant: 24)
-
-		let tableViewHeightConstraint = NSLayoutConstraint(
-			item: trackerOptionsTableView,
-			attribute: .height,
-			relatedBy: .equal,
-			toItem: nil,
-			attribute: .height,
-			multiplier: 1,
-			constant: 75)
+		NSLayoutConstraint.activate([
+			titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
+			titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+		])
 
 		NSLayoutConstraint.activate([
-			trackerOptionsTableView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor, constant: 16),
-			trackerOptionsTableView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor, constant: -16),
+			trackerTitleTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+			trackerTitleTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+			trackerTitleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
+			trackerTitleTextField.heightAnchor.constraint(equalToConstant: 75)
+		])
+
+		NSLayoutConstraint.activate([
+			trackerOptionsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+			trackerOptionsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 			tableViewTopConstraint,
 			tableViewHeightConstraint
 		])
 
-		trackerOptionsTableView.dataSource = presenter?.tableViewHelper
-		trackerOptionsTableView.delegate = presenter?.tableViewHelper
-		trackerOptionsTableView.register(
-			TrackerOptionsTableViewCell.self,
-			forCellReuseIdentifier: TrackerOptionsTableViewCell.reuseIdentifier
-		)
-		trackerOptionsTableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-
-		self.tableViewTopConstraint = tableViewTopConstraint
-		self.tableViewHeightConstraint = tableViewHeightConstraint
-	}
-
-	func setupCollectionViews() {
-		let emojisCollectionViewHeightConstraint = NSLayoutConstraint(
-			item: emojisCollectionView,
-			attribute: .height,
-			relatedBy: .equal,
-			toItem: nil,
-			attribute: .height,
-			multiplier: 1,
-			constant: 100)
-
-		let colorsCollectionViewHeightConstraint = NSLayoutConstraint(
-			item: colorsCollectionView,
-			attribute: .height,
-			relatedBy: .equal,
-			toItem: nil,
-			attribute: .height,
-			multiplier: 1,
-			constant: 100)
-
-		contentScrollView.addSubview(emojisCollectionView)
-		emojisCollectionView.translatesAutoresizingMaskIntoConstraints = false
-
-		contentScrollView.addSubview(colorsCollectionView)
-		colorsCollectionView.translatesAutoresizingMaskIntoConstraints = false
-
 		NSLayoutConstraint.activate([
 			emojisCollectionView.topAnchor.constraint(equalTo: trackerOptionsTableView.bottomAnchor, constant: 32),
-			emojisCollectionView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
-			emojisCollectionView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor),
+			emojisCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+			emojisCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 			emojisCollectionViewHeightConstraint,
-
-			colorsCollectionView.topAnchor.constraint(equalTo: emojisCollectionView.bottomAnchor, constant: 16),
-			colorsCollectionView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
-			colorsCollectionView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor),
-			colorsCollectionViewHeightConstraint
 		])
 
-		emojisCollectionView.dataSource = presenter?.emojisCollectionViewHelper
-		emojisCollectionView.delegate = presenter?.emojisCollectionViewHelper
-		emojisCollectionView.register(
-			EmojisCollectionViewCell.self,
-			forCellWithReuseIdentifier: EmojisCollectionViewCell.reuseIdentifier
-		)
-		emojisCollectionView.register(
-			TrackersCollectionSectionHeader.self,
-			forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-			withReuseIdentifier: TrackersCollectionSectionHeader.identifier
-		)
-
-		colorsCollectionView.dataSource = presenter?.colorsCollectionViewHelper
-		colorsCollectionView.delegate = presenter?.colorsCollectionViewHelper
-		colorsCollectionView.register(
-			ColorsCollectionViewCell.self,
-			forCellWithReuseIdentifier: ColorsCollectionViewCell.reuseIdentifier
-		)
-		colorsCollectionView.register(
-			TrackersCollectionSectionHeader.self,
-			forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-			withReuseIdentifier: TrackersCollectionSectionHeader.identifier
-		)
-
-		self.emojisCollectionViewHeightConstraint = emojisCollectionViewHeightConstraint
-		self.colorsCollectionViewHeightConstraint = colorsCollectionViewHeightConstraint
+		NSLayoutConstraint.activate([
+			colorsCollectionView.topAnchor.constraint(equalTo: emojisCollectionView.bottomAnchor, constant: 16),
+			colorsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+			colorsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+			colorsCollectionViewHeightConstraint
+		])
 	}
 
-	func setupCancelAndAddTrackerButton() {
-		contentScrollView.addSubview(addTrackerButton)
-		addTrackerButton.translatesAutoresizingMaskIntoConstraints = false
-
-		contentScrollView.addSubview(cancelTrackerButton)
-		cancelTrackerButton.translatesAutoresizingMaskIntoConstraints = false
-
-		let cellWidth = (contentScrollView.bounds.width - 20 * 2 - 8) / 2
+	func addConstraintsToButtons() {
+		let cellWidth = (contentView.bounds.width - 20 * 2 - 8) / 2
 
 		[addTrackerButton, cancelTrackerButton].forEach {
 			NSLayoutConstraint.activate([
@@ -357,28 +330,32 @@ private extension TrackerAddingViewController {
 
 		NSLayoutConstraint.activate([
 			cancelTrackerButton.topAnchor.constraint(equalTo: colorsCollectionView.bottomAnchor, constant: 16),
-			cancelTrackerButton.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor, constant: 20),
-			cancelTrackerButton.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),
-
-			addTrackerButton.topAnchor.constraint(equalTo: colorsCollectionView.bottomAnchor, constant: 16),
-			addTrackerButton.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor, constant: -20),
-			addTrackerButton.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor),
+			cancelTrackerButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+			cancelTrackerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 		])
 
-		cancelTrackerButton.addTarget(self, action: #selector(didTapCancelTrackerButton), for: .touchUpInside)
-		addTrackerButton.addTarget(self, action: #selector(didTapAddTrackerButton), for: .touchUpInside)
+		NSLayoutConstraint.activate([
+			addTrackerButton.topAnchor.constraint(equalTo: colorsCollectionView.bottomAnchor, constant: 16),
+			addTrackerButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+			addTrackerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+		])
 	}
-}
 
-// MARK: - Adding Gesture Recognizers
-private extension TrackerAddingViewController {
 	func addGestureRecognizers() {
 		let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+		tap.cancelsTouchesInView = false
+		tap.numberOfTapsRequired = 1
 		view.addGestureRecognizer(tap)
+	}
+
+	func reloadData() {
+		trackerOptionsTableView.reloadData()
+		emojisCollectionView.reloadData()
+		colorsCollectionView.reloadData()
 	}
 }
 
-// MARK: - Callbacks
+// MARK: - Actions
 private extension TrackerAddingViewController {
 	@objc
 	func didTapCancelTrackerButton() {
@@ -400,5 +377,17 @@ private extension TrackerAddingViewController {
 	@objc
 	func dismissKeyboard() {
 		self.emptyTap?()
+	}
+}
+
+private extension TrackerAddingViewController {
+	func shouldHideErrorLabelWithAnimation(_ shouldHide: Bool) -> Bool {
+		UIView.animate(withDuration: 0.3, animations: { [weak self] in
+			self?.view.layoutIfNeeded()
+		}) { [weak self] _ in
+			self?.errorLabel.isHidden = shouldHide
+		}
+
+		return errorLabel.isHidden
 	}
 }

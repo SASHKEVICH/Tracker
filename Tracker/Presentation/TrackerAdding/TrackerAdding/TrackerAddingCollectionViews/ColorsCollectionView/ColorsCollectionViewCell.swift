@@ -25,7 +25,7 @@ final class ColorsCollectionViewCell: UICollectionViewCell {
 	private let borderView: UIView = {
 		let view = UIView()
 		view.layer.cornerRadius = 12
-		view.layer.borderColor = UIColor.trackerBlackDay.withAlphaComponent(0.4).cgColor
+		view.layer.borderColor = UIColor.Dynamic.blackDay.withAlphaComponent(0.4).cgColor
 		view.layer.borderWidth = 3
 		return view
 	}()

@@ -20,7 +20,7 @@ final class TabBarViewController: UITabBarController {
     
     private func setupTabBar() {
         let appearance = UITabBarAppearance()
-        appearance.backgroundColor = .trackerWhiteDay
+		appearance.backgroundColor = .Dynamic.whiteDay
         tabBar.standardAppearance = appearance
     }
 }

@@ -28,23 +28,17 @@ final class TrackerScheduleTableViewCell: UITableViewCell {
 	private let cellTitleLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.textColor = .trackerBlackDay
-		label.font = .systemFont(ofSize: 17)
+		label.textColor = .Dynamic.blackDay
+		label.font = .Regular.medium
 		return label
 	}()
 
-	private let selectBackgroundView = {
-		let view = UIView()
-		view.backgroundColor = .lightGray
-		view.layer.cornerRadius = 16
-		view.layer.masksToBounds = true
-		return view
-	}()
+	private let selectBackgroundView = CellSelectBackgroundView()
 
 	private lazy var daySwitch: UISwitch = {
 		let daySwitch = UISwitch()
 		daySwitch.translatesAutoresizingMaskIntoConstraints = false
-		daySwitch.onTintColor = .trackerSwitchBackgroundColor
+		daySwitch.onTintColor = .Static.switchBackground
 		daySwitch.addTarget(self, action: #selector(didChangeSwitchValue), for: .valueChanged)
 		return daySwitch
 	}()
@@ -84,7 +78,7 @@ private extension TrackerScheduleTableViewCell {
 
 
 	func setupDefaultCellBackground() {
-		backgroundColor = .trackerBackgroundDay
+		backgroundColor = .Dynamic.backgroundDay
 		selectedBackgroundView = selectBackgroundView
 	}
 }

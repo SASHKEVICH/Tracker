@@ -21,7 +21,7 @@ final class OnboardingPageViewController: UIViewController {
 		label.numberOfLines = 0
 		label.textAlignment = .center
 		label.font = .boldSystemFont(ofSize: 32)
-		label.textColor = .trackerBlackDay
+		label.textColor = .Dynamic.blackDay
 		return label
 	}()
 	

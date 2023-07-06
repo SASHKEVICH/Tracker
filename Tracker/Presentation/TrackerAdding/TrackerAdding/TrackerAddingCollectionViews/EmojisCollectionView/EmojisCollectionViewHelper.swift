@@ -32,10 +32,8 @@ extension EmojisCollectionViewHelper {
         guard
             let cell = collectionView.cellForItem(at: indexPath) as? EmojisCollectionViewCell,
             let emoji = cell.emoji
-        else {
-            return
-        }
-        
+        else { return }
+
         presenter?.didSelect(emoji: emoji)
     }
     

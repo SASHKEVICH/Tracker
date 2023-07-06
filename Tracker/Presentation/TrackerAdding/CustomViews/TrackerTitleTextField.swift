@@ -34,8 +34,8 @@ final class TrackerTitleTextField: UITextField {
 
 private extension TrackerTitleTextField {
     func setupTextField() {
-        self.textColor = .trackerBlackDay
-        self.backgroundColor = .trackerBackgroundDay
+		self.textColor = .Dynamic.blackDay
+		self.backgroundColor = .Dynamic.backgroundDay
         
         layer.cornerRadius = 16
         layer.masksToBounds = true
@@ -45,7 +45,7 @@ private extension TrackerTitleTextField {
         if let placeholder = placeholder {
             attributedPlaceholder = NSAttributedString(
                 string: placeholder,
-                attributes: [NSAttributedString.Key.foregroundColor: UIColor.trackerGray])
+				attributes: [NSAttributedString.Key.foregroundColor: UIColor.Static.gray])
         }
     }
 }

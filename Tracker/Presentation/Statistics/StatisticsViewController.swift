@@ -11,6 +11,6 @@ final class StatisticsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .trackerWhiteDay
+		view.backgroundColor = .Dynamic.whiteDay
     }
 }

@@ -72,8 +72,8 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 	private lazy var dayCountLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-		label.textColor = .trackerBlackDay
+		label.font = .Medium.medium
+		label.textColor = .Dynamic.blackDay
 		label.text = "\(self.dayCount) дней"
 		return label
 	}()

@@ -15,15 +15,15 @@ final class ColorsCollectionViewHelper: NSObject, ColorsCollectionViewHelperProt
     weak var presenter: TrackerAddingViewPresenterCollectionColorsViewHelperProtocol?
     
     private var configuration = TrackerCollectionViewConstants.addTrackerCollectionsConfiguration
-    
-    private let colors: [UIColor] = [
-        .trackerColorSelection1, .trackerColorSelection2, .trackerColorSelection3,
-        .trackerColorSelection4, .trackerColorSelection5, .trackerColorSelection6,
-        .trackerColorSelection7, .trackerColorSelection8, .trackerColorSelection9,
-        .trackerColorSelection10, .trackerColorSelection11, .trackerColorSelection12,
-        .trackerColorSelection13, .trackerColorSelection14, .trackerColorSelection15,
-        .trackerColorSelection16, .trackerColorSelection17, .trackerColorSelection18
-    ]
+
+	private let colors: [UIColor] = [
+		.Selection.color1, .Selection.color2, .Selection.color3,
+		.Selection.color4, .Selection.color5, .Selection.color6,
+		.Selection.color7, .Selection.color8, .Selection.color9,
+		.Selection.color10, .Selection.color11, .Selection.color12,
+		.Selection.color13, .Selection.color14, .Selection.color15,
+		.Selection.color16, .Selection.color17, .Selection.color18,
+	]
 }
 
 // MARK: UICollectionViewDelegateFlowLayout

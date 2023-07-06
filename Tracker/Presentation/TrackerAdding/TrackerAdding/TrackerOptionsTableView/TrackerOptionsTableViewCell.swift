@@ -23,24 +23,48 @@ final class TrackerOptionsTableViewCell: UITableViewCell {
 		}
 	}
 
-    private let cellTitleLabel = UILabel()
-    private let additionalInfoLabel = UILabel()
-    private let selectBackgroundView = {
-        let view = UIView()
-        view.backgroundColor = .trackerLightGray
-        view.layer.cornerRadius = 16
-        view.layer.masksToBounds = true
-        return view
-    }()
+	private let cellTitleLabel: UILabel = {
+		let label = UILabel()
+		label.translatesAutoresizingMaskIntoConstraints = false
+		label.textColor = .Dynamic.blackDay
+		label.font = .Regular.medium
+		return label
+	}()
+
+	private let additionalInfoLabel: UILabel = {
+		let label = UILabel()
+		label.translatesAutoresizingMaskIntoConstraints = false
+		label.font = .Regular.medium
+		label.textColor = .Static.gray
+		label.isHidden = true
+		return label
+	}()
+
+    private let selectBackgroundView = CellSelectBackgroundView()
     
-    private var titleLableTopConstraint: NSLayoutConstraint?
-    private var titleLableBottomConstraint: NSLayoutConstraint?
+    private lazy var titleLableTopConstraint = NSLayoutConstraint(
+		item: self.cellTitleLabel,
+		attribute: .top,
+		relatedBy: .equal,
+		toItem: self.contentView,
+		attribute: .top,
+		multiplier: 1,
+		constant: 26)
+
+    private lazy var titleLableBottomConstraint = NSLayoutConstraint(
+		item: self.cellTitleLabel,
+		attribute: .bottom,
+		relatedBy: .equal,
+		toItem: self.contentView,
+		attribute: .bottom,
+		multiplier: 1,
+		constant: -25)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupCellTitleLabel()
-        setupAdditionalInfoLabel()
-        setupDefaultCellBackground()
+        addSubviews()
+		addConstraints()
+        configureDefaultCellBackground()
     }
     
     required init?(coder: NSCoder) {
@@ -48,72 +72,38 @@ final class TrackerOptionsTableViewCell: UITableViewCell {
     }
 }
 
-// MARK: Setup Views
 private extension TrackerOptionsTableViewCell {
-    func setupCellTitleLabel() {
-        contentView.addSubview(cellTitleLabel)
-        cellTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        titleLableTopConstraint = NSLayoutConstraint(
-            item: cellTitleLabel,
-            attribute: .top,
-            relatedBy: .equal,
-            toItem: contentView,
-            attribute: .top,
-            multiplier: 1,
-            constant: 26)
-        
-        titleLableBottomConstraint = NSLayoutConstraint(
-            item: cellTitleLabel,
-            attribute: .bottom,
-            relatedBy: .equal,
-            toItem: contentView,
-            attribute: .bottom,
-            multiplier: 1,
-            constant: -25)
-        
-        guard
-            let titleLableTopConstraint = titleLableTopConstraint,
-            let titleLableBottomConstraint = titleLableBottomConstraint
-        else { return }
-        
-        NSLayoutConstraint.activate([
-            cellTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            cellTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -56),
-            titleLableTopConstraint,
-            titleLableBottomConstraint
-        ])
-        
-        cellTitleLabel.textColor = .trackerBlackDay
-        cellTitleLabel.font = .systemFont(ofSize: 17)
-    }
+	func addSubviews() {
+		contentView.addSubview(cellTitleLabel)
+		contentView.addSubview(additionalInfoLabel)
+	}
+
+	func addConstraints() {
+		NSLayoutConstraint.activate([
+			cellTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+			cellTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -56),
+			titleLableTopConstraint,
+			titleLableBottomConstraint
+		])
+
+		NSLayoutConstraint.activate([
+			additionalInfoLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+			additionalInfoLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -56),
+			additionalInfoLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 39),
+			additionalInfoLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -14)
+		])
+	}
     
-    func setupAdditionalInfoLabel() {
-        contentView.addSubview(additionalInfoLabel)
-        additionalInfoLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            additionalInfoLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            additionalInfoLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -56),
-            additionalInfoLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 39),
-            additionalInfoLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -14)
-        ])
-        
-        additionalInfoLabel.font = .systemFont(ofSize: 17)
-        additionalInfoLabel.textColor = .trackerGray
-        additionalInfoLabel.isHidden = true
-    }
-    
-    func setupDefaultCellBackground() {
-        backgroundColor = .trackerBackgroundDay
+    func configureDefaultCellBackground() {
+		backgroundColor = .Dynamic.backgroundDay
         selectedBackgroundView = selectBackgroundView
     }
 }
 
 private extension TrackerOptionsTableViewCell {
     func relayoutCellTitleLabel() {
-        titleLableTopConstraint?.constant = 15
-        titleLableBottomConstraint?.constant = -38
-        layoutIfNeeded()
+		self.titleLableTopConstraint.constant = 15
+		self.titleLableBottomConstraint.constant = -38
+		self.layoutIfNeeded()
     }
 }

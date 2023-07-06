@@ -13,14 +13,14 @@ final class TrackerCustomButton: UIButton {
 		case normal
 		case disabled
 	}
+
+	var buttonState: TrackerCustomButton.State {
+		didSet {
+			setNeededButtonState()
+		}
+	}
 	
     private var title: String
-    
-	var buttonState: TrackerCustomButton.State {
-        didSet {
-            setNeededButtonState()
-        }
-    }
     
 	init(state: TrackerCustomButton.State, title: String) {
         self.buttonState = state
@@ -58,34 +58,36 @@ private extension TrackerCustomButton {
         
         let border = CAShapeLayer()
         border.frame = self.bounds
-        border.strokeColor = UIColor.trackerRed.cgColor
+
+		let color = UIColor.Static.red
+		border.strokeColor = color.cgColor
         border.lineWidth = 1
         border.fillColor = nil
         border.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: layer.cornerRadius).cgPath
         self.layer.addSublayer(border)
         
         setAttributedButtonTitle()
-        setTitleColor(.trackerRed, for: .normal)
+        setTitleColor(color, for: .normal)
     }
     
     func setNormalState() {
         self.isEnabled = true
-        layer.backgroundColor = UIColor.trackerBlackDay.cgColor
+		layer.backgroundColor = UIColor.Dynamic.blackDay.cgColor
         
         setAttributedButtonTitle()
-        setTitleColor(.trackerWhiteDay, for: .normal)
+		setTitleColor(.Dynamic.whiteDay, for: .normal)
     }
     
     func setDisabledState() {
         self.isEnabled = false
-        layer.backgroundColor = UIColor.trackerGray.cgColor
+		layer.backgroundColor = UIColor.Static.gray.cgColor
         
         setAttributedButtonTitle()
-        setTitleColor(.trackerWhiteDay, for: .normal)
+        setTitleColor(.Dynamic.whiteDay, for: .normal)
     }
     
     func setAttributedButtonTitle() {
-        let font = UIFont.systemFont(ofSize: 16, weight: .medium)
+		let font = UIFont.Medium.big
         let attributedTitle = NSAttributedString(
             string: title,
             attributes: [NSAttributedString.Key.font: font])

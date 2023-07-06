@@ -8,11 +8,15 @@
 import UIKit
 
 final class CellSelectBackgroundView: UIView {
-	override func draw(_ rect: CGRect) {
-		super.draw(rect)
-		
-		backgroundColor = .trackerLightGray
-		layer.cornerRadius = 16
-		layer.masksToBounds = true
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+
+		self.backgroundColor = .Static.lightGray
+		self.layer.cornerRadius = 16
+		self.layer.masksToBounds = true
+	}
+
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
 	}
 }

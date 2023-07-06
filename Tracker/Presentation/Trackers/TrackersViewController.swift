@@ -27,7 +27,7 @@ final class TrackersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .trackerWhiteDay
+		view.backgroundColor = .Dynamic.whiteDay
         
         presenter?.viewDidLoad()
         
@@ -117,7 +117,6 @@ private extension TrackersViewController {
 	}
 
 	func layoutCollectionView() {
-		collectionView.backgroundColor = .trackerWhiteDay
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
 
 		view.addSubview(collectionView)

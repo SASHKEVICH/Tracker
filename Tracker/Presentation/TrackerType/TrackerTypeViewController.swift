@@ -12,9 +12,9 @@ final class TrackerTypeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Создание трекера"
-        label.sizeToFit()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .trackerBlackDay
+		label.font = .Medium.big
+		label.textColor = .Dynamic.blackDay
+		label.sizeToFit()
         return label
     }()
     
@@ -32,10 +32,10 @@ final class TrackerTypeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .trackerWhiteDay
+		view.backgroundColor = .Dynamic.whiteDay
         
         addSubviews()
-        applyConstraints()
+        addConstraints()
         setupButtons()
     }
 }
@@ -50,7 +50,7 @@ private extension TrackerTypeViewController {
         stackView.addArrangedSubview(addIrregularEventButton)
     }
     
-    func applyConstraints() {
+    func addConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),

@@ -22,8 +22,8 @@ final class TrackerPlaceholderView: UIView {
 	private let textLabel: UILabel = {
 		let textLabel = UILabel()
 		textLabel.translatesAutoresizingMaskIntoConstraints = false
-		textLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-		textLabel.textColor = .trackerBlackDay
+		textLabel.font = .Medium.medium
+		textLabel.textColor = .Dynamic.blackDay
 		textLabel.textAlignment = .center
 		return textLabel
 	}()
