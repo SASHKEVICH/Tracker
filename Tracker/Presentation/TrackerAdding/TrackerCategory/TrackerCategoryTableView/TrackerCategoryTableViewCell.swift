@@ -7,24 +7,25 @@
 
 import UIKit
 
-final class TrackerCategoryTableViewCell: UITableViewCell {		
+final class TrackerCategoryTableViewCell: UITableViewCell {
 	var categoryTitle: String? {
 		didSet {
 			categoryTitleLable.text = categoryTitle
 		}
 	}
-	
-	var isCellSelected: Bool = true {
+
+	var isCellSelected: Bool = false {
 		didSet {
 			selectedCellImageView.isHidden = !isCellSelected
 		}
 	}
 	
-	private let categoryTitleLable = {
+	private let categoryTitleLable: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.font = .Regular.medium
 		label.textAlignment = .left
+		label.numberOfLines = 0
 		return label
 	}()
 
@@ -45,25 +46,31 @@ final class TrackerCategoryTableViewCell: UITableViewCell {
 		addConstraints()
 
 		selectedBackgroundView = selectBackgroundView
+		backgroundColor = .Dynamic.backgroundDay
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
+
+	override func prepareForReuse() {
+		self.categoryTitle = ""
+		self.isCellSelected = false
+	}
 }
 
 private extension TrackerCategoryTableViewCell {
 	func addSubviews() {
-		addSubview(categoryTitleLable)
-		addSubview(selectedCellImageView)
+		contentView.addSubview(categoryTitleLable)
+		contentView.addSubview(selectedCellImageView)
 	}
 	
 	func addConstraints() {
 		NSLayoutConstraint.activate([
+			categoryTitleLable.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25),
 			categoryTitleLable.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-			categoryTitleLable.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-			categoryTitleLable.heightAnchor.constraint(equalToConstant: 22),
-			categoryTitleLable.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+			categoryTitleLable.trailingAnchor.constraint(equalTo: selectedCellImageView.leadingAnchor),
+			categoryTitleLable.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -26),
 		])
 
 		NSLayoutConstraint.activate([
