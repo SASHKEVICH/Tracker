@@ -9,7 +9,7 @@ import UIKit
 
 protocol TrackerCategoryTableViewHelperDelegate {
 	var categories: [TrackerCategory] { get }
-	func didTapCategoryCell(category: TrackerCategory)
+	func didChoose(category: TrackerCategory)
 }
 
 protocol TrackerCategoryTableViewHelperProtocol: UITableViewDelegate, UITableViewDataSource {
@@ -29,7 +29,18 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		guard let cell = tableView.cellForRow(at: indexPath) as? TrackerCategoryTableViewCell else { return }
-//		delegate?.didTapCategoryCell(category: cell.category)
+		guard let cells = tableView.visibleCells as? [TrackerCategoryTableViewCell] else { return }
+
+		if cell != self.lastSelectedCell {
+			cell.isCellSelected = true
+			self.lastSelectedCell = cell
+
+			let filteredCells = cells.filter { $0 != cell }
+			filteredCells.forEach { $0.isCellSelected = false }
+		}
+
+		guard let chosenCategory = delegate?.categories[indexPath.row] else { return }
+		delegate?.didChoose(category: chosenCategory)
 	}
 	
 	// MARK: - UITableViewDataSource
@@ -52,13 +63,17 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
 		guard let category = delegate?.categories[indexPath.row] else { return UITableViewCell() }
 		cell.categoryTitle = category.title
 
-		guard let lastSelectedCell = self.lastSelectedCell else { return cell }
-
-		if lastSelectedCell == cell {
+		if let lastSelectedCell = self.lastSelectedCell, lastSelectedCell == cell {
 			cell.isCellSelected = true
-			self.lastSelectedCell = cell
 		}
 
-		return cell
+		let configuredCell = cell.configure(
+			cellIndexPath: indexPath,
+			lastCellIndexPath: tableView.lastCellIndexPath,
+			entityCount: delegate?.categories.count,
+			tableViewWidth: tableView.bounds.width
+		)
+
+		return configuredCell
 	}
 }

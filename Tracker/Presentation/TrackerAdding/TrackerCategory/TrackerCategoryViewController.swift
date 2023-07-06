@@ -74,7 +74,7 @@ extension TrackerCategoryViewController: TrackerCategoryTableViewHelperDelegate 
 		viewModel.categories
 	}
 	
-	func didTapCategoryCell(category: TrackerCategory) {
+	func didChoose(category: TrackerCategory) {
 		print(category.title)
 	}
 }
