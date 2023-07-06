@@ -16,7 +16,7 @@ protocol TrackerAddingViewControllerProtocol: AnyObject, TrackerScheduleViewCont
     var presenter: TrackerAddingViewPresenterProtocol? { get set }
     var trackerScheduleViewController: TrackerScheduleViewController? { get set }
 	var emptyTap: (() -> Void)? { get set }
-    func didTapTrackerScheduleCell(_ vc: TrackerScheduleViewController)
+    func present(view: UIViewController)
     func setViewControllerTitle(_ title: String)
     func showError() -> Bool
     func hideError() -> Bool
@@ -230,8 +230,8 @@ extension TrackerAddingViewController: TrackerAddingViewControllerProtocol {
 		addTrackerButton.buttonState = .disabled
 	}
 
-	func didTapTrackerScheduleCell(_ vc: TrackerScheduleViewController) {
-		present(vc, animated: true)
+	func present(view: UIViewController) {
+		present(view, animated: true)
 	}
 }
 

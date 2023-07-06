@@ -29,10 +29,10 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         tableView.deselectRow(at: indexPath, animated: true)
         guard let cell = tableView.cellForRow(at: indexPath) as? TrackerOptionsTableViewCell else { return }
         
-        if cell.cellTitle == "Расписание" {
+		if cell.type == .schedule {
             presenter?.didTapTrackerScheduleCell()
-        } else if cell.cellTitle == "Категория" {
-            print("Категория tapped")
+		} else if cell.type == .category {
+			presenter?.didTapTrackerCategoryCell()
         }
     }
     
@@ -60,7 +60,7 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
 
 		guard let optionsTitles = presenter?.optionsTitles else { return UITableViewCell() }
         
-        cell.cellTitle = optionsTitles[indexPath.row]
+		cell.set(cellTitle: optionsTitles[indexPath.row])
         cell.accessoryType = .disclosureIndicator
         
         configureAdditionalInfo(for: cell)
@@ -84,21 +84,25 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
 // MARK: - Configuring additional info for cell
 private extension TrackerOptionsTableViewHelper {
     func configureAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
-        if cell.cellTitle == "Расписание" {
+		if cell.type == .schedule {
             configureSchduleAdditionalInfo(for: cell)
         }
     }
     
     func configureSchduleAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
-        guard let selectedWeekDays = presenter?.selectedWeekDays, !selectedWeekDays.isEmpty else { return }
+        guard let selectedWeekDays = presenter?.selectedWeekDays, !selectedWeekDays.isEmpty else {
+			cell.set(additionalInfo: nil)
+			return
+		}
+
         let selectedWeekDaysArray = Array(selectedWeekDays).sorted()
         
         guard selectedWeekDaysArray.count != 7 else {
-            cell.additionalInfo = "Каждый день"
+			cell.set(additionalInfo: "Каждый день")
             return
         }
         
         let additionalInfo = selectedWeekDaysArray.reduce("") { (result: String, weekDay: WeekDay) in result + weekDay.shortStringRepresentaion + ", " }
-        cell.additionalInfo = String(additionalInfo.prefix(additionalInfo.count - 2))
+        cell.set(additionalInfo: String(additionalInfo.prefix(additionalInfo.count - 2)))
     }
 }

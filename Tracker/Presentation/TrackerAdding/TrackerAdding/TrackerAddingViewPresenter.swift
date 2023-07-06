@@ -19,6 +19,7 @@ protocol TrackerAddingViewPresenterTableViewHelperProtocol: AnyObject {
     var optionsTitles: [String]? { get }
     var selectedWeekDays: Set<WeekDay> { get }
     func didTapTrackerScheduleCell()
+	func didTapTrackerCategoryCell()
 }
 
 protocol TrackerAddingViewPresenterProtocol: AnyObject {
@@ -37,16 +38,16 @@ final class TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     static let didAddTrackerNotificationName = Notification.Name(rawValue: "NewTrackerAdded")
     
     weak var view: TrackerAddingViewControllerProtocol?
+
+	var optionsTitles: [String]?
+
+	var tableViewHelper: TrackerOptionsTableViewHelperProtocol?
+	var textFieldHelper: TrackerTitleTextFieldHelperProtocol?
+	var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol?
+	var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol?
     
     private let trackersService: TrackersServiceAddingProtocol
     private let trackerType: TrackerType
-    
-    var optionsTitles: [String]?
-    
-    var tableViewHelper: TrackerOptionsTableViewHelperProtocol?
-    var textFieldHelper: TrackerTitleTextFieldHelperProtocol?
-    var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol?
-    var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol?
     
     private var isErrorLabelHidden: Bool? {
         didSet {
@@ -113,9 +114,21 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterTableViewHelperP
         presenter.view = vc
         
         presenter.selectedWeekDays = selectedWeekDays
-        
-        view?.didTapTrackerScheduleCell(vc)
+
+		view?.present(view: vc)
     }
+
+	func didTapTrackerCategoryCell() {
+		let viewModel = TrackerCategoryViewModel()
+		let helper = TrackerCategoryTableViewHelper()
+
+		let vc = TrackerCategoryViewController(
+			viewModel: viewModel,
+			helper: helper
+		)
+
+		view?.present(view: vc)
+	}
 }
 
 // MARK: - AddTrackerViewPresenterCollectionColorsViewHelperProtocol

@@ -8,18 +8,18 @@
 import UIKit
 
 final class TrackerOptionsTableViewCell: UITableViewCell {
-	var cellTitle: String? {
-		didSet {
-			cellTitleLabel.text = cellTitle
-			cellTitleLabel.sizeToFit()
-		}
+	enum CellType {
+		case schedule
+		case category
 	}
 
-	var additionalInfo: String? {
-		didSet {
-			relayoutCellTitleLabel()
-			additionalInfoLabel.text = additionalInfo
-			additionalInfoLabel.isHidden = false
+	var type: CellType? {
+		if cellTitleLabel.text == "Категория" {
+			return .category
+		} else if cellTitleLabel.text == "Расписание" {
+			return .schedule
+		} else {
+			return nil
 		}
 	}
 
@@ -72,6 +72,22 @@ final class TrackerOptionsTableViewCell: UITableViewCell {
     }
 }
 
+extension TrackerOptionsTableViewCell {
+	func set(cellTitle: String?) {
+		self.cellTitleLabel.text = cellTitle
+	}
+
+	func set(additionalInfo: String?) {
+		if let additionalInfo = additionalInfo {
+			self.additionalInfoLabel.text = additionalInfo
+			self.additionalInfoLabel.isHidden = false
+		}
+
+		self.additionalInfoLabel.isHidden = additionalInfo == nil
+		self.relayoutCellTitleLabel()
+	}
+}
+
 private extension TrackerOptionsTableViewCell {
 	func addSubviews() {
 		contentView.addSubview(cellTitleLabel)
@@ -102,8 +118,14 @@ private extension TrackerOptionsTableViewCell {
 
 private extension TrackerOptionsTableViewCell {
     func relayoutCellTitleLabel() {
-		self.titleLableTopConstraint.constant = 15
-		self.titleLableBottomConstraint.constant = -38
-		self.layoutIfNeeded()
+		if additionalInfoLabel.isHidden {
+			self.titleLableTopConstraint.constant = 26
+			self.titleLableBottomConstraint.constant = -25
+		} else {
+			self.titleLableTopConstraint.constant = 15
+			self.titleLableBottomConstraint.constant = -38
+		}
+
+		self.setNeedsLayout()
     }
 }
