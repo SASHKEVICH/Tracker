@@ -8,21 +8,48 @@
 import UIKit
 
 extension UITableViewCell {
+	static var reuseIdentifier: String {
+		String(describing: Self.self)
+	}
+
+	func configure(
+		cellIndexPath: IndexPath,
+		lastCellIndexPath: IndexPath?,
+		entityCount: Int?,
+		tableViewWidth: CGFloat
+	) -> UITableViewCell {
+		if entityCount == 1 {
+			return self.setupSingleCellInTableView(tableViewWidth: tableViewWidth)
+		}
+
+		if cellIndexPath.row == 0 {
+			return self.setupFirstCellInTableView()
+		}
+
+		if cellIndexPath == lastCellIndexPath {
+			return self.setupLastCellWithoutBottomSeparator(tableViewWidth: tableViewWidth)
+		}
+
+		return self
+	}
+}
+
+private extension UITableViewCell {
 	func setupFirstCellInTableView() -> UITableViewCell {
 		selectedBackgroundView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-		
+
 		self.layer.masksToBounds = true
 		self.layer.cornerRadius = 16
 		self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-		
+
 		return self
 	}
-	
+
 	func setupLastCellWithoutBottomSeparator(
 		tableViewWidth: CGFloat
 	) -> UITableViewCell {
 		selectedBackgroundView?.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-		
+
 		self.layer.masksToBounds = true
 		self.layer.cornerRadius = 16
 		self.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -33,7 +60,7 @@ extension UITableViewCell {
 			right: 0)
 		return self
 	}
-	
+
 	func setupSingleCellInTableView(
 		tableViewWidth: CGFloat
 	) -> UITableViewCell {
@@ -45,11 +72,5 @@ extension UITableViewCell {
 			bottom: 0,
 			right: 0)
 		return self
-	}
-}
-
-extension UITableViewCell {
-	static var reuseIdentifier: String {
-		String(describing: Self.self)
 	}
 }

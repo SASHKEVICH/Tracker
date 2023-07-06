@@ -60,16 +60,15 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
         if presenter.selectedWeekDays.contains(weekDay) {
             cell.isDaySwitchOn = true
         }
+
+		let configuredCell = cell.configure(
+			cellIndexPath: indexPath,
+			lastCellIndexPath: tableView.lastCellIndexPath,
+			entityCount: presenter.weekDays.count,
+			tableViewWidth: tableView.bounds.width
+		)
         
-        if indexPath.row == 0 {
-            return cell.setupFirstCellInTableView()
-        }
-        
-        if indexPath == tableView.lastCellIndexPath {
-            return cell.setupLastCellWithoutBottomSeparator(tableViewWidth: tableView.bounds.width)
-        }
-        
-        return cell
+        return configuredCell
     }
 }
 

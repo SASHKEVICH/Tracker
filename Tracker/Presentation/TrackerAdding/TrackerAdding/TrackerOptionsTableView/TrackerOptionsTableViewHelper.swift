@@ -65,19 +65,13 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         
         configureAdditionalInfo(for: cell)
 
-        if optionsTitles.count == 1 {
-            return cell.setupSingleCellInTableView(tableViewWidth: tableView.bounds.width)
-        }
+		let configuredCell = cell.configure(
+			cellIndexPath: indexPath,
+			lastCellIndexPath: tableView.lastCellIndexPath,
+			entityCount: optionsTitles.count,
+			tableViewWidth: tableView.bounds.width)
         
-        if indexPath.row == 0 {
-            return cell.setupFirstCellInTableView()
-        }
-        
-        if indexPath == tableView.lastCellIndexPath {
-            return cell.setupLastCellWithoutBottomSeparator(tableViewWidth: tableView.bounds.width)
-        }
-        
-        return cell
+        return configuredCell
     }
 }
 
