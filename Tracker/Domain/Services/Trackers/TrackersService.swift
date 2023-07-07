@@ -56,47 +56,43 @@ struct TrackersService {
     private let trackersDataProvider: TrackersDataProvider?
 	private let trackersDataCompleter: TrackersDataCompleterProtocol
 	private let trackersDataAdder: TrackersDataAdderProtocol
+	private let trackersRecordDataFetcher: TrackersRecordDataFetcherProtocol
 
 	private let trackersFactory = TrackersFactory()
     
 	private init(
 		trackersDataProvider: TrackersDataProvider?,
 		trackersDataCompleter: TrackersDataCompleterProtocol,
-		trackersDataAdder: TrackersDataAdderProtocol
+		trackersDataAdder: TrackersDataAdderProtocol,
+		trackersRecordDataFetcher: TrackersRecordDataFetcherProtocol
 	) {
         self.trackersDataProvider = trackersDataProvider
 		self.trackersDataCompleter = trackersDataCompleter
 		self.trackersDataAdder = trackersDataAdder
+		self.trackersRecordDataFetcher = trackersRecordDataFetcher
     }
     
     private init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        guard let trackerDataStore = appDelegate.trackerDataStore,
-			  let trackerCategoryDataStore = appDelegate.trackerCategoryDataStore,
-			  let trackerRecordDataStore = appDelegate.trackerRecordDataStore
+        guard let trackersDataStore = appDelegate.trackersDataStore,
+			  let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore,
+			  let trackersRecordDataStore = appDelegate.trackersRecordDataStore
 		else { fatalError("Cannot activate data stores") }
 
-		let trackersDataCompleter = TrackersDataCompleter(trackerRecordDataStore: trackerRecordDataStore)
-		let trackersDataAdder = TrackersDataAdder(trackersCategoryDataStore: trackerCategoryDataStore, trackersDataStore: trackerDataStore)
+		let trackersDataCompleter = TrackersDataCompleter(trackerRecordDataStore: trackersRecordDataStore)
+		let trackersDataAdder = TrackersDataAdder(
+			trackersCategoryDataStore: trackersCategoryDataStore,
+			trackersDataStore: trackersDataStore
+		)
+		let trackersRecordDataFetcher = TrackersRecordDataFetcher(trackersRecordDataStore: trackersRecordDataStore)
 
-        if let trackersDataProvider = TrackersDataProvider(
-            trackerDataStore: trackerDataStore,
-            trackerCategoryDataStore: trackerCategoryDataStore,
-            trackerRecordDataStore: trackerRecordDataStore
-        ) {
-            self.init(
-				trackersDataProvider: trackersDataProvider,
-				trackersDataCompleter: trackersDataCompleter,
-				trackersDataAdder: trackersDataAdder
-			)
-        } else {
-			self.init(
-				trackersDataProvider: nil,
-				trackersDataCompleter: trackersDataCompleter,
-				trackersDataAdder: trackersDataAdder
-			)
-            self.requestDataProviderErrorAlert()
-        }
+		let trackersDataProvider = TrackersDataProvider(context: trackersDataStore.managedObjectContext)
+		self.init(
+			trackersDataProvider: trackersDataProvider,
+			trackersDataCompleter: trackersDataCompleter,
+			trackersDataAdder: trackersDataAdder,
+			trackersRecordDataFetcher: trackersRecordDataFetcher
+		)
     }
 }
 
@@ -115,16 +111,16 @@ extension TrackersService: TrackersServiceFetchingProtocol {
     }
     
     func fetchCompletedRecords(date: Date) -> [TrackerRecord] {
-        let trackerRecordsCoreData = trackersDataProvider?.fetchCompletedRecords(date: date)
-        let trackerRecords = trackerRecordsCoreData?.compactMap { trackerRecordCoreData -> TrackerRecord? in
+        let trackerRecordsCoreData = trackersRecordDataFetcher.fetchCompletedRecords(date: date)
+        let trackerRecords = trackerRecordsCoreData.compactMap { trackerRecordCoreData -> TrackerRecord? in
             guard let id = UUID(uuidString: trackerRecordCoreData.id) else { return nil }
             return TrackerRecord(trackerId: id, date: trackerRecordCoreData.date)
         }
-        return trackerRecords ?? []
+        return trackerRecords
     }
     
     func completedTimesCount(trackerId: UUID) -> Int {
-        trackersDataProvider?.completedTimesCount(trackerId: trackerId.uuidString) ?? 0
+        trackersRecordDataFetcher.completedTimesCount(trackerId: trackerId.uuidString)
     }
 }
 

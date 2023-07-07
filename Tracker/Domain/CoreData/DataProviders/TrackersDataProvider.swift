@@ -18,82 +18,56 @@ protocol TrackersDataProviderDelegate: AnyObject {
     func didRecievedTrackers()
 }
 
-protocol TrackersDataProviderFetchingProtocol {
+protocol TrackersDataProviderProtocol {
     var numberOfSections: Int { get }
     func numberOfItemsInSection(_ section: Int) -> Int
     func fetchTrackers(currentWeekDay: WeekDay)
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay)
-    func fetchCompletedRecords(date: Date) -> [TrackerRecordCoreData]
-    func completedTimesCount(trackerId: String) -> Int
     func tracker(at indexPath: IndexPath) -> TrackerCoreData?
     func categoryTitle(at indexPath: IndexPath) -> String?
 }
 
-typealias TrackersDataProviderProtocol = TrackersDataProviderFetchingProtocol
-
 // MARK: - TrackersDataProvider
 final class TrackersDataProvider: NSObject {
-    enum TrackersDataProviderError: Error {
-        case cannotFindCategory
-    }
-    
-    weak var delegate: TrackersDataProviderDelegate?
-    
-    private let context: NSManagedObjectContext
-    private let trackersDataStore: TrackersDataStore
-    private let trackersCategoryDataStore: TrackersCategoryDataStore
-    private let trackersRecordDataStore: TrackersRecordDataStore
+	weak var delegate: TrackersDataProviderDelegate?
 
-	private let trackersFactory = TrackersFactory()
+	private let context: NSManagedObjectContext
 
-    private var insertedIndexes: IndexSet?
-    private var deletedIndexes: IndexSet?
+	private var insertedIndexes: IndexSet?
+	private var deletedIndexes: IndexSet?
 
-    private var currentWeekDay = Date().weekDay?.englishStringRepresentation
-    
-    private lazy var fetchedResultsController: NSFetchedResultsController = {
-        let request = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
-        let sortDescriptors = [
-            NSSortDescriptor(key: #keyPath(TrackerCoreData.category.title), ascending: true),
-            NSSortDescriptor(key: #keyPath(TrackerCoreData.title), ascending: true)
-        ]
-        request.sortDescriptors = sortDescriptors
-        
-        let predicate = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(TrackerCoreData.weekDays), currentWeekDay ?? "")
-        request.predicate = predicate
-        
-        let fetchedResultsController = NSFetchedResultsController(
-            fetchRequest: request,
-            managedObjectContext: context,
+	private var currentWeekDay = Date().weekDay?.englishStringRepresentation
+
+	private lazy var fetchedResultsController: NSFetchedResultsController = {
+		let request = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+		let sortDescriptors = [
+			NSSortDescriptor(key: #keyPath(TrackerCoreData.category.title), ascending: true),
+			NSSortDescriptor(key: #keyPath(TrackerCoreData.title), ascending: true)
+		]
+		request.sortDescriptors = sortDescriptors
+
+		let predicate = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(TrackerCoreData.weekDays), currentWeekDay ?? "")
+		request.predicate = predicate
+
+		let fetchedResultsController = NSFetchedResultsController(
+			fetchRequest: request,
+			managedObjectContext: context,
 			sectionNameKeyPath: #keyPath(TrackerCoreData.category.title),
-            cacheName: nil
+			cacheName: nil
 		)
-        fetchedResultsController.delegate = self
+		fetchedResultsController.delegate = self
 
-        try? fetchedResultsController.performFetch()
-        return fetchedResultsController
-    }()
-    
-    init?(
-        trackerDataStore: TrackersDataStore?,
-        trackerCategoryDataStore: TrackersCategoryDataStore?,
-        trackerRecordDataStore: TrackersRecordDataStore?
-    ) {
-        guard
-            let trackerDataStore = trackerDataStore,
-            let trackerCategoryDataStore = trackerCategoryDataStore,
-            let trackerRecordDataStore = trackerRecordDataStore
-        else { return nil }
-        
-        self.context = trackerDataStore.managedObjectContext
-        self.trackersDataStore = trackerDataStore
-        self.trackersCategoryDataStore = trackerCategoryDataStore
-        self.trackersRecordDataStore = trackerRecordDataStore
+		try? fetchedResultsController.performFetch()
+		return fetchedResultsController
+	}()
+
+	init(context: NSManagedObjectContext) {
+		self.context = context
     }
 }
 
-// MARK: - TrackersDataProviderFetchingProtocol
-extension TrackersDataProvider: TrackersDataProviderFetchingProtocol {
+// MARK: - TrackersDataProviderProtocol
+extension TrackersDataProvider: TrackersDataProviderProtocol {
     var numberOfSections: Int {
         let sectionsCount = fetchedResultsController.sections?.count ?? 0
         return sectionsCount
@@ -116,17 +90,6 @@ extension TrackersDataProvider: TrackersDataProviderFetchingProtocol {
             #keyPath(TrackerCoreData.title), titleSearchString,
             #keyPath(TrackerCoreData.weekDays), currentWeekDay.englishStringRepresentation)
         try? fetchedResultsController.performFetch()
-    }
-    
-    func fetchCompletedRecords(date: Date) -> [TrackerRecordCoreData] {
-        guard let onlyDate = date.onlyDate else { return [] }
-        let trackerRecordsCoreData = trackersRecordDataStore.completedTrackers(for: onlyDate as NSDate)
-        return trackerRecordsCoreData
-    }
-    
-    func completedTimesCount(trackerId: String) -> Int {
-        let count = try? trackersRecordDataStore.completedTimesCount(trackerId: trackerId)
-        return count ?? 0
     }
     
     func tracker(at indexPath: IndexPath) -> TrackerCoreData? {

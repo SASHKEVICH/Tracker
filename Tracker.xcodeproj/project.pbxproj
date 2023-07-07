@@ -54,6 +54,7 @@
 		969CDB782A58211D001EDB8B /* TrackersCategoriesDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CDB772A58211D001EDB8B /* TrackersCategoriesDataProvider.swift */; };
 		969CDB7B2A5822C5001EDB8B /* TrackersDataAdder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CDB7A2A5822C5001EDB8B /* TrackersDataAdder.swift */; };
 		969CDB7D2A5822CD001EDB8B /* TrackersDataCompleter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CDB7C2A5822CD001EDB8B /* TrackersDataCompleter.swift */; };
+		969CDB802A583885001EDB8B /* TrackersRecordDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CDB7F2A583885001EDB8B /* TrackersRecordDataFetcher.swift */; };
 		96A606D92A3C4D34007C5262 /* OnboardingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606D82A3C4D34007C5262 /* OnboardingConstants.swift */; };
 		96A606DB2A3C8D9F007C5262 /* TrackersCategoriesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606DA2A3C8D9F007C5262 /* TrackersCategoriesService.swift */; };
 		96A606DE2A3C8FBC007C5262 /* FirstLaunchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */; };
@@ -139,6 +140,7 @@
 		969CDB772A58211D001EDB8B /* TrackersCategoriesDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCategoriesDataProvider.swift; sourceTree = "<group>"; };
 		969CDB7A2A5822C5001EDB8B /* TrackersDataAdder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersDataAdder.swift; sourceTree = "<group>"; };
 		969CDB7C2A5822CD001EDB8B /* TrackersDataCompleter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersDataCompleter.swift; sourceTree = "<group>"; };
+		969CDB7F2A583885001EDB8B /* TrackersRecordDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersRecordDataFetcher.swift; sourceTree = "<group>"; };
 		96A606D82A3C4D34007C5262 /* OnboardingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConstants.swift; sourceTree = "<group>"; };
 		96A606DA2A3C8D9F007C5262 /* TrackersCategoriesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCategoriesService.swift; sourceTree = "<group>"; };
 		96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstLaunchService.swift; sourceTree = "<group>"; };
@@ -404,6 +406,14 @@
 			path = Trackers;
 			sourceTree = "<group>";
 		};
+		969CDB7E2A58382B001EDB8B /* TrackersRecord */ = {
+			isa = PBXGroup;
+			children = (
+				969CDB7F2A583885001EDB8B /* TrackersRecordDataFetcher.swift */,
+			);
+			path = TrackersRecord;
+			sourceTree = "<group>";
+		};
 		96A606DC2A3C8F9D007C5262 /* Trackers */ = {
 			isa = PBXGroup;
 			children = (
@@ -595,6 +605,7 @@
 		96F7038329FD1A1400BBFF5C /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				969CDB7E2A58382B001EDB8B /* TrackersRecord */,
 				969CDB792A582286001EDB8B /* Trackers */,
 				969CDB762A582106001EDB8B /* DataProviders */,
 				96F7038B29FD1CBF00BBFF5C /* Model */,
@@ -773,6 +784,7 @@
 				9654A97329EE606500B4A718 /* TrackerScheduleConstants.swift in Sources */,
 				9654A97C29EE921300B4A718 /* TrackerScheduleTableViewCell.swift in Sources */,
 				9617C95F29DB0CF70054987D /* TrackersViewPresenterCollectionHelper.swift in Sources */,
+				969CDB802A583885001EDB8B /* TrackersRecordDataFetcher.swift in Sources */,
 				96F7038829FD1BF100BBFF5C /* TrackersRecordDataStore.swift in Sources */,
 				96F703A329FEA4C100BBFF5C /* PersistentContainerCreater.swift in Sources */,
 				96C7E76E29E802D800BA7F67 /* TrackerTypeViewController.swift in Sources */,
