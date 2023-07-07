@@ -93,8 +93,8 @@ private extension TrackerTypeViewController {
 		vc.presenter = presenter
 		presenter.view = vc
 
-		vc.emptyTap = {
-			vc.view.endEditing(true)
+		vc.emptyTap = { [weak vc] in
+			vc?.view.endEditing(true)
 		}
 		
 		present(vc, animated: true)
