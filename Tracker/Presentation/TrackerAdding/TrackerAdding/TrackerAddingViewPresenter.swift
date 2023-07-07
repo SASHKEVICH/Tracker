@@ -44,7 +44,7 @@ final class TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
 	var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol?
 	var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol?
     
-    private let trackersService: TrackersServiceAddingProtocol
+    private let trackersAddingService: TrackersAddingServiceProtocol
 	private let trackerType: Tracker.TrackerType
     
     private var isErrorLabelHidden: Bool? {
@@ -87,11 +87,11 @@ final class TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     }
     
     init(
-        trackersService: TrackersServiceAddingProtocol,
+        trackersAddingService: TrackersAddingServiceProtocol,
 		trackerType: Tracker.TrackerType
     ) {
         self.trackerType = trackerType
-        self.trackersService = trackersService
+        self.trackersAddingService = trackersAddingService
         
         setupTableViewHelper()
         setupTextFieldHelper()
@@ -161,20 +161,20 @@ extension TrackerAddingViewPresenter {
     }
     
     func didConfirmAddTracker() {
-        guard
-            let title = trackerTitle,
-            let color = selectedTrackerColor,
-            let emoji = selectedTrackerEmoji
+        guard let title = trackerTitle,
+			  let color = selectedTrackerColor,
+			  let emoji = selectedTrackerEmoji
         else { return }
         
 		let schedule = self.trackerType == .irregularEvent ? Set(WeekDay.allCases) : selectedWeekDays
         
-        trackersService.addTracker(
+        trackersAddingService.addTracker(
             title: title,
             schedule: schedule,
             type: trackerType,
             color: color,
-            emoji: emoji)
+            emoji: emoji
+		)
     }
     
     func didRecieveSelectedTrackerSchedule(_ weekDays: Set<WeekDay>) {

@@ -14,10 +14,6 @@ protocol TrackersServiceDataSourceProtocol {
     func categoryTitle(at indexPath: IndexPath) -> String?
 }
 
-protocol TrackersServiceAddingProtocol {
-	func addTracker(title: String, schedule: Set<WeekDay>, type: Tracker.TrackerType, color: UIColor, emoji: String)
-}
-
 protocol TrackersServiceFetchingProtocol {
     var trackersDataProviderDelegate: TrackersDataProviderDelegate? { get set }
     func fetchTrackers(weekDay: WeekDay)
@@ -28,13 +24,7 @@ protocol TrackersServiceFetchingProtocol {
     func requestDataProviderErrorAlert()
 }
 
-typealias TrackersServiceFetchingCompletingProtocol =
-    TrackersServiceFetchingProtocol
-
-typealias TrackersServiceProtocol =
-    TrackersServiceAddingProtocol
-    & TrackersServiceFetchingProtocol
-    & TrackersServiceDataSourceProtocol
+typealias TrackersServiceProtocol = TrackersServiceFetchingProtocol & TrackersServiceDataSourceProtocol
 
 // MARK: - TrackersService
 struct TrackersService {
@@ -47,38 +37,29 @@ struct TrackersService {
 	}
     
     private let trackersDataProvider: TrackersDataProvider?
-	private let trackersDataAdder: TrackersDataAdderProtocol
 	private let trackersRecordDataFetcher: TrackersRecordDataFetcherProtocol
 
 	private let trackersFactory = TrackersFactory()
     
 	private init(
 		trackersDataProvider: TrackersDataProvider?,
-		trackersDataAdder: TrackersDataAdderProtocol,
 		trackersRecordDataFetcher: TrackersRecordDataFetcherProtocol
 	) {
         self.trackersDataProvider = trackersDataProvider
-		self.trackersDataAdder = trackersDataAdder
 		self.trackersRecordDataFetcher = trackersRecordDataFetcher
     }
     
     private init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         guard let trackersDataStore = appDelegate.trackersDataStore,
-			  let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore,
 			  let trackersRecordDataStore = appDelegate.trackersRecordDataStore
 		else { fatalError("Cannot activate data stores") }
 
-		let trackersDataAdder = TrackersDataAdder(
-			trackersCategoryDataStore: trackersCategoryDataStore,
-			trackersDataStore: trackersDataStore
-		)
 		let trackersRecordDataFetcher = TrackersRecordDataFetcher(trackersRecordDataStore: trackersRecordDataStore)
 
 		let trackersDataProvider = TrackersDataProvider(context: trackersDataStore.managedObjectContext)
 		self.init(
 			trackersDataProvider: trackersDataProvider,
-			trackersDataAdder: trackersDataAdder,
 			trackersRecordDataFetcher: trackersRecordDataFetcher
 		)
     }
@@ -109,28 +90,6 @@ extension TrackersService: TrackersServiceFetchingProtocol {
     
     func completedTimesCount(trackerId: UUID) -> Int {
         trackersRecordDataFetcher.completedTimesCount(trackerId: trackerId.uuidString)
-    }
-}
-
-// MARK: - TrackersServiceAddingProtocol
-extension TrackersService: TrackersServiceAddingProtocol {    
-    func addTracker(
-        title: String,
-        schedule: Set<WeekDay>,
-		type: Tracker.TrackerType,
-        color: UIColor,
-        emoji: String
-    ) {
-        let categoryName = "Категория 1"
-		let tracker = trackersFactory.makeTracker(
-			type: type,
-			title: title,
-			color: color,
-			emoji: emoji,
-			schedule: Array(schedule)
-		)
-        
-        try? trackersDataAdder.add(tracker: tracker, for: categoryName)
     }
 }
 
