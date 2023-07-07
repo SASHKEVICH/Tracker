@@ -1,5 +1,5 @@
 //
-//  TrackerTitleTextField.swift
+//  TrackerCustomTextField.swift
 //  Tracker
 //
 //  Created by Александр Бекренев on 14.04.2023.
@@ -7,8 +7,10 @@
 
 import UIKit
 
-final class TrackerTitleTextField: UITextField {
-    private let padding = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 40)
+final class TrackerCustomTextField: UITextField {
+	private enum Padding {
+		static let insets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 40)
+	}
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,27 +22,27 @@ final class TrackerTitleTextField: UITextField {
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        bounds.inset(by: padding)
+		bounds.inset(by: Padding.insets)
     }
     
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        bounds.inset(by: padding)
+        bounds.inset(by: Padding.insets)
     }
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        bounds.inset(by: padding)
+        bounds.inset(by: Padding.insets)
     }
 }
 
-private extension TrackerTitleTextField {
+private extension TrackerCustomTextField {
     func setupTextField() {
 		self.textColor = .Dynamic.blackDay
 		self.backgroundColor = .Dynamic.backgroundDay
         
-        layer.cornerRadius = 16
-        layer.masksToBounds = true
+		self.layer.cornerRadius = 16
+		self.layer.masksToBounds = true
         
-        self.font = .systemFont(ofSize: 17)
+		self.font = .Regular.medium
         
         if let placeholder = placeholder {
             attributedPlaceholder = NSAttributedString(

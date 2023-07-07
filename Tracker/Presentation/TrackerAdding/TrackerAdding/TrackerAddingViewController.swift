@@ -50,8 +50,8 @@ final class TrackerAddingViewController: UIViewController {
 		return label
 	}()
 	
-	private lazy var trackerTitleTextField: TrackerTitleTextField = {
-		let textField = TrackerTitleTextField()
+	private lazy var trackerTitleTextField: TrackerCustomTextField = {
+		let textField = TrackerCustomTextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
 		textField.placeholder = "Введите название трекера"
 		textField.delegate = self.presenter?.textFieldHelper
