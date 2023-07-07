@@ -9,9 +9,9 @@ import UIKit
 
 protocol TrackersCategoryServiceProtocol {
 	var numberOfSections: Int { get }
+	var categories: [TrackerCategory] { get }
 	var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate? { get set }
 	func numberOfItemsInSection(_ section: Int) -> Int
-	func category(at indexPath: IndexPath) -> TrackerCategory?
 }
 
 struct TrackersCategoryService {
@@ -38,12 +38,13 @@ struct TrackersCategoryService {
 }
 
 extension TrackersCategoryService: TrackersCategoryServiceProtocol {
-	func numberOfItemsInSection(_ section: Int) -> Int {
-		trackersCategoryDataProvider.numberOfItemsInSection(section)
+	var categories: [TrackerCategory] {
+		let categories = self.trackersCategoryDataProvider.categories
+			.compactMap { trackersCategoryFactory.makeCategory(categoryCoreData: $0) }
+		return categories
 	}
-	
-	func category(at indexPath: IndexPath) -> TrackerCategory? {
-		guard let categoryCoreData = trackersCategoryDataProvider.category(at: indexPath) else { return nil }
-		return trackersCategoryFactory.makeCategory(categoryCoreData: categoryCoreData)
+
+	func numberOfItemsInSection(_ section: Int) -> Int {
+		self.trackersCategoryDataProvider.numberOfItemsInSection(section)
 	}
 }

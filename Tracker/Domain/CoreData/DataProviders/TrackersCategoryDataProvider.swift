@@ -14,14 +14,13 @@ struct TrackersCategoryStoreUpdate {
 }
 
 protocol TrackersCategoryDataProviderDelegate: AnyObject {
-	func didUpdate(update: TrackersCategoryStoreUpdate)
-	func didRecievedCategories()
+	func storeDidUpdate()
 }
 
 protocol TrackersCategoryDataProviderProtocol {
 	var delegate: TrackersCategoryDataProviderDelegate? { get set }
+	var categories: [TrackerCategoryCoreData] { get }
 	func numberOfItemsInSection(_ section: Int) -> Int
-	func category(at indexPath: IndexPath) -> TrackerCategoryCoreData?
 }
 
 final class TrackersCategoryDataProvider: NSObject {
@@ -57,12 +56,12 @@ final class TrackersCategoryDataProvider: NSObject {
 
 // MARK: - TrackersCategoryDataProviderProtocol
 extension TrackersCategoryDataProvider: TrackersCategoryDataProviderProtocol {
-	func numberOfItemsInSection(_ section: Int) -> Int {
-		fetchedResultsController.sections?[section].numberOfObjects ?? 0
+	var categories: [TrackerCategoryCoreData] {
+		self.fetchedResultsController.fetchedObjects ?? []
 	}
 
-	func category(at indexPath: IndexPath) -> TrackerCategoryCoreData? {
-		fetchedResultsController.object(at: indexPath)
+	func numberOfItemsInSection(_ section: Int) -> Int {
+		self.fetchedResultsController.sections?[section].numberOfObjects ?? 0
 	}
 }
 
@@ -73,18 +72,6 @@ extension TrackersCategoryDataProvider: NSFetchedResultsControllerDelegate {
 	) {
 		self.insertedIndexes = IndexSet()
 		self.deletedIndexes = IndexSet()
-	}
-
-	func controllerDidChangeContent(
-		_ controller: NSFetchedResultsController<NSFetchRequestResult>
-	) {
-		self.delegate?.didUpdate(update: TrackersCategoryStoreUpdate(
-				insertedIndexes: insertedIndexes!,
-				deletedIndexes: deletedIndexes!
-			)
-		)
-		self.insertedIndexes = nil
-		self.deletedIndexes = nil
 	}
 
 	func controller(

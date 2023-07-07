@@ -117,7 +117,7 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterTableViewHelperP
     }
 
 	func didTapTrackerCategoryCell() {
-		let viewModel = TrackerCategoryViewModel()
+		let viewModel = TrackerCategoryViewModel(trackersCategoryService: TrackersCategoryService())
 		let helper = TrackerCategoryTableViewHelper()
 
 		let vc = TrackerCategoryViewController(
