@@ -1,5 +1,5 @@
 //
-//  TrackerCategoryDataStore.swift
+//  TrackersCategoryDataStore.swift
 //  Tracker
 //
 //  Created by Александр Бекренев on 29.04.2023.
@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-struct TrackerCategoryDataStore {
+struct TrackersCategoryDataStore {
     private let context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
@@ -18,7 +18,7 @@ struct TrackerCategoryDataStore {
     }
 }
 
-extension TrackerCategoryDataStore {
+extension TrackersCategoryDataStore {
     var managedObjectContext: NSManagedObjectContext {
         context
     }
@@ -41,7 +41,7 @@ extension TrackerCategoryDataStore {
     }
 }
 
-private extension TrackerCategoryDataStore {
+private extension TrackersCategoryDataStore {
     func checkCategoryExistence() {
         let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
         let count = try? context.count(for: request)

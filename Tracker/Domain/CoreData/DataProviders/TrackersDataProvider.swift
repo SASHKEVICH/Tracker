@@ -40,11 +40,11 @@ final class TrackersDataProvider: NSObject {
     weak var delegate: TrackersDataProviderDelegate?
     
     private let context: NSManagedObjectContext
-    private let trackerDataStore: TrackerDataStore
-    private let trackerCategoryDataStore: TrackerCategoryDataStore
-    private let trackerRecordDataStore: TrackerRecordDataStore
+    private let trackersDataStore: TrackersDataStore
+    private let trackersCategoryDataStore: TrackersCategoryDataStore
+    private let trackersRecordDataStore: TrackersRecordDataStore
 
-	private let trackerFactory = TrackerFactory()
+	private let trackersFactory = TrackersFactory()
 
     private var insertedIndexes: IndexSet?
     private var deletedIndexes: IndexSet?
@@ -75,9 +75,9 @@ final class TrackersDataProvider: NSObject {
     }()
     
     init?(
-        trackerDataStore: TrackerDataStore?,
-        trackerCategoryDataStore: TrackerCategoryDataStore?,
-        trackerRecordDataStore: TrackerRecordDataStore?
+        trackerDataStore: TrackersDataStore?,
+        trackerCategoryDataStore: TrackersCategoryDataStore?,
+        trackerRecordDataStore: TrackersRecordDataStore?
     ) {
         guard
             let trackerDataStore = trackerDataStore,
@@ -86,9 +86,9 @@ final class TrackersDataProvider: NSObject {
         else { return nil }
         
         self.context = trackerDataStore.managedObjectContext
-        self.trackerDataStore = trackerDataStore
-        self.trackerCategoryDataStore = trackerCategoryDataStore
-        self.trackerRecordDataStore = trackerRecordDataStore
+        self.trackersDataStore = trackerDataStore
+        self.trackersCategoryDataStore = trackerCategoryDataStore
+        self.trackersRecordDataStore = trackerRecordDataStore
     }
 }
 
@@ -120,12 +120,12 @@ extension TrackersDataProvider: TrackersDataProviderFetchingProtocol {
     
     func fetchCompletedRecords(date: Date) -> [TrackerRecordCoreData] {
         guard let onlyDate = date.onlyDate else { return [] }
-        let trackerRecordsCoreData = trackerRecordDataStore.completedTrackers(for: onlyDate as NSDate)
+        let trackerRecordsCoreData = trackersRecordDataStore.completedTrackers(for: onlyDate as NSDate)
         return trackerRecordsCoreData
     }
     
     func completedTimesCount(trackerId: String) -> Int {
-        let count = try? trackerRecordDataStore.completedTimesCount(trackerId: trackerId)
+        let count = try? trackersRecordDataStore.completedTimesCount(trackerId: trackerId)
         return count ?? 0
     }
     

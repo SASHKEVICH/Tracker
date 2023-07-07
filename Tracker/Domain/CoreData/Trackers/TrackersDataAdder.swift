@@ -20,11 +20,11 @@ struct TrackersDataAdder {
 
 	private let context: NSManagedObjectContext
 	private let trackersDataStore: TrackersDataStore
-	private let trackersCategoryDataStore: TrackerCategoryDataStore
+	private let trackersCategoryDataStore: TrackersCategoryDataStore
 
 	private let trackersFactory = TrackersFactory()
 
-	init(trackersCategoryDataStore: TrackerCategoryDataStore, trackersDataStore: TrackersDataStore) {
+	init(trackersCategoryDataStore: TrackersCategoryDataStore, trackersDataStore: TrackersDataStore) {
 		self.trackersCategoryDataStore = trackersCategoryDataStore
 		self.trackersDataStore = trackersDataStore
 		self.context = trackersDataStore.managedObjectContext
@@ -33,13 +33,13 @@ struct TrackersDataAdder {
 
 extension TrackersDataAdder: TrackersDataAdderProtocol {
 	func add(tracker: Tracker, for categoryName: String) throws {
-		let trackerCoreData = self.trackersFactory.makeTrackerCoreData(from: tracker, context: self.context)
+		let trackersCoreData = self.trackersFactory.makeTrackerCoreData(from: tracker, context: self.context)
 
 		guard let categoryCoreData = self.trackersCategoryDataStore.category(with: categoryName) else {
 			throw TrackersDataAdderError.cannotFindCategory
 		}
 
-		try trackersDataStore.add(tracker: trackerCoreData, in: categoryCoreData)
+		try trackersDataStore.add(tracker: trackersCoreData, in: categoryCoreData)
 	}
 
 	func delete(tracker: Tracker) throws {}

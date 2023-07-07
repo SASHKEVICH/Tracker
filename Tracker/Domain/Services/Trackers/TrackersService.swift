@@ -56,6 +56,8 @@ struct TrackersService {
     private let trackersDataProvider: TrackersDataProvider?
 	private let trackersDataCompleter: TrackersDataCompleterProtocol
 	private let trackersDataAdder: TrackersDataAdderProtocol
+
+	private let trackersFactory = TrackersFactory()
     
 	private init(
 		trackersDataProvider: TrackersDataProvider?,
@@ -69,7 +71,6 @@ struct TrackersService {
     
     private init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-
         guard let trackerDataStore = appDelegate.trackerDataStore,
 			  let trackerCategoryDataStore = appDelegate.trackerCategoryDataStore,
 			  let trackerRecordDataStore = appDelegate.trackerRecordDataStore
@@ -148,7 +149,7 @@ extension TrackersService: TrackersServiceAddingProtocol {
         emoji: String
     ) {
         let categoryName = "Категория 1"
-		let tracker = trackerFactory.makeTracker(
+		let tracker = trackersFactory.makeTracker(
 			type: type,
 			title: title,
 			color: color,
@@ -176,7 +177,7 @@ extension TrackersService: TrackersServiceDataSourceProtocol {
     
     func tracker(at indexPath: IndexPath) -> Tracker? {
 		guard let trackerCoreData = trackersDataProvider?.tracker(at: indexPath) else { return nil }
-		let tracker = trackerFactory.makeTracker(from: trackerCoreData)
+		let tracker = trackersFactory.makeTracker(from: trackerCoreData)
 		return tracker
     }
 }

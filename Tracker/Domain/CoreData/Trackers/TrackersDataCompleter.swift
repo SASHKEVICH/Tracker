@@ -13,22 +13,22 @@ protocol TrackersDataCompleterProtocol {
 }
 
 struct TrackersDataCompleter {
-	private let trackerRecordDataStore: TrackerRecordDataStore
+	private let trackersRecordDataStore: TrackersRecordDataStore
 
-	init(trackerRecordDataStore: TrackerRecordDataStore) {
-		self.trackerRecordDataStore = trackerRecordDataStore
+	init(trackerRecordDataStore: TrackersRecordDataStore) {
+		self.trackersRecordDataStore = trackerRecordDataStore
 	}
 }
 
 extension TrackersDataCompleter: TrackersDataCompleterProtocol {
 	func completeTracker(with id: String, date: Date) {
 		guard let date = date.onlyDate else { return }
-		try? trackerRecordDataStore.completeTracker(with: id, date: date)
+		try? trackersRecordDataStore.completeTracker(with: id, date: date)
 	}
 
 	func incompleteTracker(with id: String, date: Date) {
 		guard let date = date.onlyDate else { return }
-		guard let record = trackerRecordDataStore.record(with: id, date: date as NSDate) else { return }
-		try? trackerRecordDataStore.incompleteTracker(record)
+		guard let record = trackersRecordDataStore.record(with: id, date: date as NSDate) else { return }
+		try? trackersRecordDataStore.incompleteTracker(record)
 	}
 }
