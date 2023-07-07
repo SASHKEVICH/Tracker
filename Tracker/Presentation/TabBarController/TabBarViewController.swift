@@ -31,7 +31,8 @@ private extension TabBarViewController {
         let trackersViewController = TrackersViewController()
         let presenter = TrackersViewPresenter(
             trackersService: TrackersService.shared,
-			trackersCompletingService: TrackersCompletingService()
+			trackersCompletingService: TrackersCompletingService(),
+			trackersRecordService: TrackersRecordService()
 		)
         
         trackersViewController.presenter = presenter

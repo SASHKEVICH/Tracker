@@ -63,6 +63,7 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
     
     private var trackersService: TrackersServiceProtocol
 	private let trackersCompletingService: TrackersCompletingServiceProtocol
+	private let trackersRecordService: TrackersRecordServiceProtocol
     
     private var state: TrackersViewPresenterState = .normal
 
@@ -73,10 +74,12 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
     
 	init(
 		trackersService: TrackersServiceProtocol,
-		trackersCompletingService: TrackersCompletingServiceProtocol
+		trackersCompletingService: TrackersCompletingServiceProtocol,
+		trackersRecordService: TrackersRecordServiceProtocol
 	) {
         self.trackersService = trackersService
 		self.trackersCompletingService = trackersCompletingService
+		self.trackersRecordService = trackersRecordService
         self.trackersService.trackersDataProviderDelegate = self
         
 		self.setupCollectionDelegate()
@@ -118,7 +121,7 @@ extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
     }
     
     private func fetchCompletedTrackersForCurrentDate() {
-        let completedTrackersForCurrentDate = trackersService.fetchCompletedRecords(date: currentDate)
+        let completedTrackersForCurrentDate = trackersRecordService.fetchCompletedRecords(date: currentDate)
         self.completedTrackersRecords = Set(completedTrackersForCurrentDate)
     }
 }
@@ -142,7 +145,7 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     }
     
     func completedTimesCount(trackerId: UUID) -> Int {
-        trackersService.completedTimesCount(trackerId: trackerId)
+		trackersRecordService.completedTimesCount(trackerId: trackerId)
     }
     
     func didRecievedEmptyTrackers() {
