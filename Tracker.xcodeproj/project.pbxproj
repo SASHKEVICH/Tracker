@@ -58,6 +58,7 @@
 		969CDB842A583B70001EDB8B /* TrackersAddingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CDB832A583B70001EDB8B /* TrackersAddingService.swift */; };
 		969CDB862A583B7E001EDB8B /* TrackersCompletingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CDB852A583B7E001EDB8B /* TrackersCompletingService.swift */; };
 		969CDB882A583B93001EDB8B /* TrackersRecordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CDB872A583B93001EDB8B /* TrackersRecordService.swift */; };
+		969CDB8A2A58447B001EDB8B /* TrackersCategoryFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CDB892A58447B001EDB8B /* TrackersCategoryFactory.swift */; };
 		96A606D92A3C4D34007C5262 /* OnboardingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606D82A3C4D34007C5262 /* OnboardingConstants.swift */; };
 		96A606DB2A3C8D9F007C5262 /* TrackersCategoriesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606DA2A3C8D9F007C5262 /* TrackersCategoriesService.swift */; };
 		96A606DE2A3C8FBC007C5262 /* FirstLaunchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */; };
@@ -147,6 +148,7 @@
 		969CDB832A583B70001EDB8B /* TrackersAddingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersAddingService.swift; sourceTree = "<group>"; };
 		969CDB852A583B7E001EDB8B /* TrackersCompletingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCompletingService.swift; sourceTree = "<group>"; };
 		969CDB872A583B93001EDB8B /* TrackersRecordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersRecordService.swift; sourceTree = "<group>"; };
+		969CDB892A58447B001EDB8B /* TrackersCategoryFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCategoryFactory.swift; sourceTree = "<group>"; };
 		96A606D82A3C4D34007C5262 /* OnboardingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConstants.swift; sourceTree = "<group>"; };
 		96A606DA2A3C8D9F007C5262 /* TrackersCategoriesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCategoriesService.swift; sourceTree = "<group>"; };
 		96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstLaunchService.swift; sourceTree = "<group>"; };
@@ -392,6 +394,7 @@
 			isa = PBXGroup;
 			children = (
 				969CDB722A57F615001EDB8B /* TrackersFactory.swift */,
+				969CDB892A58447B001EDB8B /* TrackersCategoryFactory.swift */,
 			);
 			path = Factories;
 			sourceTree = "<group>";
@@ -775,6 +778,7 @@
 				96C7E76529E65ED200BA7F67 /* AlertPresenterService.swift in Sources */,
 				96CE2ABE2A409299002A08F0 /* Observable.swift in Sources */,
 				96A606D92A3C4D34007C5262 /* OnboardingConstants.swift in Sources */,
+				969CDB8A2A58447B001EDB8B /* TrackersCategoryFactory.swift in Sources */,
 				9661855329F1746E0003C57A /* Date+Extensions.swift in Sources */,
 				968A7E702A1E2013007D75A5 /* OnboardingPageViewController.swift in Sources */,
 				969CDB6C2A57CFD6001EDB8B /* UIEdgeInsets+TableViewSeparatorInsets.swift in Sources */,

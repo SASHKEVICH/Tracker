@@ -18,7 +18,6 @@ protocol TrackersServiceFetchingProtocol {
     var trackersDataProviderDelegate: TrackersDataProviderDelegate? { get set }
     func fetchTrackers(weekDay: WeekDay)
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay)
-    
     func requestDataProviderErrorAlert()
 }
 
