@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-final class TrackerDataStore {
+struct TrackerDataStore {
     private let context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
