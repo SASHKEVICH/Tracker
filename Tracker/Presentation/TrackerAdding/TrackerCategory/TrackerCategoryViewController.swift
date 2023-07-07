@@ -137,7 +137,14 @@ private extension TrackerCategoryViewController {
 private extension TrackerCategoryViewController {
 	@objc
 	func didTapAddNewCategoryButton() {
-		viewModel.addNewCategory()
+		let viewModel = TrackerNewCategoryViewModel()
+		let vc = TrackerNewCategoryViewController(viewModel: viewModel)
+
+		vc.emptyTap = { [weak vc] in
+			vc?.view.endEditing(true)
+		}
+
+		present(vc, animated: true)
 	}
 }
 
