@@ -155,7 +155,7 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterEmojisCollection
 // MARK: - Internal methods
 extension TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     func viewDidLoad() {
-        setupViewController(for: trackerType)
+		self.setupViewController(for: trackerType)
     }
     
     func didChangeTrackerTitle(_ title: String?) {
@@ -170,19 +170,21 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     }
     
     func didConfirmAddTracker() {
-        guard let title = trackerTitle,
-			  let color = selectedTrackerColor,
-			  let emoji = selectedTrackerEmoji
+		guard let title = self.trackerTitle,
+			  let color = self.selectedTrackerColor,
+			  let emoji = self.selectedTrackerEmoji,
+			  let category = self.selectedCategory
         else { return }
         
 		let schedule = self.trackerType == .irregularEvent ? Set(WeekDay.allCases) : selectedWeekDays
         
-        trackersAddingService.addTracker(
+		self.trackersAddingService.addTracker(
             title: title,
             schedule: schedule,
             type: trackerType,
             color: color,
-            emoji: emoji
+            emoji: emoji,
+			categoryId: category.id
 		)
     }
     
@@ -225,10 +227,10 @@ private extension TrackerAddingViewPresenter {
         switch type {
         case .tracker:
             self.optionsTitles = ["Категория", "Расписание"]
-            view?.setViewControllerTitle("Новая привычка")
+			self.view?.setViewControllerTitle("Новая привычка")
         case .irregularEvent:
             self.optionsTitles = ["Категория"]
-            view?.setViewControllerTitle("Новое нерегулярное событие")
+			self.view?.setViewControllerTitle("Новое нерегулярное событие")
         }
     }
 }
@@ -236,11 +238,11 @@ private extension TrackerAddingViewPresenter {
 // MARK: - Checking enabling add tracker button
 private extension TrackerAddingViewPresenter {
     func checkToEnablingAddTrackerButton() {
-        guard
-            let trackerTitle = trackerTitle,
-            let isErrorLabelHidden = isErrorLabelHidden,
-            let _ = selectedTrackerColor,
-            let _ = selectedTrackerEmoji
+        guard let trackerTitle = self.trackerTitle,
+			  let isErrorLabelHidden = self.isErrorLabelHidden,
+			  let _ = self.selectedTrackerColor,
+			  let _ = self.selectedTrackerEmoji,
+			  let _ = self.selectedCategory
         else { return }
     
         if !trackerTitle.isEmpty && isErrorLabelHidden && !doesItNeedToWaitSelectedWeekdays {

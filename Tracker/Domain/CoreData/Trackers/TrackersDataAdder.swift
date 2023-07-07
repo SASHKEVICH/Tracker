@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 protocol TrackersDataAdderProtocol {
-	func add(tracker: Tracker, for categoryName: String) throws
+	func add(tracker: Tracker, for categoryId: UUID) throws
 	func delete(tracker: Tracker) throws
 }
 
@@ -32,10 +32,10 @@ struct TrackersDataAdder {
 }
 
 extension TrackersDataAdder: TrackersDataAdderProtocol {
-	func add(tracker: Tracker, for categoryName: String) throws {
+	func add(tracker: Tracker, for categoryId: UUID) throws {
 		let trackersCoreData = self.trackersFactory.makeTrackerCoreData(from: tracker, context: self.context)
 
-		guard let categoryCoreData = self.trackersCategoryDataStore.category(with: categoryName) else {
+		guard let categoryCoreData = self.trackersCategoryDataStore.category(with: categoryId.uuidString) else {
 			throw TrackersDataAdderError.cannotFindCategory
 		}
 

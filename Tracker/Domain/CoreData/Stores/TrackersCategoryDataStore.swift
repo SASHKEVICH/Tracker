@@ -18,12 +18,12 @@ struct TrackersCategoryDataStore {
 
 extension TrackersCategoryDataStore {
     var managedObjectContext: NSManagedObjectContext {
-        context
+		self.context
     }
     
-    func category(with name: String) -> TrackerCategoryCoreData? {
+    func category(with id: String) -> TrackerCategoryCoreData? {
         let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
-        let predicate = NSPredicate(format: "%K MATCHES[cd] %@", #keyPath(TrackerCategoryCoreData.title), name)
+        let predicate = NSPredicate(format: "%K MATCHES[cd] %@", #keyPath(TrackerCategoryCoreData.id), id)
         request.predicate = predicate
         request.fetchLimit = 1
         

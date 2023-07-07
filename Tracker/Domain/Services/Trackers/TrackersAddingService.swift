@@ -8,7 +8,14 @@
 import UIKit
 
 protocol TrackersAddingServiceProtocol {
-	func addTracker(title: String, schedule: Set<WeekDay>, type: Tracker.TrackerType, color: UIColor, emoji: String)
+	func addTracker(
+		title: String,
+		schedule: Set<WeekDay>,
+		type: Tracker.TrackerType,
+		color: UIColor,
+		emoji: String,
+		categoryId: UUID
+	)
 }
 
 struct TrackersAddingService {
@@ -35,9 +42,9 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
 		schedule: Set<WeekDay>,
 		type: Tracker.TrackerType,
 		color: UIColor,
-		emoji: String
+		emoji: String,
+		categoryId: UUID
 	) {
-		let categoryName = "Категория 1"
 		let tracker = trackersFactory.makeTracker(
 			type: type,
 			title: title,
@@ -45,7 +52,6 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
 			emoji: emoji,
 			schedule: Array(schedule)
 		)
-
-		try? trackersDataAdder.add(tracker: tracker, for: categoryName)
+		try? trackersDataAdder.add(tracker: tracker, for: categoryId)
 	}
 }
