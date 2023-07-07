@@ -13,7 +13,6 @@ protocol TrackerCategoryViewModelProtocol {
 
 	var onIsPlaceholderHiddenChanged: (() -> Void)? { get set }
 	var isPlaceholderHidden: Bool { get }
-	func addNewCategory()
 }
 
 final class TrackerCategoryViewModel {
@@ -43,11 +42,7 @@ final class TrackerCategoryViewModel {
 }
 
 // MARK: - TrackerCategoryViewModelProtocol
-extension TrackerCategoryViewModel: TrackerCategoryViewModelProtocol {
-	func addNewCategory() {
-		categories.append(TrackerCategory(id: UUID(), title: "Очень важное", trackers: []))
-	}
-}
+extension TrackerCategoryViewModel: TrackerCategoryViewModelProtocol {}
 
 // MARK: - TrackersCategoryDataProviderDelegate
 extension TrackerCategoryViewModel: TrackersCategoryDataProviderDelegate {

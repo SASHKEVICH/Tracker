@@ -11,8 +11,8 @@ import CoreData
 struct TrackersCategoryFactory {
 	private let trackersFactory = TrackersFactory()
 
-	func makeCategory(title: String, trackers: [Tracker]) -> TrackerCategory {
-		return TrackerCategory(id: UUID(), title: title, trackers: trackers)
+	func makeCategory(title: String) -> TrackerCategory {
+		return TrackerCategory(id: UUID(), title: title, trackers: [])
 	}
 
 	func makeCategory(categoryCoreData: TrackerCategoryCoreData) -> TrackerCategory? {

@@ -13,8 +13,6 @@ struct TrackersCategoryDataStore {
     
     init(context: NSManagedObjectContext) {
         self.context = context
-        
-        checkCategoryExistence()
     }
 }
 
@@ -33,29 +31,12 @@ extension TrackersCategoryDataStore {
         return categoriesCoreData?.first
     }
     
-    func add(newCategory: TrackerCategory) throws {}
+    func add(category: TrackerCategoryCoreData) throws {
+		try? self.context.save()
+	}
     
     func delete(_ record: NSManagedObject) throws {
         context.delete(record)
         try context.save()
-    }
-}
-
-private extension TrackersCategoryDataStore {
-    func checkCategoryExistence() {
-        let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
-        let count = try? context.count(for: request)
-        
-        if let count = count, count == 0 {
-            createDefaultCategory()
-        }
-    }
-    
-    func createDefaultCategory() {
-        let trackerCategoryCoreData = TrackerCategoryCoreData(context: context)
-        trackerCategoryCoreData.id = UUID().uuidString
-        trackerCategoryCoreData.title = "Категория 1"
-        trackerCategoryCoreData.trackers = NSSet()
-        try? context.save()
     }
 }

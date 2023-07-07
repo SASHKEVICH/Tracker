@@ -21,6 +21,12 @@ final class TrackerNewCategoryViewModel {
 			self.onIsAddNewCategoryButtonDisabledChanged?()
 		}
 	}
+
+	private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
+
+	init(trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol) {
+		self.trackersCategoryAddingService = trackersCategoryAddingService
+	}
 }
 
 extension TrackerNewCategoryViewModel: TrackerNewCategoryViewModelProtocol {
@@ -35,6 +41,6 @@ extension TrackerNewCategoryViewModel: TrackerNewCategoryViewModelProtocol {
 	}
 
 	func save(categoryTitle: String) {
-		print(#function)
+		self.trackersCategoryAddingService.addCategory(title: categoryTitle)
 	}
 }
