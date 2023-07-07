@@ -80,7 +80,6 @@ final class TrackerAddingViewController: UIViewController {
 			TrackerOptionsTableViewCell.self,
 			forCellReuseIdentifier: TrackerOptionsTableViewCell.reuseIdentifier
 		)
-		tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 		return tableView
 	}()
 	

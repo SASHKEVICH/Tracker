@@ -56,6 +56,7 @@ final class TrackerCategoryTableViewCell: UITableViewCell {
 	override func prepareForReuse() {
 		self.categoryTitle = ""
 		self.isCellSelected = false
+		self.cleanUp()
 	}
 }
 
