@@ -127,8 +127,9 @@ private extension TrackerCategoryViewController {
 			self?.categoriesTableView.reloadData()
 		}
 
-		self.viewModel.onIsPlaceholderHiddenChanged = { [weak self] shouldHidePlaceholderView in
-			self?.placeholderView(shouldHide: shouldHidePlaceholderView)
+		self.viewModel.onIsPlaceholderHiddenChanged = { [weak self] in
+			guard let self = self else { return }
+			self.placeholderView(shouldHide: self.viewModel.isPlaceholderHidden)
 		}
 	}
 }

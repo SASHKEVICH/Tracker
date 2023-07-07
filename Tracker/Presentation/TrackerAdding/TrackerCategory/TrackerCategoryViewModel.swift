@@ -11,7 +11,7 @@ protocol TrackerCategoryViewModelProtocol {
 	var onCategoriesChanged: (() -> Void)? { get set }
 	var categories: [TrackerCategory] { get }
 
-	var onIsPlaceholderHiddenChanged: ((Bool) -> Void)? { get set }
+	var onIsPlaceholderHiddenChanged: (() -> Void)? { get set }
 	var isPlaceholderHidden: Bool { get }
 	func addNewCategory()
 }
@@ -28,10 +28,10 @@ final class TrackerCategoryViewModel {
 		}
 	}
 	
-	var onIsPlaceholderHiddenChanged: ((Bool) -> Void)?
+	var onIsPlaceholderHiddenChanged: (() -> Void)?
 	var isPlaceholderHidden: Bool = true {
 		didSet {
-			self.onIsPlaceholderHiddenChanged?(isPlaceholderHidden)
+			self.onIsPlaceholderHiddenChanged?()
 		}
 	}
 }
