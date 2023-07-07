@@ -48,6 +48,8 @@
 		969509B52A21D0DC00DC1DF3 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969509B42A21D0DC00DC1DF3 /* UIImage+Extensions.swift */; };
 		969BE48429DFBE9A0056D813 /* TrackersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969BE48329DFBE9A0056D813 /* TrackersService.swift */; };
 		969CDB6C2A57CFD6001EDB8B /* UIEdgeInsets+TableViewSeparatorInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CDB6B2A57CFD6001EDB8B /* UIEdgeInsets+TableViewSeparatorInsets.swift */; };
+		969CDB6E2A57E0F8001EDB8B /* TrackerNewCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CDB6D2A57E0F8001EDB8B /* TrackerNewCategoryViewModel.swift */; };
+		969CDB702A57E109001EDB8B /* TrackerNewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CDB6F2A57E109001EDB8B /* TrackerNewCategoryViewController.swift */; };
 		96A606D92A3C4D34007C5262 /* OnboardingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606D82A3C4D34007C5262 /* OnboardingConstants.swift */; };
 		96A606DB2A3C8D9F007C5262 /* TrackersCategoriesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606DA2A3C8D9F007C5262 /* TrackersCategoriesService.swift */; };
 		96A606DE2A3C8FBC007C5262 /* FirstLaunchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */; };
@@ -127,6 +129,8 @@
 		969509B42A21D0DC00DC1DF3 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		969BE48329DFBE9A0056D813 /* TrackersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersService.swift; sourceTree = "<group>"; };
 		969CDB6B2A57CFD6001EDB8B /* UIEdgeInsets+TableViewSeparatorInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+TableViewSeparatorInsets.swift"; sourceTree = "<group>"; };
+		969CDB6D2A57E0F8001EDB8B /* TrackerNewCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerNewCategoryViewModel.swift; sourceTree = "<group>"; };
+		969CDB6F2A57E109001EDB8B /* TrackerNewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerNewCategoryViewController.swift; sourceTree = "<group>"; };
 		96A606D82A3C4D34007C5262 /* OnboardingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConstants.swift; sourceTree = "<group>"; };
 		96A606DA2A3C8D9F007C5262 /* TrackersCategoriesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCategoriesService.swift; sourceTree = "<group>"; };
 		96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstLaunchService.swift; sourceTree = "<group>"; };
@@ -414,6 +418,8 @@
 		96CE2ABF2A4098A9002A08F0 /* TrackerNewCategory */ = {
 			isa = PBXGroup;
 			children = (
+				969CDB6D2A57E0F8001EDB8B /* TrackerNewCategoryViewModel.swift */,
+				969CDB6F2A57E109001EDB8B /* TrackerNewCategoryViewController.swift */,
 			);
 			path = TrackerNewCategory;
 			sourceTree = "<group>";
@@ -674,6 +680,7 @@
 				96E067852A00273F000AC4C8 /* TrackerCoreData.swift in Sources */,
 				96F7038629FD1BEA00BBFF5C /* TrackerDataStore.swift in Sources */,
 				9654A97529EE85C600B4A718 /* TrackerSchedulePresenter.swift in Sources */,
+				969CDB702A57E109001EDB8B /* TrackerNewCategoryViewController.swift in Sources */,
 				9629563B29CD846900A587C5 /* TrackersViewController.swift in Sources */,
 				9617C95429DAE0F90054987D /* Tracker.swift in Sources */,
 				9629563729CD846900A587C5 /* AppDelegate.swift in Sources */,
@@ -706,6 +713,7 @@
 				96F703AC29FEB56700BBFF5C /* TrackerCategoryCoreData.swift in Sources */,
 				968A7E6D2A1E1F88007D75A5 /* OnboardingViewController.swift in Sources */,
 				9686FA5929E2829500BE2BC0 /* TrackersViewPresenterSearchControllerHelper.swift in Sources */,
+				969CDB6E2A57E0F8001EDB8B /* TrackerNewCategoryViewModel.swift in Sources */,
 				96A606DB2A3C8D9F007C5262 /* TrackersCategoriesService.swift in Sources */,
 				96F7032529FA44F900BBFF5C /* ColorsCollectionViewHelper.swift in Sources */,
 				9629563929CD846900A587C5 /* SceneDelegate.swift in Sources */,
