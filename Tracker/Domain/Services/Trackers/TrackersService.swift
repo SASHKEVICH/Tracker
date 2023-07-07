@@ -54,26 +54,34 @@ struct TrackersService {
 	}
     
     private let trackersDataProvider: TrackersDataProvider?
+	private let trackersDataCompleter: TrackersDataCompleterProtocol
 	private let trackerFactory = TrackerFactory()
     
-    private init(trackerDataProvider: TrackersDataProvider?) {
-        self.trackersDataProvider = trackerDataProvider
+	private init(
+		trackersDataProvider: TrackersDataProvider?,
+		trackersDataCompleter: TrackersDataCompleterProtocol
+	) {
+        self.trackersDataProvider = trackersDataProvider
+		self.trackersDataCompleter = trackersDataCompleter
     }
     
     private init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let trackerDataStore = appDelegate.trackerDataStore
-        let trackerCategoryDataStore = appDelegate.trackerCategoryDataStore
-        let trackerRecordDataStore = appDelegate.trackerRecordDataStore
-        
-        if let trackerDataProvider = TrackersDataProvider(
+
+        guard let trackerDataStore = appDelegate.trackerDataStore,
+			  let trackerCategoryDataStore = appDelegate.trackerCategoryDataStore,
+			  let trackerRecordDataStore = appDelegate.trackerRecordDataStore
+		else { fatalError("Cannot activate data stores") }
+
+		let trackersDataCompleter = TrackersDataCompleter(trackerRecordDataStore: trackerRecordDataStore)
+        if let trackersDataProvider = TrackersDataProvider(
             trackerDataStore: trackerDataStore,
             trackerCategoryDataStore: trackerCategoryDataStore,
             trackerRecordDataStore: trackerRecordDataStore
         ) {
-            self.init(trackerDataProvider: trackerDataProvider)
+            self.init(trackersDataProvider: trackersDataProvider, trackersDataCompleter: trackersDataCompleter)
         } else {
-            self.init(trackerDataProvider: nil)
+            self.init(trackersDataProvider: nil, trackersDataCompleter: trackersDataCompleter)
             self.requestDataProviderErrorAlert()
         }
     }
@@ -110,11 +118,11 @@ extension TrackersService: TrackersServiceFetchingProtocol {
 // MARK: - TrackersServiceCompletingProtocol
 extension TrackersService: TrackersServiceCompletingProtocol {
     func completeTracker(trackerId: UUID, date: Date) {
-        trackersDataProvider?.completeTracker(with: trackerId.uuidString, date: date)
+		self.trackersDataCompleter.completeTracker(with: trackerId.uuidString, date: date)
     }
     
     func incompleteTracker(trackerId: UUID, date: Date) {
-        trackersDataProvider?.incompleteTracker(with: trackerId.uuidString, date: date)
+		self.trackersDataCompleter.incompleteTracker(with: trackerId.uuidString, date: date)
     }
 }
 

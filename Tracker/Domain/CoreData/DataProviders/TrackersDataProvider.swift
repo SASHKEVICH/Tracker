@@ -18,11 +18,6 @@ protocol TrackersDataProviderDelegate: AnyObject {
     func didRecievedTrackers()
 }
 
-protocol TrackersDataProviderCompletingProtocol {
-    func completeTracker(with id: String, date: Date)
-    func incompleteTracker(with id: String, date: Date)
-}
-
 protocol TrackersDataProviderFetchingProtocol {
     var numberOfSections: Int { get }
     func numberOfItemsInSection(_ section: Int) -> Int
@@ -39,10 +34,7 @@ protocol TrackersDataProviderAddingProtocol {
     func deleteTracker(at indexPath: IndexPath) throws
 }
 
-typealias TrackersDataProviderProtocol =
-    TrackersDataProviderCompletingProtocol
-    & TrackersDataProviderFetchingProtocol
-    & TrackersDataProviderAddingProtocol
+typealias TrackersDataProviderProtocol = TrackersDataProviderFetchingProtocol & TrackersDataProviderAddingProtocol
 
 // MARK: - TrackersDataProvider
 final class TrackersDataProvider: NSObject {
@@ -165,20 +157,6 @@ extension TrackersDataProvider: TrackersDataProviderAddingProtocol {
     }
     
     func deleteTracker(at indexPath: IndexPath) throws {}
-}
-
-// MARK: - TrackersDataProviderCompletingProtocol
-extension TrackersDataProvider: TrackersDataProviderCompletingProtocol {
-    func completeTracker(with id: String, date: Date) {
-        guard let date = date.onlyDate else { return }
-        try? trackerRecordDataStore.completeTracker(with: id, date: date)
-    }
-    
-    func incompleteTracker(with id: String, date: Date) {
-        guard let date = date.onlyDate else { return }
-        guard let record = trackerRecordDataStore.record(with: id, date: date as NSDate) else { return }
-        try? trackerRecordDataStore.incompleteTracker(record)
-    }
 }
 
 // MARK: - NSFetchedResultsControllerDelegate
