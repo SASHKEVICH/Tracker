@@ -85,7 +85,7 @@ private extension TrackerTypeViewController {
 		presentAddingViewController(trackerType: .irregularEvent)
     }
 	
-	func presentAddingViewController(trackerType: TrackerType) {
+	func presentAddingViewController(trackerType: Tracker.TrackerType) {
 		let vc = TrackerAddingViewController()
 		let presenter = TrackerAddingViewPresenter(
 			trackersService: TrackersService.shared,

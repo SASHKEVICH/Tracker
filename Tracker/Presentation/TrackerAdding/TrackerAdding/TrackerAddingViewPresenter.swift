@@ -47,7 +47,7 @@ final class TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
 	var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol?
     
     private let trackersService: TrackersServiceAddingProtocol
-    private let trackerType: TrackerType
+	private let trackerType: Tracker.TrackerType
     
     private var isErrorLabelHidden: Bool? {
         didSet {
@@ -90,7 +90,7 @@ final class TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     
     init(
         trackersService: TrackersServiceAddingProtocol,
-        trackerType: TrackerType
+		trackerType: Tracker.TrackerType
     ) {
         self.trackerType = trackerType
         self.trackersService = trackersService
@@ -211,7 +211,7 @@ private extension TrackerAddingViewPresenter {
         self.emojisCollectionViewHelper = emojisCollectionViewHelper
     }
     
-    func setupViewController(for type: TrackerType) {
+	func setupViewController(for type: Tracker.TrackerType) {
         switch type {
         case .tracker:
             self.optionsTitles = ["Категория", "Расписание"]

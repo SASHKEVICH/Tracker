@@ -7,12 +7,12 @@
 
 import UIKit
 
-enum TrackerType: Int {
-    case tracker = 1
-    case irregularEvent = 2
-}
-
 struct Tracker {
+	enum TrackerType: Int {
+		case tracker = 1
+		case irregularEvent = 2
+	}
+
     let id: UUID
     let type: TrackerType
     let title: String

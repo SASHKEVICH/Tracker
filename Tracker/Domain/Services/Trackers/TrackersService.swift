@@ -15,7 +15,7 @@ protocol TrackersServiceDataSourceProtocol {
 }
 
 protocol TrackersServiceAddingProtocol {
-    func addTracker(title: String, schedule: Set<WeekDay>, type: TrackerType, color: UIColor, emoji: String)
+	func addTracker(title: String, schedule: Set<WeekDay>, type: Tracker.TrackerType, color: UIColor, emoji: String)
 }
 
 protocol TrackersServiceCompletingProtocol {
@@ -46,14 +46,15 @@ typealias TrackersServiceProtocol =
 // MARK: - TrackersService
 final class TrackersService {
     static var shared: TrackersServiceProtocol = TrackersService()
+
+	var trackersDataProviderDelegate: TrackersDataProviderDelegate? {
+		didSet {
+			trackersDataProvider?.delegate = trackersDataProviderDelegate
+		}
+	}
     
     private let trackersDataProvider: TrackersDataProvider?
-    
-    var trackersDataProviderDelegate: TrackersDataProviderDelegate? {
-        didSet {
-            trackersDataProvider?.delegate = trackersDataProviderDelegate
-        }
-    }
+	private let trackerFactory = TrackerFactory()
     
     private init(trackerDataProvider: TrackersDataProvider?) {
         self.trackersDataProvider = trackerDataProvider
@@ -122,19 +123,12 @@ extension TrackersService: TrackersServiceAddingProtocol {
     func addTracker(
         title: String,
         schedule: Set<WeekDay>,
-        type: TrackerType,
+		type: Tracker.TrackerType,
         color: UIColor,
         emoji: String
     ) {
         let categoryName = "Категория 1"
-        let schedule = Array(schedule)
-        let tracker = Tracker(
-            id: UUID(),
-            type: type,
-            title: title,
-            color: color,
-            emoji: emoji,
-            schedule: schedule)
+		let tracker = trackerFactory.makeTracker(type: type, title: title, color: color, emoji: emoji, schedule: Array(schedule))
         
         try? trackersDataProvider?.add(tracker: tracker, for: categoryName)
     }
@@ -155,22 +149,8 @@ extension TrackersService: TrackersServiceDataSourceProtocol {
     }
     
     func tracker(at indexPath: IndexPath) -> Tracker? {
-        guard
-            let trackerCoreData = trackersDataProvider?.tracker(at: indexPath),
-            let id = UUID(uuidString: trackerCoreData.id),
-            let type = TrackerType(rawValue: Int(trackerCoreData.type)),
-            let color = UIColorMarshalling.deserilizeFrom(hex: trackerCoreData.colorHex)
-        else { return nil }
-                
-        let splittedWeekDays = trackerCoreData.weekDays.components(separatedBy: ", ")
-        let schedule = splittedWeekDays.compactMap { String($0).weekDay }
-
-        return Tracker(
-            id: id,
-            type: type,
-            title: trackerCoreData.title,
-            color: color,
-            emoji: trackerCoreData.emoji,
-            schedule: schedule)
+		guard let trackerCoreData = trackersDataProvider?.tracker(at: indexPath) else { return nil }
+		let tracker = trackerFactory.makeTracker(from: trackerCoreData)
+		return tracker
     }
 }
