@@ -58,10 +58,10 @@ final class TrackersDataProvider: NSObject {
     private let trackerRecordDataStore: TrackerRecordDataStore
 
 	private let trackerFactory = TrackerFactory()
-    
+
     private var insertedIndexes: IndexSet?
     private var deletedIndexes: IndexSet?
-    
+
     private var currentWeekDay = Date().weekDay?.englishStringRepresentation
     
     private lazy var fetchedResultsController: NSFetchedResultsController = {
@@ -78,10 +78,11 @@ final class TrackersDataProvider: NSObject {
         let fetchedResultsController = NSFetchedResultsController(
             fetchRequest: request,
             managedObjectContext: context,
-            sectionNameKeyPath: #keyPath(TrackerCoreData.category.title),
-            cacheName: nil)
-        
+			sectionNameKeyPath: #keyPath(TrackerCoreData.category.title),
+            cacheName: nil
+		)
         fetchedResultsController.delegate = self
+
         try? fetchedResultsController.performFetch()
         return fetchedResultsController
     }()
