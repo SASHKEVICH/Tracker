@@ -26,10 +26,9 @@ struct TrackerFactory {
 	}
 
 	func makeTracker(from trackerCoreData: TrackerCoreData) -> Tracker? {
-		guard
-			let id = UUID(uuidString: trackerCoreData.id),
-			let type = Tracker.TrackerType(rawValue: Int(trackerCoreData.type)),
-			let color = UIColorMarshalling.deserilizeFrom(hex: trackerCoreData.colorHex)
+		guard let id = UUID(uuidString: trackerCoreData.id),
+			  let type = Tracker.TrackerType(rawValue: Int(trackerCoreData.type)),
+			  let color = UIColorMarshalling.deserilizeFrom(hex: trackerCoreData.colorHex)
 		else { return nil }
 
 		let splittedWeekDays = trackerCoreData.weekDays.components(separatedBy: ", ")

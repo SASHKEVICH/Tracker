@@ -44,8 +44,8 @@ typealias TrackersServiceProtocol =
     & TrackersServiceDataSourceProtocol
 
 // MARK: - TrackersService
-final class TrackersService {
-    static var shared: TrackersServiceProtocol = TrackersService()
+struct TrackersService {
+    static let shared: TrackersServiceProtocol = TrackersService()
 
 	var trackersDataProviderDelegate: TrackersDataProviderDelegate? {
 		didSet {
@@ -60,7 +60,7 @@ final class TrackersService {
         self.trackersDataProvider = trackerDataProvider
     }
     
-    private convenience init() {
+    private init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let trackerDataStore = appDelegate.trackerDataStore
         let trackerCategoryDataStore = appDelegate.trackerCategoryDataStore
