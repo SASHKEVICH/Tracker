@@ -8,7 +8,7 @@
 import UIKit
 
 struct UIColorMarshalling {
-    static func serilizeToHex(color: UIColor) -> String {
+    func serilizeToHex(color: UIColor) -> String {
         var red: CGFloat = 0
         var green: CGFloat = 0
         var blue: CGFloat = 0
@@ -20,7 +20,7 @@ struct UIColorMarshalling {
         return hexString
     }
     
-    static func deserilizeFrom(hex: String) -> UIColor? {
+    func deserilizeFrom(hex: String) -> UIColor? {
         guard hex.hasPrefix("#") else {
             assertionFailure("string is not hex")
             return nil

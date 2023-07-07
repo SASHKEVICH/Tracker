@@ -56,6 +56,8 @@ final class TrackersDataProvider: NSObject {
     private let trackerDataStore: TrackerDataStore
     private let trackerCategoryDataStore: TrackerCategoryDataStore
     private let trackerRecordDataStore: TrackerRecordDataStore
+
+	private let trackerFactory = TrackerFactory()
     
     private var insertedIndexes: IndexSet?
     private var deletedIndexes: IndexSet?
@@ -152,15 +154,7 @@ extension TrackersDataProvider: TrackersDataProviderFetchingProtocol {
 // MARK: - TrackersDataProviderAddingProtocol
 extension TrackersDataProvider: TrackersDataProviderAddingProtocol {
     func add(tracker: Tracker, for categoryName: String) throws {
-        let trackerCoreData = TrackerCoreData(context: context)
-        trackerCoreData.title = tracker.title
-        trackerCoreData.emoji = tracker.emoji
-        trackerCoreData.colorHex = UIColorMarshalling.serilizeToHex(color: tracker.color)
-        trackerCoreData.id = tracker.id.uuidString
-        trackerCoreData.type = Int16(tracker.type.rawValue)
-        
-        let schedule = tracker.schedule.reduce("") { $0 + ", " + $1.englishStringRepresentation }
-        trackerCoreData.weekDays = schedule
+		let trackerCoreData = trackerFactory.makeTrackerCoreData(from: tracker, context: context)
         
         guard let categoryCoreData = trackerCategoryDataStore.category(with: categoryName) else {
             throw TrackersDataProviderError.cannotFindCategory
