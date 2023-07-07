@@ -29,12 +29,7 @@ protocol TrackersDataProviderFetchingProtocol {
     func categoryTitle(at indexPath: IndexPath) -> String?
 }
 
-protocol TrackersDataProviderAddingProtocol {
-    func add(tracker: Tracker, for categoryName: String) throws
-    func deleteTracker(at indexPath: IndexPath) throws
-}
-
-typealias TrackersDataProviderProtocol = TrackersDataProviderFetchingProtocol & TrackersDataProviderAddingProtocol
+typealias TrackersDataProviderProtocol = TrackersDataProviderFetchingProtocol
 
 // MARK: - TrackersDataProvider
 final class TrackersDataProvider: NSObject {
@@ -142,21 +137,6 @@ extension TrackersDataProvider: TrackersDataProviderFetchingProtocol {
         let trackerCoreData = fetchedResultsController.object(at: indexPath)
         return trackerCoreData.category.title
     }
-}
-
-// MARK: - TrackersDataProviderAddingProtocol
-extension TrackersDataProvider: TrackersDataProviderAddingProtocol {
-    func add(tracker: Tracker, for categoryName: String) throws {
-		let trackerCoreData = trackerFactory.makeTrackerCoreData(from: tracker, context: context)
-        
-        guard let categoryCoreData = trackerCategoryDataStore.category(with: categoryName) else {
-            throw TrackersDataProviderError.cannotFindCategory
-        }
-        
-        try trackerDataStore.add(tracker: trackerCoreData, in: categoryCoreData)
-    }
-    
-    func deleteTracker(at indexPath: IndexPath) throws {}
 }
 
 // MARK: - NSFetchedResultsControllerDelegate

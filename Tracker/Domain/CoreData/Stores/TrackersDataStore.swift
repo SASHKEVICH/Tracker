@@ -1,5 +1,5 @@
 //
-//  TrackerDataStore.swift
+//  TrackersDataStore.swift
 //  Tracker
 //
 //  Created by Александр Бекренев on 29.04.2023.
@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-struct TrackerDataStore {
+struct TrackersDataStore {
     private let context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
@@ -16,7 +16,7 @@ struct TrackerDataStore {
     }
 }
 
-extension TrackerDataStore {
+extension TrackersDataStore {
     var managedObjectContext: NSManagedObjectContext {
         context
     }

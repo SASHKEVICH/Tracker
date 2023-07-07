@@ -136,6 +136,7 @@
 		969CDB6F2A57E109001EDB8B /* TrackerNewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerNewCategoryViewController.swift; sourceTree = "<group>"; };
 		969CDB722A57F615001EDB8B /* TrackerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerFactory.swift; sourceTree = "<group>"; };
 		969CDB772A58211D001EDB8B /* TrackerCategoriesDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoriesDataProvider.swift; sourceTree = "<group>"; };
+		969CDB7A2A5822C5001EDB8B /* TrackersDataAdder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersDataAdder.swift; sourceTree = "<group>"; };
 		969CDB7C2A5822CD001EDB8B /* TrackersDataCompleter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersDataCompleter.swift; sourceTree = "<group>"; };
 		96A606D82A3C4D34007C5262 /* OnboardingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConstants.swift; sourceTree = "<group>"; };
 		96A606DA2A3C8D9F007C5262 /* TrackersCategoriesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCategoriesService.swift; sourceTree = "<group>"; };
@@ -746,6 +747,7 @@
 				9617C96229DC77620054987D /* TrackerCollectionViewConstants.swift in Sources */,
 				96E316892A40519D00C08032 /* TrackerCategoryViewController.swift in Sources */,
 				9617C95B29DAE5920054987D /* WeekDay.swift in Sources */,
+				969CDB7B2A5822C5001EDB8B /* TrackersDataAdder.swift in Sources */,
 				96F703AC29FEB56700BBFF5C /* TrackerCategoryCoreData.swift in Sources */,
 				968A7E6D2A1E1F88007D75A5 /* OnboardingViewController.swift in Sources */,
 				9686FA5929E2829500BE2BC0 /* TrackersViewPresenterSearchControllerHelper.swift in Sources */,

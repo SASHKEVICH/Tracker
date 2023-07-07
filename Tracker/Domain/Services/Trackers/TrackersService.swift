@@ -55,14 +55,16 @@ struct TrackersService {
     
     private let trackersDataProvider: TrackersDataProvider?
 	private let trackersDataCompleter: TrackersDataCompleterProtocol
-	private let trackerFactory = TrackerFactory()
+	private let trackersDataAdder: TrackersDataAdderProtocol
     
 	private init(
 		trackersDataProvider: TrackersDataProvider?,
-		trackersDataCompleter: TrackersDataCompleterProtocol
+		trackersDataCompleter: TrackersDataCompleterProtocol,
+		trackersDataAdder: TrackersDataAdderProtocol
 	) {
         self.trackersDataProvider = trackersDataProvider
 		self.trackersDataCompleter = trackersDataCompleter
+		self.trackersDataAdder = trackersDataAdder
     }
     
     private init() {
@@ -74,14 +76,24 @@ struct TrackersService {
 		else { fatalError("Cannot activate data stores") }
 
 		let trackersDataCompleter = TrackersDataCompleter(trackerRecordDataStore: trackerRecordDataStore)
+		let trackersDataAdder = TrackersDataAdder(trackersCategoryDataStore: trackerCategoryDataStore, trackersDataStore: trackerDataStore)
+
         if let trackersDataProvider = TrackersDataProvider(
             trackerDataStore: trackerDataStore,
             trackerCategoryDataStore: trackerCategoryDataStore,
             trackerRecordDataStore: trackerRecordDataStore
         ) {
-            self.init(trackersDataProvider: trackersDataProvider, trackersDataCompleter: trackersDataCompleter)
+            self.init(
+				trackersDataProvider: trackersDataProvider,
+				trackersDataCompleter: trackersDataCompleter,
+				trackersDataAdder: trackersDataAdder
+			)
         } else {
-            self.init(trackersDataProvider: nil, trackersDataCompleter: trackersDataCompleter)
+			self.init(
+				trackersDataProvider: nil,
+				trackersDataCompleter: trackersDataCompleter,
+				trackersDataAdder: trackersDataAdder
+			)
             self.requestDataProviderErrorAlert()
         }
     }
@@ -136,9 +148,15 @@ extension TrackersService: TrackersServiceAddingProtocol {
         emoji: String
     ) {
         let categoryName = "Категория 1"
-		let tracker = trackerFactory.makeTracker(type: type, title: title, color: color, emoji: emoji, schedule: Array(schedule))
+		let tracker = trackerFactory.makeTracker(
+			type: type,
+			title: title,
+			color: color,
+			emoji: emoji,
+			schedule: Array(schedule)
+		)
         
-        try? trackersDataProvider?.add(tracker: tracker, for: categoryName)
+        try? trackersDataAdder.add(tracker: tracker, for: categoryName)
     }
 }
 
