@@ -5,7 +5,7 @@
 //  Created by Александр Бекренев on 30.04.2023.
 //
 
-import UIKit
+import Foundation
 import CoreData
 
 struct TrackersStoreUpdate {
@@ -19,6 +19,7 @@ protocol TrackersDataProviderDelegate: AnyObject {
 }
 
 protocol TrackersDataProviderProtocol {
+	var delegate: TrackersDataProviderDelegate? { get set }
     var numberOfSections: Int { get }
     func numberOfItemsInSection(_ section: Int) -> Int
     func fetchTrackers(currentWeekDay: WeekDay)
@@ -69,8 +70,7 @@ final class TrackersDataProvider: NSObject {
 // MARK: - TrackersDataProviderProtocol
 extension TrackersDataProvider: TrackersDataProviderProtocol {
     var numberOfSections: Int {
-        let sectionsCount = fetchedResultsController.sections?.count ?? 0
-        return sectionsCount
+		fetchedResultsController.sections?.count ?? 0
     }
     
     func numberOfItemsInSection(_ section: Int) -> Int {

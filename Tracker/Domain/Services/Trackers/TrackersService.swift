@@ -32,10 +32,9 @@ struct TrackersService {
 			trackersDataProvider.delegate = trackersDataProviderDelegate
 		}
 	}
-    
-    private let trackersDataProvider: TrackersDataProvider
 
 	private let trackersFactory = TrackersFactory()
+    private var trackersDataProvider: TrackersDataProviderProtocol
     
 	private init(trackersDataProvider: TrackersDataProvider) {
         self.trackersDataProvider = trackersDataProvider
