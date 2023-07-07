@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol TrackerScheduleViewControllerDelegate: AnyObject {
+	func dismissTrackerScheduleViewController()
+	func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>)
+}
+
 protocol TrackerScheduleViewControllerProtocol: AnyObject {
     var presenter: TrackerSchedulePresenterProtocol? { get set }
     var delegate: TrackerScheduleViewControllerDelegate? { get set }

@@ -79,8 +79,10 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
 private extension TrackerOptionsTableViewHelper {
     func configureAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
 		if cell.type == .schedule {
-            configureSchduleAdditionalInfo(for: cell)
-        }
+			self.configureSchduleAdditionalInfo(for: cell)
+		} else if cell.type == .category {
+			self.configureCategoryAdditionalInfo(for: cell)
+		}
     }
     
     func configureSchduleAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
@@ -99,4 +101,12 @@ private extension TrackerOptionsTableViewHelper {
         let additionalInfo = selectedWeekDaysArray.reduce("") { (result: String, weekDay: WeekDay) in result + weekDay.shortStringRepresentaion + ", " }
         cell.set(additionalInfo: String(additionalInfo.prefix(additionalInfo.count - 2)))
     }
+
+	func configureCategoryAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
+		guard let selectedCategory = self.presenter?.selectedCategory else {
+			cell.set(additionalInfo: nil)
+			return
+		}
+		cell.set(additionalInfo: selectedCategory.title)
+	}
 }

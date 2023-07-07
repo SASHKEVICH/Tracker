@@ -7,14 +7,8 @@
 
 import UIKit
 
-protocol TrackerScheduleViewControllerDelegate: AnyObject {
-    func dismissTrackerScheduleViewController()
-    func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>)
-}
-
-protocol TrackerAddingViewControllerProtocol: AnyObject, TrackerScheduleViewControllerDelegate {
+protocol TrackerAddingViewControllerProtocol: AnyObject, TrackerScheduleViewControllerDelegate, TrackerCategoryViewControllerDelegate {
     var presenter: TrackerAddingViewPresenterProtocol? { get set }
-    var trackerScheduleViewController: TrackerScheduleViewController? { get set }
 	var emptyTap: (() -> Void)? { get set }
     func present(view: UIViewController)
     func setViewControllerTitle(_ title: String)
@@ -26,7 +20,6 @@ protocol TrackerAddingViewControllerProtocol: AnyObject, TrackerScheduleViewCont
 
 final class TrackerAddingViewController: UIViewController {
 	var presenter: TrackerAddingViewPresenterProtocol?
-	var trackerScheduleViewController: TrackerScheduleViewController?
 	
 	var emptyTap: (() -> Void)?
 	
@@ -244,6 +237,14 @@ extension TrackerAddingViewController: TrackerScheduleViewControllerDelegate {
     func dismissTrackerScheduleViewController() {
         dismiss(animated: true)
     }
+}
+
+// MARK: - TrackerCategoryViewControllerDelegate
+extension TrackerAddingViewController: TrackerCategoryViewControllerDelegate {
+	func didRecieveCategory(_ category: TrackerCategory) {
+		presenter?.didRecieveSelectedCategory(category)
+		trackerOptionsTableView.reloadData()
+	}
 }
 
 // MARK: - Layout views

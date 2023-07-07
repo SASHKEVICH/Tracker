@@ -18,6 +18,7 @@ protocol TrackerAddingViewPresenterCollectionColorsViewHelperProtocol: AnyObject
 protocol TrackerAddingViewPresenterTableViewHelperProtocol: AnyObject {
     var optionsTitles: [String]? { get }
     var selectedWeekDays: Set<WeekDay> { get }
+	var selectedCategory: TrackerCategory? { get }
     func didTapTrackerScheduleCell()
 	func didTapTrackerCategoryCell()
 }
@@ -32,9 +33,10 @@ protocol TrackerAddingViewPresenterProtocol: AnyObject {
     func didChangeTrackerTitle(_ title: String?)
     func didConfirmAddTracker()
     func didRecieveSelectedTrackerSchedule(_ weekDays: Set<WeekDay>)
+	func didRecieveSelectedCategory(_ category: TrackerCategory)
 }
 
-final class TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
+final class TrackerAddingViewPresenter {
     weak var view: TrackerAddingViewControllerProtocol?
 
 	var optionsTitles: [String]?
@@ -49,25 +51,25 @@ final class TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     
     private var isErrorLabelHidden: Bool? {
         didSet {
-            checkToEnablingAddTrackerButton()
+			self.checkToEnablingAddTrackerButton()
         }
     }
     
     private var trackerTitle: String? {
         didSet {
-            checkToEnablingAddTrackerButton()
+			self.checkToEnablingAddTrackerButton()
         }
     }
     
     private var selectedTrackerEmoji: String? {
         didSet {
-            checkToEnablingAddTrackerButton()
+			self.checkToEnablingAddTrackerButton()
         }
     }
     
     private var selectedTrackerColor: UIColor? {
         didSet {
-            checkToEnablingAddTrackerButton()
+			self.checkToEnablingAddTrackerButton()
         }
     }
     
@@ -82,9 +84,15 @@ final class TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     
     var selectedWeekDays: Set<WeekDay> = [] {
         didSet {
-            checkToEnablingAddTrackerButton()
+			self.checkToEnablingAddTrackerButton()
         }
     }
+
+	var selectedCategory: TrackerCategory? {
+		didSet {
+			self.checkToEnablingAddTrackerButton()
+		}
+	}
     
     init(
         trackersAddingService: TrackersAddingServiceProtocol,
@@ -104,8 +112,7 @@ final class TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
 extension TrackerAddingViewPresenter: TrackerAddingViewPresenterTableViewHelperProtocol {
     func didTapTrackerScheduleCell() {
         let vc = TrackerScheduleViewController()
-        vc.delegate = view
-        view?.trackerScheduleViewController = vc
+		vc.delegate = self.view
         
         let presenter = TrackerSchedulePresenter()
         vc.presenter = presenter
@@ -125,6 +132,8 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterTableViewHelperP
 			helper: helper
 		)
 
+		vc.delegate = self.view
+
 		view?.present(view: vc)
 	}
 }
@@ -132,19 +141,19 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterTableViewHelperP
 // MARK: - AddTrackerViewPresenterCollectionColorsViewHelperProtocol
 extension TrackerAddingViewPresenter: TrackerAddingViewPresenterCollectionColorsViewHelperProtocol {
     func didSelect(color: UIColor) {
-        selectedTrackerColor = color
+		self.selectedTrackerColor = color
     }
 }
 
 // MARK: - AddTrackerViewPresenterEmojisCollectionViewHelperProtocol
 extension TrackerAddingViewPresenter: TrackerAddingViewPresenterEmojisCollectionViewHelperProtocol {
     func didSelect(emoji: String) {
-        selectedTrackerEmoji = emoji
+		self.selectedTrackerEmoji = emoji
     }
 }
 
 // MARK: - Internal methods
-extension TrackerAddingViewPresenter {
+extension TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     func viewDidLoad() {
         setupViewController(for: trackerType)
     }
@@ -178,8 +187,12 @@ extension TrackerAddingViewPresenter {
     }
     
     func didRecieveSelectedTrackerSchedule(_ weekDays: Set<WeekDay>) {
-        selectedWeekDays = weekDays
+		self.selectedWeekDays = weekDays
     }
+
+	func didRecieveSelectedCategory(_ category: TrackerCategory) {
+		self.selectedCategory = category
+	}
 }
 
 // MARK: - Private methods

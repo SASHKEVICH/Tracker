@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol TrackerCategoryViewControllerDelegate: AnyObject {
+	func didRecieveCategory(_ category: TrackerCategory)
+}
+
 final class TrackerCategoryViewController: UIViewController {
+	weak var delegate: TrackerCategoryViewControllerDelegate?
+
 	private let helper: TrackerCategoryTableViewHelperProtocol
 	private var viewModel: TrackerCategoryViewModelProtocol
 
@@ -78,11 +84,11 @@ final class TrackerCategoryViewController: UIViewController {
 // MARK: - TrackerCategoryTableViewHelperDelagate
 extension TrackerCategoryViewController: TrackerCategoryTableViewHelperDelegate {
 	var categories: [TrackerCategory] {
-		viewModel.categories
+		self.viewModel.categories
 	}
 	
 	func didChoose(category: TrackerCategory) {
-		print(category.title)
+		self.delegate?.didRecieveCategory(category)
 	}
 }
 
