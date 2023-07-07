@@ -53,25 +53,34 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
         case search
         case normal
     }
+
+	weak var view: TrackersViewControllerProtocol?
+	var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol?
+	var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol?
+
+	var completedTrackersRecords: Set<TrackerRecord> = []
+	var currentDate: Date = Date()
     
     private var trackersService: TrackersServiceProtocol
-    private var newTrackerNotifacationObserver: NSObjectProtocol?
+	private let trackersCompletingService: TrackersCompletingServiceProtocol
     
     private var state: TrackersViewPresenterState = .normal
+
+	private var isCurrentDateLaterThanToday: Bool {
+		guard currentDate > Date() else { return false }
+		return true
+	}
     
-    weak var view: TrackersViewControllerProtocol?
-    var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol?
-    var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol?
-    
-    var completedTrackersRecords: Set<TrackerRecord> = []
-    var currentDate: Date = Date()
-    
-    init(trackersService: TrackersServiceProtocol) {
+	init(
+		trackersService: TrackersServiceProtocol,
+		trackersCompletingService: TrackersCompletingServiceProtocol
+	) {
         self.trackersService = trackersService
+		self.trackersCompletingService = trackersCompletingService
         self.trackersService.trackersDataProviderDelegate = self
         
-        setupCollectionDelegate()
-        setupSearchControllerDelegate()
+		self.setupCollectionDelegate()
+		self.setupSearchControllerDelegate()
     }
 }
 
@@ -80,7 +89,6 @@ extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
     func requestTrackers(for date: Date) {
         guard let weekDay = date.weekDay else { return }
         self.currentDate = date
-        
         self.state = .normal
         
         DispatchQueue.global().async { [weak self] in
@@ -91,7 +99,6 @@ extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
     
     func requestFilteredTrackers(for searchText: String?) {
         guard let titleSearchString = searchText, let weekDay = currentDate.weekDay else { return }
-        
         self.state = .search
         
         DispatchQueue.global().async { [weak self] in
@@ -151,22 +158,6 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
         view?.shouldHidePlaceholderView(true)
     }
     
-    func complete(tracker: Tracker) throws {
-        if isCurrentDateLaterThanToday {
-            requestChosenFutureDateAlert()
-            throw TrackersViewPresenterError.currentDateLaterThanToday
-        }
-        trackersService.completeTracker(trackerId: tracker.id, date: currentDate)
-    }
-    
-    func incomplete(tracker: Tracker) throws {
-        if isCurrentDateLaterThanToday {
-            requestChosenFutureDateAlert()
-            throw TrackersViewPresenterError.currentDateLaterThanToday
-        }
-        trackersService.incompleteTracker(trackerId: tracker.id, date: currentDate)
-    }
-    
     func requestChosenFutureDateAlert() {
         let alertPresenter = AlertPresenterService(delegate: view)
         let alertModel = AlertModel(
@@ -175,11 +166,23 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
             actionTitles: ["OK"])
         alertPresenter.requestAlert(alertModel)
     }
-    
-    private var isCurrentDateLaterThanToday: Bool {
-        guard currentDate > Date() else { return false }
-        return true
-    }
+
+	func complete(tracker: Tracker) throws {
+		try self.checkCurrentDate()
+		self.trackersCompletingService.completeTracker(trackerId: tracker.id, date: currentDate)
+	}
+
+	func incomplete(tracker: Tracker) throws {
+		try self.checkCurrentDate()
+		self.trackersCompletingService.incompleteTracker(trackerId: tracker.id, date: currentDate)
+	}
+
+	private func checkCurrentDate() throws {
+		if self.isCurrentDateLaterThanToday {
+			self.requestChosenFutureDateAlert()
+			throw TrackersViewPresenterError.currentDateLaterThanToday
+		}
+	}
 }
 
 // MARK: - TrackersDataProviderDelegate

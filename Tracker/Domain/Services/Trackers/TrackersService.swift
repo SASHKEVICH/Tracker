@@ -18,11 +18,6 @@ protocol TrackersServiceAddingProtocol {
 	func addTracker(title: String, schedule: Set<WeekDay>, type: Tracker.TrackerType, color: UIColor, emoji: String)
 }
 
-protocol TrackersServiceCompletingProtocol {
-    func completeTracker(trackerId id: UUID, date: Date)
-    func incompleteTracker(trackerId id: UUID, date: Date)
-}
-
 protocol TrackersServiceFetchingProtocol {
     var trackersDataProviderDelegate: TrackersDataProviderDelegate? { get set }
     func fetchTrackers(weekDay: WeekDay)
@@ -35,11 +30,9 @@ protocol TrackersServiceFetchingProtocol {
 
 typealias TrackersServiceFetchingCompletingProtocol =
     TrackersServiceFetchingProtocol
-    & TrackersServiceCompletingProtocol
 
 typealias TrackersServiceProtocol =
     TrackersServiceAddingProtocol
-    & TrackersServiceCompletingProtocol
     & TrackersServiceFetchingProtocol
     & TrackersServiceDataSourceProtocol
 
@@ -54,7 +47,6 @@ struct TrackersService {
 	}
     
     private let trackersDataProvider: TrackersDataProvider?
-	private let trackersDataCompleter: TrackersDataCompleterProtocol
 	private let trackersDataAdder: TrackersDataAdderProtocol
 	private let trackersRecordDataFetcher: TrackersRecordDataFetcherProtocol
 
@@ -62,12 +54,10 @@ struct TrackersService {
     
 	private init(
 		trackersDataProvider: TrackersDataProvider?,
-		trackersDataCompleter: TrackersDataCompleterProtocol,
 		trackersDataAdder: TrackersDataAdderProtocol,
 		trackersRecordDataFetcher: TrackersRecordDataFetcherProtocol
 	) {
         self.trackersDataProvider = trackersDataProvider
-		self.trackersDataCompleter = trackersDataCompleter
 		self.trackersDataAdder = trackersDataAdder
 		self.trackersRecordDataFetcher = trackersRecordDataFetcher
     }
@@ -79,7 +69,6 @@ struct TrackersService {
 			  let trackersRecordDataStore = appDelegate.trackersRecordDataStore
 		else { fatalError("Cannot activate data stores") }
 
-		let trackersDataCompleter = TrackersDataCompleter(trackerRecordDataStore: trackersRecordDataStore)
 		let trackersDataAdder = TrackersDataAdder(
 			trackersCategoryDataStore: trackersCategoryDataStore,
 			trackersDataStore: trackersDataStore
@@ -89,7 +78,6 @@ struct TrackersService {
 		let trackersDataProvider = TrackersDataProvider(context: trackersDataStore.managedObjectContext)
 		self.init(
 			trackersDataProvider: trackersDataProvider,
-			trackersDataCompleter: trackersDataCompleter,
 			trackersDataAdder: trackersDataAdder,
 			trackersRecordDataFetcher: trackersRecordDataFetcher
 		)
@@ -121,17 +109,6 @@ extension TrackersService: TrackersServiceFetchingProtocol {
     
     func completedTimesCount(trackerId: UUID) -> Int {
         trackersRecordDataFetcher.completedTimesCount(trackerId: trackerId.uuidString)
-    }
-}
-
-// MARK: - TrackersServiceCompletingProtocol
-extension TrackersService: TrackersServiceCompletingProtocol {
-    func completeTracker(trackerId: UUID, date: Date) {
-		self.trackersDataCompleter.completeTracker(with: trackerId.uuidString, date: date)
-    }
-    
-    func incompleteTracker(trackerId: UUID, date: Date) {
-		self.trackersDataCompleter.incompleteTracker(with: trackerId.uuidString, date: date)
     }
 }
 

@@ -30,7 +30,9 @@ private extension TabBarViewController {
     func setupTrackersViewController() -> UINavigationController {
         let trackersViewController = TrackersViewController()
         let presenter = TrackersViewPresenter(
-            trackersService: TrackersService.shared)
+            trackersService: TrackersService.shared,
+			trackersCompletingService: TrackersCompletingService()
+		)
         
         trackersViewController.presenter = presenter
         presenter.view = trackersViewController
