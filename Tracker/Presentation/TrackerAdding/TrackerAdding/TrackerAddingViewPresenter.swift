@@ -35,8 +35,6 @@ protocol TrackerAddingViewPresenterProtocol: AnyObject {
 }
 
 final class TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
-    static let didAddTrackerNotificationName = Notification.Name(rawValue: "NewTrackerAdded")
-    
     weak var view: TrackerAddingViewControllerProtocol?
 
 	var optionsTitles: [String]?
@@ -169,7 +167,7 @@ extension TrackerAddingViewPresenter {
             let emoji = selectedTrackerEmoji
         else { return }
         
-        let schedule: Set<WeekDay> = trackerType == .irregularEvent ? Set(WeekDay.allCases) : selectedWeekDays
+		let schedule = self.trackerType == .irregularEvent ? Set(WeekDay.allCases) : selectedWeekDays
         
         trackersService.addTracker(
             title: title,
@@ -177,7 +175,6 @@ extension TrackerAddingViewPresenter {
             type: trackerType,
             color: color,
             emoji: emoji)
-        postAddingTrackerNotification()
     }
     
     func didRecieveSelectedTrackerSchedule(_ weekDays: Set<WeekDay>) {
@@ -220,12 +217,6 @@ private extension TrackerAddingViewPresenter {
             self.optionsTitles = ["Категория"]
             view?.setViewControllerTitle("Новое нерегулярное событие")
         }
-    }
-    
-    func postAddingTrackerNotification() {
-        NotificationCenter.default
-            .post(name: TrackerAddingViewPresenter.didAddTrackerNotificationName,
-                  object: self)
     }
 }
 

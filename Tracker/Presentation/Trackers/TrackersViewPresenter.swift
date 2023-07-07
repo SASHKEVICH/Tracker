@@ -72,7 +72,6 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
         
         setupCollectionDelegate()
         setupSearchControllerDelegate()
-        addNewTrackerNotificationObserver()
     }
 }
 
@@ -191,7 +190,9 @@ extension TrackersViewPresenter: TrackersDataProviderDelegate {
     
     func didRecievedTrackers() {
         DispatchQueue.main.async { [weak self] in
-            self?.view?.didRecieveTrackers()
+			guard let self = self else { return }
+			self.requestTrackers(for: self.currentDate)
+            self.view?.didRecieveTrackers()
         }
     }
 }
@@ -208,19 +209,5 @@ private extension TrackersViewPresenter {
         let searchControllerHelper = TrackersViewPresenterSearchControllerHelper()
         searchControllerHelper.presenter = self
         self.searchControllerHelper = searchControllerHelper
-    }
-}
-
-private extension TrackersViewPresenter {
-    func addNewTrackerNotificationObserver() {
-        newTrackerNotifacationObserver = NotificationCenter.default
-            .addObserver(
-                forName: TrackerAddingViewPresenter.didAddTrackerNotificationName,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.requestTrackers(for: self.currentDate)
-            }
     }
 }
