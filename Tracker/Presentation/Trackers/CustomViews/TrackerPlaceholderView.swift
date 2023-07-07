@@ -9,8 +9,9 @@ import UIKit
 
 final class TrackerPlaceholderView: UIView {
 	enum State {
-		case emptyForDay
-		case emptySearch
+		case emptyTrackersForDay
+		case emptyTrackersSearch
+		case emptyCategories
 	}
 
 	private let imageView: UIImageView = {
@@ -25,6 +26,7 @@ final class TrackerPlaceholderView: UIView {
 		textLabel.font = .Medium.medium
 		textLabel.textColor = .Dynamic.blackDay
 		textLabel.textAlignment = .center
+		textLabel.numberOfLines = 0
 		return textLabel
 	}()
 
@@ -54,10 +56,12 @@ final class TrackerPlaceholderView: UIView {
 extension TrackerPlaceholderView {
 	func set(state: TrackerPlaceholderView.State) {
 		switch state {
-		case .emptyForDay:
+		case .emptyTrackersForDay:
 			self.set(image: .Placeholder.emptyForDay, text: "Что будем отслеживать?")
-		case .emptySearch:
+		case .emptyTrackersSearch:
 			self.set(image: .Placeholder.emptySearch, text: "Ничего не найдено")
+		case .emptyCategories:
+			self.set(image: .Placeholder.emptyForDay, text: "Привычки и события можно \n объединить по смыслу")
 		}
 	}
 
@@ -84,7 +88,8 @@ private extension TrackerPlaceholderView {
 		NSLayoutConstraint.activate([
 			self.textLabel.topAnchor.constraint(equalTo: self.imageView.bottomAnchor, constant: 8),
 			self.textLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-			self.textLabel.widthAnchor.constraint(equalToConstant: 343)
+			self.textLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+			self.textLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
 		])
 	}
 }

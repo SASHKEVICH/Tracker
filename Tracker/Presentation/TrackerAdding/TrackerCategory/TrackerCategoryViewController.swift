@@ -8,10 +8,8 @@
 import UIKit
 
 final class TrackerCategoryViewController: UIViewController {
-	private let viewModel: TrackerCategoryViewModelProtocol
 	private let helper: TrackerCategoryTableViewHelperProtocol
-
-	private let placeholderView = TrackerPlaceholderView()
+	private var viewModel: TrackerCategoryViewModelProtocol
 
 	private let titleLabel: UILabel = {
 		let label = UILabel()
@@ -21,6 +19,14 @@ final class TrackerCategoryViewController: UIViewController {
 		label.textColor = .Dynamic.blackDay
 		label.sizeToFit()
 		return label
+	}()
+
+	private lazy var placeholderView: TrackerPlaceholderView = {
+		let view = TrackerPlaceholderView()
+		view.translatesAutoresizingMaskIntoConstraints = false
+		view.set(state: .emptyCategories)
+		view.isHidden = self.viewModel.isPlaceholderHidden
+		return view
 	}()
 
 	private lazy var categoriesTableView: UITableView = {
@@ -33,20 +39,26 @@ final class TrackerCategoryViewController: UIViewController {
 		tableView.dataSource = self.helper
 		tableView.delegate = self.helper
 		tableView.rowHeight = 75
-		tableView.separatorStyle = .none
 		return tableView
 	}()
 
-	private lazy var addCategoryButton: TrackerCustomButton = {
+	private lazy var addNewCategoryButton: TrackerCustomButton = {
 		let button = TrackerCustomButton(state: .normal, title: "Добавить категорию")
 		button.translatesAutoresizingMaskIntoConstraints = false
+		button.addTarget(self, action: #selector(self.didTapAddNewCategoryButton), for: .touchUpInside)
 		return button
 	}()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		view.backgroundColor = .Dynamic.whiteDay
+		self.view.backgroundColor = .Dynamic.whiteDay
+
+		self.helper.delegate = self
+
+		self.addSubviews()
+		self.addConstraints()
+		self.bind()
 	}
 	
 	init(
@@ -56,11 +68,6 @@ final class TrackerCategoryViewController: UIViewController {
 		self.viewModel = viewModel
 		self.helper = helper
 		super.init(nibName: nil, bundle: nil)
-		
-		helper.delegate = self
-
-		self.addSubviews()
-		self.addConstraints()
 	}
 	
 	required init?(coder: NSCoder) {
@@ -83,7 +90,8 @@ private extension TrackerCategoryViewController {
 	func addSubviews() {
 		view.addSubview(titleLabel)
 		view.addSubview(categoriesTableView)
-		view.addSubview(addCategoryButton)
+		view.addSubview(addNewCategoryButton)
+		view.insertSubview(placeholderView, aboveSubview: categoriesTableView)
 	}
 
 	func addConstraints() {
@@ -96,14 +104,45 @@ private extension TrackerCategoryViewController {
 			categoriesTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
 			categoriesTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
 			categoriesTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-			categoriesTableView.bottomAnchor.constraint(equalTo: addCategoryButton.topAnchor, constant: -15)
+			categoriesTableView.bottomAnchor.constraint(equalTo: addNewCategoryButton.topAnchor, constant: -15)
 		])
 
 		NSLayoutConstraint.activate([
-			addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-			addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-			addCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-			addCategoryButton.heightAnchor.constraint(equalToConstant: 60)
+			addNewCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+			addNewCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+			addNewCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+			addNewCategoryButton.heightAnchor.constraint(equalToConstant: 60)
 		])
+
+		NSLayoutConstraint.activate([
+			placeholderView.leadingAnchor.constraint(equalTo: categoriesTableView.leadingAnchor),
+			placeholderView.trailingAnchor.constraint(equalTo: categoriesTableView.trailingAnchor),
+			placeholderView.topAnchor.constraint(equalTo: categoriesTableView.topAnchor),
+			placeholderView.bottomAnchor.constraint(equalTo: categoriesTableView.bottomAnchor),
+		])
+	}
+
+	func bind() {
+		self.viewModel.onCategoriesChanged = { [weak self] in
+			self?.categoriesTableView.reloadData()
+		}
+
+		self.viewModel.onIsPlaceholderHiddenChanged = { [weak self] shouldHidePlaceholderView in
+			self?.placeholderView(shouldHide: shouldHidePlaceholderView)
+		}
+	}
+}
+
+// MARK: - Actions
+private extension TrackerCategoryViewController {
+	@objc
+	func didTapAddNewCategoryButton() {
+		viewModel.addNewCategory()
+	}
+}
+
+private extension TrackerCategoryViewController {
+	func placeholderView(shouldHide: Bool) {
+		self.placeholderView.isHidden = shouldHide
 	}
 }

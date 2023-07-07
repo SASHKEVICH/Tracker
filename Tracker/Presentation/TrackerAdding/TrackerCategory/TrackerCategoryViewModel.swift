@@ -8,18 +8,44 @@
 import Foundation
 
 protocol TrackerCategoryViewModelProtocol {
+	var onCategoriesChanged: (() -> Void)? { get set }
 	var categories: [TrackerCategory] { get }
+
+	var onIsPlaceholderHiddenChanged: ((Bool) -> Void)? { get set }
 	var isPlaceholderHidden: Bool { get }
+	func addNewCategory()
 }
 
 final class TrackerCategoryViewModel {
-	@Observable
-	var categories = [TrackerCategory(id: UUID(), title: "Важное", trackers: []), TrackerCategory(id: UUID(), title: "Не важное", trackers: [])]
+	var onCategoriesChanged: (() -> Void)?
+	var categories = [
+		TrackerCategory(id: UUID(), title: "Важное", trackers: []),
+		TrackerCategory(id: UUID(), title: "Не важное", trackers: [])
+	] {
+		didSet {
+			self.onCategoriesChanged?()
+			self.shouldHidePlaceholder()
+		}
+	}
 	
-	@Observable
-	var isPlaceholderHidden: Bool = false
+	var onIsPlaceholderHiddenChanged: ((Bool) -> Void)?
+	var isPlaceholderHidden: Bool = true {
+		didSet {
+			self.onIsPlaceholderHiddenChanged?(isPlaceholderHidden)
+		}
+	}
 }
 
 extension TrackerCategoryViewModel: TrackerCategoryViewModelProtocol {
+	func addNewCategory() {
+		categories.append(TrackerCategory(id: UUID(), title: "Очень важное", trackers: []))
+	}
+}
 
+private extension TrackerCategoryViewModel {
+	func shouldHidePlaceholder() {
+		if self.categories.isEmpty {
+			self.isPlaceholderHidden = false
+		}
+	}
 }

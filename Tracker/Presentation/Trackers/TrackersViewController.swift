@@ -47,12 +47,12 @@ extension TrackersViewController: TrackersViewControllerProtocol {
 // MARK: - Setup PlaceholderView
 extension TrackersViewController {
     func showPlaceholderViewForCurrentDay() {
-		collectionPlaceholderView.set(state: .emptyForDay)
+		collectionPlaceholderView.set(state: .emptyTrackersForDay)
         shouldHidePlaceholderView(false)
     }
     
     func showPlaceholderViewForEmptySearch() {
-		collectionPlaceholderView.set(state: .emptySearch)
+		collectionPlaceholderView.set(state: .emptyTrackersSearch)
         shouldHidePlaceholderView(false)
     }
     
