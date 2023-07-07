@@ -86,6 +86,13 @@ extension TrackerCategoryViewController: TrackerCategoryTableViewHelperDelegate 
 	}
 }
 
+// MARK: - TrackerNewCategoryViewControllerDelegate
+extension TrackerCategoryViewController: TrackerNewCategoryViewControllerDelegate {
+	func dismissNewCategoryViewController() {
+		dismiss(animated: true)
+	}
+}
+
 private extension TrackerCategoryViewController {
 	func addSubviews() {
 		view.addSubview(titleLabel)
@@ -144,6 +151,7 @@ private extension TrackerCategoryViewController {
 		vc.emptyTap = { [weak vc] in
 			vc?.view.endEditing(true)
 		}
+		vc.delegate = self
 
 		present(vc, animated: true)
 	}

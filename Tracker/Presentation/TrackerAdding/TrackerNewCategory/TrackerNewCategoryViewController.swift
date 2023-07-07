@@ -7,7 +7,12 @@
 
 import UIKit
 
+protocol TrackerNewCategoryViewControllerDelegate: AnyObject {
+	func dismissNewCategoryViewController()
+}
+
 final class TrackerNewCategoryViewController: UIViewController {
+	weak var delegate: TrackerNewCategoryViewControllerDelegate?
 	var emptyTap: (() -> Void)?
 
 	private var viewModel: TrackerNewCategoryViewModelProtocol
@@ -26,11 +31,12 @@ final class TrackerNewCategoryViewController: UIViewController {
 		let textField = TrackerCustomTextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
 		textField.placeholder = "Введите название категории"
+		textField.delegate = self
 		return textField
 	}()
 
 	private lazy var addNewCategoryButton: TrackerCustomButton = {
-		let button = TrackerCustomButton(state: .normal, title: "Готово")
+		let button = TrackerCustomButton(state: .disabled, title: "Готово")
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(self.didTapAddNewCategoryButton), for: .touchUpInside)
 		return button
@@ -53,7 +59,16 @@ final class TrackerNewCategoryViewController: UIViewController {
 		self.addSubviews()
 		self.addConstraints()
 		self.addGestureRecognizers()
+		self.bind()
     }
+}
+
+// MARK: - UITextFieldDelegate
+extension TrackerNewCategoryViewController: UITextFieldDelegate {
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		self.dismissKeyboard()
+		return true
+	}
 }
 
 private extension TrackerNewCategoryViewController {
@@ -84,6 +99,13 @@ private extension TrackerNewCategoryViewController {
 		])
 	}
 
+	func bind() {
+		self.viewModel.onIsAddNewCategoryButtonDisabledChanged = { [weak self] in
+			guard let self = self else { return }
+			self.addNewCategoryButton.buttonState = self.viewModel.isAddNewCategoryButtonDisabled ? .disabled : .normal
+		}
+	}
+
 	func addGestureRecognizers() {
 		let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
 		view.addGestureRecognizer(tap)
@@ -94,11 +116,16 @@ private extension TrackerNewCategoryViewController {
 private extension TrackerNewCategoryViewController {
 	@objc
 	func didTapAddNewCategoryButton() {
-		print(#function)
+		guard let title = self.newCategoryTitleTextField.text else { return }
+		viewModel.save(categoryTitle: title)
+		delegate?.dismissNewCategoryViewController()
 	}
 
 	@objc
 	func dismissKeyboard() {
 		self.emptyTap?()
+
+		guard let title = self.newCategoryTitleTextField.text else { return }
+		viewModel.didRecieve(categoryTitle: title)
 	}
 }
