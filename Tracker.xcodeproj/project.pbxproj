@@ -209,6 +209,8 @@
 		9617C96029DB10320054987D /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				969CDB822A583B2B001EDB8B /* TrackersCategory */,
+				969CDB812A583B24001EDB8B /* TrackersRecord */,
 				96A606DC2A3C8F9D007C5262 /* Trackers */,
 				96C7E76429E65ED200BA7F67 /* AlertPresenterService.swift */,
 				96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */,
@@ -414,11 +416,25 @@
 			path = TrackersRecord;
 			sourceTree = "<group>";
 		};
+		969CDB812A583B24001EDB8B /* TrackersRecord */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TrackersRecord;
+			sourceTree = "<group>";
+		};
+		969CDB822A583B2B001EDB8B /* TrackersCategory */ = {
+			isa = PBXGroup;
+			children = (
+				96A606DA2A3C8D9F007C5262 /* TrackersCategoriesService.swift */,
+			);
+			path = TrackersCategory;
+			sourceTree = "<group>";
+		};
 		96A606DC2A3C8F9D007C5262 /* Trackers */ = {
 			isa = PBXGroup;
 			children = (
 				969BE48329DFBE9A0056D813 /* TrackersService.swift */,
-				96A606DA2A3C8D9F007C5262 /* TrackersCategoriesService.swift */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
