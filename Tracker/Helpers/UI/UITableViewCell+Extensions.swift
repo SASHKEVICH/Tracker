@@ -22,8 +22,6 @@ extension UITableViewCell {
 		entityCount: Int?,
 		tableViewWidth: CGFloat
 	) -> UITableViewCell {
-		self.layer.masksToBounds = true
-		self.layer.cornerRadius = 16
 		self.separatorInset = self.defaultSeparatorInsets
 
 		if entityCount == 1 {
@@ -52,6 +50,8 @@ extension UITableViewCell {
 
 private extension UITableViewCell {
 	func setupFirstCellInTableView() -> UITableViewCell {
+		self.layer.masksToBounds = true
+		self.layer.cornerRadius = 16
 		self.selectedBackgroundView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
 		self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
 		return self
@@ -60,6 +60,8 @@ private extension UITableViewCell {
 	func setupLastCellWithoutBottomSeparator(
 		tableViewWidth: CGFloat
 	) -> UITableViewCell {
+		self.layer.masksToBounds = true
+		self.layer.cornerRadius = 16
 		self.selectedBackgroundView?.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
 		self.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
 		self.separatorInset = UIEdgeInsets(
@@ -73,6 +75,8 @@ private extension UITableViewCell {
 	func setupSingleCellInTableView(
 		tableViewWidth: CGFloat
 	) -> UITableViewCell {
+		self.layer.masksToBounds = true
+		self.layer.cornerRadius = 16
 		let defaultInsets = UIEdgeInsets.TableViewSeparator.insets
 		self.separatorInset = UIEdgeInsets(
 			top: defaultSeparatorInsets.top,
