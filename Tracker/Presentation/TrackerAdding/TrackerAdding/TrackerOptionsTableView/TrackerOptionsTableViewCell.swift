@@ -14,12 +14,10 @@ final class TrackerOptionsTableViewCell: UITableViewCell {
 	}
 
 	var type: CellType? {
-		if cellTitleLabel.text == "Категория" {
-			return .category
-		} else if cellTitleLabel.text == "Расписание" {
-			return .schedule
-		} else {
-			return nil
+		switch cellTitleLabel.text {
+		case "Категория": return .category
+		case "Расписание": return .schedule
+		default: return nil
 		}
 	}
 
