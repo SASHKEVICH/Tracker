@@ -93,27 +93,21 @@ extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
         guard let weekDay = date.weekDay else { return }
         self.currentDate = date
         self.state = .normal
-        
-        DispatchQueue.global().async { [weak self] in
-            self?.trackersService.fetchTrackers(weekDay: weekDay)
-            self?.fetchCompletedTrackersForCurrentDate()
-        }
+
+		self.trackersService.fetchTrackers(weekDay: weekDay)
+		self.fetchCompletedTrackersForCurrentDate()
     }
     
     func requestFilteredTrackers(for searchText: String?) {
         guard let titleSearchString = searchText, let weekDay = currentDate.weekDay else { return }
         self.state = .search
-        
-        DispatchQueue.global().async { [weak self] in
-            self?.trackersService.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: weekDay)
-            self?.fetchCompletedTrackersForCurrentDate()
-        }
+
+		self.trackersService.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: weekDay)
+		self.fetchCompletedTrackersForCurrentDate()
     }
     
     func viewDidLoad() {
-        DispatchQueue.global().async { [weak self] in
-            self?.fetchCompletedTrackersForCurrentDate()
-        }
+		self.fetchCompletedTrackersForCurrentDate()
     }
     
     func requestShowAllCategoriesForCurrentDay() {

@@ -43,9 +43,8 @@ extension TrackersRecordDataStore {
         request.resultType = .countResultType
         
         let fetchResult = try context.execute(request) as! NSAsynchronousFetchResult<NSFetchRequestResult>
-        guard
-            let count = fetchResult.finalResult?.first,
-            let countInt = count as? Int
+        guard let count = fetchResult.finalResult?.first,
+			  let countInt = count as? Int
         else { return 0 }
         
         return countInt
