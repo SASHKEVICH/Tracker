@@ -37,7 +37,10 @@ final class TrackerCategoryViewModel {
 		self.trackersCategoryService = trackersCategoryService
 		self.trackersCategoryService.trackersCategoryDataProviderDelegate = self
 
-		self.categories = self.getCategoriesFromStore()
+		DispatchQueue.main.async { [weak self] in
+			guard let self = self else { return }
+			self.categories = self.getCategoriesFromStore()
+		}
 	}
 }
 
@@ -53,7 +56,7 @@ extension TrackerCategoryViewModel: TrackersCategoryDataProviderDelegate {
 
 private extension TrackerCategoryViewModel {
 	func shouldHidePlaceholder() {
-		self.isPlaceholderHidden = self.categories.isEmpty
+		self.isPlaceholderHidden = self.categories.isEmpty == false
 	}
 
 	func getCategoriesFromStore() -> [TrackerCategory] {
