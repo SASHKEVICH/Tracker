@@ -9,8 +9,6 @@ import UIKit
 import CoreData
 
 struct TrackersFactory {
-	private let uiColorMarshalling = UIColorMarshalling()
-
 	func makeTracker(
 		type: Tracker.TrackerType,
 		title: String,
@@ -31,7 +29,7 @@ struct TrackersFactory {
 	func makeTracker(from trackerCoreData: TrackerCoreData) -> Tracker? {
 		guard let id = UUID(uuidString: trackerCoreData.id),
 			  let type = Tracker.TrackerType(rawValue: Int(trackerCoreData.type)),
-			  let color = uiColorMarshalling.deserilizeFrom(hex: trackerCoreData.colorHex)
+			  let color = UIColorMarshalling.deserilizeFrom(hex: trackerCoreData.colorHex)
 		else { return nil }
 
 		let splittedWeekDays = trackerCoreData.weekDays.components(separatedBy: ", ")
@@ -51,7 +49,7 @@ struct TrackersFactory {
 		let trackerCoreData = TrackerCoreData(context: context)
 		trackerCoreData.title = tracker.title
 		trackerCoreData.emoji = tracker.emoji
-		trackerCoreData.colorHex = uiColorMarshalling.serilizeToHex(color: tracker.color)
+		trackerCoreData.colorHex = UIColorMarshalling.serilizeToHex(color: tracker.color)
 		trackerCoreData.id = tracker.id.uuidString
 		trackerCoreData.type = Int16(tracker.type.rawValue)
 
