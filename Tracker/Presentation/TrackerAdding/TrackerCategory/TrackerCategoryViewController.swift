@@ -151,7 +151,12 @@ private extension TrackerCategoryViewController {
 private extension TrackerCategoryViewController {
 	@objc
 	func didTapAddNewCategoryButton() {
-		let viewModel = TrackerNewCategoryViewModel(trackersCategoryAddingService: TrackersCategoryAddingService())
+		let trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: TrackersFactory())
+		guard let addingService = TrackersCategoryAddingService(trackersCategoryFactory: trackersCategoryFactory) else {
+			return
+		}
+
+		let viewModel = TrackerNewCategoryViewModel(trackersCategoryAddingService: addingService)
 		let vc = TrackerNewCategoryViewController(viewModel: viewModel)
 
 		vc.emptyTap = { [weak vc] in

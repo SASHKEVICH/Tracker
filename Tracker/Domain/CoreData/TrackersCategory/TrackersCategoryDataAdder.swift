@@ -14,10 +14,11 @@ protocol TrackersCategoryDataAdderProtocol {
 struct TrackersCategoryDataAdder {
 	private let context: NSManagedObjectContext
 	private let trackersCategoryDataStore: TrackersCategoryDataStore
-	private let trackersCategoryFactory = TrackersCategoryFactory()
+	private let trackersCategoryFactory: TrackersCategoryFactory
 
-	init(trackersCategoryDataStore: TrackersCategoryDataStore) {
+	init(trackersCategoryDataStore: TrackersCategoryDataStore, trackersCategoryFactory: TrackersCategoryFactory) {
 		self.trackersCategoryDataStore = trackersCategoryDataStore
+		self.trackersCategoryFactory = trackersCategoryFactory
 		self.context = trackersCategoryDataStore.managedObjectContext
 	}
 }

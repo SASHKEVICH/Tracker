@@ -25,29 +25,25 @@ typealias TrackersServiceProtocol = TrackersServiceFetchingProtocol & TrackersSe
 
 // MARK: - TrackersService
 struct TrackersService {
-    static let shared: TrackersServiceProtocol = TrackersService()
-
 	var trackersDataProviderDelegate: TrackersDataProviderDelegate? {
 		didSet {
 			trackersDataProvider.delegate = trackersDataProviderDelegate
 		}
 	}
 
-	private let trackersFactory = TrackersFactory()
+	private let trackersFactory: TrackersFactory
     private var trackersDataProvider: TrackersDataProviderProtocol
     
-	private init(trackersDataProvider: TrackersDataProvider) {
-        self.trackersDataProvider = trackersDataProvider
-    }
-    
-    private init() {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        guard let trackersDataStore = appDelegate.trackersDataStore else {
-			fatalError("Cannot activate data stores")
+    init?(trackersFactory: TrackersFactory) {
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+			  let trackersDataStore = appDelegate.trackersDataStore
+		else {
+			assertionFailure("Cannot activate data stores")
+			return nil
 		}
 
-		let trackersDataProvider = TrackersDataProvider(context: trackersDataStore.managedObjectContext)
-		self.init(trackersDataProvider: trackersDataProvider)
+		self.trackersFactory = trackersFactory
+		self.trackersDataProvider = TrackersDataProvider(context: trackersDataStore.managedObjectContext)
     }
 }
 

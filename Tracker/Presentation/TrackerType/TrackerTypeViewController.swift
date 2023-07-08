@@ -77,19 +77,25 @@ private extension TrackerTypeViewController {
 private extension TrackerTypeViewController {
     @objc
     func didTapAddTrackerButton() {
-		presentAddingViewController(trackerType: .tracker)
+		self.presentAddingViewController(trackerType: .tracker)
     }
     
     @objc
     func didTapAddIrregularEventButton() {
-		presentAddingViewController(trackerType: .irregularEvent)
+		self.presentAddingViewController(trackerType: .irregularEvent)
     }
 	
 	func presentAddingViewController(trackerType: Tracker.TrackerType) {
+		guard let addingService = TrackersAddingService(trackersFactory: TrackersFactory()) else {
+			assertionFailure("Cannot init trackers adding service")
+			return
+		}
+
 		let vc = TrackerAddingViewController()
 		let presenter = TrackerAddingViewPresenter(
-			trackersAddingService: TrackersAddingService(),
-			trackerType: trackerType)
+			trackersAddingService: addingService,
+			trackerType: trackerType
+		)
 		vc.presenter = presenter
 		presenter.view = vc
 

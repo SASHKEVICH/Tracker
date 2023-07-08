@@ -21,12 +21,16 @@ struct TrackersDataAdder {
 	private let context: NSManagedObjectContext
 	private let trackersDataStore: TrackersDataStore
 	private let trackersCategoryDataStore: TrackersCategoryDataStore
+	private let trackersFactory: TrackersFactory
 
-	private let trackersFactory = TrackersFactory()
-
-	init(trackersCategoryDataStore: TrackersCategoryDataStore, trackersDataStore: TrackersDataStore) {
+	init(
+		trackersCategoryDataStore: TrackersCategoryDataStore,
+		trackersDataStore: TrackersDataStore,
+		trackersFactory: TrackersFactory
+	) {
 		self.trackersCategoryDataStore = trackersCategoryDataStore
 		self.trackersDataStore = trackersDataStore
+		self.trackersFactory = trackersFactory
 		self.context = trackersDataStore.managedObjectContext
 	}
 }

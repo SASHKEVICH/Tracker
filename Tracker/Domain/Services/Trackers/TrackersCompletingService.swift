@@ -15,14 +15,15 @@ protocol TrackersCompletingServiceProtocol {
 struct TrackersCompletingService {
 	private let trackersDataCompleter: TrackersDataCompleterProtocol
 
-	init() {
-		let appDelegate = UIApplication.shared.delegate as! AppDelegate
-		guard let trackersRecordDataStore = appDelegate.trackersRecordDataStore else {
-			fatalError("Cannot activate data store")
+	init?() {
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+			  let trackersRecordDataStore = appDelegate.trackersRecordDataStore
+		else {
+			assertionFailure("Cannot activate data store")
+			return nil
 		}
 
-		let trackersDataCompleter = TrackersDataCompleter(trackerRecordDataStore: trackersRecordDataStore)
-		self.trackersDataCompleter = trackersDataCompleter
+		self.trackersDataCompleter = TrackersDataCompleter(trackerRecordDataStore: trackersRecordDataStore)
 	}
 }
 

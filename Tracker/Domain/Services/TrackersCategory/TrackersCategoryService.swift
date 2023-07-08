@@ -22,15 +22,18 @@ struct TrackersCategoryService {
 		}
 	}
 
-	private let trackersCategoryFactory = TrackersCategoryFactory()
 	private var trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol
+	private let trackersCategoryFactory: TrackersCategoryFactory
 
-	init() {
-		let appDelegate = UIApplication.shared.delegate as! AppDelegate
-		guard let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore else {
-			fatalError("Cannot activate data store")
+	init?(trackersCategoryFactory: TrackersCategoryFactory) {
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+			  let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore
+		else {
+			assertionFailure("Cannot activate data store")
+			return nil
 		}
 
+		self.trackersCategoryFactory = trackersCategoryFactory
 		self.trackersCategoryDataProvider = TrackersCategoryDataProvider(
 			context: trackersCategoryDataStore.managedObjectContext
 		)

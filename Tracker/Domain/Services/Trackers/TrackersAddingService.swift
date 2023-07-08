@@ -19,18 +19,24 @@ protocol TrackersAddingServiceProtocol {
 }
 
 struct TrackersAddingService {
-	private let trackersFactory = TrackersFactory()
 	private let trackersDataAdder: TrackersDataAdderProtocol
+	private let trackersFactory: TrackersFactory
 
-	init() {
-		let appDelegate = UIApplication.shared.delegate as! AppDelegate
-		guard let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore,
+	init?(trackersFactory: TrackersFactory) {
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+			  let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore,
 			  let trackersDataStore = appDelegate.trackersDataStore
-		else { fatalError("Cannot activate data stores") }
+		else {
+			assertionFailure("Cannot activate data stores")
+			return nil
+		}
+
+		self.trackersFactory = trackersFactory
 
 		let trackersDataAdder = TrackersDataAdder(
 			trackersCategoryDataStore: trackersCategoryDataStore,
-			trackersDataStore: trackersDataStore
+			trackersDataStore: trackersDataStore,
+			trackersFactory: trackersFactory
 		)
 		self.trackersDataAdder = trackersDataAdder
 	}

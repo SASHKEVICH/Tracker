@@ -11,7 +11,7 @@ final class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let trackersViewController = setupTrackersViewController()
+		guard let trackersViewController = setupTrackersViewController() else { return }
         let statisticsViewController = setupStatisticsViewController()
         viewControllers = [trackersViewController, statisticsViewController]
         
@@ -27,12 +27,22 @@ final class TabBarViewController: UITabBarController {
 
 // MARK: Setup view controllers
 private extension TabBarViewController {
-    func setupTrackersViewController() -> UINavigationController {
+    func setupTrackersViewController() -> UINavigationController? {
         let trackersViewController = TrackersViewController()
+
+		let trackersFactory = TrackersFactory()
+		guard let trackersService = TrackersService(trackersFactory: trackersFactory),
+			  let completingService = TrackersCompletingService(),
+			  let recordService = TrackersRecordService()
+		else {
+			assertionFailure("Cannot init services")
+			return nil
+		}
+
         let presenter = TrackersViewPresenter(
-            trackersService: TrackersService.shared,
-			trackersCompletingService: TrackersCompletingService(),
-			trackersRecordService: TrackersRecordService()
+            trackersService: trackersService,
+			trackersCompletingService: completingService,
+			trackersRecordService: recordService
 		)
         
         trackersViewController.presenter = presenter

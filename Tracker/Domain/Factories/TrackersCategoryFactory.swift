@@ -9,7 +9,11 @@ import Foundation
 import CoreData
 
 struct TrackersCategoryFactory {
-	private let trackersFactory = TrackersFactory()
+	private let trackersFactory: TrackersFactory
+
+	init(trackersFactory: TrackersFactory) {
+		self.trackersFactory = trackersFactory
+	}
 
 	func makeCategory(title: String) -> TrackerCategory {
 		return TrackerCategory(id: UUID(), title: title, trackers: [])

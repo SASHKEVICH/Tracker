@@ -124,7 +124,13 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterTableViewHelperP
     }
 
 	func didTapTrackerCategoryCell() {
-		let viewModel = TrackerCategoryViewModel(trackersCategoryService: TrackersCategoryService())
+		let categoryFactory = TrackersCategoryFactory(trackersFactory: TrackersFactory())
+		guard let trackersCategoryService = TrackersCategoryService(trackersCategoryFactory: categoryFactory) else {
+			assertionFailure("Cannot init service")
+			return
+		}
+
+		let viewModel = TrackerCategoryViewModel(trackersCategoryService: trackersCategoryService)
 		let helper = TrackerCategoryTableViewHelper()
 
 		let vc = TrackerCategoryViewController(

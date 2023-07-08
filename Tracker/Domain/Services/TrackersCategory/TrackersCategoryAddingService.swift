@@ -13,14 +13,22 @@ protocol TrackersCategoryAddingServiceProtocol {
 
 struct TrackersCategoryAddingService {
 	private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
-	private let trackersCategoryFactory = TrackersCategoryFactory()
+	private let trackersCategoryFactory: TrackersCategoryFactory
 
-	init() {
-		let appDelegate = UIApplication.shared.delegate as! AppDelegate
-		guard let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore else {
-			fatalError("Cannot activate data store")
+	init?(trackersCategoryFactory: TrackersCategoryFactory) {
+		self.trackersCategoryFactory = trackersCategoryFactory
+
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+			  let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore
+		else {
+			assertionFailure("Cannot activate data store")
+			return nil
 		}
-		self.trackersCategoryDataAdder = TrackersCategoryDataAdder(trackersCategoryDataStore: trackersCategoryDataStore)
+
+		self.trackersCategoryDataAdder = TrackersCategoryDataAdder(
+			trackersCategoryDataStore: trackersCategoryDataStore,
+			trackersCategoryFactory: trackersCategoryFactory
+		)
 	}
 }
 
