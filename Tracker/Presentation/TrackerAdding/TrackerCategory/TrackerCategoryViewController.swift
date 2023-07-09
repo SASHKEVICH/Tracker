@@ -15,6 +15,7 @@ final class TrackerCategoryViewController: UIViewController {
 	weak var delegate: TrackerCategoryViewControllerDelegate?
 
 	private let helper: TrackerCategoryTableViewHelperProtocol
+	private let router: TrackerCategoryRouterProtocol
 	private var viewModel: TrackerCategoryViewModelProtocol
 
 	private let titleLabel: UILabel = {
@@ -69,10 +70,12 @@ final class TrackerCategoryViewController: UIViewController {
 	
 	init(
 		viewModel: TrackerCategoryViewModelProtocol,
-		helper: TrackerCategoryTableViewHelperProtocol
+		helper: TrackerCategoryTableViewHelperProtocol,
+		router: TrackerCategoryRouterProtocol
 	) {
 		self.viewModel = viewModel
 		self.helper = helper
+		self.router = router
 		super.init(nibName: nil, bundle: nil)
 	}
 	
@@ -151,20 +154,7 @@ private extension TrackerCategoryViewController {
 private extension TrackerCategoryViewController {
 	@objc
 	func didTapAddNewCategoryButton() {
-		let trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: TrackersFactory())
-		guard let addingService = TrackersCategoryAddingService(trackersCategoryFactory: trackersCategoryFactory) else {
-			return
-		}
-
-		let viewModel = TrackerNewCategoryViewModel(trackersCategoryAddingService: addingService)
-		let vc = TrackerNewCategoryViewController(viewModel: viewModel)
-
-		vc.emptyTap = { [weak vc] in
-			vc?.view.endEditing(true)
-		}
-		vc.delegate = self
-
-		present(vc, animated: true)
+		self.router.navigateToNewCategoryScreen(from: self)
 	}
 }
 

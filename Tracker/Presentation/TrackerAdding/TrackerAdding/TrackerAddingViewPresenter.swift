@@ -132,10 +132,12 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterTableViewHelperP
 
 		let viewModel = TrackerCategoryViewModel(trackersCategoryService: trackersCategoryService)
 		let helper = TrackerCategoryTableViewHelper()
+		let router = TrackerCategoryRouter()
 
 		let vc = TrackerCategoryViewController(
 			viewModel: viewModel,
-			helper: helper
+			helper: helper,
+			router: router
 		)
 
 		vc.delegate = self.view
