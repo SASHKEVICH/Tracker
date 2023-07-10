@@ -11,17 +11,12 @@ final class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-		guard let trackersViewController = setupTrackersViewController() else { return }
-        let statisticsViewController = setupStatisticsViewController()
-        viewControllers = [trackersViewController, statisticsViewController]
+		guard let trackersViewController = self.setupTrackersViewController() else { return }
+
+		let statisticsViewController = self.setupStatisticsViewController()
+		self.viewControllers = [trackersViewController, statisticsViewController]
         
-        setupTabBar()
-    }
-    
-    private func setupTabBar() {
-        let appearance = UITabBarAppearance()
-		appearance.backgroundColor = .Dynamic.whiteDay
-        tabBar.standardAppearance = appearance
+		self.setupTabBar()
     }
 }
 
@@ -52,7 +47,7 @@ private extension TabBarViewController {
         
         trackersViewController.tabBarItem = UITabBarItem(
             title: "Трекеры",
-            image: UIImage(named: "TrackersTabBarItem"),
+            image: .TabBar.trackers,
             selectedImage: nil)
         
         let navigationController = UINavigationController(
@@ -69,8 +64,16 @@ private extension TabBarViewController {
         navigationController.navigationBar.prefersLargeTitles = true
         statisticsViewController.tabBarItem = UITabBarItem(
             title: "Статистика",
-            image: UIImage(named: "StatisticsTabBarItem"),
+			image: .TabBar.statistics,
             selectedImage: nil)
         return navigationController
     }
+}
+
+private extension TabBarViewController {
+	func setupTabBar() {
+		let appearance = UITabBarAppearance()
+		appearance.backgroundColor = .Dynamic.whiteDay
+		self.tabBar.standardAppearance = appearance
+	}
 }
