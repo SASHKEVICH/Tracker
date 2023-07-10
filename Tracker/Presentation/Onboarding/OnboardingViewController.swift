@@ -59,7 +59,7 @@ extension OnboardingViewController: OnboardingViewControllerProtocol {
 extension OnboardingViewController {
 	@objc
 	private func didTapOnboardingButton() {
-		self.presenter?.navigateToMainScreen()
+		self.presenter?.navigateToMainScreen(animated: true)
 	}
 }
 

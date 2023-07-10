@@ -8,7 +8,7 @@
 import UIKit
 
 protocol OnboardingRouterProtocol {
-	func navigateToMainScreen()
+	func navigateToMainScreen(animated: Bool)
 }
 
 final class OnboardingRouter {
@@ -21,9 +21,18 @@ final class OnboardingRouter {
 
 // MARK: - OnboardingRouterProtocol
 extension OnboardingRouter: OnboardingRouterProtocol {
-	func navigateToMainScreen() {
+	func navigateToMainScreen(animated: Bool) {
+		guard let window = self.window else { return }
 		let tabBarController = TabBarViewController()
-		self.window?.rootViewController = tabBarController
-		self.window?.makeKeyAndVisible()
+		window.rootViewController = tabBarController
+		window.makeKeyAndVisible()
+
+		UIView.transition(
+			with: window,
+			duration: 0.3,
+			options: .transitionCrossDissolve,
+			animations: nil,
+			completion: nil
+		)
 	}
 }

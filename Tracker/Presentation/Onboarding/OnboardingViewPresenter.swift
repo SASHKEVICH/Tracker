@@ -12,7 +12,7 @@ protocol OnboardingViewPresenterProtocol: AnyObject {
 	var pagesViewControllerHelper: OnboardingViewControllerHelperProtocol? { get }
 	var pagesCount: Int { get }
 	func setCurrentPage(index: Int)
-	func navigateToMainScreen()
+	func navigateToMainScreen(animated: Bool)
 }
 
 final class OnboardingViewPresenter {
@@ -39,7 +39,7 @@ extension OnboardingViewPresenter: OnboardingViewPresenterProtocol {
 		self.view?.setCurrentPage(index: index)
 	}
 
-	func navigateToMainScreen() {
-		self.router.navigateToMainScreen()
+	func navigateToMainScreen(animated: Bool) {
+		self.router.navigateToMainScreen(animated: animated)
 	}
 }
