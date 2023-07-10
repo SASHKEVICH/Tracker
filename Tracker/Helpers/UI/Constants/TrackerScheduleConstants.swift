@@ -10,21 +10,23 @@ import Foundation
 struct TrackerScheduleConstants {
     let bottomConstantConstraint: CGFloat
     
-    private static var iPhoneXConfiguration: TrackerScheduleConstants {
-        return TrackerScheduleConstants(bottomConstantConstraint: 16)
-    }
-        
-    private static var iPhoneSEConfiguration: TrackerScheduleConstants {
-        return TrackerScheduleConstants(bottomConstantConstraint: 24)
-    }
-    
     static var configuration: TrackerScheduleConstants {
-        let currentDeviceType = Device.type
+        let currentDeviceType = Device.model
         switch currentDeviceType {
-        case .iphoneSE:
+        case .iphoneSE, .iphoneSE2, .iphoneSE3, .iphone7, .iphone7plus, .iphone8, .iphone8plus:
             return iPhoneSEConfiguration
         default:
             return iPhoneXConfiguration
         }
     }
+}
+
+private extension TrackerScheduleConstants {
+	static var iPhoneXConfiguration: TrackerScheduleConstants {
+		TrackerScheduleConstants(bottomConstantConstraint: 16)
+	}
+
+	static var iPhoneSEConfiguration: TrackerScheduleConstants {
+		TrackerScheduleConstants(bottomConstantConstraint: 24)
+	}
 }

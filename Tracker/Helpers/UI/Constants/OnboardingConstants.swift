@@ -11,21 +11,23 @@ struct OnboardingConstants {
 	let topConstantConstraint: CGFloat
 	let bottomConstantConstraint: CGFloat
 	
-	private static var iPhoneXConfiguration: OnboardingConstants {
-		OnboardingConstants(topConstantConstraint: 432, bottomConstantConstraint: 304)
-	}
-		
-	private static var iPhoneSEConfiguration: OnboardingConstants {
-		OnboardingConstants(topConstantConstraint: 254, bottomConstantConstraint: 200)
-	}
-	
 	static var configuration: OnboardingConstants {
-		let currentDeviceType = Device.type
+		let currentDeviceType = Device.model
 		switch currentDeviceType {
-		case .iphoneSE:
+		case .iphoneSE, .iphoneSE2, .iphoneSE3, .iphone7, .iphone7plus, .iphone8, .iphone8plus:
 			return iPhoneSEConfiguration
 		default:
 			return iPhoneXConfiguration
 		}
+	}
+}
+
+private extension OnboardingConstants {
+	static var iPhoneXConfiguration: OnboardingConstants {
+		OnboardingConstants(topConstantConstraint: 432, bottomConstantConstraint: 254)
+	}
+
+	static var iPhoneSEConfiguration: OnboardingConstants {
+		OnboardingConstants(topConstantConstraint: 254, bottomConstantConstraint: 200)
 	}
 }

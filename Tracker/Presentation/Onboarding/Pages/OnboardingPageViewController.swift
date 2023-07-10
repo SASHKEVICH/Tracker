@@ -8,10 +8,22 @@
 import UIKit
 
 final class OnboardingPageViewController: UIViewController {
+	var image: UIImage? {
+		didSet {
+			imageView.image = image
+		}
+	}
+
+	var onboardingText: String? {
+		didSet {
+			onboardingLabel.text = onboardingText
+		}
+	}
+
 	private let imageView: UIImageView = {
 		let imageView = UIImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.contentMode = .scaleAspectFit
+		imageView.contentMode = .scaleAspectFill
 		return imageView
 	}()
 	
@@ -20,37 +32,25 @@ final class OnboardingPageViewController: UIViewController {
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.numberOfLines = 0
 		label.textAlignment = .center
-		label.font = .boldSystemFont(ofSize: 32)
+		label.font = .Bold.medium
 		label.textColor = .Dynamic.blackDay
 		return label
 	}()
 	
 	private let constantConfiguration = OnboardingConstants.configuration
 	
-	var image: UIImage? {
-		didSet {
-			imageView.image = image
-		}
-	}
-	
-	var onboardingText: String? {
-		didSet {
-			onboardingLabel.text = onboardingText
-		}
-	}
-	
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        addSubviews()
-		addConstraints()
+		self.addSubviews()
+		self.addConstraints()
     }
 }
 
 private extension OnboardingPageViewController {
 	func addSubviews() {
-		view.addSubview(imageView)
-		view.addSubview(onboardingLabel)
+		self.view.addSubview(imageView)
+		self.view.addSubview(onboardingLabel)
 	}
 	
 	func addConstraints() {

@@ -28,9 +28,10 @@ final class OnboardingViewController: UIPageViewController {
 		return pageControl
 	}()
 
-	private let confirmOnboardingButton: TrackerCustomButton = {
+	private lazy var confirmOnboardingButton: TrackerCustomButton = {
 		let button = TrackerCustomButton(state: .normal, title: "Вот это технологии!")
 		button.translatesAutoresizingMaskIntoConstraints = false
+		button.addTarget(self, action: #selector(self.didTapOnboardingButton), for: .touchUpInside)
 		return button
 	}()
 
@@ -43,8 +44,6 @@ final class OnboardingViewController: UIPageViewController {
 		self.setViewControllers()
 		self.addSubviews()
 		self.addConstraints()
-		
-		self.confirmOnboardingButton.addTarget(self, action: #selector(self.didTapOnboardingButton), for: .touchUpInside)
     }
 }
 
@@ -55,7 +54,7 @@ extension OnboardingViewController: OnboardingViewControllerProtocol {
 	}
 }
 
-// MARK: - Onboarding button callback
+// MARK: - Actions
 extension OnboardingViewController {
 	@objc
 	private func didTapOnboardingButton() {
@@ -67,6 +66,12 @@ private extension OnboardingViewController {
 	func setViewControllers() {
 		guard let viewController = presenter?.pagesViewControllerHelper?.firstViewController else { return }
 		self.setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
+	}
+
+
+	func addSubviews() {
+		self.view.addSubview(confirmOnboardingButton)
+		self.view.addSubview(pageControl)
 	}
 	
 	func addConstraints() {
@@ -81,10 +86,5 @@ private extension OnboardingViewController {
 			pageControl.bottomAnchor.constraint(equalTo: confirmOnboardingButton.topAnchor, constant: -24),
 			pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)
 		])
-	}
-	
-	func addSubviews() {
-		self.view.addSubview(confirmOnboardingButton)
-		self.view.addSubview(pageControl)
 	}
 }
