@@ -10,7 +10,6 @@ import UIKit
 protocol TrackerAddingViewControllerProtocol: AnyObject, TrackerScheduleViewControllerDelegate, TrackerCategoryViewControllerDelegate {
     var presenter: TrackerAddingViewPresenterProtocol? { get set }
 	var emptyTap: (() -> Void)? { get set }
-    func present(view: UIViewController)
     func setViewControllerTitle(_ title: String)
     func showError() -> Bool
     func hideError() -> Bool
@@ -20,7 +19,6 @@ protocol TrackerAddingViewControllerProtocol: AnyObject, TrackerScheduleViewCont
 
 final class TrackerAddingViewController: UIViewController {
 	var presenter: TrackerAddingViewPresenterProtocol?
-	
 	var emptyTap: (() -> Void)?
 	
 	private let scrollView: UIScrollView = {
@@ -163,8 +161,8 @@ final class TrackerAddingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-		view.backgroundColor = .Dynamic.whiteDay
-        isModalInPresentation = true
+		self.view.backgroundColor = .Dynamic.whiteDay
+		self.isModalInPresentation = true
         
 		self.addSubviews()
 		self.addConstraints()
@@ -184,7 +182,7 @@ final class TrackerAddingViewController: UIViewController {
 		self.emojisCollectionViewHeightConstraint.constant = self.emojisCollectionView.contentSize.height
 		self.colorsCollectionViewHeightConstraint.constant = self.colorsCollectionView.contentSize.height
         
-        view.setNeedsLayout()
+		self.view.setNeedsLayout()
     }
 }
 
@@ -220,10 +218,6 @@ extension TrackerAddingViewController: TrackerAddingViewControllerProtocol {
 
 	func disableAddButton() {
 		addTrackerButton.buttonState = .disabled
-	}
-
-	func present(view: UIViewController) {
-		present(view, animated: true)
 	}
 }
 
@@ -345,13 +339,13 @@ private extension TrackerAddingViewController {
 		let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
 		tap.cancelsTouchesInView = false
 		tap.numberOfTapsRequired = 1
-		view.addGestureRecognizer(tap)
+		self.view.addGestureRecognizer(tap)
 	}
 
 	func reloadData() {
-		trackerOptionsTableView.reloadData()
-		emojisCollectionView.reloadData()
-		colorsCollectionView.reloadData()
+		self.trackerOptionsTableView.reloadData()
+		self.emojisCollectionView.reloadData()
+		self.colorsCollectionView.reloadData()
 	}
 }
 

@@ -92,8 +92,10 @@ private extension TrackerTypeViewController {
 		}
 
 		let vc = TrackerAddingViewController()
+		let router = TrackerAddingRouter(viewController: vc)
 		let presenter = TrackerAddingViewPresenter(
 			trackersAddingService: addingService,
+			router: router,
 			trackerType: trackerType
 		)
 		vc.presenter = presenter

@@ -47,6 +47,7 @@ final class TrackerAddingViewPresenter {
 	var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol?
     
     private let trackersAddingService: TrackersAddingServiceProtocol
+	private let router: TrackerAddingRouterProtocol
 	private let trackerType: Tracker.TrackerType
     
     private var isErrorLabelHidden: Bool? {
@@ -96,10 +97,12 @@ final class TrackerAddingViewPresenter {
     
     init(
         trackersAddingService: TrackersAddingServiceProtocol,
+		router: TrackerAddingRouterProtocol,
 		trackerType: Tracker.TrackerType
     ) {
+		self.trackersAddingService = trackersAddingService
+		self.router = router
         self.trackerType = trackerType
-        self.trackersAddingService = trackersAddingService
         
         setupTableViewHelper()
         setupTextFieldHelper()
@@ -111,38 +114,11 @@ final class TrackerAddingViewPresenter {
 // MARK: - AddTrackerViewPresenterTableViewHelperProtocol
 extension TrackerAddingViewPresenter: TrackerAddingViewPresenterTableViewHelperProtocol {
     func didTapTrackerScheduleCell() {
-        let vc = TrackerScheduleViewController()
-		vc.delegate = self.view
-        
-        let presenter = TrackerSchedulePresenter()
-        vc.presenter = presenter
-        presenter.view = vc
-        
-        presenter.selectedWeekDays = selectedWeekDays
-
-		view?.present(view: vc)
+		self.router.navigateToScheduleScreen(selectedWeekDays: self.selectedWeekDays)
     }
 
 	func didTapTrackerCategoryCell() {
-		let categoryFactory = TrackersCategoryFactory(trackersFactory: TrackersFactory())
-		guard let trackersCategoryService = TrackersCategoryService(trackersCategoryFactory: categoryFactory) else {
-			assertionFailure("Cannot init service")
-			return
-		}
-
-		let viewModel = TrackerCategoryViewModel(trackersCategoryService: trackersCategoryService)
-		let helper = TrackerCategoryTableViewHelper()
-		let router = TrackerCategoryRouter()
-
-		let vc = TrackerCategoryViewController(
-			viewModel: viewModel,
-			helper: helper,
-			router: router
-		)
-
-		vc.delegate = self.view
-
-		view?.present(view: vc)
+		self.router.navigateToCategoryScreen()
 	}
 }
 
@@ -169,11 +145,11 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     func didChangeTrackerTitle(_ title: String?) {
         let maxSymbolsCount = 38
         guard let title = title, title.count < maxSymbolsCount else {
-            isErrorLabelHidden = view?.showError()
+			self.isErrorLabelHidden = self.view?.showError()
             return
         }
         
-        isErrorLabelHidden = view?.hideError()
+		self.isErrorLabelHidden = self.view?.hideError()
         self.trackerTitle = title
     }
     

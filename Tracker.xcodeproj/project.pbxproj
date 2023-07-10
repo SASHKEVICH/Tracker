@@ -47,6 +47,7 @@
 		968A7E772A1E238A007D75A5 /* OnboardingViewControllerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968A7E762A1E238A007D75A5 /* OnboardingViewControllerHelper.swift */; };
 		968C175D2A5B151000769FC3 /* TrackerCategoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C175C2A5B151000769FC3 /* TrackerCategoryRouter.swift */; };
 		968C175F2A5B210800769FC3 /* OnboardingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C175E2A5B210800769FC3 /* OnboardingRouter.swift */; };
+		968C17612A5BAB8000769FC3 /* TrackerAddingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C17602A5BAB8000769FC3 /* TrackerAddingRouter.swift */; };
 		969509B52A21D0DC00DC1DF3 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969509B42A21D0DC00DC1DF3 /* UIImage+Extensions.swift */; };
 		969BE48429DFBE9A0056D813 /* TrackersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969BE48329DFBE9A0056D813 /* TrackersService.swift */; };
 		969CDB6C2A57CFD6001EDB8B /* UIEdgeInsets+TableViewSeparatorInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CDB6B2A57CFD6001EDB8B /* UIEdgeInsets+TableViewSeparatorInsets.swift */; };
@@ -141,6 +142,7 @@
 		968A7E762A1E238A007D75A5 /* OnboardingViewControllerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewControllerHelper.swift; sourceTree = "<group>"; };
 		968C175C2A5B151000769FC3 /* TrackerCategoryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryRouter.swift; sourceTree = "<group>"; };
 		968C175E2A5B210800769FC3 /* OnboardingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRouter.swift; sourceTree = "<group>"; };
+		968C17602A5BAB8000769FC3 /* TrackerAddingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerAddingRouter.swift; sourceTree = "<group>"; };
 		969509B42A21D0DC00DC1DF3 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		969BE48329DFBE9A0056D813 /* TrackersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersService.swift; sourceTree = "<group>"; };
 		969CDB6B2A57CFD6001EDB8B /* UIEdgeInsets+TableViewSeparatorInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+TableViewSeparatorInsets.swift"; sourceTree = "<group>"; };
@@ -548,6 +550,7 @@
 				966DD3AE29E9BA8600296CDF /* TrackerOptionsTableView */,
 				9654A96E29ED70E600B4A718 /* TrackerTitleTextField */,
 				96F7031329F9795500BBFF5C /* TrackerAddingCollectionViews */,
+				968C17602A5BAB8000769FC3 /* TrackerAddingRouter.swift */,
 			);
 			path = TrackerAdding;
 			sourceTree = "<group>";
@@ -768,6 +771,7 @@
 				96C7E77129E9186B00BA7F67 /* TrackerAddingViewController.swift in Sources */,
 				9654A97029ED710500B4A718 /* TrackerTitleTextFieldHelper.swift in Sources */,
 				966DD3B329E9BB2800296CDF /* TrackerAddingViewPresenter.swift in Sources */,
+				968C17612A5BAB8000769FC3 /* TrackerAddingRouter.swift in Sources */,
 				967A698A2A557E8000224970 /* UIFont+Extensions.swift in Sources */,
 				966DD3BE29EA7EEA00296CDF /* TrackerCustomButton.swift in Sources */,
 				96530B842A3F2DD000929597 /* EmojisCollectionViewHelper.swift in Sources */,
