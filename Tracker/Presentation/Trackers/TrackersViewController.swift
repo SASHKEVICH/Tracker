@@ -15,6 +15,11 @@ protocol TrackersViewControllerProtocol: AnyObject, AlertPresenterServiceDelegat
     func shouldHidePlaceholderView(_ isHide: Bool)
 }
 
+typealias TrackersViewPresenterFullProtocol =
+	TrackersViewPresenterProtocol
+	& TrackersViewPresetnerCollectionViewProtocol
+	& TrackersViewPresetnerSearchControllerProtocol
+
 final class TrackersViewController: UIViewController {
 	var presenter: TrackersViewPresenterFullProtocol?
 

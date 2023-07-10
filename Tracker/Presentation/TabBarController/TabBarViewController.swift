@@ -39,10 +39,12 @@ private extension TabBarViewController {
 			return nil
 		}
 
+		let router = TrackersViewRouter(viewController: trackersViewController)
         let presenter = TrackersViewPresenter(
             trackersService: trackersService,
 			trackersCompletingService: completingService,
-			trackersRecordService: recordService
+			trackersRecordService: recordService,
+			router: router
 		)
         
         trackersViewController.presenter = presenter
