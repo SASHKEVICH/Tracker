@@ -33,25 +33,25 @@ final class OnboardingViewController: UIPageViewController {
 		button.translatesAutoresizingMaskIntoConstraints = false
 		return button
 	}()
-	
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-		dataSource = presenter?.pagesViewControllerHelper
-		delegate = presenter?.pagesViewControllerHelper
+		self.dataSource = self.presenter?.pagesViewControllerHelper
+		self.delegate = self.presenter?.pagesViewControllerHelper
 		
-        setViewControllers()
-		addSubviews()
-		addConstraints()
+		self.setViewControllers()
+		self.addSubviews()
+		self.addConstraints()
 		
-		confirmOnboardingButton.addTarget(self, action: #selector(didTapOnboardingButton), for: .touchUpInside)
+		self.confirmOnboardingButton.addTarget(self, action: #selector(self.didTapOnboardingButton), for: .touchUpInside)
     }
 }
 
 // MARK: - OnboardingViewControllerProtocol
 extension OnboardingViewController: OnboardingViewControllerProtocol {
 	func setCurrentPage(index: Int) {
-		pageControl.currentPage = index
+		self.pageControl.currentPage = index
 	}
 }
 
@@ -59,17 +59,14 @@ extension OnboardingViewController: OnboardingViewControllerProtocol {
 extension OnboardingViewController {
 	@objc
 	private func didTapOnboardingButton() {
-		let tabBarController = TabBarViewController()
-		tabBarController.modalPresentationStyle = .fullScreen
-		tabBarController.modalTransitionStyle = .coverVertical
-		present(tabBarController, animated: true)
+		self.presenter?.navigateToMainScreen()
 	}
 }
 
 private extension OnboardingViewController {
 	func setViewControllers() {
 		guard let viewController = presenter?.pagesViewControllerHelper?.firstViewController else { return }
-		setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
+		self.setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
 	}
 	
 	func addConstraints() {
@@ -87,7 +84,7 @@ private extension OnboardingViewController {
 	}
 	
 	func addSubviews() {
-		view.addSubview(confirmOnboardingButton)
-		view.addSubview(pageControl)
+		self.view.addSubview(confirmOnboardingButton)
+		self.view.addSubview(pageControl)
 	}
 }

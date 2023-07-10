@@ -14,30 +14,30 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: scene)
+		self.window = UIWindow(windowScene: scene)
 		
 		let isAppAlreadyLaunchedOnce = firstLaunchService.isAppAlreadyLaunchedOnce
 		if !isAppAlreadyLaunchedOnce {
 			let onboardingHelper = OnboardingViewControllerHelper()
-			let onboardingPresenter = OnboardingViewPresenter(helper: onboardingHelper)
-			let onboardingViewController = OnboardingViewController(
-				transitionStyle: .scroll,
-				navigationOrientation: .horizontal
-			)
+			let onboardingRouter = OnboardingRouter(window: window)
+			let onboardingPresenter = OnboardingViewPresenter(helper: onboardingHelper, router: onboardingRouter)
+			let onboardingViewController = OnboardingViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
 			
 			onboardingViewController.presenter = onboardingPresenter
 			onboardingPresenter.view = onboardingViewController
 			
-			setRootViewController(onboardingViewController)
+			self.setRootViewController(onboardingViewController)
 		} else {
 			let tabBarViewController = TabBarViewController()
-			setRootViewController(tabBarViewController)
+			self.setRootViewController(tabBarViewController)
 		}
     }
-	
-	private func setRootViewController(_ vc: UIViewController) {
-		window?.rootViewController = vc
-		window?.makeKeyAndVisible()
+}
+
+private extension SceneDelegate {
+	func setRootViewController(_ vc: UIViewController) {
+		self.window?.rootViewController = vc
+		self.window?.makeKeyAndVisible()
 	}
 }
 

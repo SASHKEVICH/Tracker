@@ -12,30 +12,34 @@ protocol OnboardingViewPresenterProtocol: AnyObject {
 	var pagesViewControllerHelper: OnboardingViewControllerHelperProtocol? { get }
 	var pagesCount: Int { get }
 	func setCurrentPage(index: Int)
+	func navigateToMainScreen()
 }
 
 final class OnboardingViewPresenter {
     weak var view: OnboardingViewControllerProtocol?
 	var pagesViewControllerHelper: OnboardingViewControllerHelperProtocol?
+
+	private let router: OnboardingRouterProtocol
     
-	init(helper: OnboardingViewControllerHelperProtocol) {
-		setupPagesViewControllerHelper(helper)
+	init(helper: OnboardingViewControllerHelperProtocol, router: OnboardingRouterProtocol) {
+		self.router = router
+		self.pagesViewControllerHelper = helper
+
+		helper.presenter = self
 	}
 }
 
+// MARK: - OnboardingViewPresenterProtocol
 extension OnboardingViewPresenter: OnboardingViewPresenterProtocol {
 	var pagesCount: Int {
-		pagesViewControllerHelper?.pagesCount ?? 0
+		self.pagesViewControllerHelper?.pagesCount ?? 0
 	}
 	
 	func setCurrentPage(index: Int) {
-		view?.setCurrentPage(index: index)
+		self.view?.setCurrentPage(index: index)
 	}
-}
 
-private extension OnboardingViewPresenter {
-	func setupPagesViewControllerHelper(_ helper: OnboardingViewControllerHelperProtocol) {
-		self.pagesViewControllerHelper = helper
-		helper.presenter = self
+	func navigateToMainScreen() {
+		self.router.navigateToMainScreen()
 	}
 }
