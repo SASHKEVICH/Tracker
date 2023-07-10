@@ -48,6 +48,8 @@
 		968C175D2A5B151000769FC3 /* TrackerCategoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C175C2A5B151000769FC3 /* TrackerCategoryRouter.swift */; };
 		968C175F2A5B210800769FC3 /* OnboardingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C175E2A5B210800769FC3 /* OnboardingRouter.swift */; };
 		968C17612A5BAB8000769FC3 /* TrackerAddingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C17602A5BAB8000769FC3 /* TrackerAddingRouter.swift */; };
+		968C17632A5BAF4700769FC3 /* TrackerTypeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C17622A5BAF4700769FC3 /* TrackerTypeRouter.swift */; };
+		968C17652A5BAF5400769FC3 /* TrackerTypePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968C17642A5BAF5400769FC3 /* TrackerTypePresenter.swift */; };
 		969509B52A21D0DC00DC1DF3 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969509B42A21D0DC00DC1DF3 /* UIImage+Extensions.swift */; };
 		969BE48429DFBE9A0056D813 /* TrackersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969BE48329DFBE9A0056D813 /* TrackersService.swift */; };
 		969CDB6C2A57CFD6001EDB8B /* UIEdgeInsets+TableViewSeparatorInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CDB6B2A57CFD6001EDB8B /* UIEdgeInsets+TableViewSeparatorInsets.swift */; };
@@ -143,6 +145,8 @@
 		968C175C2A5B151000769FC3 /* TrackerCategoryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryRouter.swift; sourceTree = "<group>"; };
 		968C175E2A5B210800769FC3 /* OnboardingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRouter.swift; sourceTree = "<group>"; };
 		968C17602A5BAB8000769FC3 /* TrackerAddingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerAddingRouter.swift; sourceTree = "<group>"; };
+		968C17622A5BAF4700769FC3 /* TrackerTypeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTypeRouter.swift; sourceTree = "<group>"; };
+		968C17642A5BAF5400769FC3 /* TrackerTypePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTypePresenter.swift; sourceTree = "<group>"; };
 		969509B42A21D0DC00DC1DF3 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		969BE48329DFBE9A0056D813 /* TrackersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersService.swift; sourceTree = "<group>"; };
 		969CDB6B2A57CFD6001EDB8B /* UIEdgeInsets+TableViewSeparatorInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+TableViewSeparatorInsets.swift"; sourceTree = "<group>"; };
@@ -483,6 +487,8 @@
 			isa = PBXGroup;
 			children = (
 				96C7E76D29E802D800BA7F67 /* TrackerTypeViewController.swift */,
+				968C17622A5BAF4700769FC3 /* TrackerTypeRouter.swift */,
+				968C17642A5BAF5400769FC3 /* TrackerTypePresenter.swift */,
 			);
 			path = TrackerType;
 			sourceTree = "<group>";
@@ -546,11 +552,11 @@
 			isa = PBXGroup;
 			children = (
 				966DD3B229E9BB2800296CDF /* TrackerAddingViewPresenter.swift */,
+				968C17602A5BAB8000769FC3 /* TrackerAddingRouter.swift */,
 				96C7E77029E9186B00BA7F67 /* TrackerAddingViewController.swift */,
 				966DD3AE29E9BA8600296CDF /* TrackerOptionsTableView */,
 				9654A96E29ED70E600B4A718 /* TrackerTitleTextField */,
 				96F7031329F9795500BBFF5C /* TrackerAddingCollectionViews */,
-				968C17602A5BAB8000769FC3 /* TrackerAddingRouter.swift */,
 			);
 			path = TrackerAdding;
 			sourceTree = "<group>";
@@ -790,6 +796,7 @@
 				966DD3B129E9BACE00296CDF /* TrackerOptionsTableViewCell.swift in Sources */,
 				9654A97829EE869B00B4A718 /* TrackerScheduleTableViewHelper.swift in Sources */,
 				9602B0EF29D9626200FD66D2 /* TrackersViewPresenter.swift in Sources */,
+				968C17652A5BAF5400769FC3 /* TrackerTypePresenter.swift in Sources */,
 				969BE48429DFBE9A0056D813 /* TrackersService.swift in Sources */,
 				969CDB782A58211D001EDB8B /* TrackersCategoryDataProvider.swift in Sources */,
 				966DD3BC29EA75AA00296CDF /* TrackerScheduleViewController.swift in Sources */,
@@ -831,6 +838,7 @@
 				96E63F5129D7360200AA0970 /* StatisticsViewController.swift in Sources */,
 				96F7038A29FD1BF800BBFF5C /* TrackersCategoryDataStore.swift in Sources */,
 				968A7E742A1E21C2007D75A5 /* OnboardingViewPresenter.swift in Sources */,
+				968C17632A5BAF4700769FC3 /* TrackerTypeRouter.swift in Sources */,
 				96CE2AC32A409B8A002A08F0 /* TrackerCategoryTableViewHelper.swift in Sources */,
 				968A7E772A1E238A007D75A5 /* OnboardingViewControllerHelper.swift in Sources */,
 				9617C96D29DDCCE30054987D /* TrackersCollectionSectionHeader.swift in Sources */,

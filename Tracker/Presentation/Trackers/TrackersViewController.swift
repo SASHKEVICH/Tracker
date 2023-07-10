@@ -165,7 +165,12 @@ private extension TrackersViewController {
 	@objc
 	func didTapAddTracker() {
 		let vc = TrackerTypeViewController()
-		present(vc, animated: true)
+		let router = TrackerTypeRouter(viewController: vc)
+		let presenter = TrackerTypePresenter(router: router)
+
+		vc.presenter = presenter
+
+		self.present(vc, animated: true)
 	}
 
 	@objc
