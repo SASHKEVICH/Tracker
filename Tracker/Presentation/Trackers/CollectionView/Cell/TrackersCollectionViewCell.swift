@@ -7,161 +7,159 @@
 
 import UIKit
 
-enum TrackersCollectionViewCellState {
-    case completed
-    case incompleted
-}
-
 final class TrackersCollectionViewCell: UICollectionViewCell {
-    static let reuseIdentifier = String(describing: TrackersCollectionViewCell.self)
-    
-    private let trackerTitleLable = UILabel()
-    private let emojiLabel = UILabel()
-    private let topContainerView = UIView()
-    private let dayCountLabel = UILabel()
-    private let completeTrackerButton = CompleteTrackerButton()
-    
-    var delegate: TrackersViewPresenterCollectionHelperCellDelegate?
-    
-    var dayCount = 0 {
-        didSet {
-            dayCountLabel.text = "\(dayCount) дней"
-        }
-    }
-    
-    var tracker: Tracker? {
-        didSet {
-            guard let tracker = tracker else { return }
-            topContainerView.backgroundColor = tracker.color
-            trackerTitleLable.text = tracker.title
-            emojiLabel.text = tracker.emoji
-            emojiLabel.sizeToFit()
-            completeTrackerButton.color = tracker.color
-        }
-    }
-    
-    var state: TrackersCollectionViewCellState = .incompleted {
-        didSet {
-            completeTrackerButton.isDone = state == .completed
-        }
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: .zero)
-        setupContainerView()
-        setupDayCountLabel()
-        setupCompleteTrackerButton()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    override func prepareForReuse() {
-        self.dayCount = 0
-        self.completeTrackerButton.isDone = false
-    }
+	enum State {
+		case completed
+		case incompleted
+	}
+
+	var delegate: TrackersViewPresenterCollectionHelperCellDelegate?
+
+	var dayCount = 0 {
+		didSet {
+			dayCountLabel.text = "\(dayCount) дней"
+		}
+	}
+
+	var tracker: Tracker? {
+		didSet {
+			guard let tracker = tracker else { return }
+			topContainerView.backgroundColor = tracker.color
+			trackerTitleLable.text = tracker.title
+			emojiLabel.text = tracker.emoji
+			emojiLabel.sizeToFit()
+			completeTrackerButton.color = tracker.color
+		}
+	}
+
+	var state: TrackersCollectionViewCell.State = .incompleted {
+		didSet {
+			completeTrackerButton.isDone = state == .completed
+		}
+	}
+
+	private let trackerTitleLable: UILabel = {
+		let lable = UILabel()
+		lable.translatesAutoresizingMaskIntoConstraints = false
+		lable.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+		lable.textColor = .white
+		lable.numberOfLines = 0
+		return lable
+	}()
+
+	private let emojiLabel: UILabel = {
+		let label = UILabel()
+		label.translatesAutoresizingMaskIntoConstraints = false
+		label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+		return label
+	}()
+
+	private let topContainerView: UIView = {
+		let view = UIView()
+		view.translatesAutoresizingMaskIntoConstraints = false
+		view.layer.cornerRadius = 16
+		return view
+	}()
+
+	private let emojiBackgroundView: UIView = {
+		let view = UIView()
+		view.translatesAutoresizingMaskIntoConstraints = false
+		view.backgroundColor = .white.withAlphaComponent(0.3)
+		view.layer.cornerRadius = 12
+		return view
+	}()
+
+	private lazy var dayCountLabel: UILabel = {
+		let label = UILabel()
+		label.translatesAutoresizingMaskIntoConstraints = false
+		label.font = .Medium.medium
+		label.textColor = .Dynamic.blackDay
+		label.text = "\(self.dayCount) дней"
+		return label
+	}()
+
+	private lazy var completeTrackerButton: CompleteTrackerButton = {
+		let button = CompleteTrackerButton()
+		button.translatesAutoresizingMaskIntoConstraints = false
+		button.addTarget(self, action: #selector(didTapCompleteTrackerButton), for: .touchUpInside)
+		return button
+	}()
+
+	override init(frame: CGRect) {
+		super.init(frame: .zero)
+		addSubviews()
+		addConstraints()
+	}
+
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+	}
+
+	override func prepareForReuse() {
+		self.dayCount = 0
+		self.completeTrackerButton.isDone = false
+	}
 }
 
-// MARK: - Setup and layout container view
 private extension TrackersCollectionViewCell {
-    func setupContainerView() {
-        topContainerView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(topContainerView)
-        
-        NSLayoutConstraint.activate([
-            topContainerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            topContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            topContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            topContainerView.heightAnchor.constraint(equalToConstant: 90)
-        ])
-        
-        topContainerView.layer.cornerRadius = 16
-        
-        setupEmojiLabel()
-        setupTitleLable()
-    }
+	func addSubviews() {
+		contentView.addSubview(topContainerView)
+
+		topContainerView.addSubview(trackerTitleLable)
+		topContainerView.addSubview(emojiBackgroundView)
+		topContainerView.addSubview(emojiLabel)
+
+		contentView.addSubview(dayCountLabel)
+		contentView.addSubview(completeTrackerButton)
+	}
+
+	func addConstraints() {
+		NSLayoutConstraint.activate([
+			topContainerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+			topContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+			topContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+			topContainerView.heightAnchor.constraint(equalToConstant: 90)
+		])
+
+		NSLayoutConstraint.activate([
+			trackerTitleLable.leadingAnchor.constraint(equalTo: topContainerView.leadingAnchor, constant: 12),
+			trackerTitleLable.trailingAnchor.constraint(equalTo: topContainerView.trailingAnchor, constant: -12),
+			trackerTitleLable.topAnchor.constraint(equalTo: topContainerView.topAnchor, constant: 44),
+			trackerTitleLable.bottomAnchor.constraint(equalTo: topContainerView.bottomAnchor, constant: -12),
+		])
+
+		NSLayoutConstraint.activate([
+			dayCountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
+			dayCountLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
+			dayCountLabel.widthAnchor.constraint(equalToConstant: 118),
+			dayCountLabel.heightAnchor.constraint(equalToConstant: 18),
+		])
+
+		NSLayoutConstraint.activate([
+			completeTrackerButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+			completeTrackerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+			completeTrackerButton.widthAnchor.constraint(equalToConstant: 34),
+			completeTrackerButton.heightAnchor.constraint(equalToConstant: 34),
+		])
+
+		NSLayoutConstraint.activate([
+			emojiBackgroundView.topAnchor.constraint(equalTo: topContainerView.topAnchor, constant: 12),
+			emojiBackgroundView.leadingAnchor.constraint(equalTo: topContainerView.leadingAnchor, constant: 12),
+			emojiBackgroundView.widthAnchor.constraint(equalToConstant: 24),
+			emojiBackgroundView.heightAnchor.constraint(equalToConstant: 24),
+		])
+
+		NSLayoutConstraint.activate([
+			emojiLabel.centerXAnchor.constraint(equalTo: emojiBackgroundView.centerXAnchor),
+			emojiLabel.centerYAnchor.constraint(equalTo: emojiBackgroundView.centerYAnchor)
+		])
+	}
 }
 
-// MARK: - Setup and layout title label
+// MARK: - Callbacks
 private extension TrackersCollectionViewCell {
-    func setupTitleLable() {
-        trackerTitleLable.translatesAutoresizingMaskIntoConstraints = false
-        topContainerView.addSubview(trackerTitleLable)
-        
-        NSLayoutConstraint.activate([
-            trackerTitleLable.leadingAnchor.constraint(equalTo: topContainerView.leadingAnchor, constant: 12),
-            trackerTitleLable.trailingAnchor.constraint(equalTo: topContainerView.trailingAnchor, constant: -12),
-            trackerTitleLable.topAnchor.constraint(equalTo: topContainerView.topAnchor, constant: 44),
-            trackerTitleLable.bottomAnchor.constraint(equalTo: topContainerView.bottomAnchor, constant: -12),
-        ])
-        
-        trackerTitleLable.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        trackerTitleLable.textColor = .white
-        trackerTitleLable.numberOfLines = 0
-    }
-    
-    func setupEmojiLabel() {
-        let emojiBackgroundView = UIView()
-        emojiBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        topContainerView.addSubview(emojiBackgroundView)
-        
-        emojiLabel.translatesAutoresizingMaskIntoConstraints = false
-        topContainerView.addSubview(emojiLabel)
-
-        NSLayoutConstraint.activate([
-            emojiBackgroundView.topAnchor.constraint(equalTo: topContainerView.topAnchor, constant: 12),
-            emojiBackgroundView.leadingAnchor.constraint(equalTo: topContainerView.leadingAnchor, constant: 12),
-            emojiBackgroundView.widthAnchor.constraint(equalToConstant: 24),
-            emojiBackgroundView.heightAnchor.constraint(equalToConstant: 24),
-            
-            emojiLabel.centerXAnchor.constraint(equalTo: emojiBackgroundView.centerXAnchor),
-            emojiLabel.centerYAnchor.constraint(equalTo: emojiBackgroundView.centerYAnchor),
-        ])
-        
-        emojiBackgroundView.backgroundColor = .white.withAlphaComponent(0.3)
-        emojiBackgroundView.layer.cornerRadius = 12
-        emojiLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-    }
-}
-
-// MARK: - Setup and layout day count label
-private extension TrackersCollectionViewCell {
-    func setupDayCountLabel() {
-        dayCountLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(dayCountLabel)
-        
-        NSLayoutConstraint.activate([
-            dayCountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            dayCountLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
-            dayCountLabel.widthAnchor.constraint(equalToConstant: 118),
-            dayCountLabel.heightAnchor.constraint(equalToConstant: 18),
-        ])
-        
-        dayCountLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        dayCountLabel.textColor = .trackerBlackDay
-        dayCountLabel.text = "\(dayCount) дней"
-    }
-}
-
-// MARK: - Setup and layout fix tracker button
-private extension TrackersCollectionViewCell {
-    func setupCompleteTrackerButton() {
-        completeTrackerButton.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(completeTrackerButton)
-        
-        NSLayoutConstraint.activate([
-            completeTrackerButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            completeTrackerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-            completeTrackerButton.widthAnchor.constraint(equalToConstant: 34),
-            completeTrackerButton.heightAnchor.constraint(equalToConstant: 34),
-        ])
-        
-        completeTrackerButton.addTarget(self, action: #selector(didTapCompleteTrackerButton), for: .touchUpInside)
-    }
-    
-    @objc
-    func didTapCompleteTrackerButton() {
-        delegate?.didTapCompleteCellButton(self)
-    }
+	@objc
+	func didTapCompleteTrackerButton() {
+		delegate?.didTapCompleteCellButton(self)
+	}
 }

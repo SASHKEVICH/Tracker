@@ -33,7 +33,7 @@ private extension CompleteTrackerButton {
         self.backgroundColor = color
 
         imageView?.contentMode = .center
-        imageView?.tintColor = .trackerWhiteDay
+		imageView?.tintColor = .Dynamic.whiteDay
 
         isDone ? setTrackerDone() : setTrackerUndone()
     }

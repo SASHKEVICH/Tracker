@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-final class PersistentContainerCreater {    
+struct PersistentContainerCreater {    
     private let modelName = "Tracker"
     
     func persistentContainer() throws -> NSPersistentContainer {

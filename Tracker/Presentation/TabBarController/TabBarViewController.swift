@@ -11,33 +11,43 @@ final class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let trackersViewController = setupTrackersViewController()
-        let statisticsViewController = setupStatisticsViewController()
-        viewControllers = [trackersViewController, statisticsViewController]
+		guard let trackersViewController = self.setupTrackersViewController() else { return }
+
+		let statisticsViewController = self.setupStatisticsViewController()
+		self.viewControllers = [trackersViewController, statisticsViewController]
         
-        setupTabBar()
-    }
-    
-    private func setupTabBar() {
-        let appearance = UITabBarAppearance()
-        appearance.backgroundColor = .trackerWhiteDay
-        tabBar.standardAppearance = appearance
+		self.setupTabBar()
     }
 }
 
-// MARK: Setup view controllers
+// MARK: - Setup view controllers
 private extension TabBarViewController {
-    func setupTrackersViewController() -> UINavigationController {
+    func setupTrackersViewController() -> UINavigationController? {
         let trackersViewController = TrackersViewController()
+
+		let trackersFactory = TrackersFactory()
+		guard let trackersService = TrackersService(trackersFactory: trackersFactory),
+			  let completingService = TrackersCompletingService(),
+			  let recordService = TrackersRecordService()
+		else {
+			assertionFailure("Cannot init services")
+			return nil
+		}
+
+		let router = TrackersViewRouter(viewController: trackersViewController)
         let presenter = TrackersViewPresenter(
-            trackersService: TrackersService.shared)
+            trackersService: trackersService,
+			trackersCompletingService: completingService,
+			trackersRecordService: recordService,
+			router: router
+		)
         
         trackersViewController.presenter = presenter
         presenter.view = trackersViewController
         
         trackersViewController.tabBarItem = UITabBarItem(
             title: "Трекеры",
-            image: UIImage(named: "TrackersTabBarItem"),
+            image: .TabBar.trackers,
             selectedImage: nil)
         
         let navigationController = UINavigationController(
@@ -54,8 +64,16 @@ private extension TabBarViewController {
         navigationController.navigationBar.prefersLargeTitles = true
         statisticsViewController.tabBarItem = UITabBarItem(
             title: "Статистика",
-            image: UIImage(named: "StatisticsTabBarItem"),
+			image: .TabBar.statistics,
             selectedImage: nil)
         return navigationController
     }
+}
+
+private extension TabBarViewController {
+	func setupTabBar() {
+		let appearance = UITabBarAppearance()
+		appearance.backgroundColor = .Dynamic.whiteDay
+		self.tabBar.standardAppearance = appearance
+	}
 }

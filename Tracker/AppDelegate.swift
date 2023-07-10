@@ -32,21 +32,21 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         return container
     }()
     
-    lazy var trackerDataStore: TrackerDataStore? = {
+    lazy var trackersDataStore: TrackersDataStore? = {
         guard let container = self.persistentContainer else { return nil }
-        let trackerDataStore = TrackerDataStore(context: container.viewContext)
+        let trackerDataStore = TrackersDataStore(context: container.viewContext)
         return trackerDataStore
     }()
     
-    lazy var trackerCategoryDataStore: TrackerCategoryDataStore? = {
+    lazy var trackersCategoryDataStore: TrackersCategoryDataStore? = {
         guard let container = self.persistentContainer else { return nil }
-        let trackerCategoryDataStore = TrackerCategoryDataStore(context: container.viewContext)
+        let trackerCategoryDataStore = TrackersCategoryDataStore(context: container.viewContext)
         return trackerCategoryDataStore
     }()
     
-    lazy var trackerRecordDataStore: TrackerRecordDataStore? = {
+    lazy var trackersRecordDataStore: TrackersRecordDataStore? = {
         guard let container = self.persistentContainer else { return nil }
-        let trackerRecordDataStore = TrackerRecordDataStore(context: container.viewContext)
+        let trackerRecordDataStore = TrackersRecordDataStore(context: container.viewContext)
         return trackerRecordDataStore
     }()
 }

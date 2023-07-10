@@ -31,20 +31,16 @@ protocol TrackersViewPresetnerSearchControllerProtocol: AnyObject {
 
 protocol TrackersViewPresenterProtocol: AnyObject {
     var view: TrackersViewControllerProtocol? { get set }
-    var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol? { get }
-    var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol? { get }
+    var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol { get }
+    var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol { get }
     var currentDate: Date { get }
     func requestTrackers(for date: Date)
     func viewDidLoad()
+	func navigateToTrackerTypeScreen()
 }
 
-typealias TrackersViewPresenterFullProtocol =
-    TrackersViewPresenterProtocol
-    & TrackersViewPresetnerCollectionViewProtocol
-    & TrackersViewPresetnerSearchControllerProtocol
-
 // MARK: - TrackersViewPresenter
-final class TrackersViewPresenter: TrackersViewPresenterProtocol {
+final class TrackersViewPresenter {
     enum TrackersViewPresenterError: Error {
         case currentDateLaterThanToday
     }
@@ -53,119 +49,112 @@ final class TrackersViewPresenter: TrackersViewPresenterProtocol {
         case search
         case normal
     }
+
+	weak var view: TrackersViewControllerProtocol?
+	var completedTrackersRecords: Set<TrackerRecord> = []
+	var currentDate: Date = Date()
+
+	lazy var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol = {
+		let collectionHelper = TrackersViewPresenterCollectionHelper()
+		collectionHelper.presenter = self
+		return collectionHelper
+	}()
+
+	lazy var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol = {
+		let searchControllerHelper = TrackersViewPresenterSearchControllerHelper()
+		searchControllerHelper.presenter = self
+		return searchControllerHelper
+	}()
     
     private var trackersService: TrackersServiceProtocol
-    private var newTrackerNotifacationObserver: NSObjectProtocol?
+	private let trackersCompletingService: TrackersCompletingServiceProtocol
+	private let trackersRecordService: TrackersRecordServiceProtocol
+	private let router: TrackersViewRouterProtocol
     
     private var state: TrackersViewPresenterState = .normal
     
-    weak var view: TrackersViewControllerProtocol?
-    var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol?
-    var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol?
-    
-    var completedTrackersRecords: Set<TrackerRecord> = []
-    var currentDate: Date = Date()
-    
-    init(trackersService: TrackersServiceProtocol) {
+	init(
+		trackersService: TrackersServiceProtocol,
+		trackersCompletingService: TrackersCompletingServiceProtocol,
+		trackersRecordService: TrackersRecordServiceProtocol,
+		router: TrackersViewRouterProtocol
+	) {
         self.trackersService = trackersService
+		self.trackersCompletingService = trackersCompletingService
+		self.trackersRecordService = trackersRecordService
+		self.router = router
         self.trackersService.trackersDataProviderDelegate = self
-        
-        setupCollectionDelegate()
-        setupSearchControllerDelegate()
-        addNewTrackerNotificationObserver()
     }
 }
 
-// MARK: - Requesting trackers
+// MARK: - TrackersViewPresenterProtocol
+extension TrackersViewPresenter: TrackersViewPresenterProtocol {
+	func requestTrackers(for date: Date) {
+		guard let weekDay = date.weekDay else { return }
+		self.currentDate = date
+		self.state = .normal
+
+		self.trackersService.fetchTrackers(weekDay: weekDay)
+		self.fetchCompletedTrackersForCurrentDate()
+	}
+
+	func viewDidLoad() {
+		self.fetchCompletedTrackersForCurrentDate()
+	}
+
+	func navigateToTrackerTypeScreen() {
+		self.router.navigateToTrackerTypeScreen()
+	}
+}
+
+// MARK: - TrackersViewPresetnerSearchControllerProtocol
 extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
-    func requestTrackers(for date: Date) {
-        guard let weekDay = date.weekDay else { return }
-        self.currentDate = date
-        
-        self.state = .normal
-        
-        DispatchQueue.global().async { [weak self] in
-            self?.trackersService.fetchTrackers(weekDay: weekDay)
-            self?.fetchCompletedTrackersForCurrentDate()
-        }
-    }
-    
     func requestFilteredTrackers(for searchText: String?) {
         guard let titleSearchString = searchText, let weekDay = currentDate.weekDay else { return }
-        
         self.state = .search
-        
-        DispatchQueue.global().async { [weak self] in
-            self?.trackersService.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: weekDay)
-            self?.fetchCompletedTrackersForCurrentDate()
-        }
+
+		self.trackersService.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: weekDay)
+		self.fetchCompletedTrackersForCurrentDate()
     }
-    
-    func viewDidLoad() {
-        DispatchQueue.global().async { [weak self] in
-            self?.fetchCompletedTrackersForCurrentDate()
-        }
-    }
-    
+
     func requestShowAllCategoriesForCurrentDay() {
-        requestTrackers(for: currentDate)
-    }
-    
-    private func fetchCompletedTrackersForCurrentDate() {
-        let completedTrackersForCurrentDate = trackersService.fetchCompletedRecords(date: currentDate)
-        self.completedTrackersRecords = Set(completedTrackersForCurrentDate)
+		self.requestTrackers(for: currentDate)
     }
 }
 
 // MARK: - TrackersViewPresetnerCollectionViewProtocol
 extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     var numberOfSections: Int {
-        trackersService.numberOfSections
+		self.trackersService.numberOfSections
     }
     
     func numberOfItemsInSection(_ section: Int) -> Int {
-        trackersService.numberOfItemsInSection(section)
+		self.trackersService.numberOfItemsInSection(section)
     }
     
     func tracker(at indexPath: IndexPath) -> Tracker? {
-        trackersService.tracker(at: indexPath)
+		self.trackersService.tracker(at: indexPath)
     }
     
     func categoryTitle(at indexPath: IndexPath) -> String? {
-        trackersService.categoryTitle(at: indexPath)
+		self.trackersService.categoryTitle(at: indexPath)
     }
     
     func completedTimesCount(trackerId: UUID) -> Int {
-        trackersService.completedTimesCount(trackerId: trackerId)
+		self.trackersRecordService.completedTimesCount(trackerId: trackerId)
     }
     
     func didRecievedEmptyTrackers() {
         switch state {
         case .normal:
-            view?.showPlaceholderViewForCurrentDay()
+			self.view?.showPlaceholderViewForCurrentDay()
         case .search:
-            view?.showPlaceholderViewForEmptySearch()
+			self.view?.showPlaceholderViewForEmptySearch()
         }
     }
     
     func didRecievedNonEmptyTrackers() {
-        view?.shouldHidePlaceholderView(true)
-    }
-    
-    func complete(tracker: Tracker) throws {
-        if isCurrentDateLaterThanToday {
-            requestChosenFutureDateAlert()
-            throw TrackersViewPresenterError.currentDateLaterThanToday
-        }
-        trackersService.completeTracker(trackerId: tracker.id, date: currentDate)
-    }
-    
-    func incomplete(tracker: Tracker) throws {
-        if isCurrentDateLaterThanToday {
-            requestChosenFutureDateAlert()
-            throw TrackersViewPresenterError.currentDateLaterThanToday
-        }
-        trackersService.incompleteTracker(trackerId: tracker.id, date: currentDate)
+		self.view?.shouldHidePlaceholderView(true)
     }
     
     func requestChosenFutureDateAlert() {
@@ -174,13 +163,18 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
             title: "Некорректная дата",
             message: "Вы отмечаете трекер в будущем >:[",
             actionTitles: ["OK"])
-        alertPresenter.requestAlert(alertModel)
+		alertPresenter.requestAlert(alertModel)
     }
-    
-    private var isCurrentDateLaterThanToday: Bool {
-        guard currentDate > Date() else { return false }
-        return true
-    }
+
+	func complete(tracker: Tracker) throws {
+		try self.checkCurrentDate()
+		self.trackersCompletingService.completeTracker(trackerId: tracker.id, date: currentDate)
+	}
+
+	func incomplete(tracker: Tracker) throws {
+		try self.checkCurrentDate()
+		self.trackersCompletingService.incompleteTracker(trackerId: tracker.id, date: currentDate)
+	}
 }
 
 // MARK: - TrackersDataProviderDelegate
@@ -191,36 +185,27 @@ extension TrackersViewPresenter: TrackersDataProviderDelegate {
     
     func didRecievedTrackers() {
         DispatchQueue.main.async { [weak self] in
-            self?.view?.didRecieveTrackers()
+			guard let self = self else { return }
+			self.requestTrackers(for: self.currentDate)
+            self.view?.didRecieveTrackers()
         }
     }
 }
 
-// MARK: - Setup delegates
 private extension TrackersViewPresenter {
-    func setupCollectionDelegate() {
-        let collectionHelper = TrackersViewPresenterCollectionHelper()
-        collectionHelper.presenter = self
-        self.collectionHelper = collectionHelper
-    }
-    
-    func setupSearchControllerDelegate() {
-        let searchControllerHelper = TrackersViewPresenterSearchControllerHelper()
-        searchControllerHelper.presenter = self
-        self.searchControllerHelper = searchControllerHelper
-    }
-}
+	var isCurrentDateLaterThanToday: Bool {
+		self.currentDate > Date()
+	}
 
-private extension TrackersViewPresenter {
-    func addNewTrackerNotificationObserver() {
-        newTrackerNotifacationObserver = NotificationCenter.default
-            .addObserver(
-                forName: AddTrackerViewPresenter.didAddTrackerNotificationName,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.requestTrackers(for: self.currentDate)
-            }
-    }
+	func checkCurrentDate() throws {
+		if self.isCurrentDateLaterThanToday {
+			self.requestChosenFutureDateAlert()
+			throw TrackersViewPresenterError.currentDateLaterThanToday
+		}
+	}
+
+	func fetchCompletedTrackersForCurrentDate() {
+		let completedTrackersForCurrentDate = self.trackersRecordService.fetchCompletedRecords(date: currentDate)
+		self.completedTrackersRecords = Set(completedTrackersForCurrentDate)
+	}
 }
