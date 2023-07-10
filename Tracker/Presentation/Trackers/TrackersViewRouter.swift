@@ -19,6 +19,7 @@ final class TrackersViewRouter {
 	}
 }
 
+// MARK: - TrackersViewRouterProtocol
 extension TrackersViewRouter: TrackersViewRouterProtocol {
 	func navigateToTrackerTypeScreen() {
 		let vc = TrackerTypeViewController()

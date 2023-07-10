@@ -25,7 +25,7 @@ final class TabBarViewController: UITabBarController {
     }
 }
 
-// MARK: Setup view controllers
+// MARK: - Setup view controllers
 private extension TabBarViewController {
     func setupTrackersViewController() -> UINavigationController? {
         let trackersViewController = TrackersViewController()
