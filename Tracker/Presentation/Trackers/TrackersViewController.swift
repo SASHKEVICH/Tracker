@@ -44,10 +44,6 @@ final class TrackersViewController: UIViewController {
 		search.searchBar.delegate = self.presenter?.searchControllerHelper
 		search.obscuresBackgroundDuringPresentation = false
 		search.searchBar.placeholder = "Поиск"
-
-		self.navigationItem.searchController = search
-		self.definesPresentationContext = true
-
 		return search
 	}()
 	
@@ -135,7 +131,10 @@ private extension TrackersViewController {
 	func setupNavigationItem() {
 		self.navigationItem.largeTitleDisplayMode = .always
 		self.navigationItem.title = "Трекеры"
-		setupLeftBarButtonItem()
+		self.navigationItem.searchController = searchController
+		self.definesPresentationContext = true
+		
+		self.setupLeftBarButtonItem()
 		self.setupRightBarButtonItem()
 	}
 
