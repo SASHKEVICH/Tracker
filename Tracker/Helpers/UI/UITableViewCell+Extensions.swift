@@ -77,7 +77,6 @@ private extension UITableViewCell {
 	) -> UITableViewCell {
 		self.layer.masksToBounds = true
 		self.layer.cornerRadius = 16
-		let defaultInsets = UIEdgeInsets.TableViewSeparator.insets
 		self.separatorInset = UIEdgeInsets(
 			top: defaultSeparatorInsets.top,
 			left: tableViewWidth + 1,
