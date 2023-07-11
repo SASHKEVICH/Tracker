@@ -22,14 +22,15 @@ final class OnboardingViewControllerHelper: NSObject {
 		
 		firstPage.image = .Onboarding.first
 		secondPage.image = .Onboarding.second
-		
-		firstPage.onboardingText = "Отслеживайте только то, что хотите"
-		secondPage.onboardingText = "Даже если это не литры воды и йога"
+
+		firstPage.onboardingText = R.string.localizable.onboardingPageLabelFirst()
+		secondPage.onboardingText = R.string.localizable.onboardingPageLabelSecond()
 		
 		return [firstPage, secondPage]
 	}()
 }
 
+// MARK: - OnboardingViewControllerHelperProtocol
 extension OnboardingViewControllerHelper: OnboardingViewControllerHelperProtocol {
 	var firstViewController: UIViewController? {
 		pages.first
@@ -49,7 +50,7 @@ extension OnboardingViewControllerHelper: OnboardingViewControllerHelperProtocol
 		if let currentViewController = pageViewController.viewControllers?.first,
 		   let currentIndex = pages.firstIndex(of: currentViewController)
 		{
-			presenter?.setCurrentPage(index: currentIndex)
+			self.presenter?.setCurrentPage(index: currentIndex)
 		}
 	}
 	
