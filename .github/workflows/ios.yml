@@ -19,5 +19,6 @@ jobs:
       - name: Build
         run: |
           xcodebuild clean build \
-          -project Tracker.xcodeproj 
-          -scheme Tracker 
+          -project Tracker.xcodeproj \ 
+          -scheme Tracker \
+          -allowProvisioningUpdates
