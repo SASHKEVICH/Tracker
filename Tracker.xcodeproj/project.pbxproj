@@ -40,6 +40,7 @@
 		967A69882A556E1400224970 /* UICollectionViewCell+reuseIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967A69872A556E1400224970 /* UICollectionViewCell+reuseIdentifier.swift */; };
 		967A698A2A557E8000224970 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967A69892A557E8000224970 /* UIFont+Extensions.swift */; };
 		967A698C2A55808500224970 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 967A698B2A55808500224970 /* Colors.xcassets */; };
+		96816CDD2A5D6FAE003795A4 /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 96816CDC2A5D6FAE003795A4 /* RswiftLibrary */; };
 		9686FA5929E2829500BE2BC0 /* TrackersViewPresenterSearchControllerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9686FA5829E2829500BE2BC0 /* TrackersViewPresenterSearchControllerHelper.swift */; };
 		968A7E6D2A1E1F88007D75A5 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968A7E6C2A1E1F88007D75A5 /* OnboardingViewController.swift */; };
 		968A7E702A1E2013007D75A5 /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968A7E6F2A1E2013007D75A5 /* OnboardingPageViewController.swift */; };
@@ -205,6 +206,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96816CDD2A5D6FAE003795A4 /* RswiftLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -718,8 +720,12 @@
 			buildRules = (
 			);
 			dependencies = (
+				96816CDF2A5D6FD5003795A4 /* PBXTargetDependency */,
 			);
 			name = Tracker;
+			packageProductDependencies = (
+				96816CDC2A5D6FAE003795A4 /* RswiftLibrary */,
+			);
 			productName = Tracker;
 			productReference = 9629563329CD846900A587C5 /* Tracker.app */;
 			productType = "com.apple.product-type.application";
@@ -748,6 +754,9 @@
 				Base,
 			);
 			mainGroup = 9629562A29CD846900A587C5;
+			packageReferences = (
+				96816CDB2A5D6FAE003795A4 /* XCRemoteSwiftPackageReference "R" */,
+			);
 			productRefGroup = 9629563429CD846900A587C5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -869,6 +878,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		96816CDF2A5D6FD5003795A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 96816CDE2A5D6FD5003795A4 /* RswiftGenerateInternalResources */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		9629564129CD846B00A587C5 /* LaunchScreen.storyboard */ = {
@@ -1086,6 +1102,29 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		96816CDB2A5D6FAE003795A4 /* XCRemoteSwiftPackageReference "R" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-cain13/R.swift";
+			requirement = {
+				kind = exactVersion;
+				version = 7.3.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		96816CDC2A5D6FAE003795A4 /* RswiftLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96816CDB2A5D6FAE003795A4 /* XCRemoteSwiftPackageReference "R" */;
+			productName = RswiftLibrary;
+		};
+		96816CDE2A5D6FD5003795A4 /* RswiftGenerateInternalResources */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "plugin:RswiftGenerateInternalResources";
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		96F7038C29FD1CCE00BBFF5C /* Tracker.xcdatamodeld */ = {
