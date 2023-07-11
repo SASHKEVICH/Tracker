@@ -18,9 +18,6 @@ jobs:
 
       - name: Build
         run: |
-          xcodebuild -scheme "Tracker" \
-          -archivePath $RUNNER_TEMP/tracker.xcarchive \
-          -sdk iphoneos \
-          -configuration Debug \
-          -destination generic/platform=iOS \
-          clean archive
+          xcodebuild clean build \
+          -project Tracker.xcodeproj 
+          -scheme Tracker 
