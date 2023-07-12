@@ -42,6 +42,8 @@ final class TrackerPlaceholderView: UIView {
 		}
 	}
 
+	private var state: State = .emptyTrackersForDay
+
 	init() {
 		super.init(frame: .zero)
 		self.addSubviews()
@@ -58,19 +60,38 @@ extension TrackerPlaceholderView {
 		switch state {
 		case .emptyTrackersForDay:
 			let text = R.string.localizable.placeholderViewEmptyForDayTextLabelText()
-			self.set(image: .Placeholder.emptyForDay, text: text)
+			self.set(image: .Placeholder.emptyForDay, text: text, newState: state)
 		case .emptyTrackersSearch:
 			let text = R.string.localizable.placeholderViewEmptySearchTextLabelText()
-			self.set(image: .Placeholder.emptySearch, text: text)
+			self.set(image: .Placeholder.emptySearch, text: text, newState: state)
 		case .emptyCategories:
 			let text = R.string.localizable.placeholderViewEmptyCategoriesTextLabelText()
-			self.set(image: .Placeholder.emptyForDay, text: text)
+			self.set(image: .Placeholder.emptyForDay, text: text, newState: state)
 		}
 	}
 
-	func set(image: UIImage?, text: String?) {
-		self.image = image
-		self.text = text
+	func set(image: UIImage?, text: String?, newState: State) {
+		guard self.state != newState else { return }
+
+		UIView.transition(
+			with: self.imageView,
+			duration: 0.3,
+			options: .transitionCrossDissolve,
+			animations: { [weak self] in
+				self?.image = image
+			}
+		)
+
+		UIView.transition(
+			with: self.textLabel,
+			duration: 0.3,
+			options: .transitionCrossDissolve,
+			animations: { [weak self] in
+				self?.text = text
+			}
+		)
+
+		self.state = newState
 	}
 }
 
