@@ -21,7 +21,7 @@ final class TrackerCategoryViewController: UIViewController {
 	private let titleLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.text = "Категория"
+		label.text = R.string.localizable.trackerAddingOptionTitleCategory()
 		label.font = .Medium.big
 		label.textColor = .Dynamic.blackDay
 		label.sizeToFit()
@@ -50,7 +50,8 @@ final class TrackerCategoryViewController: UIViewController {
 	}()
 
 	private lazy var addNewCategoryButton: TrackerCustomButton = {
-		let button = TrackerCustomButton(state: .normal, title: "Добавить категорию")
+		let title = R.string.localizable.trackerCategoryAddCategoryButtonTitle()
+		let button = TrackerCustomButton(state: .normal, title: title)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(self.didTapAddNewCategoryButton), for: .touchUpInside)
 		return button

@@ -30,3 +30,9 @@
 "TrackerAdding.optionTitle.category" = "Категория";
 "TrackerAdding.optionTitle.schedule" = "Расписание";
 "TrackerAdding.colorCollectionView.header.title" = "Цвет";
+
+"TrackerCategory.addCategoryButton.title" = "Добавить категорию";
+
+"TrackerNewCategory.viewController.title" = "Новая категория";
+"TrackerNewCategory.newCategoryTitleTextField.placeholder" = "Введите название категории";
+"TrackerNewCategory.addNewCategoryButton.title" = "Готово";
