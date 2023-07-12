@@ -10,17 +10,13 @@ import UIKit
 protocol TrackerAddingRouterProtocol {
 	func navigateToScheduleScreen(selectedWeekDays: Set<WeekDay>)
 	func navigateToCategoryScreen()
+	func navigateToMainScreen()
 }
 
-typealias TrackerAddingViewControllerDelegate =
-	UIViewController
-	& TrackerCategoryViewControllerDelegate
-	& TrackerScheduleViewControllerDelegate
-
 final class TrackerAddingRouter {
-	private weak var viewController: TrackerAddingViewControllerDelegate?
+	private weak var viewController: UIViewController?
 
-	init(viewController: TrackerAddingViewControllerDelegate) {
+	init(viewController: UIViewController) {
 		self.viewController = viewController
 	}
 }
@@ -28,7 +24,7 @@ final class TrackerAddingRouter {
 extension TrackerAddingRouter: TrackerAddingRouterProtocol {
 	func navigateToScheduleScreen(selectedWeekDays: Set<WeekDay>) {
 		let vc = TrackerScheduleViewController()
-		vc.delegate = self.viewController
+		vc.delegate = self.viewController as? TrackerScheduleViewControllerDelegate
 
 		let presenter = TrackerSchedulePresenter()
 		vc.presenter = presenter
@@ -51,8 +47,12 @@ extension TrackerAddingRouter: TrackerAddingRouterProtocol {
 		let router = TrackerCategoryRouter()
 
 		let vc = TrackerCategoryViewController(viewModel: viewModel, helper: helper, router: router)
-		vc.delegate = self.viewController
+		vc.delegate = self.viewController as? TrackerCategoryViewControllerDelegate
 
 		self.viewController?.present(vc, animated: true)
+	}
+
+	func navigateToMainScreen() {
+		UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true, completion: nil)
 	}
 }

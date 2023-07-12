@@ -20,7 +20,7 @@ final class TrackerNewCategoryViewController: UIViewController {
 	private let titleLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.text = "Новая категория"
+		label.text = R.string.localizable.trackerNewCategoryViewControllerTitle()
 		label.font = .Medium.big
 		label.textColor = .Dynamic.blackDay
 		label.sizeToFit()
@@ -30,13 +30,14 @@ final class TrackerNewCategoryViewController: UIViewController {
 	private lazy var newCategoryTitleTextField: TrackerCustomTextField = {
 		let textField = TrackerCustomTextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
-		textField.placeholder = "Введите название категории"
+		textField.placeholder = R.string.localizable.trackerNewCategoryNewCategoryTitleTextFieldPlaceholder()
 		textField.delegate = self
 		return textField
 	}()
 
 	private lazy var addNewCategoryButton: TrackerCustomButton = {
-		let button = TrackerCustomButton(state: .disabled, title: "Готово")
+		let title = R.string.localizable.trackerNewCategoryAddNewCategoryButtonTitle()
+		let button = TrackerCustomButton(state: .disabled, title: title)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(self.didTapAddNewCategoryButton), for: .touchUpInside)
 		return button

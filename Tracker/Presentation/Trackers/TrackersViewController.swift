@@ -15,11 +15,6 @@ protocol TrackersViewControllerProtocol: AnyObject, AlertPresenterServiceDelegat
     func shouldHidePlaceholderView(_ isHide: Bool)
 }
 
-typealias TrackersViewPresenterFullProtocol =
-	TrackersViewPresenterProtocol
-	& TrackersViewPresetnerCollectionViewProtocol
-	& TrackersViewPresetnerSearchControllerProtocol
-
 final class TrackersViewController: UIViewController {
 	var presenter: TrackersViewPresenterFullProtocol?
 	
@@ -43,7 +38,7 @@ final class TrackersViewController: UIViewController {
 		search.searchResultsUpdater = self.presenter?.searchControllerHelper
 		search.searchBar.delegate = self.presenter?.searchControllerHelper
 		search.obscuresBackgroundDuringPresentation = false
-		search.searchBar.placeholder = "Поиск"
+		search.searchBar.placeholder = R.string.localizable.trackersSearchControllerPlaceholder()
 		return search
 	}()
 	
@@ -105,7 +100,7 @@ extension TrackersViewController: AlertPresenterServiceDelegate {
 
 private extension TrackersViewController {
 	func addSubviews() {
-		self.view.addSubview(trackersCollectionView)
+		self.view.addSubview(self.trackersCollectionView)
 		self.view.insertSubview(self.collectionPlaceholderView, aboveSubview: self.trackersCollectionView)
 	}
 
@@ -130,8 +125,8 @@ private extension TrackersViewController {
 private extension TrackersViewController {
 	func setupNavigationItem() {
 		self.navigationItem.largeTitleDisplayMode = .always
-		self.navigationItem.title = "Трекеры"
-		self.navigationItem.searchController = searchController
+		self.navigationItem.title = R.string.localizable.trackersNavigationItemTitle()
+		self.navigationItem.searchController = self.searchController
 		self.definesPresentationContext = true
 		
 		self.setupLeftBarButtonItem()
@@ -140,7 +135,7 @@ private extension TrackersViewController {
 
 	func setupLeftBarButtonItem() {
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-			image: UIImage(named: "AddTrackerIcon"),
+			image: UIImage.MainScreen.addTracker,
 			style: .plain,
 			target: self,
 			action: #selector(self.didTapAddTracker))
@@ -153,7 +148,7 @@ private extension TrackersViewController {
 		datePicker.widthAnchor.constraint(equalToConstant: 100).isActive = true
 		datePicker.preferredDatePickerStyle = .compact
 		datePicker.datePickerMode = .date
-		datePicker.locale = Locale(identifier: "ru_RU")
+		datePicker.locale = Locale.current
 		datePicker.addTarget(self, action: #selector(self.didCurrentDateValueChanged(_:)), for: .valueChanged)
 		navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
 	}

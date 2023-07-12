@@ -1,0 +1,40 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Александр Бекренев on 11.07.2023.
+  
+*/
+
+"Onboarding.button.title" = "Вот это технологии!";
+"Onboarding.pageLabel.first" = "Отслеживайте только то, что хотите";
+"Onboarding.pageLabel.second" = "Даже если это не литры воды и йога";
+
+"Trackers.searchController.placeholder" = "Поиск";
+"Trackers.navigationItem.title" = "Трекеры";
+
+"PlaceholderView.emptyForDay.textLabel.text" = "Что будем отслеживать?";
+"PlaceholderView.emptySearch.textLabel.text" = "Ничего не найдено";
+"PlaceholderView.emptyCategories.textLabel.text" = "Привычки и события можно \n объединить по смыслу";
+
+"TrackerType.viewController.title" = "Создание трекера";
+"TrackerType.addTrackerButton.title" = "Привычка";
+"TrackerType.addIrregularEventButton.title" = "Нерегулярное событие";
+
+"TrackerAdding.tracker.viewController.title" = "Новая привычка";
+"TrackerAdding.irregularEvent.viewController.title" = "Новое нерегулярное событие";
+"TrackerAdding.trackerTitleTextField.placeholder" = "Введите название трекера";
+"TrackerAdding.errorLabel.text" = "Ограничение 38 символов";
+"TrackerAdding.cancelButton.title" = "Отменить";
+"TrackerAdding.addTrackerButton.title" = "Создать";
+"TrackerAdding.optionTitle.category" = "Категория";
+"TrackerAdding.optionTitle.schedule" = "Расписание";
+"TrackerAdding.colorCollectionView.header.title" = "Цвет";
+
+"TrackerSchedule.addScheduleButton.title" = "Готово";
+
+"TrackerCategory.addCategoryButton.title" = "Добавить категорию";
+
+"TrackerNewCategory.viewController.title" = "Новая категория";
+"TrackerNewCategory.newCategoryTitleTextField.placeholder" = "Введите название категории";
+"TrackerNewCategory.addNewCategoryButton.title" = "Готово";

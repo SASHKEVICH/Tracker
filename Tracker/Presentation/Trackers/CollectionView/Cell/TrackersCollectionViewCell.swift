@@ -15,9 +15,9 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 
 	var delegate: TrackersViewPresenterCollectionHelperCellDelegate?
 
-	var dayCount = 0 {
+	var dayCount: String = "" {
 		didSet {
-			dayCountLabel.text = "\(dayCount) дней"
+			self.dayCountLabel.text = dayCount
 		}
 	}
 
@@ -74,7 +74,6 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.font = .Medium.medium
 		label.textColor = .Dynamic.blackDay
-		label.text = "\(self.dayCount) дней"
 		return label
 	}()
 
@@ -87,8 +86,8 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 
 	override init(frame: CGRect) {
 		super.init(frame: .zero)
-		addSubviews()
-		addConstraints()
+		self.addSubviews()
+		self.addConstraints()
 	}
 
 	required init?(coder: NSCoder) {
@@ -96,7 +95,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 	}
 
 	override func prepareForReuse() {
-		self.dayCount = 0
+		self.dayCount = ""
 		self.completeTrackerButton.isDone = false
 	}
 }

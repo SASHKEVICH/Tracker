@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TrackerAddingViewControllerProtocol: AnyObject, TrackerScheduleViewControllerDelegate, TrackerCategoryViewControllerDelegate {
+protocol TrackerAddingViewControllerProtocol: AnyObject {
     var presenter: TrackerAddingViewPresenterProtocol? { get set }
 	var emptyTap: (() -> Void)? { get set }
     func setViewControllerTitle(_ title: String)
@@ -44,7 +44,7 @@ final class TrackerAddingViewController: UIViewController {
 	private lazy var trackerTitleTextField: TrackerCustomTextField = {
 		let textField = TrackerCustomTextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
-		textField.placeholder = "Введите название трекера"
+		textField.placeholder = R.string.localizable.trackerAddingTrackerTitleTextFieldPlaceholder()
 		textField.delegate = self.presenter?.textFieldHelper
 		textField.clearButtonMode = .whileEditing
 		textField.addTarget(self, action: #selector(self.didChangeTrackerTitleTextField(_:)), for: .editingChanged)
@@ -55,7 +55,7 @@ final class TrackerAddingViewController: UIViewController {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.isHidden = true
-		label.text = "Ограничение 38 символов"
+		label.text = R.string.localizable.trackerAddingErrorLabelText()
 		label.font = .Regular.medium
 		label.textColor = .Static.red
 		label.sizeToFit()
@@ -94,8 +94,8 @@ final class TrackerAddingViewController: UIViewController {
 	private lazy var colorsCollectionView: UICollectionView = {
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
-		collectionView.dataSource = presenter?.colorsCollectionViewHelper
-		collectionView.delegate = presenter?.colorsCollectionViewHelper
+		collectionView.dataSource = self.presenter?.colorsCollectionViewHelper
+		collectionView.delegate = self.presenter?.colorsCollectionViewHelper
 		collectionView.register(
 			ColorsCollectionViewCell.self,
 			forCellWithReuseIdentifier: ColorsCollectionViewCell.reuseIdentifier
@@ -109,14 +109,16 @@ final class TrackerAddingViewController: UIViewController {
 	}()
 	
 	private lazy var cancelTrackerButton: TrackerCustomButton = {
-		let button = TrackerCustomButton(state: .cancel, title: "Отменить")
+		let title = R.string.localizable.trackerAddingCancelButtonTitle()
+		let button = TrackerCustomButton(state: .cancel, title: title)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(self.didTapCancelTrackerButton), for: .touchUpInside)
 		return button
 	}()
 	
 	private lazy var addTrackerButton: TrackerCustomButton = {
-		let button = TrackerCustomButton(state: .disabled, title: "Создать")
+		let title = R.string.localizable.trackerAddingAddTrackerButtonTitle()
+		let button = TrackerCustomButton(state: .disabled, title: title)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(self.didTapAddTrackerButton), for: .touchUpInside)
 		return button
@@ -189,55 +191,55 @@ final class TrackerAddingViewController: UIViewController {
 // MARK: - TrackerAddingViewControllerProtocol
 extension TrackerAddingViewController: TrackerAddingViewControllerProtocol {
     func setViewControllerTitle(_ title: String) {
-        titleLabel.text = title
-        titleLabel.sizeToFit()
+		self.titleLabel.text = title
+		self.titleLabel.sizeToFit()
     }
 
 	func showError() -> Bool {
-		guard errorLabel.isHidden else { return errorLabel.isHidden }
+		guard self.errorLabel.isHidden else { return self.errorLabel.isHidden }
 
-		errorLabel.isHidden = false
-		addTrackerButton.buttonState = .disabled
-		tableViewTopConstraint.constant = 54
+		self.errorLabel.isHidden = false
+		self.addTrackerButton.buttonState = .disabled
+		self.tableViewTopConstraint.constant = 54
 
 		return shouldHideErrorLabelWithAnimation(false)
 	}
 
 	func hideError() -> Bool {
-		guard !errorLabel.isHidden else { return errorLabel.isHidden }
+		guard !self.errorLabel.isHidden else { return self.errorLabel.isHidden }
 
-		addTrackerButton.buttonState = .normal
-		tableViewTopConstraint.constant = 24
+		self.addTrackerButton.buttonState = .normal
+		self.tableViewTopConstraint.constant = 24
 
-		return shouldHideErrorLabelWithAnimation(true)
+		return self.shouldHideErrorLabelWithAnimation(true)
 	}
 
 	func enableAddButton() {
-		addTrackerButton.buttonState = .normal
+		self.addTrackerButton.buttonState = .normal
 	}
 
 	func disableAddButton() {
-		addTrackerButton.buttonState = .disabled
+		self.addTrackerButton.buttonState = .disabled
 	}
 }
 
 // MARK: - TrackerScheduleViewControllerDelegate
 extension TrackerAddingViewController: TrackerScheduleViewControllerDelegate {
     func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
-        presenter?.didRecieveSelectedTrackerSchedule(weekDays)
-        trackerOptionsTableView.reloadData()
+		self.presenter?.didRecieveSelectedTrackerSchedule(weekDays)
+		self.trackerOptionsTableView.reloadData()
     }
     
     func dismissTrackerScheduleViewController() {
-        dismiss(animated: true)
+		self.dismiss(animated: true)
     }
 }
 
 // MARK: - TrackerCategoryViewControllerDelegate
 extension TrackerAddingViewController: TrackerCategoryViewControllerDelegate {
 	func didRecieveCategory(_ category: TrackerCategory) {
-		presenter?.didRecieveSelectedCategory(category)
-		trackerOptionsTableView.reloadData()
+		self.presenter?.didRecieveSelectedCategory(category)
+		self.trackerOptionsTableView.reloadData()
 	}
 }
 
@@ -353,19 +355,18 @@ private extension TrackerAddingViewController {
 private extension TrackerAddingViewController {
 	@objc
 	func didTapCancelTrackerButton() {
-		UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true, completion: nil)
+		self.presenter?.didCancelAddTracker()
 	}
 
 	@objc
 	func didTapAddTrackerButton() {
-		presenter?.didConfirmAddTracker()
-		UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true, completion: nil)
+		self.presenter?.didConfirmAddTracker()
 	}
 
 	@objc
 	func didChangeTrackerTitleTextField(_ textField: UITextField) {
 		guard let title = textField.text else { return }
-		presenter?.didChangeTrackerTitle(title)
+		self.presenter?.didChangeTrackerTitle(title)
 	}
 
 	@objc
@@ -382,6 +383,6 @@ private extension TrackerAddingViewController {
 			self?.errorLabel.isHidden = shouldHide
 		}
 
-		return errorLabel.isHidden
+		return self.errorLabel.isHidden
 	}
 }

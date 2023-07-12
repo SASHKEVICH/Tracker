@@ -1,0 +1,40 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Александр Бекренев on 11.07.2023.
+  
+*/
+
+"Onboarding.button.title" = "What a technologies!";
+"Onboarding.pageLabel.first" = "Track only what you want";
+"Onboarding.pageLabel.second" = "Even if it's not liters of water and yoga";
+
+"Trackers.searchController.placeholder" = "Find a tracker";
+"Trackers.navigationItem.title" = "Trackers";
+
+"PlaceholderView.emptyForDay.textLabel.text" = "What do we gonna track?";
+"PlaceholderView.emptySearch.textLabel.text" = "Nothing found";
+"PlaceholderView.emptyCategories.textLabel.text" = "Habbits and events can be \n combined in meaning";
+
+"TrackerType.viewController.title" = "Creating a Tracker";
+"TrackerType.addTrackerButton.title" = "Habbit";
+"TrackerType.addIrregularEventButton.title" = "Irregular Event";
+
+"TrackerAdding.tracker.viewController.title" = "New habbit";
+"TrackerAdding.irregularEvent.viewController.title" = "New irregular event";
+"TrackerAdding.trackerTitleTextField.placeholder" = "Enter tracker's title";
+"TrackerAdding.errorLabel.text" = "Limit is 38 symbols";
+"TrackerAdding.cancelButton.title" = "Cancel";
+"TrackerAdding.addTrackerButton.title" = "Create";
+"TrackerAdding.optionTitle.category" = "Category";
+"TrackerAdding.optionTitle.schedule" = "Schedule";
+"TrackerAdding.colorCollectionView.header.title" = "Color";
+
+"TrackerSchedule.addScheduleButton.title" = "Done";
+
+"TrackerCategory.addCategoryButton.title" = "Add a new category";
+
+"TrackerNewCategory.viewController.title" = "New category";
+"TrackerNewCategory.newCategoryTitleTextField.placeholder" = "Enter title of the new category";
+"TrackerNewCategory.addNewCategoryButton.title" = "Done";

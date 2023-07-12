@@ -17,7 +17,7 @@ final class TrackerTypeViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Создание трекера"
+		label.text = R.string.localizable.trackerTypeViewControllerTitle()
 		label.font = .Medium.big
 		label.textColor = .Dynamic.blackDay
 		label.sizeToFit()
@@ -34,14 +34,16 @@ final class TrackerTypeViewController: UIViewController {
     }()
     
 	private lazy var addTrackerButton = {
-		let button = TrackerCustomButton(state: .normal, title: "Привычка")
+		let title = R.string.localizable.trackerTypeAddTrackerButtonTitle()
+		let button = TrackerCustomButton(state: .normal, title: title)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(self.didTapAddTrackerButton), for: .touchUpInside)
 		return button
 	}()
 
 	private lazy var addIrregularEventButton = {
-		let button = TrackerCustomButton(state: .normal, title: "Нерегулярное событие")
+		let title = R.string.localizable.trackerTypeAddIrregularEventButtonTitle()
+		let button = TrackerCustomButton(state: .normal, title: title)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(self.didTapAddIrregularEventButton), for: .touchUpInside)
 		return button

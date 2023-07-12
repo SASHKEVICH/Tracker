@@ -21,7 +21,7 @@ final class TrackerCategoryViewController: UIViewController {
 	private let titleLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.text = "Категория"
+		label.text = R.string.localizable.trackerAddingOptionTitleCategory()
 		label.font = .Medium.big
 		label.textColor = .Dynamic.blackDay
 		label.sizeToFit()
@@ -50,7 +50,8 @@ final class TrackerCategoryViewController: UIViewController {
 	}()
 
 	private lazy var addNewCategoryButton: TrackerCustomButton = {
-		let button = TrackerCustomButton(state: .normal, title: "Добавить категорию")
+		let title = R.string.localizable.trackerCategoryAddCategoryButtonTitle()
+		let button = TrackerCustomButton(state: .normal, title: title)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(self.didTapAddNewCategoryButton), for: .touchUpInside)
 		return button
@@ -98,16 +99,16 @@ extension TrackerCategoryViewController: TrackerCategoryTableViewHelperDelegate 
 // MARK: - TrackerNewCategoryViewControllerDelegate
 extension TrackerCategoryViewController: TrackerNewCategoryViewControllerDelegate {
 	func dismissNewCategoryViewController() {
-		dismiss(animated: true)
+		self.dismiss(animated: true)
 	}
 }
 
 private extension TrackerCategoryViewController {
 	func addSubviews() {
-		view.addSubview(titleLabel)
-		view.addSubview(categoriesTableView)
-		view.addSubview(addNewCategoryButton)
-		view.insertSubview(placeholderView, aboveSubview: categoriesTableView)
+		self.view.addSubview(titleLabel)
+		self.view.addSubview(categoriesTableView)
+		self.view.addSubview(addNewCategoryButton)
+		self.view.insertSubview(placeholderView, aboveSubview: categoriesTableView)
 	}
 
 	func addConstraints() {
@@ -131,10 +132,10 @@ private extension TrackerCategoryViewController {
 		])
 
 		NSLayoutConstraint.activate([
-			placeholderView.leadingAnchor.constraint(equalTo: categoriesTableView.leadingAnchor),
-			placeholderView.trailingAnchor.constraint(equalTo: categoriesTableView.trailingAnchor),
-			placeholderView.topAnchor.constraint(equalTo: categoriesTableView.topAnchor),
-			placeholderView.bottomAnchor.constraint(equalTo: categoriesTableView.bottomAnchor),
+			placeholderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			placeholderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+			placeholderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+			placeholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 		])
 	}
 
