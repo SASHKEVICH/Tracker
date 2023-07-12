@@ -79,7 +79,6 @@
 		96C7E76E29E802D800BA7F67 /* TrackerTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C7E76D29E802D800BA7F67 /* TrackerTypeViewController.swift */; };
 		96C7E77129E9186B00BA7F67 /* TrackerAddingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C7E77029E9186B00BA7F67 /* TrackerAddingViewController.swift */; };
 		96C7E77329E92B6D00BA7F67 /* TrackerCustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C7E77229E92B6D00BA7F67 /* TrackerCustomTextField.swift */; };
-		96CE2ABE2A409299002A08F0 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE2ABD2A409299002A08F0 /* Observable.swift */; };
 		96CE2AC32A409B8A002A08F0 /* TrackerCategoryTableViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE2AC22A409B8A002A08F0 /* TrackerCategoryTableViewHelper.swift */; };
 		96CE2AC62A409BCA002A08F0 /* TrackerCategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE2AC52A409BCA002A08F0 /* TrackerCategoryTableViewCell.swift */; };
 		96CE2AC82A40C6C7002A08F0 /* CellSelectedBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE2AC72A40C6C7002A08F0 /* CellSelectedBackgroundView.swift */; };
@@ -180,7 +179,6 @@
 		96C7E76D29E802D800BA7F67 /* TrackerTypeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTypeViewController.swift; sourceTree = "<group>"; };
 		96C7E77029E9186B00BA7F67 /* TrackerAddingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerAddingViewController.swift; sourceTree = "<group>"; };
 		96C7E77229E92B6D00BA7F67 /* TrackerCustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCustomTextField.swift; sourceTree = "<group>"; };
-		96CE2ABD2A409299002A08F0 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		96CE2AC22A409B8A002A08F0 /* TrackerCategoryTableViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryTableViewHelper.swift; sourceTree = "<group>"; };
 		96CE2AC52A409BCA002A08F0 /* TrackerCategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryTableViewCell.swift; sourceTree = "<group>"; };
 		96CE2AC72A40C6C7002A08F0 /* CellSelectedBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSelectedBackgroundView.swift; sourceTree = "<group>"; };
@@ -283,7 +281,6 @@
 		96526ADB29D4A51F00329D34 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				96CE2ABC2A409289002A08F0 /* PropertyWrappers */,
 				968A7E6B2A1E1F50007D75A5 /* Onboarding */,
 				96F7032D29FA7A5200BBFF5C /* CustomViews */,
 				96C7E76F29E917E700BA7F67 /* TrackerAdding */,
@@ -520,14 +517,6 @@
 				966DD3B429E9BB3C00296CDF /* CustomViews */,
 			);
 			path = TrackerAdding;
-			sourceTree = "<group>";
-		};
-		96CE2ABC2A409289002A08F0 /* PropertyWrappers */ = {
-			isa = PBXGroup;
-			children = (
-				96CE2ABD2A409299002A08F0 /* Observable.swift */,
-			);
-			path = PropertyWrappers;
 			sourceTree = "<group>";
 		};
 		96CE2ABF2A4098A9002A08F0 /* TrackerNewCategory */ = {
@@ -836,7 +825,6 @@
 				9602B0F729D9DD1600FD66D2 /* TrackersCollectionViewCell.swift in Sources */,
 				96CE2AC62A409BCA002A08F0 /* TrackerCategoryTableViewCell.swift in Sources */,
 				96C7E76529E65ED200BA7F67 /* AlertPresenterService.swift in Sources */,
-				96CE2ABE2A409299002A08F0 /* Observable.swift in Sources */,
 				96A606D92A3C4D34007C5262 /* OnboardingConstants.swift in Sources */,
 				969CDB8A2A58447B001EDB8B /* TrackersCategoryFactory.swift in Sources */,
 				9661855329F1746E0003C57A /* Date+Extensions.swift in Sources */,
