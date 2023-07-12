@@ -8,11 +8,6 @@
 import Foundation
 import CoreData
 
-struct TrackersCategoryStoreUpdate {
-	let insertedIndexes: IndexSet
-	let deletedIndexes: IndexSet
-}
-
 protocol TrackersCategoryDataProviderDelegate: AnyObject {
 	func storeDidUpdate()
 }
@@ -27,9 +22,6 @@ final class TrackersCategoryDataProvider: NSObject {
 	weak var delegate: TrackersCategoryDataProviderDelegate?
 
 	private let context: NSManagedObjectContext
-
-	private var insertedIndexes: IndexSet?
-	private var deletedIndexes: IndexSet?
 
 	private lazy var fetchedResultsController: NSFetchedResultsController = {
 		let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")

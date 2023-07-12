@@ -10,6 +10,7 @@ import CoreData
 
 protocol TrackersDataProviderDelegate: AnyObject {
 	func storeDidUpdate()
+	func fetchDidPerformed()
 }
 
 protocol TrackersDataProviderProtocol {
@@ -78,6 +79,7 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
             format: "%K CONTAINS[cd] %@",
             #keyPath(TrackerCoreData.weekDays), currentWeekDay.englishStringRepresentation)
 		try? self.fetchedResultsController.performFetch()
+		self.delegate?.fetchDidPerformed()
     }
     
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay) {
@@ -86,6 +88,7 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
             #keyPath(TrackerCoreData.title), titleSearchString,
             #keyPath(TrackerCoreData.weekDays), currentWeekDay.englishStringRepresentation)
 		try? self.fetchedResultsController.performFetch()
+		self.delegate?.fetchDidPerformed()
     }
     
     func tracker(at indexPath: IndexPath) -> TrackerCoreData? {

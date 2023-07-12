@@ -78,7 +78,7 @@ final class TrackersViewPresenter {
     
     private var state: TrackersViewPresenterState = .normal
 	private var trackers: [Tracker] = []
-    
+
 	init(
 		trackersService: TrackersServiceProtocol,
 		trackersCompletingService: TrackersCompletingServiceProtocol,
@@ -125,7 +125,7 @@ extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
 
     func requestShowAllCategoriesForCurrentDay() {
 		self.state = .normal
-		self.requestTrackers(for: currentDate)
+		self.requestTrackers(for: self.currentDate)
     }
 }
 
@@ -188,15 +188,12 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 
 // MARK: - TrackersDataProviderDelegate
 extension TrackersViewPresenter: TrackersDataProviderDelegate {
-    func didRecievedTrackers() {
-        DispatchQueue.main.async { [weak self] in
-			guard let self = self else { return }
-			self.requestTrackers(for: self.currentDate)
-            self.view?.didRecieveTrackers()
-        }
-    }
-
 	func storeDidUpdate() {
+		self.trackers = self.trackersService.trackers
+		self.view?.didRecieveTrackers()
+	}
+
+	func fetchDidPerformed() {
 		self.trackers = self.trackersService.trackers
 		self.view?.didRecieveTrackers()
 	}

@@ -59,12 +59,10 @@ extension TrackersService: TrackersServiceFetchingProtocol {
     
     func fetchTrackers(weekDay: WeekDay) {
 		self.trackersDataProvider.fetchTrackers(currentWeekDay: weekDay)
-//		self.trackersDataProviderDelegate?.didRecievedTrackers()
     }
     
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay) {
 		self.trackersDataProvider.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: currentWeekDay)
-//		self.trackersDataProviderDelegate?.didRecievedTrackers()
     }
 }
 
