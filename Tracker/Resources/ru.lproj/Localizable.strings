@@ -10,6 +10,9 @@
 "Onboarding.pageLabel.first" = "Отслеживайте только то, что хотите";
 "Onboarding.pageLabel.second" = "Даже если это не литры воды и йога";
 
+"Trackers.searchController.placeholder" = "Поиск";
+"Trackers.navigationItem.title" = "Трекеры";
+
 "TrackerType.viewController.title" = "Создание трекера";
 "TrackerType.addTrackerButton.title" = "Привычка";
 "TrackerType.addIrregularEventButton.title" = "Нерегулярное событие";

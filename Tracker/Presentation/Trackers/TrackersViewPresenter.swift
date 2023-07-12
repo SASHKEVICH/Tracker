@@ -39,6 +39,11 @@ protocol TrackersViewPresenterProtocol: AnyObject {
 	func navigateToTrackerTypeScreen()
 }
 
+typealias TrackersViewPresenterFullProtocol =
+	TrackersViewPresenterProtocol
+	& TrackersViewPresetnerCollectionViewProtocol
+	& TrackersViewPresetnerSearchControllerProtocol
+
 // MARK: - TrackersViewPresenter
 final class TrackersViewPresenter {
     enum TrackersViewPresenterError: Error {
