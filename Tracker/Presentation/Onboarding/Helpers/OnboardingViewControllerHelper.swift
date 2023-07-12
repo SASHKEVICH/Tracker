@@ -22,7 +22,7 @@ final class OnboardingViewControllerHelper: NSObject {
 		
 		firstPage.image = .Onboarding.first
 		secondPage.image = .Onboarding.second
-
+		
 		firstPage.onboardingText = R.string.localizable.onboardingPageLabelFirst()
 		secondPage.onboardingText = R.string.localizable.onboardingPageLabelSecond()
 		
