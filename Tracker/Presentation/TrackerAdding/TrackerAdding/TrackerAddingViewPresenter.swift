@@ -16,7 +16,7 @@ protocol TrackerAddingViewPresenterCollectionColorsViewHelperProtocol: AnyObject
 }
 
 protocol TrackerAddingViewPresenterTableViewHelperProtocol: AnyObject {
-    var optionsTitles: [String]? { get }
+    var optionsTitles: [String] { get }
     var selectedWeekDays: Set<WeekDay> { get }
 	var selectedCategory: TrackerCategory? { get }
     func didTapTrackerScheduleCell()
@@ -25,26 +25,58 @@ protocol TrackerAddingViewPresenterTableViewHelperProtocol: AnyObject {
 
 protocol TrackerAddingViewPresenterProtocol: AnyObject {
     var view: TrackerAddingViewControllerProtocol? { get set }
-    var tableViewHelper: TrackerOptionsTableViewHelperProtocol? { get }
-    var textFieldHelper: TrackerTitleTextFieldHelperProtocol? { get }
-    var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol? { get }
-    var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol? { get }
+    var tableViewHelper: TrackerOptionsTableViewHelperProtocol { get }
+    var textFieldHelper: TrackerTitleTextFieldHelperProtocol { get }
+    var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol { get }
+    var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol { get }
     func viewDidLoad()
     func didChangeTrackerTitle(_ title: String?)
     func didConfirmAddTracker()
+	func didCancelAddTracker()
     func didRecieveSelectedTrackerSchedule(_ weekDays: Set<WeekDay>)
 	func didRecieveSelectedCategory(_ category: TrackerCategory)
 }
 
 final class TrackerAddingViewPresenter {
-    weak var view: TrackerAddingViewControllerProtocol?
+	weak var view: TrackerAddingViewControllerProtocol?
 
-	var optionsTitles: [String]?
+	var optionsTitles: [String] = []
 
-	var tableViewHelper: TrackerOptionsTableViewHelperProtocol?
-	var textFieldHelper: TrackerTitleTextFieldHelperProtocol?
-	var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol?
-	var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol?
+	lazy var tableViewHelper: TrackerOptionsTableViewHelperProtocol = {
+		let helper = TrackerOptionsTableViewHelper()
+		helper.presenter = self
+		return helper
+	}()
+
+	lazy var textFieldHelper: TrackerTitleTextFieldHelperProtocol = {
+		let helper = TrackerTitleTextFieldHelper()
+		helper.presenter = self
+		return helper
+	}()
+
+	lazy var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol = {
+		let helper = ColorsCollectionViewHelper()
+		helper.presenter = self
+		return helper
+	}()
+
+	lazy var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol = {
+		let helper = EmojisCollectionViewHelper()
+		helper.presenter = self
+		return helper
+	}()
+
+	var selectedWeekDays: Set<WeekDay> = [] {
+		didSet {
+			self.checkToEnablingAddTrackerButton()
+		}
+	}
+
+	var selectedCategory: TrackerCategory? {
+		didSet {
+			self.checkToEnablingAddTrackerButton()
+		}
+	}
     
     private let trackersAddingService: TrackersAddingServiceProtocol
 	private let router: TrackerAddingRouterProtocol
@@ -83,18 +115,6 @@ final class TrackerAddingViewPresenter {
         }
     }
     
-    var selectedWeekDays: Set<WeekDay> = [] {
-        didSet {
-			self.checkToEnablingAddTrackerButton()
-        }
-    }
-
-	var selectedCategory: TrackerCategory? {
-		didSet {
-			self.checkToEnablingAddTrackerButton()
-		}
-	}
-    
     init(
         trackersAddingService: TrackersAddingServiceProtocol,
 		router: TrackerAddingRouterProtocol,
@@ -103,11 +123,6 @@ final class TrackerAddingViewPresenter {
 		self.trackersAddingService = trackersAddingService
 		self.router = router
         self.trackerType = trackerType
-        
-        setupTableViewHelper()
-        setupTextFieldHelper()
-        setupColorsCollectionViewHelper()
-        setupEmojisCollectionViewHelper()
     }
 }
 
@@ -136,7 +151,7 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterEmojisCollection
     }
 }
 
-// MARK: - Internal methods
+// MARK: - TrackerAddingViewPresenterProtocol
 extension TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     func viewDidLoad() {
 		self.setupViewController(for: trackerType)
@@ -170,7 +185,12 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
             emoji: emoji,
 			categoryId: category.id
 		)
+		self.router.navigateToMainScreen()
     }
+
+	func didCancelAddTracker() {
+		self.router.navigateToMainScreen()
+	}
     
     func didRecieveSelectedTrackerSchedule(_ weekDays: Set<WeekDay>) {
 		self.selectedWeekDays = weekDays
@@ -183,36 +203,12 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
 
 // MARK: - Private methods
 private extension TrackerAddingViewPresenter {
-    func setupTableViewHelper() {
-        let tableViewHelper = TrackerOptionsTableViewHelper()
-        tableViewHelper.presenter = self
-        self.tableViewHelper = tableViewHelper
-    }
-    
-    func setupTextFieldHelper() {
-        let textFieldHelper = TrackerTitleTextFieldHelper()
-        textFieldHelper.presenter = self
-        self.textFieldHelper = textFieldHelper
-    }
-    
-    func setupColorsCollectionViewHelper() {
-        let colorsCollectionViewHelper = ColorsCollectionViewHelper()
-        colorsCollectionViewHelper.presenter = self
-        self.colorsCollectionViewHelper = colorsCollectionViewHelper
-    }
-    
-    func setupEmojisCollectionViewHelper() {
-        let emojisCollectionViewHelper = EmojisCollectionViewHelper()
-        emojisCollectionViewHelper.presenter = self
-        self.emojisCollectionViewHelper = emojisCollectionViewHelper
-    }
-    
 	func setupViewController(for type: Tracker.TrackerType) {
 		let localizables = R.string.localizable
 		let categoryTitle = localizables.trackerAddingOptionTitleCategory()
-		let scheduleTitle = localizables.trackerAddingOptionTitleSchedule()
         switch type {
         case .tracker:
+			let scheduleTitle = localizables.trackerAddingOptionTitleSchedule()
 			self.optionsTitles = [categoryTitle, scheduleTitle]
 			self.view?.setViewControllerTitle(localizables.trackerAddingTrackerViewControllerTitle())
         case .irregularEvent:
