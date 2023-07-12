@@ -208,13 +208,16 @@ private extension TrackerAddingViewPresenter {
     }
     
 	func setupViewController(for type: Tracker.TrackerType) {
+		let localizables = R.string.localizable
+		let categoryTitle = localizables.trackerAddingOptionTitleCategory()
+		let scheduleTitle = localizables.trackerAddingOptionTitleSchedule()
         switch type {
         case .tracker:
-            self.optionsTitles = ["Категория", "Расписание"]
-			self.view?.setViewControllerTitle("Новая привычка")
+			self.optionsTitles = [categoryTitle, scheduleTitle]
+			self.view?.setViewControllerTitle(localizables.trackerAddingTrackerViewControllerTitle())
         case .irregularEvent:
-            self.optionsTitles = ["Категория"]
-			self.view?.setViewControllerTitle("Новое нерегулярное событие")
+            self.optionsTitles = [categoryTitle]
+			self.view?.setViewControllerTitle(localizables.trackerAddingIrregularEventViewControllerTitle())
         }
     }
 }
@@ -230,9 +233,9 @@ private extension TrackerAddingViewPresenter {
         else { return }
     
         if !trackerTitle.isEmpty && isErrorLabelHidden && !doesItNeedToWaitSelectedWeekdays {
-            view?.enableAddButton()
+			self.view?.enableAddButton()
         } else {
-            view?.disableAddButton()
+			self.view?.disableAddButton()
         }
     }
 }

@@ -44,7 +44,7 @@ final class TrackerAddingViewController: UIViewController {
 	private lazy var trackerTitleTextField: TrackerCustomTextField = {
 		let textField = TrackerCustomTextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
-		textField.placeholder = "Введите название трекера"
+		textField.placeholder = R.string.localizable.trackerAddingTrackerTitleTextFieldPlaceholder()
 		textField.delegate = self.presenter?.textFieldHelper
 		textField.clearButtonMode = .whileEditing
 		textField.addTarget(self, action: #selector(self.didChangeTrackerTitleTextField(_:)), for: .editingChanged)
@@ -55,7 +55,7 @@ final class TrackerAddingViewController: UIViewController {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.isHidden = true
-		label.text = "Ограничение 38 символов"
+		label.text = R.string.localizable.trackerAddingErrorLabelText()
 		label.font = .Regular.medium
 		label.textColor = .Static.red
 		label.sizeToFit()
@@ -109,14 +109,16 @@ final class TrackerAddingViewController: UIViewController {
 	}()
 	
 	private lazy var cancelTrackerButton: TrackerCustomButton = {
-		let button = TrackerCustomButton(state: .cancel, title: "Отменить")
+		let title = R.string.localizable.trackerAddingCancelButtonTitle()
+		let button = TrackerCustomButton(state: .cancel, title: title)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(self.didTapCancelTrackerButton), for: .touchUpInside)
 		return button
 	}()
 	
 	private lazy var addTrackerButton: TrackerCustomButton = {
-		let button = TrackerCustomButton(state: .disabled, title: "Создать")
+		let title = R.string.localizable.trackerAddingAddTrackerButtonTitle()
+		let button = TrackerCustomButton(state: .disabled, title: title)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(self.didTapAddTrackerButton), for: .touchUpInside)
 		return button

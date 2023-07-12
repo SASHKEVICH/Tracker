@@ -20,3 +20,13 @@
 "TrackerType.viewController.title" = "Creating a Tracker";
 "TrackerType.addTrackerButton.title" = "Habbit";
 "TrackerType.addIrregularEventButton.title" = "Irregular Event";
+
+"TrackerAdding.tracker.viewController.title" = "New habbit";
+"TrackerAdding.irregularEvent.viewController.title" = "New irregular event";
+"TrackerAdding.trackerTitleTextField.placeholder" = "Enter tracker's title";
+"TrackerAdding.errorLabel.text" = "Limit is 38 symbols";
+"TrackerAdding.cancelButton.title" = "Cancel";
+"TrackerAdding.addTrackerButton.title" = "Create";
+"TrackerAdding.optionTitle.category" = "Category";
+"TrackerAdding.optionTitle.schedule" = "Schedule";
+"TrackerAdding.colorCollectionView.header.title" = "Color";

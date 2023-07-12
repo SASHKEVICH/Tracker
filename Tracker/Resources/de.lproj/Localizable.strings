@@ -20,3 +20,13 @@
 "TrackerType.viewController.title" = "Einen Tracker erstellen";
 "TrackerType.addTrackerButton.title" = "Gewohnheit";
 "TrackerType.addIrregularEventButton.title" = "Unregelmäßiges Ereignis";
+
+"TrackerAdding.tracker.viewController.title" = "Eine neue Gewohnheit";
+"TrackerAdding.irregularEvent.viewController.title" = "Новое нерегулярное событие";
+"TrackerAdding.trackerTitleTextField.placeholder" = "Neues unregelmäßiges Ereignis";
+"TrackerAdding.errorLabel.text" = "Beschränkung auf 38 Zeichen";
+"TrackerAdding.cancelButton.title" = "Abschaffen";
+"TrackerAdding.addTrackerButton.title" = "Schaffen";
+"TrackerAdding.optionTitle.category" = "Kategorie";
+"TrackerAdding.optionTitle.schedule" = "Zeitplan";
+"TrackerAdding.colorCollectionView.header.title" = "Farbe";
