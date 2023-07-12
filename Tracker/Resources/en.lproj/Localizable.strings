@@ -31,6 +31,8 @@
 "TrackerAdding.optionTitle.schedule" = "Schedule";
 "TrackerAdding.colorCollectionView.header.title" = "Color";
 
+"TrackerSchedule.addScheduleButton.title" = "Done";
+
 "TrackerCategory.addCategoryButton.title" = "Add a new category";
 
 "TrackerNewCategory.viewController.title" = "New category";

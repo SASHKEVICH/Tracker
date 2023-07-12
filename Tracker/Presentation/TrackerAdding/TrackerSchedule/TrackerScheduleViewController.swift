@@ -26,7 +26,7 @@ final class TrackerScheduleViewController: UIViewController, TrackerScheduleView
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.font = .Medium.big
 		label.textColor = .Dynamic.blackDay
-		label.text = "Расписание"
+		label.text = R.string.localizable.trackerAddingOptionTitleSchedule()
 		return label
 	}()
 
@@ -43,7 +43,8 @@ final class TrackerScheduleViewController: UIViewController, TrackerScheduleView
 	}()
 
 	private lazy var addScheduleButton: TrackerCustomButton = {
-		let button = TrackerCustomButton(state: .normal, title: "Готово")
+		let title = R.string.localizable.trackerScheduleAddScheduleButtonTitle()
+		let button = TrackerCustomButton(state: .normal, title: title)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(didTapAddScheduleButton), for: .touchUpInside)
 		return button
@@ -56,53 +57,48 @@ final class TrackerScheduleViewController: UIViewController, TrackerScheduleView
 
 		view.backgroundColor = .Dynamic.whiteDay
         
-        setupTitleLabel()
-        setupAddScheduleButton()
-        setupScheduleTableView()
+		self.addSubviews()
+		self.addConstraints()
     }
 }
 
 private extension TrackerScheduleViewController {
-    func setupTitleLabel() {
-        view.addSubview(titleLabel)
-        
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
-    }
-    
-    func setupScheduleTableView() {
-        view.addSubview(scheduleTableView)
-        
-        NSLayoutConstraint.activate([
-            scheduleTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            scheduleTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            scheduleTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
-            scheduleTableView.bottomAnchor.constraint(equalTo: addScheduleButton.topAnchor, constant: -47)
-        ])
-    }
-    
-    func setupAddScheduleButton() {
-        view.addSubview(addScheduleButton)
-        
-        NSLayoutConstraint.activate([
-            addScheduleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            addScheduleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            addScheduleButton.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -1 * trackerScheduleConfiguration.bottomConstantConstraint),
-            addScheduleButton.heightAnchor.constraint(equalToConstant: 60)
-        ])
-    }
+	func addSubviews() {
+		view.addSubview(titleLabel)
+		view.addSubview(scheduleTableView)
+		view.addSubview(addScheduleButton)
+	}
+
+	func addConstraints() {
+		NSLayoutConstraint.activate([
+			titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+			titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+		])
+
+		NSLayoutConstraint.activate([
+			scheduleTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+			scheduleTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+			scheduleTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
+			scheduleTableView.bottomAnchor.constraint(equalTo: addScheduleButton.topAnchor, constant: -47)
+		])
+
+		NSLayoutConstraint.activate([
+			addScheduleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+			addScheduleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+			addScheduleButton.bottomAnchor.constraint(
+				equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+				constant: -1 * trackerScheduleConfiguration.bottomConstantConstraint),
+			addScheduleButton.heightAnchor.constraint(equalToConstant: 60)
+		])
+	}
 }
 
 // MARK: - Actions
 private extension TrackerScheduleViewController {
     @objc
     func didTapAddScheduleButton() {
-        guard let selectedWeekDays = presenter?.selectedWeekDays else { return }
-        delegate?.didRecieveSelectedWeekDays(selectedWeekDays)
-        delegate?.dismissTrackerScheduleViewController()
+		guard let selectedWeekDays = self.presenter?.selectedWeekDays else { return }
+		self.delegate?.didRecieveSelectedWeekDays(selectedWeekDays)
+		self.delegate?.dismissTrackerScheduleViewController()
     }
 }
