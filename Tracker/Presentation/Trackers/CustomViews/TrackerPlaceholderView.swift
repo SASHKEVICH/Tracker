@@ -42,7 +42,7 @@ final class TrackerPlaceholderView: UIView {
 		}
 	}
 
-	private var state: State = .emptyTrackersForDay
+	private var state: State?
 
 	init() {
 		super.init(frame: .zero)
