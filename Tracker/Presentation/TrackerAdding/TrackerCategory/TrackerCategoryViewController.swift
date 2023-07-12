@@ -98,16 +98,16 @@ extension TrackerCategoryViewController: TrackerCategoryTableViewHelperDelegate 
 // MARK: - TrackerNewCategoryViewControllerDelegate
 extension TrackerCategoryViewController: TrackerNewCategoryViewControllerDelegate {
 	func dismissNewCategoryViewController() {
-		dismiss(animated: true)
+		self.dismiss(animated: true)
 	}
 }
 
 private extension TrackerCategoryViewController {
 	func addSubviews() {
-		view.addSubview(titleLabel)
-		view.addSubview(categoriesTableView)
-		view.addSubview(addNewCategoryButton)
-		view.insertSubview(placeholderView, aboveSubview: categoriesTableView)
+		self.view.addSubview(titleLabel)
+		self.view.addSubview(categoriesTableView)
+		self.view.addSubview(addNewCategoryButton)
+		self.view.insertSubview(placeholderView, aboveSubview: categoriesTableView)
 	}
 
 	func addConstraints() {
