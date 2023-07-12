@@ -131,10 +131,10 @@ private extension TrackerCategoryViewController {
 		])
 
 		NSLayoutConstraint.activate([
-			placeholderView.leadingAnchor.constraint(equalTo: categoriesTableView.leadingAnchor),
-			placeholderView.trailingAnchor.constraint(equalTo: categoriesTableView.trailingAnchor),
-			placeholderView.topAnchor.constraint(equalTo: categoriesTableView.topAnchor),
-			placeholderView.bottomAnchor.constraint(equalTo: categoriesTableView.bottomAnchor),
+			placeholderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			placeholderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+			placeholderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+			placeholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 		])
 	}
 

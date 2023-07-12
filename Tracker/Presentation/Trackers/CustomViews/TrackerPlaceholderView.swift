@@ -57,11 +57,14 @@ extension TrackerPlaceholderView {
 	func set(state: TrackerPlaceholderView.State) {
 		switch state {
 		case .emptyTrackersForDay:
-			self.set(image: .Placeholder.emptyForDay, text: "Что будем отслеживать?")
+			let text = R.string.localizable.placeholderViewEmptyForDayTextLabelText()
+			self.set(image: .Placeholder.emptyForDay, text: text)
 		case .emptyTrackersSearch:
-			self.set(image: .Placeholder.emptySearch, text: "Ничего не найдено")
+			let text = R.string.localizable.placeholderViewEmptySearchTextLabelText()
+			self.set(image: .Placeholder.emptySearch, text: text)
 		case .emptyCategories:
-			self.set(image: .Placeholder.emptyForDay, text: "Привычки и события можно \n объединить по смыслу")
+			let text = R.string.localizable.placeholderViewEmptyCategoriesTextLabelText()
+			self.set(image: .Placeholder.emptyForDay, text: text)
 		}
 	}
 

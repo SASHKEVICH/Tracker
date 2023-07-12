@@ -13,6 +13,10 @@
 "Trackers.searchController.placeholder" = "Suche";
 "Trackers.navigationItem.title" = "Tracker";
 
+"PlaceholderView.emptyForDay.textLabel.text" = "Was werden wir verfolgen?";
+"PlaceholderView.emptySearch.textLabel.text" = "Nichts gefunden";
+"PlaceholderView.emptyCategories.textLabel.text" = "Gewohnheiten und Ereignisse können in \n der Bedeutung kombiniert werden";
+
 "TrackerType.viewController.title" = "Einen Tracker erstellen";
 "TrackerType.addTrackerButton.title" = "Gewohnheit";
 "TrackerType.addIrregularEventButton.title" = "Unregelmäßiges Ereignis";
