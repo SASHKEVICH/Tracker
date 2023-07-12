@@ -30,9 +30,9 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         guard let cell = tableView.cellForRow(at: indexPath) as? TrackerOptionsTableViewCell else { return }
         
 		if cell.type == .schedule {
-            presenter?.didTapTrackerScheduleCell()
+			self.presenter?.didTapTrackerScheduleCell()
 		} else if cell.type == .category {
-			presenter?.didTapTrackerCategoryCell()
+			self.presenter?.didTapTrackerCategoryCell()
         }
     }
     

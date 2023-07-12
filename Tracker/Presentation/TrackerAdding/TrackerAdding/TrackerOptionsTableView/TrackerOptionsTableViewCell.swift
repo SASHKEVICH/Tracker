@@ -14,10 +14,16 @@ final class TrackerOptionsTableViewCell: UITableViewCell {
 	}
 
 	var type: CellType? {
+		let categoryTitle = R.string.localizable.trackerAddingOptionTitleCategory()
+		let scheduleTitle = R.string.localizable.trackerAddingOptionTitleSchedule()
+
 		switch cellTitleLabel.text {
-		case "Категория": return .category
-		case "Расписание": return .schedule
-		default: return nil
+		case categoryTitle:
+			return .category
+		case scheduleTitle:
+			return .schedule
+		default:
+			return nil
 		}
 	}
 
