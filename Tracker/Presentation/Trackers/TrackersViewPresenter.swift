@@ -77,6 +77,7 @@ final class TrackersViewPresenter {
 	private let router: TrackersViewRouterProtocol
     
     private var state: TrackersViewPresenterState = .normal
+	private var trackers: [Tracker] = []
     
 	init(
 		trackersService: TrackersServiceProtocol,
@@ -97,13 +98,13 @@ extension TrackersViewPresenter: TrackersViewPresenterProtocol {
 	func requestTrackers(for date: Date) {
 		guard let weekDay = date.weekDay else { return }
 		self.currentDate = date
-		self.state = .normal
 
 		self.trackersService.fetchTrackers(weekDay: weekDay)
 		self.fetchCompletedTrackersForCurrentDate()
 	}
 
 	func viewDidLoad() {
+		self.trackers = self.trackersService.trackers
 		self.fetchCompletedTrackersForCurrentDate()
 	}
 
@@ -116,13 +117,14 @@ extension TrackersViewPresenter: TrackersViewPresenterProtocol {
 extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
     func requestFilteredTrackers(for searchText: String?) {
         guard let titleSearchString = searchText, let weekDay = currentDate.weekDay else { return }
-        self.state = .search
+		self.state = .search
 
 		self.trackersService.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: weekDay)
 		self.fetchCompletedTrackersForCurrentDate()
     }
 
     func requestShowAllCategoriesForCurrentDay() {
+		self.state = .normal
 		self.requestTrackers(for: currentDate)
     }
 }
@@ -138,7 +140,9 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     }
     
     func tracker(at indexPath: IndexPath) -> Tracker? {
-		self.trackersService.tracker(at: indexPath)
+		guard self.trackers.isEmpty == false else { return nil }
+		let index = indexPath.row + indexPath.section
+		return self.trackers[index]
     }
     
     func categoryTitle(at indexPath: IndexPath) -> String? {
@@ -150,12 +154,12 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     }
     
     func didRecievedEmptyTrackers() {
-        switch state {
-        case .normal:
+		switch self.state {
+		case .normal:
 			self.view?.showPlaceholderViewForCurrentDay()
-        case .search:
+		case .search:
 			self.view?.showPlaceholderViewForEmptySearch()
-        }
+		}
     }
     
     func didRecievedNonEmptyTrackers() {
@@ -184,10 +188,6 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 
 // MARK: - TrackersDataProviderDelegate
 extension TrackersViewPresenter: TrackersDataProviderDelegate {
-    func didUpdate(update: TrackersStoreUpdate) {
-        view?.didRecieveTrackers()
-    }
-    
     func didRecievedTrackers() {
         DispatchQueue.main.async { [weak self] in
 			guard let self = self else { return }
@@ -195,6 +195,11 @@ extension TrackersViewPresenter: TrackersDataProviderDelegate {
             self.view?.didRecieveTrackers()
         }
     }
+
+	func storeDidUpdate() {
+		self.trackers = self.trackersService.trackers
+		self.view?.didRecieveTrackers()
+	}
 }
 
 private extension TrackersViewPresenter {

@@ -16,6 +16,7 @@ protocol TrackersServiceDataSourceProtocol {
 
 protocol TrackersServiceFetchingProtocol {
     var trackersDataProviderDelegate: TrackersDataProviderDelegate? { get set }
+	var trackers: [Tracker] { get }
     func fetchTrackers(weekDay: WeekDay)
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay)
     func requestDataProviderErrorAlert()
@@ -49,36 +50,41 @@ struct TrackersService {
 
 // MARK: - TrackersServiceFetchingProtocol
 extension TrackersService: TrackersServiceFetchingProtocol {
+	var trackers: [Tracker] {
+		let trackersCoreData = self.trackersDataProvider.trackers
+		return trackersCoreData.compactMap { self.trackersFactory.makeTracker(from: $0) }
+	}
+
     func requestDataProviderErrorAlert() { print("data provider error") }
     
     func fetchTrackers(weekDay: WeekDay) {
-        trackersDataProvider.fetchTrackers(currentWeekDay: weekDay)
-        trackersDataProviderDelegate?.didRecievedTrackers()
+		self.trackersDataProvider.fetchTrackers(currentWeekDay: weekDay)
+//		self.trackersDataProviderDelegate?.didRecievedTrackers()
     }
     
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay) {
-        trackersDataProvider.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: currentWeekDay)
-        trackersDataProviderDelegate?.didRecievedTrackers()
+		self.trackersDataProvider.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: currentWeekDay)
+//		self.trackersDataProviderDelegate?.didRecievedTrackers()
     }
 }
 
 // MARK: - TrackersServiceDataSourceProtocol
 extension TrackersService: TrackersServiceDataSourceProtocol {
     var numberOfSections: Int {
-        trackersDataProvider.numberOfSections
+		self.trackersDataProvider.numberOfSections
     }
     
     func numberOfItemsInSection(_ section: Int) -> Int {
-        trackersDataProvider.numberOfItemsInSection(section)
+		self.trackersDataProvider.numberOfItemsInSection(section)
     }
     
     func categoryTitle(at indexPath: IndexPath) -> String? {
-        trackersDataProvider.categoryTitle(at: indexPath)
+		self.trackersDataProvider.categoryTitle(at: indexPath)
     }
     
     func tracker(at indexPath: IndexPath) -> Tracker? {
-		guard let trackerCoreData = trackersDataProvider.tracker(at: indexPath) else { return nil }
-		let tracker = trackersFactory.makeTracker(from: trackerCoreData)
+		guard let trackerCoreData = self.trackersDataProvider.tracker(at: indexPath) else { return nil }
+		let tracker = self.trackersFactory.makeTracker(from: trackerCoreData)
 		return tracker
     }
 }

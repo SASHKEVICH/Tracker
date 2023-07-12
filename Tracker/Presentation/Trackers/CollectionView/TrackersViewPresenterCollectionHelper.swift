@@ -81,11 +81,11 @@ extension TrackersViewPresenterCollectionHelper {
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        guard let presenter = presenter else {
+		guard let presenter = self.presenter else {
             assertionFailure("Presenter is nil")
             return 0
         }
-        
+
         if presenter.numberOfSections == 0 {
             presenter.didRecievedEmptyTrackers()
         } else {
