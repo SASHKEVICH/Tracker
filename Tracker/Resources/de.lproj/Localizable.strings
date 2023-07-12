@@ -9,3 +9,7 @@
 "Onboarding.button.title" = "Das ist Technologie!";
 "Onboarding.pageLabel.first" = "Verfolgen Sie nur das, was Sie wollen";
 "Onboarding.pageLabel.second" = "Auch wenn es nicht um Liter Wasser und Yoga geht";
+
+"TrackerType.viewController.title" = "Einen Tracker erstellen";
+"TrackerType.addTrackerButton.title" = "Gewohnheit";
+"TrackerType.addIrregularEventButton.title" = "Unregelmäßiges Ereignis";
