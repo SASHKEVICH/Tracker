@@ -41,3 +41,21 @@
 "TrackerNewCategory.viewController.title" = "New category";
 "TrackerNewCategory.newCategoryTitleTextField.placeholder" = "Enter title of the new category";
 "TrackerNewCategory.addNewCategoryButton.title" = "Done";
+
+"WeekDay.monday" = "Monday";
+"WeekDay.tuesday" = "Tuesday";
+"WeekDay.wednesday" = "Wednesday";
+"WeekDay.thursday" = "Thursday";
+"WeekDay.friday" = "Friday";
+"WeekDay.saturday" = "Saturday";
+"WeekDay.sunday" = "Sunday";
+"WeekDay.allCases" = "Whole week";
+
+"WeekDay.monday.short" = "Mon";
+"WeekDay.tuesday.short" = "Tue";
+"WeekDay.wednesday.short" = "Wed";
+"WeekDay.thursday.short" = "Thu";
+"WeekDay.friday.short" = "Fri";
+"WeekDay.saturday.short" = "Sat";
+"WeekDay.sunday.short" = "Sun";
+

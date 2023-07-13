@@ -41,7 +41,7 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        guard let optionsTitles = presenter?.optionsTitles else {
+		guard let optionsTitles = self.presenter?.optionsTitles else {
             assertionFailure("presenter or options titles is nil")
             return 0
         }
@@ -94,7 +94,8 @@ private extension TrackerOptionsTableViewHelper {
         let selectedWeekDaysArray = Array(selectedWeekDays).sorted()
         
         guard selectedWeekDaysArray.count != 7 else {
-			cell.set(additionalInfo: "Каждый день")
+			let additionalInfo = R.string.localizable.weekDayAllCases()
+			cell.set(additionalInfo: additionalInfo)
             return
         }
         

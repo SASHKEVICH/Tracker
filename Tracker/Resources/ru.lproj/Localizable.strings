@@ -41,3 +41,20 @@
 "TrackerNewCategory.viewController.title" = "Новая категория";
 "TrackerNewCategory.newCategoryTitleTextField.placeholder" = "Введите название категории";
 "TrackerNewCategory.addNewCategoryButton.title" = "Готово";
+
+"WeekDay.monday" = "Понедельник";
+"WeekDay.tuesday" = "Вторник";
+"WeekDay.wednesday" = "Среда";
+"WeekDay.thursday" = "Четверг";
+"WeekDay.friday" = "Пятница";
+"WeekDay.saturday" = "Суббота";
+"WeekDay.sunday" = "Воскресенье";
+"WeekDay.allCases" = "Каждый день";
+
+"WeekDay.monday.short" = "Пн";
+"WeekDay.tuesday.short" = "Вт";
+"WeekDay.wednesday.short" = "Ср";
+"WeekDay.thursday.short" = "Чт";
+"WeekDay.friday.short" = "Пт";
+"WeekDay.saturday.short" = "Сб";
+"WeekDay.sunday.short" = "Вс";
