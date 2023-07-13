@@ -170,7 +170,7 @@ private extension TrackersViewPresenterCollectionHelper {
 		}
 
 		let times = presenter.completedTimesCount(trackerId: trackerId)
-		let dayCount = R.string.localizable.stringKey(times: times)
+		let dayCount = R.string.localizable.stringKey(days: times)
 		return dayCount
 	}
 }

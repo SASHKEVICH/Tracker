@@ -5,8 +5,8 @@
 	<key>StringKey</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@times@</string>
-		<key>times</key>
+		<string>%#@days@</string>
+		<key>days</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
@@ -15,15 +15,15 @@
 			<key>zero</key>
 			<string>Nie</string>
 			<key>one</key>
-			<string>1 mal</string>
+			<string>1 tag</string>
 			<key>two</key>
-			<string>2 mal</string>
+			<string>2 tage</string>
 			<key>few</key>
-			<string>%d mal</string>
+			<string>%d tage</string>
 			<key>many</key>
-			<string>%d mal</string>
+			<string>%d tage</string>
 			<key>other</key>
-			<string>%d mal</string>
+			<string>%d tage</string>
 		</dict>
 	</dict>
 </dict>

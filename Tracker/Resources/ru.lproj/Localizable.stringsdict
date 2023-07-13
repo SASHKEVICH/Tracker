@@ -5,8 +5,8 @@
 	<key>StringKey</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@times@</string>
-		<key>times</key>
+		<string>%#@days@</string>
+		<key>days</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
@@ -15,15 +15,13 @@
 			<key>zero</key>
 			<string>Ни разу</string>
 			<key>one</key>
-			<string>1 раз</string>
+			<string>1 день</string>
 			<key>two</key>
-			<string>2 раза</string>
+			<string>2 дня</string>
 			<key>few</key>
-			<string>%d раза</string>
+			<string>%d дня</string>
 			<key>many</key>
-			<string>%d раз</string>
-			<key>other</key>
-			<string>%d раз</string>
+			<string>%d дней</string>
 		</dict>
 	</dict>
 </dict>
