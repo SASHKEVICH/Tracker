@@ -14,6 +14,7 @@ struct Tracker {
 	}
 
     let id: UUID
+	let previousCategoryId: UUID
     let type: TrackerType
     let title: String
     let color: UIColor

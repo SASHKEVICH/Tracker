@@ -14,10 +14,12 @@ struct TrackersFactory {
 		title: String,
 		color: UIColor,
 		emoji: String,
+		previousCategoryId: UUID,
 		schedule: [WeekDay]
 	) -> Tracker {
 		return Tracker(
 			id: UUID(),
+			previousCategoryId: previousCategoryId,
 			type: type,
 			title: title,
 			color: color,
@@ -28,6 +30,7 @@ struct TrackersFactory {
 
 	func makeTracker(from trackerCoreData: TrackerCoreData) -> Tracker? {
 		guard let id = UUID(uuidString: trackerCoreData.id),
+			  let previousCategoryId = UUID(uuidString: trackerCoreData.previousCategoryId),
 			  let type = Tracker.TrackerType(rawValue: Int(trackerCoreData.type)),
 			  let color = UIColorMarshalling.deserilizeFrom(hex: trackerCoreData.colorHex)
 		else { return nil }
@@ -37,6 +40,7 @@ struct TrackersFactory {
 
 		return Tracker(
 			id: id,
+			previousCategoryId: previousCategoryId,
 			type: type,
 			title: trackerCoreData.title,
 			color: color,
@@ -51,6 +55,7 @@ struct TrackersFactory {
 		trackerCoreData.emoji = tracker.emoji
 		trackerCoreData.colorHex = UIColorMarshalling.serilizeToHex(color: tracker.color)
 		trackerCoreData.id = tracker.id.uuidString
+		trackerCoreData.previousCategoryId = tracker.previousCategoryId.uuidString
 		trackerCoreData.type = Int16(tracker.type.rawValue)
 
 		let schedule = tracker.schedule.reduce("") { $0 + ", " + $1.englishStringRepresentation }

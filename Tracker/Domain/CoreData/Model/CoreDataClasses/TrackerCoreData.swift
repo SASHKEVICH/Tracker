@@ -20,6 +20,7 @@ final class TrackerCoreData: NSManagedObject {
     @NSManaged var colorHex: String
     @NSManaged var emoji: String
     @NSManaged var id: String
+	@NSManaged var previousCategoryId: String
     @NSManaged var title: String
     @NSManaged var type: Int16
     @NSManaged var weekDays: String
