@@ -85,21 +85,26 @@ extension TrackersViewPresenterCollectionHelper {
 
 		let indexPath = indexPaths[0]
 
+		guard let cell = collectionView.cellForItem(at: indexPath) as? TrackersCollectionViewCell else {
+			return nil
+		}
+
 		let localizable = R.string.localizable
 		let pinActionTitle = localizable.trackersCollectionViewActionPin()
 		let editActionTitle = localizable.trackersCollectionViewActionEdit()
 		let deleteActionTitle = localizable.trackersCollectionViewActionDelete()
 
 		return UIContextMenuConfiguration(actionProvider: { actions in
+			guard let tracker = cell.tracker else { return nil }
 			return UIMenu(children: [
 				UIAction(title: pinActionTitle) { [weak self] _ in
-					print("pin")
+					self?.presenter?.didTapPinTracker()
 				},
 				UIAction(title: editActionTitle) { [weak self] _ in
-					print("edit")
+					self?.presenter?.didTapEditTracker()
 				},
 				UIAction(title: deleteActionTitle, attributes: .destructive) { [weak self] _ in
-					print("delete")
+					self?.presenter?.didTapDeleteTracker(tracker)
 				}
 			])
 		})

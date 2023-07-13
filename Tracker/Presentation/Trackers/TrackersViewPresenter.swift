@@ -22,7 +22,7 @@ protocol TrackersViewPresetnerCollectionViewProtocol: AnyObject {
 
 	func didTapPinTracker()
 	func didTapEditTracker()
-	func didTapDeleteTracker()
+	func didTapDeleteTracker(_ tracker: Tracker)
     
     func complete(tracker: Tracker) throws
     func incomplete(tracker: Tracker) throws
@@ -79,6 +79,7 @@ final class TrackersViewPresenter {
 	}()
     
     private var trackersService: TrackersServiceProtocol
+	private let trackersAddingService: TrackersAddingServiceProtocol
 	private let trackersCompletingService: TrackersCompletingServiceProtocol
 	private let trackersRecordService: TrackersRecordServiceProtocol
 	private let router: TrackersViewRouterProtocol
@@ -88,16 +89,19 @@ final class TrackersViewPresenter {
 
 	init(
 		trackersService: TrackersServiceProtocol,
+		trackersAddingService: TrackersAddingServiceProtocol,
 		trackersCompletingService: TrackersCompletingServiceProtocol,
 		trackersRecordService: TrackersRecordServiceProtocol,
 		router: TrackersViewRouterProtocol,
 		analyticsService: AnalyticsServiceProtocol
 	) {
         self.trackersService = trackersService
+		self.trackersAddingService = trackersAddingService
 		self.trackersCompletingService = trackersCompletingService
 		self.trackersRecordService = trackersRecordService
 		self.router = router
 		self.analyticsService = analyticsService
+
         self.trackersService.trackersDataProviderDelegate = self
     }
 }
@@ -183,8 +187,9 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 		self.analyticsService.didEditTracker()
 	}
 
-	func didTapDeleteTracker() {
+	func didTapDeleteTracker(_ tracker: Tracker) {
 		self.analyticsService.didDeleteTracker()
+		self.trackersAddingService.delete(tracker: tracker)
 	}
     
     func requestChosenFutureDateAlert() {
@@ -213,12 +218,12 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 extension TrackersViewPresenter: TrackersDataProviderDelegate {
 	func storeDidUpdate() {
 		self.trackers = self.trackersService.trackers
-		self.view?.didRecieveTrackers()
+		self.updateTrackers()
 	}
 
 	func fetchDidPerformed() {
 		self.trackers = self.trackersService.trackers
-		self.view?.didRecieveTrackers()
+		self.updateTrackers()
 	}
 }
 
@@ -237,5 +242,11 @@ private extension TrackersViewPresenter {
 	func fetchCompletedTrackersForCurrentDate() {
 		let completedTrackersForCurrentDate = self.trackersRecordService.fetchCompletedRecords(date: currentDate)
 		self.completedTrackersRecords = Set(completedTrackersForCurrentDate)
+	}
+
+	func updateTrackers() {
+		DispatchQueue.main.async { [weak self] in
+			self?.view?.didRecieveTrackers()
+		}
 	}
 }

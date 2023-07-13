@@ -18,11 +18,23 @@ struct TrackersDataStore {
 
 extension TrackersDataStore {
     var managedObjectContext: NSManagedObjectContext {
-        context
+		self.context
     }
     
     func add(tracker: TrackerCoreData, in category: TrackerCategoryCoreData) throws {
         category.addToTrackers(tracker)
-        try context.save()
+		try self.context.save()
     }
+
+	func delete(tracker: Tracker) {
+		let request = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+		request.predicate = NSPredicate(format: "%K==%@", #keyPath(TrackerCoreData.id), tracker.id.uuidString)
+		do {
+			guard let object = try self.context.fetch(request).first else { return }
+			self.context.delete(object)
+			try self.context.save()
+		} catch {
+			print(error)
+		}
+	}
 }

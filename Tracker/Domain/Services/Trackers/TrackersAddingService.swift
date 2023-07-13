@@ -16,6 +16,8 @@ protocol TrackersAddingServiceProtocol {
 		emoji: String,
 		categoryId: UUID
 	)
+
+	func delete(tracker: Tracker)
 }
 
 struct TrackersAddingService {
@@ -58,6 +60,10 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
 			emoji: emoji,
 			schedule: Array(schedule)
 		)
-		try? trackersDataAdder.add(tracker: tracker, for: categoryId)
+		try? self.trackersDataAdder.add(tracker: tracker, for: categoryId)
+	}
+
+	func delete(tracker: Tracker) {
+		self.trackersDataAdder.delete(tracker: tracker)
 	}
 }

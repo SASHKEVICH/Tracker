@@ -10,7 +10,6 @@ import UIKit
 protocol TrackersServiceDataSourceProtocol {
     var numberOfSections: Int { get }
     func numberOfItemsInSection(_ section: Int) -> Int
-    func tracker(at indexPath: IndexPath) -> Tracker?
     func categoryTitle(at indexPath: IndexPath) -> String?
 }
 
@@ -78,11 +77,5 @@ extension TrackersService: TrackersServiceDataSourceProtocol {
     
     func categoryTitle(at indexPath: IndexPath) -> String? {
 		self.trackersDataProvider.categoryTitle(at: indexPath)
-    }
-    
-    func tracker(at indexPath: IndexPath) -> Tracker? {
-		guard let trackerCoreData = self.trackersDataProvider.tracker(at: indexPath) else { return nil }
-		let tracker = self.trackersFactory.makeTracker(from: trackerCoreData)
-		return tracker
     }
 }

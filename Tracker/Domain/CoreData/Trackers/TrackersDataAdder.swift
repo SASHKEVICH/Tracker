@@ -10,7 +10,7 @@ import CoreData
 
 protocol TrackersDataAdderProtocol {
 	func add(tracker: Tracker, for categoryId: UUID) throws
-	func delete(tracker: Tracker) throws
+	func delete(tracker: Tracker)
 }
 
 struct TrackersDataAdder {
@@ -43,8 +43,10 @@ extension TrackersDataAdder: TrackersDataAdderProtocol {
 			throw TrackersDataAdderError.cannotFindCategory
 		}
 
-		try trackersDataStore.add(tracker: trackersCoreData, in: categoryCoreData)
+		try self.trackersDataStore.add(tracker: trackersCoreData, in: categoryCoreData)
 	}
 
-	func delete(tracker: Tracker) throws {}
+	func delete(tracker: Tracker) {
+		self.trackersDataStore.delete(tracker: tracker)
+	}
 }

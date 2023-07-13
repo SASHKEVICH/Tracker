@@ -27,6 +27,7 @@ private extension TabBarViewController {
 
 		let trackersFactory = TrackersFactory()
 		guard let trackersService = TrackersService(trackersFactory: trackersFactory),
+			  let trackersAddingService = TrackersAddingService(trackersFactory: trackersFactory),
 			  let completingService = TrackersCompletingService(),
 			  let recordService = TrackersRecordService()
 		else {
@@ -36,9 +37,10 @@ private extension TabBarViewController {
 
 		let router = TrackersViewRouter(viewController: trackersViewController)
 		let analyticsService = AnalyticsService()
-		
+
         let presenter = TrackersViewPresenter(
             trackersService: trackersService,
+			trackersAddingService: trackersAddingService,
 			trackersCompletingService: completingService,
 			trackersRecordService: recordService,
 			router: router,
