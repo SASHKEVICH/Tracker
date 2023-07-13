@@ -41,6 +41,7 @@
 "TrackerSchedule.addScheduleButton.title" = "Готово";
 
 "TrackerCategory.addCategoryButton.title" = "Добавить категорию";
+"TrackerCategory.pinnedCategory.title" = "Закрепленные";
 
 "TrackerNewCategory.viewController.title" = "Новая категория";
 "TrackerNewCategory.newCategoryTitleTextField.placeholder" = "Введите название категории";

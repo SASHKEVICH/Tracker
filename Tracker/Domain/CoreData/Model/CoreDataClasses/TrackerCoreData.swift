@@ -10,7 +10,13 @@ import Foundation
 import CoreData
 
 @objc(TrackerCoreData)
-class TrackerCoreData: NSManagedObject {
+final class TrackerCoreData: NSManagedObject {
+	static let entityName = String(describing: TrackerCoreData.self)
+
+	@nonobjc class func fetchRequest() -> NSFetchRequest<TrackerCoreData> {
+		NSFetchRequest<TrackerCoreData>(entityName: TrackerCoreData.entityName)
+	}
+
     @NSManaged var colorHex: String
     @NSManaged var emoji: String
     @NSManaged var id: String

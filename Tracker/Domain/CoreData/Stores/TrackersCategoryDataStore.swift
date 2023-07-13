@@ -22,14 +22,29 @@ extension TrackersCategoryDataStore {
     }
     
     func category(with id: String) -> TrackerCategoryCoreData? {
-        let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
+		let request = TrackerCategoryCoreData.fetchRequest()
         let predicate = NSPredicate(format: "%K MATCHES[cd] %@", #keyPath(TrackerCategoryCoreData.id), id)
         request.predicate = predicate
         request.fetchLimit = 1
-        
-        let categoriesCoreData = try? context.fetch(request)
-        return categoriesCoreData?.first
+
+		do {
+			let categoriesCoreData = try context.fetch(request)
+			return categoriesCoreData.first
+		} catch {
+			assertionFailure("Cannot get category with id: \(id)")
+			return nil
+		}
     }
+
+	func rename(category: TrackerCategoryCoreData, newTitle: String) {
+		category.title = newTitle
+		do {
+			try context.save()
+		} catch {
+			assertionFailure("Cannot rename categor")
+			print(error)
+		}
+	}
     
     func add(category: TrackerCategoryCoreData) throws {
 		try? self.context.save()

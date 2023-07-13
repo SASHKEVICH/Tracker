@@ -41,6 +41,7 @@
 "TrackerSchedule.addScheduleButton.title" = "Done";
 
 "TrackerCategory.addCategoryButton.title" = "Add a new category";
+"TrackerCategory.pinnedCategory.title" = "Pinned";
 
 "TrackerNewCategory.viewController.title" = "New category";
 "TrackerNewCategory.newCategoryTitleTextField.placeholder" = "Enter title of the new category";

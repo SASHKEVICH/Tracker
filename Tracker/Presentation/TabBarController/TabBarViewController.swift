@@ -35,6 +35,11 @@ private extension TabBarViewController {
 			return nil
 		}
 
+		let trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
+		let pinnedCategoryService = TrackersPinnedCategoryService(trackersCategoryFactory: trackersCategoryFactory)
+
+		pinnedCategoryService?.checkPinnedCategory()
+
 		let router = TrackersViewRouter(viewController: trackersViewController)
 		let analyticsService = AnalyticsService()
 
@@ -57,7 +62,8 @@ private extension TabBarViewController {
             selectedImage: nil)
         
         let navigationController = UINavigationController(
-            rootViewController: trackersViewController)
+            rootViewController: trackersViewController
+		)
         navigationController.navigationBar.prefersLargeTitles = true
         
         return navigationController
