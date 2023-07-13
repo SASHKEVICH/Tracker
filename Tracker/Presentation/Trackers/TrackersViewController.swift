@@ -29,7 +29,7 @@ final class TrackersViewController: UIViewController {
 		collectionView.register(
 			TrackersCollectionSectionHeader.self,
 			forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-			withReuseIdentifier: TrackersCollectionSectionHeader.identifier)
+			withReuseIdentifier: TrackersCollectionSectionHeader.reuseIdentifier)
 		return collectionView
 	}()
 	
@@ -139,7 +139,7 @@ private extension TrackersViewController {
 			style: .plain,
 			target: self,
 			action: #selector(self.didTapAddTracker))
-		self.navigationItem.leftBarButtonItem?.tintColor = .black
+		self.navigationItem.leftBarButtonItem?.tintColor = .Dynamic.blackDay
 	}
 
 	func setupRightBarButtonItem() {

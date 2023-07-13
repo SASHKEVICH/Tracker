@@ -29,12 +29,11 @@ extension EmojisCollectionViewHelper {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        guard
-            let cell = collectionView.cellForItem(at: indexPath) as? EmojisCollectionViewCell,
-            let emoji = cell.emoji
+        guard let cell = collectionView.cellForItem(at: indexPath) as? EmojisCollectionViewCell,
+			  let emoji = cell.emoji
         else { return }
 
-        presenter?.didSelect(emoji: emoji)
+		self.presenter?.didSelect(emoji: emoji)
     }
     
     func collectionView(
@@ -58,7 +57,7 @@ extension EmojisCollectionViewHelper {
         layout collectionViewLayout: UICollectionViewLayout,
         minimumInteritemSpacingForSectionAt section: Int
     ) -> CGFloat {
-        configuration.horizontalCellSpacing
+		self.configuration.horizontalCellSpacing
     }
     
     func collectionView(
@@ -66,7 +65,7 @@ extension EmojisCollectionViewHelper {
         layout collectionViewLayout: UICollectionViewLayout,
         minimumLineSpacingForSectionAt section: Int
     ) -> CGFloat {
-        configuration.verticalCellSpacing
+		self.configuration.verticalCellSpacing
     }
     
     func collectionView(
@@ -74,7 +73,7 @@ extension EmojisCollectionViewHelper {
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
-        configuration.collectionViewInsets
+		self.configuration.collectionViewInsets
     }
     
     func collectionView(
@@ -82,7 +81,18 @@ extension EmojisCollectionViewHelper {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        CGSize(width: collectionView.frame.width, height: 18)
+		let indexPath = IndexPath(row: 0, section: section)
+		let headerView = self.collectionView(
+			collectionView,
+			viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath
+		)
+
+		let size = CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height)
+		return headerView.systemLayoutSizeFitting(
+			size,
+			withHorizontalFittingPriority: .required,
+			verticalFittingPriority: .fittingSizeLevel
+		)
     }
 }
 
@@ -92,7 +102,7 @@ extension EmojisCollectionViewHelper {
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        emojis.count
+		self.emojis.count
     }
     
     func collectionView(
@@ -107,7 +117,7 @@ extension EmojisCollectionViewHelper {
             return UICollectionViewCell()
         }
         
-        cell.emoji = emojis[indexPath.row]
+		cell.emoji = self.emojis[indexPath.row]
         
         return cell
     }
@@ -119,7 +129,7 @@ extension EmojisCollectionViewHelper {
     ) -> UICollectionReusableView {
         guard let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
-            withReuseIdentifier: TrackersCollectionSectionHeader.identifier,
+            withReuseIdentifier: TrackersCollectionSectionHeader.reuseIdentifier,
             for: indexPath) as? TrackersCollectionSectionHeader
         else {
             assertionFailure("Cannot dequeue header view")

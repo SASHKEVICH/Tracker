@@ -16,7 +16,7 @@ final class TrackerCustomButton: UIButton {
 
 	var buttonState: TrackerCustomButton.State {
 		didSet {
-			setNeededButtonState()
+			self.setNeededButtonState()
 		}
 	}
 	
@@ -33,7 +33,7 @@ final class TrackerCustomButton: UIButton {
         layer.cornerRadius = 16
         layer.masksToBounds = true
         
-        setNeededButtonState()
+		self.setNeededButtonState()
     }
     
     required init?(coder: NSCoder) {
@@ -43,13 +43,13 @@ final class TrackerCustomButton: UIButton {
 
 private extension TrackerCustomButton {
     func setNeededButtonState() {
-        switch buttonState {
+		switch self.buttonState {
         case .cancel:
-            setCancelState()
+			self.setCancelState()
         case .normal:
-            setNormalState()
+			self.setNormalState()
         case .disabled:
-            setDisabledState()
+			self.setDisabledState()
         }
     }
     
@@ -66,31 +66,29 @@ private extension TrackerCustomButton {
         border.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: layer.cornerRadius).cgPath
         self.layer.addSublayer(border)
         
-        setAttributedButtonTitle()
-        setTitleColor(color, for: .normal)
+		self.setAttributedButtonTitle(with: color)
     }
     
     func setNormalState() {
         self.isEnabled = true
-		layer.backgroundColor = UIColor.Dynamic.blackDay.cgColor
+		self.layer.backgroundColor = UIColor.Dynamic.blackDay.cgColor
         
-        setAttributedButtonTitle()
-		setTitleColor(.Dynamic.whiteDay, for: .normal)
+		self.setAttributedButtonTitle(with: .Dynamic.whiteDay)
     }
     
     func setDisabledState() {
         self.isEnabled = false
-		layer.backgroundColor = UIColor.Static.gray.cgColor
+		self.layer.backgroundColor = UIColor.Static.gray.cgColor
         
-        setAttributedButtonTitle()
-        setTitleColor(.Dynamic.whiteDay, for: .normal)
+		self.setAttributedButtonTitle(with: .white)
     }
     
-    func setAttributedButtonTitle() {
+	func setAttributedButtonTitle(with color: UIColor) {
 		let font = UIFont.Medium.big
         let attributedTitle = NSAttributedString(
             string: title,
-            attributes: [NSAttributedString.Key.font: font])
-        setAttributedTitle(attributedTitle, for: .normal)
+			attributes: [NSAttributedString.Key.font: font,
+						 NSAttributedString.Key.foregroundColor: color])
+		self.setAttributedTitle(attributedTitle, for: .normal)
     }
 }

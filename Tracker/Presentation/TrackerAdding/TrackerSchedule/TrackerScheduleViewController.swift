@@ -39,6 +39,7 @@ final class TrackerScheduleViewController: UIViewController, TrackerScheduleView
 			TrackerScheduleTableViewCell.self,
 			forCellReuseIdentifier: TrackerScheduleTableViewCell.reuseIdentifier
 		)
+		tableView.separatorColor = .Static.gray
 		return tableView
 	}()
 

@@ -71,6 +71,7 @@ final class TrackerAddingViewController: UIViewController {
 			TrackerOptionsTableViewCell.self,
 			forCellReuseIdentifier: TrackerOptionsTableViewCell.reuseIdentifier
 		)
+		tableView.separatorColor = .Static.gray
 		return tableView
 	}()
 	
@@ -86,7 +87,7 @@ final class TrackerAddingViewController: UIViewController {
 		collectionView.register(
 			TrackersCollectionSectionHeader.self,
 			forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-			withReuseIdentifier: TrackersCollectionSectionHeader.identifier
+			withReuseIdentifier: TrackersCollectionSectionHeader.reuseIdentifier
 		)
 		return collectionView
 	}()
@@ -103,7 +104,7 @@ final class TrackerAddingViewController: UIViewController {
 		collectionView.register(
 			TrackersCollectionSectionHeader.self,
 			forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-			withReuseIdentifier: TrackersCollectionSectionHeader.identifier
+			withReuseIdentifier: TrackersCollectionSectionHeader.reuseIdentifier
 		)
 		return collectionView
 	}()

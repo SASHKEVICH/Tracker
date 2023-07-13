@@ -46,6 +46,7 @@ final class TrackerCategoryViewController: UIViewController {
 		tableView.dataSource = self.helper
 		tableView.delegate = self.helper
 		tableView.rowHeight = 75
+		tableView.separatorColor = .Static.gray
 		return tableView
 	}()
 

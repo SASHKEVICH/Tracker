@@ -55,7 +55,7 @@ private extension ColorsCollectionViewCell {
     }
     
     func setupSelectionBorder() {
-        selectedBackgroundView = borderView
+		selectedBackgroundView = self.borderView
     }
     
 }

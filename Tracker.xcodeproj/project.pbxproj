@@ -407,7 +407,6 @@
 			isa = PBXGroup;
 			children = (
 				9617C96A29DD88860054987D /* CompleteTrackerButton.swift */,
-				9602B0F129D967BB00FD66D2 /* TrackerPlaceholderView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -707,6 +706,7 @@
 		96F7032D29FA7A5200BBFF5C /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				9602B0F129D967BB00FD66D2 /* TrackerPlaceholderView.swift */,
 				9617C96C29DDCCE30054987D /* TrackersCollectionSectionHeader.swift */,
 				966DD3BD29EA7EEA00296CDF /* TrackerCustomButton.swift */,
 				96CE2AC72A40C6C7002A08F0 /* CellSelectedBackgroundView.swift */,
