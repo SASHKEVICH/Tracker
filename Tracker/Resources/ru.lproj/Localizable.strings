@@ -16,6 +16,10 @@
 "Trackers.searchController.placeholder" = "Поиск";
 "Trackers.navigationItem.title" = "Трекеры";
 
+"Trackers.collectionView.action.pin" = "Закрепить";
+"Trackers.collectionView.action.edit" = "Редактировать";
+"Trackers.collectionView.action.delete" = "Удалить";
+
 "PlaceholderView.emptyForDay.textLabel.text" = "Что будем отслеживать?";
 "PlaceholderView.emptySearch.textLabel.text" = "Ничего не найдено";
 "PlaceholderView.emptyCategories.textLabel.text" = "Привычки и события можно \n объединить по смыслу";

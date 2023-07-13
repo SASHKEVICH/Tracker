@@ -16,6 +16,10 @@
 "Trackers.searchController.placeholder" = "Suche";
 "Trackers.navigationItem.title" = "Tracker";
 
+"Trackers.collectionView.action.pin" = "Befestigen";
+"Trackers.collectionView.action.edit" = "Redigieren";
+"Trackers.collectionView.action.delete" = "Entfernen";
+
 "PlaceholderView.emptyForDay.textLabel.text" = "Was werden wir verfolgen?";
 "PlaceholderView.emptySearch.textLabel.text" = "Nichts gefunden";
 "PlaceholderView.emptyCategories.textLabel.text" = "Gewohnheiten und Ereignisse können in \n der Bedeutung kombiniert werden";

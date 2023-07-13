@@ -75,6 +75,35 @@ extension TrackersViewPresenterCollectionHelper {
 			verticalFittingPriority: .fittingSizeLevel
 		)
     }
+
+	func collectionView(
+		_ collectionView: UICollectionView,
+		contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
+		point: CGPoint
+	) -> UIContextMenuConfiguration? {
+		guard indexPaths.count > 0 else { return nil }
+
+		let indexPath = indexPaths[0]
+
+		let localizable = R.string.localizable
+		let pinActionTitle = localizable.trackersCollectionViewActionPin()
+		let editActionTitle = localizable.trackersCollectionViewActionEdit()
+		let deleteActionTitle = localizable.trackersCollectionViewActionDelete()
+
+		return UIContextMenuConfiguration(actionProvider: { actions in
+			return UIMenu(children: [
+				UIAction(title: pinActionTitle) { [weak self] _ in
+					print("pin")
+				},
+				UIAction(title: editActionTitle) { [weak self] _ in
+					print("edit")
+				},
+				UIAction(title: deleteActionTitle, attributes: .destructive) { [weak self] _ in
+					print("delete")
+				}
+			])
+		})
+	}
 }
 
 // MARK: - UICollectionViewDataSource
