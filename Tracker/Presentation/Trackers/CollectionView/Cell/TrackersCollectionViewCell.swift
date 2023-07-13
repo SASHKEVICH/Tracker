@@ -8,11 +8,6 @@
 import UIKit
 
 final class TrackersCollectionViewCell: UICollectionViewCell {
-	enum State {
-		case completed
-		case incompleted
-	}
-
 	var delegate: TrackersViewPresenterCollectionHelperCellDelegate?
 
 	var dayCount: String = "" {
@@ -32,9 +27,15 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 		}
 	}
 
-	var state: TrackersCollectionViewCell.State = .incompleted {
+	var isPinned: Bool = false {
 		didSet {
-			completeTrackerButton.isDone = state == .completed
+			self.pinnedImageView.isHidden = !self.isPinned
+		}
+	}
+
+	var isCompleted: Bool = false {
+		didSet {
+			completeTrackerButton.isDone = self.isCompleted
 		}
 	}
 
@@ -67,6 +68,15 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 		view.backgroundColor = .white.withAlphaComponent(0.3)
 		view.layer.cornerRadius = 12
 		return view
+	}()
+
+	private lazy var pinnedImageView: UIImageView = {
+		let imageView = UIImageView(image: .MainScreen.pinned)
+		imageView.translatesAutoresizingMaskIntoConstraints = false
+		imageView.tintColor = .Dynamic.whiteDay
+		imageView.contentMode = .center
+		imageView.isHidden = !self.isPinned
+		return imageView
 	}()
 
 	private lazy var dayCountLabel: UILabel = {
@@ -107,6 +117,7 @@ private extension TrackersCollectionViewCell {
 		topContainerView.addSubview(trackerTitleLable)
 		topContainerView.addSubview(emojiBackgroundView)
 		topContainerView.addSubview(emojiLabel)
+		topContainerView.addSubview(pinnedImageView)
 
 		contentView.addSubview(dayCountLabel)
 		contentView.addSubview(completeTrackerButton)
@@ -151,6 +162,11 @@ private extension TrackersCollectionViewCell {
 		NSLayoutConstraint.activate([
 			emojiLabel.centerXAnchor.constraint(equalTo: emojiBackgroundView.centerXAnchor),
 			emojiLabel.centerYAnchor.constraint(equalTo: emojiBackgroundView.centerYAnchor)
+		])
+
+		NSLayoutConstraint.activate([
+			pinnedImageView.topAnchor.constraint(equalTo: topContainerView.topAnchor, constant: 18),
+			pinnedImageView.trailingAnchor.constraint(equalTo: topContainerView.trailingAnchor, constant: -12),
 		])
 	}
 }

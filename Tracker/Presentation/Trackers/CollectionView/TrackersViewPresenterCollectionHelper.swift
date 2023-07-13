@@ -89,24 +89,9 @@ extension TrackersViewPresenterCollectionHelper {
 			return nil
 		}
 
-		let localizable = R.string.localizable
-		let pinActionTitle = localizable.trackersCollectionViewActionPin()
-		let editActionTitle = localizable.trackersCollectionViewActionEdit()
-		let deleteActionTitle = localizable.trackersCollectionViewActionDelete()
-
+		guard let contextActions = self.prepareContextActions(for: cell) else { return nil }
 		return UIContextMenuConfiguration(actionProvider: { actions in
-			guard let tracker = cell.tracker else { return nil }
-			return UIMenu(children: [
-				UIAction(title: pinActionTitle) { [weak self] _ in
-					self?.presenter?.didTapPinTracker()
-				},
-				UIAction(title: editActionTitle) { [weak self] _ in
-					self?.presenter?.didTapEditTracker()
-				},
-				UIAction(title: deleteActionTitle, attributes: .destructive) { [weak self] _ in
-					self?.presenter?.didTapDeleteTracker(tracker)
-				}
-			])
+			return UIMenu(children: contextActions)
 		})
 	}
 }
@@ -162,7 +147,7 @@ extension TrackersViewPresenterCollectionHelper {
 		}
               
         if completedTrackerForCurrentDay != nil {
-            cell.state = .completed
+            cell.isCompleted = true
         }
 
 		cell.dayCount = self.completedTimesCount(trackerId: tracker.id)
@@ -196,14 +181,14 @@ extension TrackersViewPresenterCollectionHelper: TrackersViewPresenterCollection
         guard let tracker = cell.tracker else { return }
 		guard let presenter = self.presenter else { return }
         
-        if cell.state == .completed {
+		if cell.isCompleted {
             guard let _ = try? presenter.incomplete(tracker: tracker) else { return }
         } else {
             guard let _ = try? presenter.complete(tracker: tracker) else { return }
         }
         
 		cell.dayCount = self.completedTimesCount(trackerId: tracker.id)
-        cell.state = cell.state == .completed ? .incompleted : .completed
+        cell.isCompleted = !cell.isCompleted
     }
 }
 
@@ -217,5 +202,41 @@ private extension TrackersViewPresenterCollectionHelper {
 		let times = presenter.completedTimesCount(trackerId: trackerId)
 		let dayCount = R.string.localizable.stringKey(days: times)
 		return dayCount
+	}
+
+	func prepareContextActions(for cell: TrackersCollectionViewCell) -> [UIAction]? {
+		guard let tracker = cell.tracker else { return nil }
+		let localizable = R.string.localizable
+		let editActionTitle = localizable.trackersCollectionViewActionEdit()
+		let deleteActionTitle = localizable.trackersCollectionViewActionDelete()
+
+		var actions: [UIAction] = [
+			UIAction(title: editActionTitle) { [weak self] _ in
+				self?.presenter?.didTapEditTracker()
+			},
+			UIAction(title: deleteActionTitle, attributes: .destructive) { [weak self] _ in
+				self?.presenter?.didTapDeleteTracker(tracker)
+			}
+		]
+
+		if cell.isPinned {
+			let unpinAction = self.getPinningAction(shouldPin: false, cell: cell)
+			actions.insert(unpinAction, at: 0)
+		} else {
+			let pinAction = self.getPinningAction(shouldPin: true, cell: cell)
+			actions.insert(pinAction, at: 0)
+		}
+
+		return actions
+	}
+
+	func getPinningAction(shouldPin: Bool, cell: TrackersCollectionViewCell) -> UIAction {
+		let localizable = R.string.localizable
+		let pinActionTitle = shouldPin ? localizable.trackersCollectionViewActionPin() : localizable.trackersCollectionViewActionUnpin()
+		let pinAction = UIAction(title: pinActionTitle) { [weak self] _ in
+			cell.isPinned = shouldPin
+			self?.presenter?.didTapPinTracker(shouldPin: shouldPin)
+		}
+		return pinAction
 	}
 }

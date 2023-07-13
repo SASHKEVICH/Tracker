@@ -20,7 +20,7 @@ protocol TrackersViewPresetnerCollectionViewProtocol: AnyObject {
     func didRecievedEmptyTrackers()
     func didRecievedNonEmptyTrackers()
 
-	func didTapPinTracker()
+	func didTapPinTracker(shouldPin: Bool)
 	func didTapEditTracker()
 	func didTapDeleteTracker(_ tracker: Tracker)
     
@@ -179,7 +179,7 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 		self.view?.shouldHidePlaceholderView(true)
     }
 
-	func didTapPinTracker() {
+	func didTapPinTracker(shouldPin: Bool) {
 		print(#function)
 	}
 

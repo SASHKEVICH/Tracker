@@ -19,6 +19,8 @@ extension UIImage {
 
 	struct MainScreen {
 		static let addTracker = UIImage.image(named: "AddTrackerIcon")
+		static let pinned = UIImage(systemName: "pin.fill",
+									withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 12)))
 	}
 
 	struct Launch {

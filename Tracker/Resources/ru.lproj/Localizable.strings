@@ -17,6 +17,7 @@
 "Trackers.navigationItem.title" = "Трекеры";
 
 "Trackers.collectionView.action.pin" = "Закрепить";
+"Trackers.collectionView.action.unpin" = "Открепить";
 "Trackers.collectionView.action.edit" = "Редактировать";
 "Trackers.collectionView.action.delete" = "Удалить";
 

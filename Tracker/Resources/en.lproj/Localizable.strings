@@ -17,6 +17,7 @@
 "Trackers.navigationItem.title" = "Trackers";
 
 "Trackers.collectionView.action.pin" = "Pin";
+"Trackers.collectionView.action.unpin" = "Unpin";
 "Trackers.collectionView.action.edit" = "Edit";
 "Trackers.collectionView.action.delete" = "Delete";
 
