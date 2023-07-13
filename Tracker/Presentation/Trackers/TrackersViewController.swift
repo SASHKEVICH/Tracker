@@ -48,7 +48,7 @@ final class TrackersViewController: UIViewController {
 		view.isHidden = true
 		return view
 	}()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 		self.view.backgroundColor = .Dynamic.whiteDay
@@ -59,6 +59,16 @@ final class TrackersViewController: UIViewController {
 
 		self.presenter?.viewDidLoad()
     }
+
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		self.presenter?.analyticsService.didOpenMainScreen()
+	}
+
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		self.presenter?.analyticsService.didCloseMainScreen()
+	}
 }
 
 // MARK: - TrackersViewControllerProtocol
@@ -68,7 +78,7 @@ extension TrackersViewController: TrackersViewControllerProtocol {
 	}
 }
 
-// MARK: - Setup PlaceholderView
+// MARK: - Control PlaceholderView
 extension TrackersViewController {
     func showPlaceholderViewForCurrentDay() {
 		self.collectionPlaceholderView.set(state: .emptyTrackersForDay)
@@ -158,6 +168,7 @@ private extension TrackersViewController {
 private extension TrackersViewController {
 	@objc
 	func didTapAddTracker() {
+		self.presenter?.analyticsService.didTapAddTracker()
 		self.presenter?.navigateToTrackerTypeScreen()
 	}
 

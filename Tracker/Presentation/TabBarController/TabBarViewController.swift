@@ -35,11 +35,14 @@ private extension TabBarViewController {
 		}
 
 		let router = TrackersViewRouter(viewController: trackersViewController)
+		let analyticsService = AnalyticsService()
+		
         let presenter = TrackersViewPresenter(
             trackersService: trackersService,
 			trackersCompletingService: completingService,
 			trackersRecordService: recordService,
-			router: router
+			router: router,
+			analyticsService: analyticsService
 		)
         
         trackersViewController.presenter = presenter

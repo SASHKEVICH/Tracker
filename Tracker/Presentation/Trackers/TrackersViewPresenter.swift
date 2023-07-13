@@ -19,6 +19,10 @@ protocol TrackersViewPresetnerCollectionViewProtocol: AnyObject {
     
     func didRecievedEmptyTrackers()
     func didRecievedNonEmptyTrackers()
+
+	func didTapPinTracker()
+	func didTapEditTracker()
+	func didTapDeleteTracker()
     
     func complete(tracker: Tracker) throws
     func incomplete(tracker: Tracker) throws
@@ -33,6 +37,7 @@ protocol TrackersViewPresenterProtocol: AnyObject {
     var view: TrackersViewControllerProtocol? { get set }
     var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol { get }
     var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol { get }
+	var analyticsService: AnalyticsServiceProtocol { get }
     var currentDate: Date { get }
     func requestTrackers(for date: Date)
     func viewDidLoad()
@@ -54,6 +59,8 @@ final class TrackersViewPresenter {
         case search
         case normal
     }
+
+	let analyticsService: AnalyticsServiceProtocol
 
 	weak var view: TrackersViewControllerProtocol?
 	var completedTrackersRecords: Set<TrackerRecord> = []
@@ -83,12 +90,14 @@ final class TrackersViewPresenter {
 		trackersService: TrackersServiceProtocol,
 		trackersCompletingService: TrackersCompletingServiceProtocol,
 		trackersRecordService: TrackersRecordServiceProtocol,
-		router: TrackersViewRouterProtocol
+		router: TrackersViewRouterProtocol,
+		analyticsService: AnalyticsServiceProtocol
 	) {
         self.trackersService = trackersService
 		self.trackersCompletingService = trackersCompletingService
 		self.trackersRecordService = trackersRecordService
 		self.router = router
+		self.analyticsService = analyticsService
         self.trackersService.trackersDataProviderDelegate = self
     }
 }
@@ -165,6 +174,18 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     func didRecievedNonEmptyTrackers() {
 		self.view?.shouldHidePlaceholderView(true)
     }
+
+	func didTapPinTracker() {
+		print(#function)
+	}
+
+	func didTapEditTracker() {
+		self.analyticsService.didEditTracker()
+	}
+
+	func didTapDeleteTracker() {
+		self.analyticsService.didDeleteTracker()
+	}
     
     func requestChosenFutureDateAlert() {
         let alertPresenter = AlertPresenterService(delegate: view)
@@ -177,11 +198,13 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 
 	func complete(tracker: Tracker) throws {
 		try self.checkCurrentDate()
+		self.analyticsService.didTapTracker()
 		self.trackersCompletingService.completeTracker(trackerId: tracker.id, date: currentDate)
 	}
 
 	func incomplete(tracker: Tracker) throws {
 		try self.checkCurrentDate()
+		self.analyticsService.didTapTracker()
 		self.trackersCompletingService.incompleteTracker(trackerId: tracker.id, date: currentDate)
 	}
 }
