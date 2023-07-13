@@ -56,8 +56,7 @@ private extension TrackersPinnedCategoryService {
 
 	func createPinnedCategory() {
 		let title = R.string.localizable.trackerCategoryPinnedCategoryTitle()
-		let id = UUID()
-		let category = TrackerCategory(id: id, title: title, trackers: [])
+		let category = trackersCategoryFactory.makeCategory(title: title, isPinning: true)
 		let categoryCoreData = trackersCategoryFactory.makeCategoryCoreData(
 			from: category,
 			context: self.trackersCategoryDataStore.managedObjectContext
@@ -68,7 +67,7 @@ private extension TrackersPinnedCategoryService {
 			return
 		}
 
-		self.storePinnedCategory(with: id)
+		self.storePinnedCategory(with: category.id)
 	}
 
 	func checkPinnedCategoryTitleAccordingToMainLanguage() {

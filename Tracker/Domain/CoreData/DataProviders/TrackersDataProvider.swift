@@ -33,14 +33,18 @@ final class TrackersDataProvider: NSObject {
 	private var currentWeekDay = Date().weekDay?.englishStringRepresentation
 
 	private lazy var fetchedResultsController: NSFetchedResultsController = {
-		let request = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+		let request = TrackerCoreData.fetchRequest()
 		let sortDescriptors = [
+			NSSortDescriptor(key: #keyPath(TrackerCoreData.category.isPinning), ascending: false),
 			NSSortDescriptor(key: #keyPath(TrackerCoreData.category.title), ascending: true),
 			NSSortDescriptor(key: #keyPath(TrackerCoreData.title), ascending: true)
 		]
 		request.sortDescriptors = sortDescriptors
 
-		let predicate = NSPredicate(format: "%K CONTAINS[cd] %@", #keyPath(TrackerCoreData.weekDays), currentWeekDay ?? "")
+		let predicate = NSPredicate(
+			format: "%K CONTAINS[cd] %@",
+			#keyPath(TrackerCoreData.weekDays), currentWeekDay ?? ""
+		)
 		request.predicate = predicate
 
 		let fetchedResultsController = NSFetchedResultsController(

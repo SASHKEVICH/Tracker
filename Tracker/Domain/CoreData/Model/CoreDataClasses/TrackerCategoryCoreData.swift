@@ -19,6 +19,7 @@ final class TrackerCategoryCoreData: NSManagedObject {
 
     @NSManaged var id: String
     @NSManaged var title: String
+	@NSManaged var isPinning: Bool
     @NSManaged var trackers: NSSet
 }
 

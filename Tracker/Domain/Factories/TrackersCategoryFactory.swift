@@ -15,8 +15,8 @@ struct TrackersCategoryFactory {
 		self.trackersFactory = trackersFactory
 	}
 
-	func makeCategory(title: String) -> TrackerCategory {
-		return TrackerCategory(id: UUID(), title: title, trackers: [])
+	func makeCategory(title: String, isPinning: Bool) -> TrackerCategory {
+		TrackerCategory(id: UUID(), title: title, isPinning: isPinning, trackers: [])
 	}
 
 	func makeCategory(categoryCoreData: TrackerCategoryCoreData) -> TrackerCategory? {
@@ -24,7 +24,7 @@ struct TrackersCategoryFactory {
 		let trackers = categoryCoreData.trackers
 			.compactMap { $0 as? TrackerCoreData }
 			.compactMap { trackersFactory.makeTracker(from: $0) }
-		return TrackerCategory(id: id, title: categoryCoreData.title, trackers: trackers)
+		return TrackerCategory(id: id, title: categoryCoreData.title, isPinning: categoryCoreData.isPinning, trackers: trackers)
 	}
 
 	func makeCategoryCoreData(
@@ -34,6 +34,7 @@ struct TrackersCategoryFactory {
 		let categoryCoreData = TrackerCategoryCoreData(context: context)
 		categoryCoreData.id = category.id.uuidString
 		categoryCoreData.title = category.title
+		categoryCoreData.isPinning = category.isPinning
 		categoryCoreData.trackers = NSSet(array: category.trackers)
 		return categoryCoreData
 	}

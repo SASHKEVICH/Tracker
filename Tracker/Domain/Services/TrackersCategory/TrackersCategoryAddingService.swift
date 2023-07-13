@@ -35,7 +35,7 @@ struct TrackersCategoryAddingService {
 // MARK: - TrackersCategoryAddingServiceProtocol
 extension TrackersCategoryAddingService: TrackersCategoryAddingServiceProtocol {
 	func addCategory(title: String) {
-		let category = trackersCategoryFactory.makeCategory(title: title)
+		let category = trackersCategoryFactory.makeCategory(title: title, isPinning: false)
 		try? trackersCategoryDataAdder.add(category: category)
 	}
 }
