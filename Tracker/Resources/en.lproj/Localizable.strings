@@ -6,6 +6,9 @@
   
 */
 
+"Tabbar.tracker" = "Trackers";
+"Tabbar.statistics" = "Statistics";
+
 "Onboarding.button.title" = "What a technologies!";
 "Onboarding.pageLabel.first" = "Track only what you want";
 "Onboarding.pageLabel.second" = "Even if it's not liters of water and yoga";

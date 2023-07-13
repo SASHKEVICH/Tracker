@@ -44,9 +44,10 @@ private extension TabBarViewController {
         
         trackersViewController.presenter = presenter
         presenter.view = trackersViewController
-        
+
+		let title = R.string.localizable.tabbarTracker()
         trackersViewController.tabBarItem = UITabBarItem(
-            title: "Трекеры",
+            title: title,
             image: .TabBar.trackers,
             selectedImage: nil)
         
@@ -62,8 +63,10 @@ private extension TabBarViewController {
         let navigationController = UINavigationController(
             rootViewController: statisticsViewController)
         navigationController.navigationBar.prefersLargeTitles = true
+
+		let title = R.string.localizable.tabbarStatistics()
         statisticsViewController.tabBarItem = UITabBarItem(
-            title: "Статистика",
+            title: title,
 			image: .TabBar.statistics,
             selectedImage: nil)
         return navigationController
