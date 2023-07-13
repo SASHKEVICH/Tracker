@@ -10,7 +10,8 @@ import UIKit
 final class ColorsCollectionViewCell: UICollectionViewCell {
 	var color: UIColor? {
 		didSet {
-			colorView.backgroundColor = color
+			self.colorView.backgroundColor = color
+			self.borderView.layer.borderColor = color?.withAlphaComponent(0.4).cgColor
 		}
 	}
 
@@ -25,15 +26,15 @@ final class ColorsCollectionViewCell: UICollectionViewCell {
 	private let borderView: UIView = {
 		let view = UIView()
 		view.layer.cornerRadius = 12
-		view.layer.borderColor = UIColor.Dynamic.blackDay.withAlphaComponent(0.4).cgColor
 		view.layer.borderWidth = 3
 		return view
 	}()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupColorView()
-        setupSelectionBorder()
+		self.addSubviews()
+		self.addConstraints()
+		self.setupSelectionBorder()
     }
     
     required init?(coder: NSCoder) {
@@ -42,17 +43,19 @@ final class ColorsCollectionViewCell: UICollectionViewCell {
 }
 
 private extension ColorsCollectionViewCell {
-    func setupColorView() {
-        contentView.addSubview(colorView)
-        
-        let padding: CGFloat = 6
-        NSLayoutConstraint.activate([
-            colorView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
-            colorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            colorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            colorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
-        ])
-    }
+	func addSubviews() {
+		self.contentView.addSubview(colorView)
+	}
+
+	func addConstraints() {
+		let padding: CGFloat = 6
+		NSLayoutConstraint.activate([
+			colorView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
+			colorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+			colorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+			colorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
+		])
+	}
     
     func setupSelectionBorder() {
 		selectedBackgroundView = self.borderView

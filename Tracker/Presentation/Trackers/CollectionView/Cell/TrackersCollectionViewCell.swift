@@ -41,7 +41,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 	private let trackerTitleLable: UILabel = {
 		let lable = UILabel()
 		lable.translatesAutoresizingMaskIntoConstraints = false
-		lable.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+		lable.font = .Medium.medium
 		lable.textColor = .white
 		lable.numberOfLines = 0
 		return lable
@@ -50,7 +50,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 	private let emojiLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+		label.font = .Medium.big
 		return label
 	}()
 
@@ -159,6 +159,6 @@ private extension TrackersCollectionViewCell {
 private extension TrackersCollectionViewCell {
 	@objc
 	func didTapCompleteTrackerButton() {
-		delegate?.didTapCompleteCellButton(self)
+		self.delegate?.didTapCompleteCellButton(self)
 	}
 }

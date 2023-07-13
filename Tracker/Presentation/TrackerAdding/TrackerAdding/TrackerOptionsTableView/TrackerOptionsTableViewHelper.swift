@@ -58,18 +58,19 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
 			for: indexPath) as? TrackerOptionsTableViewCell
 		else { return UITableViewCell() }
 
-		guard let optionsTitles = presenter?.optionsTitles else { return UITableViewCell() }
+		guard let optionsTitles = self.presenter?.optionsTitles else { return UITableViewCell() }
         
 		cell.set(cellTitle: optionsTitles[indexPath.row])
         cell.accessoryType = .disclosureIndicator
         
-        configureAdditionalInfo(for: cell)
+		self.configureAdditionalInfo(for: cell)
 
 		let configuredCell = cell.configure(
 			cellIndexPath: indexPath,
 			lastCellIndexPath: tableView.lastCellIndexPath,
 			entityCount: optionsTitles.count,
-			tableViewWidth: tableView.bounds.width)
+			tableViewWidth: tableView.bounds.width
+		)
         
         return configuredCell
     }
