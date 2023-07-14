@@ -43,7 +43,7 @@ private extension TrackersViewControllerSetupper {
 			return nil
 		}
 
-		let trackersService = self.prepareTrackersService(
+		var trackersService = self.prepareTrackersService(
 			trackersFactory: trackersFactory,
 			trackersDataStore: trackersDataStore
 		)
@@ -81,6 +81,8 @@ private extension TrackersViewControllerSetupper {
 			router: router,
 			analyticsService: analyticsService
 		)
+
+		trackersService.trackersDataProviderDelegate = presenter
 
 		return presenter
 	}

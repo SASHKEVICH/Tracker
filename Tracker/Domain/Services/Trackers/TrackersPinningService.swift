@@ -7,22 +7,12 @@
 
 import UIKit
 
-protocol TrackersPinningServiceDelegate: AnyObject {
-	func didUpdatePinnedTrackers()
-}
-
 protocol TrackersPinningServiceProtocol {
 	func pin(tracker: Tracker)
 	func unpin(tracker: Tracker)
 }
 
 struct TrackersPinningService {
-	var trackersPinnerDelegate: TrackersPinningServiceDelegate? {
-		didSet {
-			self.trackersDataPinner.delegate = self.trackersPinnerDelegate
-		}
-	}
-
 	private var trackersDataPinner: TrackersDataPinnerProtocol
 	private let trackersFactory: TrackersFactory
 

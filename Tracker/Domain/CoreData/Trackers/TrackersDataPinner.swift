@@ -9,14 +9,11 @@ import Foundation
 import CoreData
 
 protocol TrackersDataPinnerProtocol {
-	var delegate: TrackersPinningServiceDelegate? { get set }
 	func pin(tracker: Tracker)
 	func unpin(tracker: Tracker)
 }
 
 struct TrackersDataPinner {
-	weak var delegate: TrackersPinningServiceDelegate?
-
 	private let trackersDataStore: TrackersDataStore
 	private let trackersCategoryDataStore: TrackersCategoryDataStore
 	private let pinnedCategory: TrackerCategoryCoreData?
@@ -44,7 +41,6 @@ extension TrackersDataPinner: TrackersDataPinnerProtocol {
 		trackerCoreData.isPinned = tracker.isPinned
 
 		self.trackersDataStore.pin(tracker: trackerCoreData, pinnedCategory: pinnedCategory)
-		self.delegate?.didUpdatePinnedTrackers()
 	}
 
 	func unpin(tracker: Tracker) {
@@ -56,6 +52,5 @@ extension TrackersDataPinner: TrackersDataPinnerProtocol {
 		trackerCoreData.isPinned = tracker.isPinned
 
 		self.trackersDataStore.unpin(tracker: trackerCoreData, previousCategory: previousCategory)
-		self.delegate?.didUpdatePinnedTrackers()
 	}
 }

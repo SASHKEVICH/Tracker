@@ -78,7 +78,7 @@ final class TrackersViewPresenter {
 		return searchControllerHelper
 	}()
     
-    private var trackersService: TrackersServiceProtocol
+    private let trackersService: TrackersServiceProtocol
 	private let trackersAddingService: TrackersAddingServiceProtocol
 	private let trackersCompletingService: TrackersCompletingServiceProtocol
 	private let trackersRecordService: TrackersRecordServiceProtocol
@@ -104,8 +104,6 @@ final class TrackersViewPresenter {
 		self.trackersPinningService = trackersPinningService
 		self.router = router
 		self.analyticsService = analyticsService
-
-        self.trackersService.trackersDataProviderDelegate = self
     }
 }
 
@@ -228,13 +226,6 @@ extension TrackersViewPresenter: TrackersDataProviderDelegate {
 	}
 
 	func fetchDidPerformed() {
-		self.updateTrackers()
-	}
-}
-
-// MARK: - TrackersDataProviderDelegate
-extension TrackersViewPresenter: TrackersPinningServiceDelegate {
-	func didUpdatePinnedTrackers() {
 		self.updateTrackers()
 	}
 }
