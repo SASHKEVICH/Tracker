@@ -68,3 +68,7 @@
 "Alert.chosenFutureDate.title" = "Falsches Datum";
 "Alert.chosenFutureDate.message" = "Sie markieren den Tracker in der Zukunft >:[";
 "Alert.chosenFutureDate.action.ok" = "OK";
+
+"Alert.deleteTracker.message" = "Sind Sie sicher, dass Sie diesen Tracker entfernen möchten?";
+"Alert.deleteTracker.action.delete" = "Entfernen";
+"Alert.deleteTracker.action.сancel" = "Abschaffen";

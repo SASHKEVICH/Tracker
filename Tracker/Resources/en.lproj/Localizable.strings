@@ -68,3 +68,7 @@
 "Alert.chosenFutureDate.title" = "Wrong date";
 "Alert.chosenFutureDate.message" = "You completing the tracker in the future >:[";
 "Alert.chosenFutureDate.action.ok" = "OK";
+
+"Alert.deleteTracker.message" = "Are you sure you want to delete this tracker?";
+"Alert.deleteTracker.action.delete" = "Delete";
+"Alert.deleteTracker.action.cancel" = "Cancel";

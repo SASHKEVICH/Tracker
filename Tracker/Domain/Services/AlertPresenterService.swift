@@ -14,6 +14,7 @@ protocol AlertPresenterServiceDelegate: AnyObject {
 protocol AlertPresenterSerivceProtocol {
     var delegate: AlertPresenterServiceDelegate? { get set }
 	func requestChosenFutureDateAlert()
+	func requestDeleteTrackerAlert(completion: @escaping (UIAlertAction) -> Void)
 }
 
 // MARK: - AlertPresenterService
@@ -29,8 +30,21 @@ extension AlertPresenterService: AlertPresenterSerivceProtocol {
 		let message = self.localizable.alertChosenFutureDateMessage()
 		let actionTitle = self.localizable.alertChosenFutureDateActionOk()
 
-		let model = AlertModel(title: title, message: message, actionTitles: [actionTitle])
+		let actionModel = AlertActionModel(title: actionTitle, style: .default, completion: nil)
+		let model = AlertModel(title: title, message: message, actions: [actionModel])
 		self.requestAlert(with: model, prefferedStyle: .alert)
+	}
+
+	func requestDeleteTrackerAlert(completion: @escaping (UIAlertAction) -> Void) {
+		let deleteActionTitle = self.localizable.alertDeleteTrackerActionDelete()
+		let deleteActionModel = AlertActionModel(title: deleteActionTitle, style: .destructive, completion: completion)
+
+		let cancelActionTitle = self.localizable.alertDeleteTrackerActionСancel()
+		let cancelActionModel = AlertActionModel(title: cancelActionTitle, style: .cancel, completion: nil)
+
+		let message = self.localizable.alertDeleteTrackerMessage()
+		let model = AlertModel(title: nil, message: message, actions: [deleteActionModel, cancelActionModel])
+		self.requestAlert(with: model, prefferedStyle: .actionSheet)
 	}
 }
 
@@ -43,17 +57,17 @@ private extension AlertPresenterService {
 			preferredStyle: prefferedStyle
 		)
 
-		guard let titles = alertModel.actionTitles else {
+		guard let actions = alertModel.actions else {
 			delegate.didRecieve(alert: alertController)
 			return
 		}
 
-		for (index, title) in titles.enumerated() {
-			let handler = alertModel.completions?[safe: index]
-			let action = UIAlertAction(title: title, style: .default, handler: handler)
-			action.accessibilityIdentifier = title
+		actions.forEach { actionModel in
+			let action = UIAlertAction(title: actionModel.title, style: actionModel.style, handler: actionModel.completion)
+			action.accessibilityIdentifier = action.title
 			alertController.addAction(action)
 		}
+
 		delegate.didRecieve(alert: alertController)
 	}
 }

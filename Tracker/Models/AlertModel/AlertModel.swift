@@ -10,6 +10,5 @@ import UIKit
 struct AlertModel {
     let title: String?
     let message: String?
-    var actionTitles: [String]? = nil
-    var completions: [(UIAlertAction) -> Void]? = nil
+	let actions: [AlertActionModel]?
 }

@@ -201,8 +201,11 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 	}
 
 	func didTapDeleteTracker(_ tracker: Tracker) {
-		self.analyticsService.didDeleteTracker()
-		self.trackersAddingService.delete(tracker: tracker)
+		self.alertPresenterService.requestDeleteTrackerAlert { [weak self] _ in
+			guard let self = self else { return }
+			self.analyticsService.didDeleteTracker()
+			self.trackersAddingService.delete(tracker: tracker)
+		}
 	}
     
     func requestChosenFutureDateAlert() {

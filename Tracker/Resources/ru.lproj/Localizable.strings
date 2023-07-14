@@ -68,3 +68,7 @@
 "Alert.chosenFutureDate.title" = "Некорректная дата";
 "Alert.chosenFutureDate.message" = "Вы отмечаете трекер в будущем >:[";
 "Alert.chosenFutureDate.action.ok" = "OK";
+
+"Alert.deleteTracker.message" = "Уверены, что хотите удалить этот трекер?";
+"Alert.deleteTracker.action.delete" = "Удалить";
+"Alert.deleteTracker.action.сancel" = "Отменить";
