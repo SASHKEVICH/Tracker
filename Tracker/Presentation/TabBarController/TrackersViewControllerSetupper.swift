@@ -11,7 +11,6 @@ final class TrackersViewControllerSetupper {
 	private let trackersViewController = TrackersViewController()
 
 	private var trackersDataAdder: TrackersDataAdderProtocol?
-	private var pinnedCategoryId: UUID?
 
 	func getViewController() -> UINavigationController? {
 		guard let presenter = self.preparePresenter() else { return nil }
@@ -35,12 +34,10 @@ private extension TrackersViewControllerSetupper {
 		let trackersFactory = TrackersFactory()
 		let trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
 
-		let pinnedCategoryService = self.preparePinnedCategoryService(
+		guard let pinnedCategoryId = self.preparePinnedCategoryId(
 			trackersCategoryFactory: trackersCategoryFactory,
 			trackersCategoryDataStore: trackersCategoryDataStore
-		)
-
-		guard let pinnedCategoryId = self.pinnedCategoryId else {
+		) else {
 			assertionFailure("Cannot get pinned category id")
 			return nil
 		}
@@ -176,17 +173,15 @@ private extension TrackersViewControllerSetupper {
 		return router
 	}
 
-	func preparePinnedCategoryService(
+	func preparePinnedCategoryId(
 		trackersCategoryFactory: TrackersCategoryFactory,
 		trackersCategoryDataStore: TrackersCategoryDataStore
-	) -> TrackersPinnedCategoryService? {
+	) -> UUID? {
 		let pinnedCategoryService = TrackersPinnedCategoryService(
 			trackersCategoryFactory: trackersCategoryFactory,
 			trackersCategoryDataStore: trackersCategoryDataStore
 		)
-		self.pinnedCategoryId = pinnedCategoryService?.pinnedCategoryId
-
 		pinnedCategoryService?.checkPinnedCategory()
-		return pinnedCategoryService
+		return pinnedCategoryService?.pinnedCategoryId
 	}
 }
