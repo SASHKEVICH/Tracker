@@ -163,6 +163,13 @@ extension TrackersViewController: TrackersViewControllerFetchingProtocol {
 	}
 }
 
+// MARK: - TrackerCategoryViewControllerDelegate
+extension TrackersViewController: TrackerCategoryViewControllerDelegate {
+	func didRecieveCategory(_ category: TrackerCategory) {
+		print(#function)
+	}
+}
+
 // MARK: - Alert Presenter Delegate
 extension TrackersViewController: AlertPresenterServiceDelegate {
     func didRecieve(alert: UIAlertController) {
@@ -249,6 +256,6 @@ private extension TrackersViewController {
 
 	@objc
 	func didTapFilterButton() {
-		print(#function)
+		self.presenter?.navigateToFilterScreen()
 	}
 }

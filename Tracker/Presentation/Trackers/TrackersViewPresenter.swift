@@ -42,6 +42,7 @@ protocol TrackersViewPresenterProtocol: AnyObject {
     func requestTrackers(for date: Date)
     func viewDidLoad()
 	func navigateToTrackerTypeScreen()
+	func navigateToFilterScreen()
 	func eraseOperations()
 }
 
@@ -132,6 +133,10 @@ extension TrackersViewPresenter: TrackersViewPresenterProtocol {
 
 	func navigateToTrackerTypeScreen() {
 		self.router.navigateToTrackerTypeScreen()
+	}
+
+	func navigateToFilterScreen() {
+		self.router.navigateToFilterScreen()
 	}
 }
 

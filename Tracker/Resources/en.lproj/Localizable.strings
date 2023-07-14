@@ -43,6 +43,8 @@
 
 "TrackerSchedule.addScheduleButton.title" = "Done";
 
+"TrackerCategory.flow.normal.viewController.title" = "Category";
+"TrackerCategory.flow.filter.viewController.title" = "Filters";
 "TrackerCategory.addCategoryButton.title" = "Add a new category";
 "TrackerCategory.pinnedCategory.title" = "Pinned";
 
