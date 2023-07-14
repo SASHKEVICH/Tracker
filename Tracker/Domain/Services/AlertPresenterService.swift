@@ -39,7 +39,7 @@ extension AlertPresenterService: AlertPresenterSerivceProtocol {
 		let deleteActionTitle = self.localizable.alertDeleteTrackerActionDelete()
 		let deleteActionModel = AlertActionModel(title: deleteActionTitle, style: .destructive, completion: completion)
 
-		let cancelActionTitle = self.localizable.alertDeleteTrackerActionСancel()
+		let cancelActionTitle = self.localizable.alertDeleteTrackerActionCancel()
 		let cancelActionModel = AlertActionModel(title: cancelActionTitle, style: .cancel, completion: nil)
 
 		let message = self.localizable.alertDeleteTrackerMessage()

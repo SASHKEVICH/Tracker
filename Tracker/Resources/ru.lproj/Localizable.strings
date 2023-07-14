@@ -71,4 +71,4 @@
 
 "Alert.deleteTracker.message" = "Уверены, что хотите удалить этот трекер?";
 "Alert.deleteTracker.action.delete" = "Удалить";
-"Alert.deleteTracker.action.сancel" = "Отменить";
+"Alert.deleteTracker.action.cancel" = "Отменить";
