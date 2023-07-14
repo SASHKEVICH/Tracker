@@ -40,6 +40,7 @@ final class TrackersViewController: UIViewController {
 		collectionView.bounces = true
 		collectionView.isScrollEnabled = true
 		collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 90, right: 0)
+		collectionView.backgroundColor = .Dynamic.whiteDay
 		collectionView.register(
 			TrackersCollectionViewCell.self,
 			forCellWithReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier)

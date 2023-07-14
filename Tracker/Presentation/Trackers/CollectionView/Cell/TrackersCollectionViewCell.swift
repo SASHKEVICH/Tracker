@@ -73,7 +73,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 	private lazy var pinnedImageView: UIImageView = {
 		let imageView = UIImageView(image: .MainScreen.pinned)
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.tintColor = .Dynamic.whiteDay
+		imageView.tintColor = .white
 		imageView.contentMode = .center
 		imageView.isHidden = !self.isPinned
 		return imageView
