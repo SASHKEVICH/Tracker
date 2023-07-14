@@ -13,34 +13,47 @@ protocol AlertPresenterServiceDelegate: AnyObject {
 
 protocol AlertPresenterSerivceProtocol {
     var delegate: AlertPresenterServiceDelegate? { get set }
-    func requestAlert(_ alertModel: AlertModel)
+	func requestChosenFutureDateAlert()
 }
 
 // MARK: - AlertPresenterService
 struct AlertPresenterService {
     weak var delegate: AlertPresenterServiceDelegate?
+	private let localizable = R.string.localizable
 }
 
 // MARK: - AlertPresenterSerivceProtocol
 extension AlertPresenterService: AlertPresenterSerivceProtocol {
-    func requestAlert(_ alertModel: AlertModel) {
-        guard let delegate = delegate else { return }
-        let alertController = UIAlertController(
-            title: alertModel.title,
-            message: alertModel.message,
-            preferredStyle: .alert)
-        
-        guard let titles = alertModel.actionTitles else {
-            delegate.didRecieve(alert: alertController)
-            return
-        }
-        
-        for (index, title) in titles.enumerated() {
-            let handler = alertModel.completions?[safe: index]
-            let action = UIAlertAction(title: title, style: .default, handler: handler)
-            action.accessibilityIdentifier = title
-            alertController.addAction(action)
-        }
-        delegate.didRecieve(alert: alertController)
-    }
+	func requestChosenFutureDateAlert() {
+		let title = self.localizable.alertChosenFutureDateTitle()
+		let message = self.localizable.alertChosenFutureDateMessage()
+		let actionTitle = self.localizable.alertChosenFutureDateActionOk()
+
+		let model = AlertModel(title: title, message: message, actionTitles: [actionTitle])
+		self.requestAlert(with: model, prefferedStyle: .alert)
+	}
+}
+
+private extension AlertPresenterService {
+	func requestAlert(with alertModel: AlertModel, prefferedStyle: UIAlertController.Style) {
+		guard let delegate = self.delegate else { return }
+		let alertController = UIAlertController(
+			title: alertModel.title,
+			message: alertModel.message,
+			preferredStyle: prefferedStyle
+		)
+
+		guard let titles = alertModel.actionTitles else {
+			delegate.didRecieve(alert: alertController)
+			return
+		}
+
+		for (index, title) in titles.enumerated() {
+			let handler = alertModel.completions?[safe: index]
+			let action = UIAlertAction(title: title, style: .default, handler: handler)
+			action.accessibilityIdentifier = title
+			alertController.addAction(action)
+		}
+		delegate.didRecieve(alert: alertController)
+	}
 }

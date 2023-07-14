@@ -70,6 +70,9 @@ private extension TrackersViewControllerSetupper {
 			trackersCategoryFactory: trackersCategoryFactory
 		) else { return nil }
 
+		var alertPresenterService = AlertPresenterService()
+		alertPresenterService.delegate = self.trackersViewController
+
 		let analyticsService = AnalyticsService()
 
 		let presenter = TrackersViewPresenter(
@@ -79,6 +82,7 @@ private extension TrackersViewControllerSetupper {
 			trackersRecordService: recordService,
 			trackersPinningService: pinningService,
 			router: router,
+			alertPresenterService: alertPresenterService,
 			analyticsService: analyticsService
 		)
 

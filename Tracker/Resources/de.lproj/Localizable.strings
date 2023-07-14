@@ -64,3 +64,7 @@
 "WeekDay.friday.short" = "Fr";
 "WeekDay.saturday.short" = "Sa";
 "WeekDay.sunday.short" = "So";
+
+"Alert.chosenFutureDate.title" = "Falsches Datum";
+"Alert.chosenFutureDate.message" = "Sie markieren den Tracker in der Zukunft >:[";
+"Alert.chosenFutureDate.action.ok" = "OK";

@@ -85,6 +85,7 @@ final class TrackersViewPresenter {
 	private let trackersRecordService: TrackersRecordServiceProtocol
 	private let trackersPinningService: TrackersPinningServiceProtocol
 	private let router: TrackersViewRouterProtocol
+	private let alertPresenterService: AlertPresenterSerivceProtocol
     
     private var state: TrackersViewPresenterState = .normal
 	private var trackers: [Tracker] = []
@@ -96,6 +97,7 @@ final class TrackersViewPresenter {
 		trackersRecordService: TrackersRecordServiceProtocol,
 		trackersPinningService: TrackersPinningServiceProtocol,
 		router: TrackersViewRouterProtocol,
+		alertPresenterService: AlertPresenterSerivceProtocol,
 		analyticsService: AnalyticsServiceProtocol
 	) {
         self.trackersService = trackersService
@@ -104,6 +106,7 @@ final class TrackersViewPresenter {
 		self.trackersRecordService = trackersRecordService
 		self.trackersPinningService = trackersPinningService
 		self.router = router
+		self.alertPresenterService = alertPresenterService
 		self.analyticsService = analyticsService
     }
 }
@@ -203,12 +206,7 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 	}
     
     func requestChosenFutureDateAlert() {
-        let alertPresenter = AlertPresenterService(delegate: view)
-        let alertModel = AlertModel(
-            title: "Некорректная дата",
-            message: "Вы отмечаете трекер в будущем >:[",
-            actionTitles: ["OK"])
-		alertPresenter.requestAlert(alertModel)
+		self.alertPresenterService.requestChosenFutureDateAlert()
     }
 
 	func complete(tracker: Tracker) throws {

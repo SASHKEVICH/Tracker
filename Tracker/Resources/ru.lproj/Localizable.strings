@@ -64,3 +64,7 @@
 "WeekDay.friday.short" = "Пт";
 "WeekDay.saturday.short" = "Сб";
 "WeekDay.sunday.short" = "Вс";
+
+"Alert.chosenFutureDate.title" = "Некорректная дата";
+"Alert.chosenFutureDate.message" = "Вы отмечаете трекер в будущем >:[";
+"Alert.chosenFutureDate.action.ok" = "OK";
