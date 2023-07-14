@@ -10,85 +10,16 @@ import UIKit
 final class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-		guard let trackersViewController = self.setupTrackersViewController() else { return }
 
-		let statisticsViewController = self.setupStatisticsViewController()
+		let trackersSetupper = TrackersViewControllerSetupper()
+		guard let trackersViewController = trackersSetupper.getViewController() else { return }
+
+		let statisticsSetupper = StatisticsViewControllerSetupper()
+		let statisticsViewController = statisticsSetupper.getViewController()
+
 		self.viewControllers = [trackersViewController, statisticsViewController]
         
 		self.setupTabBar()
-    }
-}
-
-// MARK: - Setup view controllers
-private extension TabBarViewController {
-    func setupTrackersViewController() -> UINavigationController? {
-        let trackersViewController = TrackersViewController()
-
-		let trackersFactory = TrackersFactory()
-		let trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
-
-		let pinnedCategoryService = TrackersPinnedCategoryService(trackersCategoryFactory: trackersCategoryFactory)
-		pinnedCategoryService?.checkPinnedCategory()
-
-		guard let trackersService = TrackersService(trackersFactory: trackersFactory),
-			  let trackersAddingService = TrackersAddingService(trackersFactory: trackersFactory),
-			  let completingService = TrackersCompletingService(),
-			  let recordService = TrackersRecordService()
-		else {
-			assertionFailure("Cannot init services")
-			return nil
-		}
-
-		guard let id = pinnedCategoryService?.pinnedCategoryId,
-			  let pinningService = TrackersPinningService(pinnedCategoryId: id, trackersFactory: trackersFactory)
-		else {
-			assertionFailure("Cannot pinning service")
-			return nil
-		}
-
-		let router = TrackersViewRouter(viewController: trackersViewController)
-		let analyticsService = AnalyticsService()
-
-        let presenter = TrackersViewPresenter(
-            trackersService: trackersService,
-			trackersAddingService: trackersAddingService,
-			trackersCompletingService: completingService,
-			trackersRecordService: recordService,
-			trackersPinningService: pinningService,
-			router: router,
-			analyticsService: analyticsService
-		)
-        
-        trackersViewController.presenter = presenter
-        presenter.view = trackersViewController
-
-		let title = R.string.localizable.tabbarTracker()
-        trackersViewController.tabBarItem = UITabBarItem(
-            title: title,
-            image: .TabBar.trackers,
-            selectedImage: nil)
-        
-        let navigationController = UINavigationController(
-            rootViewController: trackersViewController
-		)
-        navigationController.navigationBar.prefersLargeTitles = true
-        
-        return navigationController
-    }
-    
-    func setupStatisticsViewController() -> UINavigationController {
-        let statisticsViewController = StatisticsViewController()
-        let navigationController = UINavigationController(
-            rootViewController: statisticsViewController)
-        navigationController.navigationBar.prefersLargeTitles = true
-
-		let title = R.string.localizable.tabbarStatistics()
-        statisticsViewController.tabBarItem = UITabBarItem(
-            title: title,
-			image: .TabBar.statistics,
-            selectedImage: nil)
-        return navigationController
     }
 }
 

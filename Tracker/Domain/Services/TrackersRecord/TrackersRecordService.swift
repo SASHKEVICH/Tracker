@@ -5,7 +5,7 @@
 //  Created by Александр Бекренев on 07.07.2023.
 //
 
-import UIKit
+import Foundation
 
 protocol TrackersRecordServiceProtocol {
 	func fetchCompletedRecords(date: Date) -> [TrackerRecord]
@@ -15,18 +15,12 @@ protocol TrackersRecordServiceProtocol {
 struct TrackersRecordService {
 	private let trackersRecordDataFetcher: TrackersRecordDataFetcherProtocol
 
-	init?() {
-		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-			  let trackersRecordDataStore = appDelegate.trackersRecordDataStore
-		else {
-			assertionFailure("Cannot activate data stores")
-			return nil
-		}
-
-		self.trackersRecordDataFetcher = TrackersRecordDataFetcher(trackersRecordDataStore: trackersRecordDataStore)
+	init(trackersRecordDataFetcher: TrackersRecordDataFetcherProtocol) {
+		self.trackersRecordDataFetcher = trackersRecordDataFetcher
 	}
 }
 
+// MARK: - TrackersRecordServiceProtocol
 extension TrackersRecordService: TrackersRecordServiceProtocol {
 	func fetchCompletedRecords(date: Date) -> [TrackerRecord] {
 		let trackerRecordsCoreData = trackersRecordDataFetcher.fetchCompletedRecords(date: date)

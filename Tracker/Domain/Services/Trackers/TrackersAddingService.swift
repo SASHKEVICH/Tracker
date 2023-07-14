@@ -24,26 +24,13 @@ struct TrackersAddingService {
 	private let trackersDataAdder: TrackersDataAdderProtocol
 	private let trackersFactory: TrackersFactory
 
-	init?(trackersFactory: TrackersFactory) {
-		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-			  let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore,
-			  let trackersDataStore = appDelegate.trackersDataStore
-		else {
-			assertionFailure("Cannot activate data stores")
-			return nil
-		}
-
+	init(trackersFactory: TrackersFactory, trackersDataAdder: TrackersDataAdderProtocol) {
 		self.trackersFactory = trackersFactory
-
-		let trackersDataAdder = TrackersDataAdder(
-			trackersCategoryDataStore: trackersCategoryDataStore,
-			trackersDataStore: trackersDataStore,
-			trackersFactory: trackersFactory
-		)
 		self.trackersDataAdder = trackersDataAdder
 	}
 }
 
+// MARK: - TrackersAddingServiceProtocol
 extension TrackersAddingService: TrackersAddingServiceProtocol {
 	func addTracker(
 		title: String,

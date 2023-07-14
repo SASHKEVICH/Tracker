@@ -15,9 +15,17 @@ protocol TrackerAddingRouterProtocol {
 
 final class TrackerAddingRouter {
 	private weak var viewController: UIViewController?
+	private let trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol
+	private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
 
-	init(viewController: UIViewController) {
+	init(
+		viewController: UIViewController,
+		trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol,
+		trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
+	) {
 		self.viewController = viewController
+		self.trackersCategoryDataProvider = trackersCategoryDataProvider
+		self.trackersCategoryDataAdder = trackersCategoryDataAdder
 	}
 }
 
@@ -36,15 +44,16 @@ extension TrackerAddingRouter: TrackerAddingRouterProtocol {
 	}
 
 	func navigateToCategoryScreen() {
-		let categoryFactory = TrackersCategoryFactory(trackersFactory: TrackersFactory())
-		guard let trackersCategoryService = TrackersCategoryService(trackersCategoryFactory: categoryFactory) else {
-			assertionFailure("Cannot init service")
-			return
-		}
+		let trackersFactory = TrackersFactory()
+		let categoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
+		let trackersCategoryService = TrackersCategoryService(
+			trackersCategoryFactory: categoryFactory,
+			trackersCategoryDataProvider: self.trackersCategoryDataProvider
+		)
 
 		let viewModel = TrackerCategoryViewModel(trackersCategoryService: trackersCategoryService)
 		let helper = TrackerCategoryTableViewHelper()
-		let router = TrackerCategoryRouter()
+		let router = TrackerCategoryRouter(trackersCategoryDataAdder: self.trackersCategoryDataAdder)
 
 		let vc = TrackerCategoryViewController(viewModel: viewModel, helper: helper, router: router)
 		vc.delegate = self.viewController as? TrackerCategoryViewControllerDelegate

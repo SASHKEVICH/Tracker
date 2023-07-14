@@ -26,6 +26,8 @@
 		96251DF92A5FF72400E13596 /* TrackersPinnedCategoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96251DF82A5FF72400E13596 /* TrackersPinnedCategoryService.swift */; };
 		96251DFF2A60504800E13596 /* TrackersPinningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96251DFE2A60504800E13596 /* TrackersPinningService.swift */; };
 		96251E022A6050F900E13596 /* TrackersDataPinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96251E012A6050F900E13596 /* TrackersDataPinner.swift */; };
+		96251E042A61119000E13596 /* StatisticsViewControllerSetupper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96251E032A61119000E13596 /* StatisticsViewControllerSetupper.swift */; };
+		96251E072A61120A00E13596 /* TrackersViewControllerSetupper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96251E062A61120900E13596 /* TrackersViewControllerSetupper.swift */; };
 		9629563729CD846900A587C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9629563629CD846900A587C5 /* AppDelegate.swift */; };
 		9629563929CD846900A587C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9629563829CD846900A587C5 /* SceneDelegate.swift */; };
 		9629563B29CD846900A587C5 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9629563A29CD846900A587C5 /* TrackersViewController.swift */; };
@@ -145,6 +147,8 @@
 		96251DF82A5FF72400E13596 /* TrackersPinnedCategoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersPinnedCategoryService.swift; sourceTree = "<group>"; };
 		96251DFE2A60504800E13596 /* TrackersPinningService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersPinningService.swift; sourceTree = "<group>"; };
 		96251E012A6050F900E13596 /* TrackersDataPinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersDataPinner.swift; sourceTree = "<group>"; };
+		96251E032A61119000E13596 /* StatisticsViewControllerSetupper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewControllerSetupper.swift; sourceTree = "<group>"; };
+		96251E062A61120900E13596 /* TrackersViewControllerSetupper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewControllerSetupper.swift; sourceTree = "<group>"; };
 		9629563329CD846900A587C5 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9629563629CD846900A587C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9629563829CD846900A587C5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -663,6 +667,8 @@
 			isa = PBXGroup;
 			children = (
 				96E63F4C29D735D500AA0970 /* TabBarViewController.swift */,
+				96251E032A61119000E13596 /* StatisticsViewControllerSetupper.swift */,
+				96251E062A61120900E13596 /* TrackersViewControllerSetupper.swift */,
 			);
 			path = TabBarController;
 			sourceTree = "<group>";
@@ -993,12 +999,14 @@
 				96CE2AC62A409BCA002A08F0 /* TrackerCategoryTableViewCell.swift in Sources */,
 				96C7E76529E65ED200BA7F67 /* AlertPresenterService.swift in Sources */,
 				96A606D92A3C4D34007C5262 /* OnboardingConstants.swift in Sources */,
+				96251E072A61120A00E13596 /* TrackersViewControllerSetupper.swift in Sources */,
 				969CDB8A2A58447B001EDB8B /* TrackersCategoryFactory.swift in Sources */,
 				9661855329F1746E0003C57A /* Date+Extensions.swift in Sources */,
 				968A7E702A1E2013007D75A5 /* OnboardingPageViewController.swift in Sources */,
 				96251DF62A5FC69A00E13596 /* AnalyticsService.swift in Sources */,
 				969CDB6C2A57CFD6001EDB8B /* UIEdgeInsets+TableViewSeparatorInsets.swift in Sources */,
 				96251DF92A5FF72400E13596 /* TrackersPinnedCategoryService.swift in Sources */,
+				96251E042A61119000E13596 /* StatisticsViewControllerSetupper.swift in Sources */,
 				9617C96B29DD88860054987D /* CompleteTrackerButton.swift in Sources */,
 				969509B52A21D0DC00DC1DF3 /* UIImage+Extensions.swift in Sources */,
 				9617C96629DD77180054987D /* Device.swift in Sources */,

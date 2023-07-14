@@ -11,15 +11,23 @@ protocol TrackerCategoryRouterProtocol {
 	func navigateToNewCategoryScreen(from viewController: TrackerCategoryViewController)
 }
 
-final class TrackerCategoryRouter {}
+final class TrackerCategoryRouter {
+	private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
+
+	init(trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol) {
+		self.trackersCategoryDataAdder = trackersCategoryDataAdder
+	}
+}
 
 // MARK: - TrackerCategoryRouterProtocol
 extension TrackerCategoryRouter: TrackerCategoryRouterProtocol {
 	func navigateToNewCategoryScreen(from viewController: TrackerCategoryViewController) {
-		let trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: TrackersFactory())
-		guard let addingService = TrackersCategoryAddingService(trackersCategoryFactory: trackersCategoryFactory) else {
-			return
-		}
+		let trackersFactory = TrackersFactory()
+		let trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
+		let addingService = TrackersCategoryAddingService(
+			trackersCategoryFactory: trackersCategoryFactory,
+			trackersCategoryDataAdder: self.trackersCategoryDataAdder
+		)
 
 		let viewModel = TrackerNewCategoryViewModel(trackersCategoryAddingService: addingService)
 		let vc = TrackerNewCategoryViewController(viewModel: viewModel)

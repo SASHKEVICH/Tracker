@@ -5,7 +5,7 @@
 //  Created by Александр Бекренев on 07.07.2023.
 //
 
-import UIKit
+import Foundation
 
 protocol TrackersCompletingServiceProtocol {
 	func completeTracker(trackerId id: UUID, date: Date)
@@ -15,18 +15,12 @@ protocol TrackersCompletingServiceProtocol {
 struct TrackersCompletingService {
 	private let trackersDataCompleter: TrackersDataCompleterProtocol
 
-	init?() {
-		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-			  let trackersRecordDataStore = appDelegate.trackersRecordDataStore
-		else {
-			assertionFailure("Cannot activate data store")
-			return nil
-		}
-
-		self.trackersDataCompleter = TrackersDataCompleter(trackerRecordDataStore: trackersRecordDataStore)
+	init(trackersDataCompleter: TrackersDataCompleterProtocol) {
+		self.trackersDataCompleter = trackersDataCompleter
 	}
 }
 
+// MARK: - TrackersCompletingServiceProtocol
 extension TrackersCompletingService: TrackersCompletingServiceProtocol {
 	func completeTracker(trackerId: UUID, date: Date) {
 		self.trackersDataCompleter.completeTracker(with: trackerId.uuidString, date: date)

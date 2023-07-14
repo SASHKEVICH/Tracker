@@ -14,12 +14,24 @@ protocol TrackerTypeRouterProtocol {
 
 final class TrackerTypeRouter {
 	private weak var viewController: TrackerTypeViewController?
+	private let trackersDataAdder: TrackersDataAdderProtocol
+	private let trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol
+	private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
 
-	init(viewController: TrackerTypeViewController) {
+	init(
+		viewController: TrackerTypeViewController,
+		trackersDataAdder: TrackersDataAdderProtocol,
+		trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol,
+		trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
+	) {
 		self.viewController = viewController
+		self.trackersDataAdder = trackersDataAdder
+		self.trackersCategoryDataProvider = trackersCategoryDataProvider
+		self.trackersCategoryDataAdder = trackersCategoryDataAdder
 	}
 }
 
+// MARK: - TrackerTypeRouterProtocol
 extension TrackerTypeRouter: TrackerTypeRouterProtocol {
 	func navigateToTrackerScreen() {
 		self.presentAddingViewController(trackerType: .tracker)
@@ -32,14 +44,21 @@ extension TrackerTypeRouter: TrackerTypeRouterProtocol {
 
 private extension TrackerTypeRouter {
 	func presentAddingViewController(trackerType: Tracker.TrackerType) {
-		guard let addingService = TrackersAddingService(trackersFactory: TrackersFactory()) else {
-			assertionFailure("Cannot init trackers adding service")
-			return
-		}
+		let factory = TrackersFactory()
+		let addingService = TrackersAddingService(trackersFactory: factory, trackersDataAdder: self.trackersDataAdder)
 
 		let vc = TrackerAddingViewController()
-		let router = TrackerAddingRouter(viewController: vc)
-		let presenter = TrackerAddingViewPresenter(trackersAddingService: addingService, router: router, trackerType: trackerType)
+		let router = TrackerAddingRouter(
+			viewController: vc,
+			trackersCategoryDataProvider: self.trackersCategoryDataProvider,
+			trackersCategoryDataAdder: self.trackersCategoryDataAdder
+		)
+
+		let presenter = TrackerAddingViewPresenter(
+			trackersAddingService: addingService,
+			router: router,
+			trackerType: trackerType
+		)
 
 		vc.presenter = presenter
 		presenter.view = vc

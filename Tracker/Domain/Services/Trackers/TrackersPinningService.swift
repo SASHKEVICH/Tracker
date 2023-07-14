@@ -25,25 +25,13 @@ struct TrackersPinningService {
 
 	private var trackersDataPinner: TrackersDataPinnerProtocol
 	private let trackersFactory: TrackersFactory
-	private let pinnedCategoryId: UUID
 
-	init?(pinnedCategoryId: UUID, trackersFactory: TrackersFactory) {
-		self.pinnedCategoryId = pinnedCategoryId
+	init(
+		trackersFactory: TrackersFactory,
+		trackersDataPinner: TrackersDataPinnerProtocol
+	) {
 		self.trackersFactory = trackersFactory
-
-		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-			  let trackersDataStore = appDelegate.trackersDataStore,
-			  let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore
-		else {
-			assertionFailure("Cannot activate data store")
-			return nil
-		}
-
-		self.trackersDataPinner = TrackersDataPinner(
-			pinnedCategoryId: self.pinnedCategoryId,
-			trackersDataStore: trackersDataStore,
-			trackersCategoryDataStore: trackersCategoryDataStore
-		)
+		self.trackersDataPinner = trackersDataPinner
 	}
 }
 

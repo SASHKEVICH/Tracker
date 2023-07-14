@@ -5,7 +5,7 @@
 //  Created by Александр Бекренев on 13.07.2023.
 //
 
-import UIKit
+import Foundation
 
 protocol TrackersPinnedCategoryServiceProtocol {
 	var pinnedCategoryId: UUID? { get }
@@ -19,14 +19,7 @@ struct TrackersPinnedCategoryService {
 	private let trackersCategoryDataStore: TrackersCategoryDataStore
 	private let trackersCategoryFactory: TrackersCategoryFactory
 
-	init?(trackersCategoryFactory: TrackersCategoryFactory) {
-		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-			  let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore
-		else {
-			assertionFailure("Cannot activate data stores")
-			return nil
-		}
-
+	init?(trackersCategoryFactory: TrackersCategoryFactory, trackersCategoryDataStore: TrackersCategoryDataStore) {
 		self.trackersCategoryDataStore = trackersCategoryDataStore
 		self.trackersCategoryFactory = trackersCategoryFactory
 	}

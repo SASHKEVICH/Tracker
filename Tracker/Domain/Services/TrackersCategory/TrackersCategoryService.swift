@@ -5,7 +5,7 @@
 //  Created by Александр Бекренев on 16.06.2023.
 //
 
-import UIKit
+import Foundation
 
 protocol TrackersCategoryServiceProtocol {
 	var numberOfSections: Int { get }
@@ -25,18 +25,9 @@ struct TrackersCategoryService {
 	private var trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol
 	private let trackersCategoryFactory: TrackersCategoryFactory
 
-	init?(trackersCategoryFactory: TrackersCategoryFactory) {
-		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-			  let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore
-		else {
-			assertionFailure("Cannot activate data store")
-			return nil
-		}
-
+	init(trackersCategoryFactory: TrackersCategoryFactory, trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol) {
 		self.trackersCategoryFactory = trackersCategoryFactory
-		self.trackersCategoryDataProvider = TrackersCategoryDataProvider(
-			context: trackersCategoryDataStore.managedObjectContext
-		)
+		self.trackersCategoryDataProvider = trackersCategoryDataProvider
 	}
 }
 
