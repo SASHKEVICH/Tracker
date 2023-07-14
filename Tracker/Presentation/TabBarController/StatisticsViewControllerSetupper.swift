@@ -10,8 +10,7 @@ import UIKit
 struct StatisticsViewControllerSetupper {
 	func getViewController() -> UINavigationController {
 		let statisticsViewController = StatisticsViewController()
-		let navigationController = UINavigationController(
-			rootViewController: statisticsViewController)
+		let navigationController = UINavigationController(rootViewController: statisticsViewController)
 		navigationController.navigationBar.prefersLargeTitles = true
 
 		let title = R.string.localizable.tabbarStatistics()

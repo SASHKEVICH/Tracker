@@ -83,18 +83,7 @@ extension ColorsCollectionViewHelper {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-		let indexPath = IndexPath(row: 0, section: section)
-		let headerView = self.collectionView(
-			collectionView,
-			viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath
-		)
-
-		let size = CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height)
-		return headerView.systemLayoutSizeFitting(
-			size,
-			withHorizontalFittingPriority: .required,
-			verticalFittingPriority: .fittingSizeLevel
-		)
+		CGSize(width: collectionView.frame.width, height: 46)
     }
 }
 

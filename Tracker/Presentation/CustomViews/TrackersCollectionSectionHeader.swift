@@ -8,13 +8,6 @@
 import UIKit
 
 final class TrackersCollectionSectionHeader: UICollectionReusableView {
-	private let headerLabel: UILabel = {
-		let label = UILabel()
-		label.translatesAutoresizingMaskIntoConstraints = false
-		label.font = .Bold.small
-		return label
-	}()
-    
     static let reuseIdentifier = String(describing: TrackersCollectionSectionHeader.self)
     
     var headerText: String? {
@@ -23,6 +16,13 @@ final class TrackersCollectionSectionHeader: UICollectionReusableView {
 			self.headerLabel.sizeToFit()
         }
     }
+
+	private let headerLabel: UILabel = {
+		let label = UILabel()
+		label.translatesAutoresizingMaskIntoConstraints = false
+		label.font = .Bold.small
+		return label
+	}()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

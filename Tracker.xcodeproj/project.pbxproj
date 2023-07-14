@@ -706,8 +706,8 @@
 		96F7031E29F979CD00BBFF5C /* ColorsCollectionView */ = {
 			isa = PBXGroup;
 			children = (
-				96F7031729F9798B00BBFF5C /* ColorsCollectionViewCell.swift */,
 				96F7032429FA44F900BBFF5C /* ColorsCollectionViewHelper.swift */,
+				96F7031729F9798B00BBFF5C /* ColorsCollectionViewCell.swift */,
 			);
 			path = ColorsCollectionView;
 			sourceTree = "<group>";
