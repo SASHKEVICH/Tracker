@@ -81,7 +81,7 @@ extension EmojisCollectionViewHelper {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-		CGSize(width: collectionView.frame.width, height: 46)
+		CGSize(width: collectionView.frame.width, height: 50)
     }
 }
 
