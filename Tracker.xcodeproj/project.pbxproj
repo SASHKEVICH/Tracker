@@ -353,6 +353,9 @@
 		96526ADB29D4A51F00329D34 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				966DD3BA29EA74A900296CDF /* TrackerSchedule */,
+				96CE2ABF2A4098A9002A08F0 /* TrackerNewCategory */,
+				96E316872A40517000C08032 /* TrackerCategory */,
 				968A7E6B2A1E1F50007D75A5 /* Onboarding */,
 				96F7032D29FA7A5200BBFF5C /* CustomViews */,
 				96C7E76F29E917E700BA7F67 /* TrackerAdding */,
@@ -586,10 +589,12 @@
 		96C7E76F29E917E700BA7F67 /* TrackerAdding */ = {
 			isa = PBXGroup;
 			children = (
-				96CE2ABF2A4098A9002A08F0 /* TrackerNewCategory */,
-				96E316872A40517000C08032 /* TrackerCategory */,
-				96E316862A40514000C08032 /* TrackerAdding */,
-				966DD3BA29EA74A900296CDF /* TrackerSchedule */,
+				966DD3B229E9BB2800296CDF /* TrackerAddingViewPresenter.swift */,
+				968C17602A5BAB8000769FC3 /* TrackerAddingRouter.swift */,
+				96C7E77029E9186B00BA7F67 /* TrackerAddingViewController.swift */,
+				966DD3AE29E9BA8600296CDF /* TrackerOptionsTableView */,
+				9654A96E29ED70E600B4A718 /* TrackerTitleTextField */,
+				96F7031329F9795500BBFF5C /* TrackerAddingCollectionViews */,
 				966DD3B429E9BB3C00296CDF /* CustomViews */,
 			);
 			path = TrackerAdding;
@@ -628,19 +633,6 @@
 				9654A97129EE605400B4A718 /* Constants */,
 			);
 			path = UI;
-			sourceTree = "<group>";
-		};
-		96E316862A40514000C08032 /* TrackerAdding */ = {
-			isa = PBXGroup;
-			children = (
-				966DD3B229E9BB2800296CDF /* TrackerAddingViewPresenter.swift */,
-				968C17602A5BAB8000769FC3 /* TrackerAddingRouter.swift */,
-				96C7E77029E9186B00BA7F67 /* TrackerAddingViewController.swift */,
-				966DD3AE29E9BA8600296CDF /* TrackerOptionsTableView */,
-				9654A96E29ED70E600B4A718 /* TrackerTitleTextField */,
-				96F7031329F9795500BBFF5C /* TrackerAddingCollectionViews */,
-			);
-			path = TrackerAdding;
 			sourceTree = "<group>";
 		};
 		96E316872A40517000C08032 /* TrackerCategory */ = {
