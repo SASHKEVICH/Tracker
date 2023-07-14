@@ -12,6 +12,7 @@ final class TrackerCustomButton: UIButton {
 		case cancel
 		case normal
 		case disabled
+		case filter
 	}
 
 	var buttonState: TrackerCustomButton.State {
@@ -50,6 +51,8 @@ private extension TrackerCustomButton {
 			self.setNormalState()
         case .disabled:
 			self.setDisabledState()
+		case .filter:
+			self.setFilterState()
         }
     }
     
@@ -65,26 +68,35 @@ private extension TrackerCustomButton {
         border.fillColor = nil
         border.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: layer.cornerRadius).cgPath
         self.layer.addSublayer(border)
-        
-		self.setAttributedButtonTitle(with: color)
+
+		let font = UIFont.Medium.big
+		self.setAttributedButtonTitle(with: color, font: font)
     }
     
     func setNormalState() {
         self.isEnabled = true
 		self.layer.backgroundColor = UIColor.Dynamic.blackDay.cgColor
-        
-		self.setAttributedButtonTitle(with: .Dynamic.whiteDay)
+
+		let font = UIFont.Medium.big
+		self.setAttributedButtonTitle(with: .Dynamic.whiteDay, font: font)
     }
     
     func setDisabledState() {
         self.isEnabled = false
 		self.layer.backgroundColor = UIColor.Static.gray.cgColor
-        
-		self.setAttributedButtonTitle(with: .white)
-    }
-    
-	func setAttributedButtonTitle(with color: UIColor) {
+
 		let font = UIFont.Medium.big
+		self.setAttributedButtonTitle(with: .white, font: font)
+    }
+
+	func setFilterState() {
+		self.layer.backgroundColor = UIColor.Static.blue.cgColor
+
+		let font = UIFont.Regular.medium
+		self.setAttributedButtonTitle(with: .white, font: font)
+	}
+    
+	func setAttributedButtonTitle(with color: UIColor, font: UIFont) {
         let attributedTitle = NSAttributedString(
             string: title,
 			attributes: [NSAttributedString.Key.font: font,

@@ -21,6 +21,8 @@
 "Trackers.collectionView.action.edit" = "Редактировать";
 "Trackers.collectionView.action.delete" = "Удалить";
 
+"Trackers.filterButton.title" = "Фильтры";
+
 "PlaceholderView.emptyForDay.textLabel.text" = "Что будем отслеживать?";
 "PlaceholderView.emptySearch.textLabel.text" = "Ничего не найдено";
 "PlaceholderView.emptyCategories.textLabel.text" = "Привычки и события можно \n объединить по смыслу";

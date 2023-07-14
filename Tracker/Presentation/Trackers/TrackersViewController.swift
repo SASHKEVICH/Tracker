@@ -37,6 +37,9 @@ final class TrackersViewController: UIViewController {
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
 		collectionView.delegate = self.presenter?.collectionHelper
 		collectionView.dataSource = self.presenter?.collectionHelper
+		collectionView.bounces = true
+		collectionView.isScrollEnabled = true
+		collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 90, right: 0)
 		collectionView.register(
 			TrackersCollectionViewCell.self,
 			forCellWithReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier)
@@ -54,6 +57,14 @@ final class TrackersViewController: UIViewController {
 		search.obscuresBackgroundDuringPresentation = false
 		search.searchBar.placeholder = R.string.localizable.trackersSearchControllerPlaceholder()
 		return search
+	}()
+
+	private lazy var filterButton: TrackerCustomButton = {
+		let title = R.string.localizable.trackersFilterButtonTitle()
+		let button = TrackerCustomButton(state: .filter, title: title)
+		button.translatesAutoresizingMaskIntoConstraints = false
+		button.addTarget(self, action: #selector(self.didTapFilterButton), for: .touchUpInside)
+		return button
 	}()
 	
 	private let collectionPlaceholderView = {
@@ -161,15 +172,16 @@ extension TrackersViewController: AlertPresenterServiceDelegate {
 private extension TrackersViewController {
 	func addSubviews() {
 		self.view.addSubview(self.trackersCollectionView)
-		self.view.insertSubview(self.collectionPlaceholderView, aboveSubview: self.trackersCollectionView)
+		self.view.addSubview(self.filterButton)
+		self.view.insertSubview(self.collectionPlaceholderView, aboveSubview: self.filterButton)
 	}
 
 	func addConstraints() {
 		NSLayoutConstraint.activate([
-			trackersCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-			trackersCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 			trackersCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-			trackersCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+			trackersCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+			trackersCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+			trackersCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 		])
 
 		NSLayoutConstraint.activate([
@@ -177,6 +189,13 @@ private extension TrackersViewController {
 			collectionPlaceholderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
 			collectionPlaceholderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 			collectionPlaceholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+		])
+
+		NSLayoutConstraint.activate([
+			filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+			filterButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 114),
+			filterButton.heightAnchor.constraint(equalToConstant: 50),
+			filterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 		])
 	}
 }
@@ -225,5 +244,10 @@ private extension TrackersViewController {
 	@objc
 	func didCurrentDateValueChanged(_ datePicker: UIDatePicker) {
 		self.presenter?.requestTrackers(for: datePicker.date)
+	}
+
+	@objc
+	func didTapFilterButton() {
+		print(#function)
 	}
 }

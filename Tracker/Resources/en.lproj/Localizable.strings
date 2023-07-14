@@ -21,6 +21,8 @@
 "Trackers.collectionView.action.edit" = "Edit";
 "Trackers.collectionView.action.delete" = "Delete";
 
+"Trackers.filterButton.title" = "Filters";
+
 "PlaceholderView.emptyForDay.textLabel.text" = "What do we gonna track?";
 "PlaceholderView.emptySearch.textLabel.text" = "Nothing found";
 "PlaceholderView.emptyCategories.textLabel.text" = "Habbits and events can be \n combined in meaning";
