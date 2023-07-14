@@ -9,8 +9,17 @@ import Foundation
 import CoreData
 
 protocol TrackersDataProviderDelegate: AnyObject {
-	func storeDidUpdate()
 	func fetchDidPerformed()
+
+	func insertItems(at: [IndexPath])
+	func deleteItems(at: [IndexPath])
+	func moveItems(at: IndexPath, to: IndexPath)
+	func reloadItems(at: [IndexPath])
+	func didChangeContent(operations: [BlockOperation])
+
+	func insertSections(at: IndexSet)
+	func deleteSections(at: IndexSet)
+	func reloadSections(at: IndexSet)
 }
 
 protocol TrackersDataProviderProtocol {
@@ -22,6 +31,7 @@ protocol TrackersDataProviderProtocol {
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay)
     func tracker(at indexPath: IndexPath) -> TrackerCoreData?
     func categoryTitle(at indexPath: IndexPath) -> String?
+	func eraseOperations()
 }
 
 // MARK: - TrackersDataProvider
@@ -29,7 +39,8 @@ final class TrackersDataProvider: NSObject {
 	weak var delegate: TrackersDataProviderDelegate?
 
 	private let context: NSManagedObjectContext
-	
+
+	private var blockOperations: [BlockOperation] = []
 	private var currentWeekDay = Date().weekDay?.englishStringRepresentation
 
 	private lazy var fetchedResultsController: NSFetchedResultsController = {
@@ -62,6 +73,10 @@ final class TrackersDataProvider: NSObject {
 	init(context: NSManagedObjectContext) {
 		self.context = context
     }
+
+	deinit {
+		self.blockOperations.removeAll(keepingCapacity: false)
+	}
 }
 
 // MARK: - TrackersDataProviderProtocol
@@ -103,11 +118,69 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
 		let trackerCoreData = self.fetchedResultsController.object(at: indexPath)
         return trackerCoreData.category.title
     }
+
+	func eraseOperations() {
+		self.blockOperations.removeAll(keepingCapacity: false)
+	}
 }
 
 // MARK: - NSFetchedResultsControllerDelegate
 extension TrackersDataProvider: NSFetchedResultsControllerDelegate {
-	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		self.delegate?.storeDidUpdate()
+	func controller(
+		_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+		didChange anObject: Any,
+		at indexPath: IndexPath?,
+		for type: NSFetchedResultsChangeType,
+		newIndexPath: IndexPath?
+	) {
+		var operation = BlockOperation()
+		switch type {
+		case .insert:
+			guard let newIndexPath = newIndexPath else { return }
+			operation = BlockOperation { self.delegate?.insertItems(at: [newIndexPath]) }
+		case .delete:
+			guard let indexPath = indexPath else { return }
+			operation = BlockOperation { self.delegate?.deleteItems(at: [indexPath]) }
+		case .move:
+			guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+			operation = BlockOperation { self.delegate?.moveItems(at: indexPath, to: newIndexPath) }
+		case .update:
+			guard let indexPath = indexPath else { return }
+			operation = BlockOperation { self.delegate?.reloadItems(at: [indexPath]) }
+		@unknown default:
+			assertionFailure("some fetchedresultscontroller error")
+			break
+		}
+
+		self.blockOperations.append(operation)
 	}
+
+	func controller(
+		_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+		didChange sectionInfo: NSFetchedResultsSectionInfo,
+		atSectionIndex sectionIndex: Int,
+		for type: NSFetchedResultsChangeType
+	) {
+		let indexSet = IndexSet(integer: sectionIndex)
+
+		var operation = BlockOperation()
+		switch type {
+		case .insert:
+			operation = BlockOperation { self.delegate?.insertSections(at: indexSet) }
+		case .delete:
+			operation = BlockOperation { self.delegate?.deleteSections(at: indexSet) }
+		case .update:
+			operation = BlockOperation { self.delegate?.reloadSections(at: indexSet) }
+		default:
+			assertionFailure("some fetchedresultscontroller error")
+			break
+		}
+
+		self.blockOperations.append(operation)
+	}
+
+	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		self.delegate?.didChangeContent(operations: self.blockOperations)
+	}
+
 }

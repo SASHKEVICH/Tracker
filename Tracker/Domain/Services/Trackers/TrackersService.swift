@@ -19,6 +19,7 @@ protocol TrackersServiceFetchingProtocol {
     func fetchTrackers(weekDay: WeekDay)
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay)
     func requestDataProviderErrorAlert()
+	func eraseOperations()
 }
 
 typealias TrackersServiceProtocol = TrackersServiceFetchingProtocol & TrackersServiceDataSourceProtocol
@@ -56,6 +57,10 @@ extension TrackersService: TrackersServiceFetchingProtocol {
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay) {
 		self.trackersDataProvider.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: currentWeekDay)
     }
+
+	func eraseOperations() {
+		self.trackersDataProvider.eraseOperations()
+	}
 }
 
 // MARK: - TrackersServiceDataSourceProtocol

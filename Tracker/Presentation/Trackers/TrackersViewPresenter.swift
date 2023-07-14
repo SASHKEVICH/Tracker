@@ -34,7 +34,7 @@ protocol TrackersViewPresetnerSearchControllerProtocol: AnyObject {
 }
 
 protocol TrackersViewPresenterProtocol: AnyObject {
-    var view: TrackersViewControllerProtocol? { get set }
+    var view: TrackersViewControllerFullProtocol? { get set }
     var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol { get }
     var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol { get }
 	var analyticsService: AnalyticsServiceProtocol { get }
@@ -42,6 +42,7 @@ protocol TrackersViewPresenterProtocol: AnyObject {
     func requestTrackers(for date: Date)
     func viewDidLoad()
 	func navigateToTrackerTypeScreen()
+	func eraseOperations()
 }
 
 typealias TrackersViewPresenterFullProtocol =
@@ -62,7 +63,7 @@ final class TrackersViewPresenter {
 
 	let analyticsService: AnalyticsServiceProtocol
 
-	weak var view: TrackersViewControllerProtocol?
+	weak var view: TrackersViewControllerFullProtocol?
 	var completedTrackersRecords: Set<TrackerRecord> = []
 	var currentDate: Date = Date()
 
@@ -109,6 +110,10 @@ final class TrackersViewPresenter {
 
 // MARK: - TrackersViewPresenterProtocol
 extension TrackersViewPresenter: TrackersViewPresenterProtocol {
+	func eraseOperations() {
+		self.trackersService.eraseOperations()
+	}
+
 	func requestTrackers(for date: Date) {
 		guard let weekDay = date.weekDay else { return }
 		self.currentDate = date
@@ -221,8 +226,37 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 
 // MARK: - TrackersDataProviderDelegate
 extension TrackersViewPresenter: TrackersDataProviderDelegate {
-	func storeDidUpdate() {
-		self.updateTrackers()
+	func insertSections(at: IndexSet) {
+		self.view?.insertSections(at: at)
+	}
+
+	func deleteSections(at: IndexSet) {
+		self.view?.deleteSections(at: at)
+	}
+
+	func reloadSections(at: IndexSet) {
+		self.view?.reloadSections(at: at)
+	}
+
+	func insertItems(at: [IndexPath]) {
+		self.view?.insertItems(at: at)
+	}
+
+	func deleteItems(at: [IndexPath]) {
+		self.view?.deleteItems(at: at)
+	}
+
+	func moveItems(at: IndexPath, to: IndexPath) {
+		self.view?.moveItems(at: at, to: to)
+	}
+
+	func reloadItems(at: [IndexPath]) {
+		self.view?.reloadItems(at: at)
+	}
+
+	func didChangeContent(operations: [BlockOperation]) {
+		self.trackers = self.trackersService.trackers
+		self.view?.didChangeContent(operations: operations)
 	}
 
 	func fetchDidPerformed() {

@@ -9,11 +9,25 @@ import UIKit
 
 protocol TrackersViewControllerProtocol: AnyObject, AlertPresenterServiceDelegate {
 	var presenter: TrackersViewPresenterFullProtocol? { get set }
-    func didRecieveTrackers()
     func showPlaceholderViewForCurrentDay()
     func showPlaceholderViewForEmptySearch()
     func shouldHidePlaceholderView(_ isHide: Bool)
 }
+
+protocol TrackersViewControllerFetchingProtocol {
+	func didRecieveTrackers()
+	func insertItems(at: [IndexPath])
+	func deleteItems(at: [IndexPath])
+	func moveItems(at: IndexPath, to: IndexPath)
+	func reloadItems(at: [IndexPath])
+	func didChangeContent(operations: [BlockOperation])
+
+	func insertSections(at: IndexSet)
+	func deleteSections(at: IndexSet)
+	func reloadSections(at: IndexSet)
+}
+
+typealias TrackersViewControllerFullProtocol = TrackersViewControllerProtocol & TrackersViewControllerFetchingProtocol
 
 final class TrackersViewController: UIViewController {
 	var presenter: TrackersViewPresenterFullProtocol?
@@ -73,32 +87,68 @@ final class TrackersViewController: UIViewController {
 
 // MARK: - TrackersViewControllerProtocol
 extension TrackersViewController: TrackersViewControllerProtocol {
-	func didRecieveTrackers() {
-		self.trackersCollectionView.reloadData()
+	func showPlaceholderViewForCurrentDay() {
+		self.collectionPlaceholderView.set(state: .emptyTrackersForDay)
+		self.shouldHidePlaceholderView(false)
+	}
+
+	func showPlaceholderViewForEmptySearch() {
+		self.collectionPlaceholderView.set(state: .emptyTrackersSearch)
+		self.shouldHidePlaceholderView(false)
+	}
+
+	func shouldHidePlaceholderView(_ shouldHide: Bool) {
+		UIView.transition(
+			with: self.collectionPlaceholderView,
+			duration: 0.3,
+			options: .transitionCrossDissolve
+		) { [weak self] in
+			self?.collectionPlaceholderView.isHidden = shouldHide
+		}
 	}
 }
 
-// MARK: - Control PlaceholderView
-extension TrackersViewController {
-    func showPlaceholderViewForCurrentDay() {
-		self.collectionPlaceholderView.set(state: .emptyTrackersForDay)
-		self.shouldHidePlaceholderView(false)
-    }
-    
-    func showPlaceholderViewForEmptySearch() {
-		self.collectionPlaceholderView.set(state: .emptyTrackersSearch)
-		self.shouldHidePlaceholderView(false)
-    }
-    
-    func shouldHidePlaceholderView(_ shouldHide: Bool) {
-        UIView.transition(
-			with: self.collectionPlaceholderView,
-            duration: 0.3,
-            options: .transitionCrossDissolve
-        ) { [weak self] in
-			self?.collectionPlaceholderView.isHidden = shouldHide
-        }
-    }
+// MARK: - TrackersViewControllerFetchingProtocol
+extension TrackersViewController: TrackersViewControllerFetchingProtocol {
+	func insertSections(at: IndexSet) {
+		self.trackersCollectionView.insertSections(at)
+	}
+
+	func deleteSections(at: IndexSet) {
+		self.trackersCollectionView.deleteSections(at)
+	}
+
+	func reloadSections(at: IndexSet) {
+		self.trackersCollectionView.reloadSections(at)
+	}
+
+	func insertItems(at: [IndexPath]) {
+		self.trackersCollectionView.insertItems(at: at)
+	}
+
+	func deleteItems(at: [IndexPath]) {
+		self.trackersCollectionView.deleteItems(at: at)
+	}
+
+	func moveItems(at: IndexPath, to: IndexPath) {
+		self.trackersCollectionView.moveItem(at: at, to: to)
+	}
+
+	func reloadItems(at: [IndexPath]) {
+		self.trackersCollectionView.reloadItems(at: at)
+	}
+
+	func didChangeContent(operations: [BlockOperation]) {
+		self.trackersCollectionView.performBatchUpdates({
+			operations.forEach { $0.start() }
+		}, completion: { [weak self] finished in
+			self?.presenter?.eraseOperations()
+		})
+	}
+
+	func didRecieveTrackers() {
+		self.trackersCollectionView.reloadData()
+	}
 }
 
 // MARK: - Alert Presenter Delegate

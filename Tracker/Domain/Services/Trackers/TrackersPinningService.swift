@@ -13,7 +13,7 @@ protocol TrackersPinningServiceProtocol {
 }
 
 struct TrackersPinningService {
-	private var trackersDataPinner: TrackersDataPinnerProtocol
+	private let trackersDataPinner: TrackersDataPinnerProtocol
 	private let trackersFactory: TrackersFactory
 
 	init(
