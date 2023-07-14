@@ -59,6 +59,7 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
 			color: color,
 			emoji: emoji,
 			previousCategoryId: categoryId,
+			isPinned: false,
 			schedule: Array(schedule)
 		)
 		try? self.trackersDataAdder.add(tracker: tracker, for: categoryId)

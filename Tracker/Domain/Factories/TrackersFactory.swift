@@ -15,6 +15,7 @@ struct TrackersFactory {
 		color: UIColor,
 		emoji: String,
 		previousCategoryId: UUID,
+		isPinned: Bool,
 		schedule: [WeekDay]
 	) -> Tracker {
 		return Tracker(
@@ -24,6 +25,29 @@ struct TrackersFactory {
 			title: title,
 			color: color,
 			emoji: emoji,
+			isPinned: isPinned,
+			schedule: schedule
+		)
+	}
+
+	func makeTracker(
+		id: UUID,
+		type: Tracker.TrackerType,
+		title: String,
+		color: UIColor,
+		emoji: String,
+		previousCategoryId: UUID,
+		isPinned: Bool,
+		schedule: [WeekDay]
+	) -> Tracker {
+		return Tracker(
+			id: id,
+			previousCategoryId: previousCategoryId,
+			type: type,
+			title: title,
+			color: color,
+			emoji: emoji,
+			isPinned: isPinned,
 			schedule: schedule
 		)
 	}
@@ -45,6 +69,7 @@ struct TrackersFactory {
 			title: trackerCoreData.title,
 			color: color,
 			emoji: trackerCoreData.emoji,
+			isPinned: trackerCoreData.isPinned,
 			schedule: schedule
 		)
 	}
@@ -57,6 +82,7 @@ struct TrackersFactory {
 		trackerCoreData.id = tracker.id.uuidString
 		trackerCoreData.previousCategoryId = tracker.previousCategoryId.uuidString
 		trackerCoreData.type = Int16(tracker.type.rawValue)
+		trackerCoreData.isPinned = tracker.isPinned
 
 		let schedule = tracker.schedule.reduce("") { $0 + ", " + $1.englishStringRepresentation }
 		trackerCoreData.weekDays = schedule

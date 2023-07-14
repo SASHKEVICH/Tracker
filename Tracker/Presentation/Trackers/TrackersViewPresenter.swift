@@ -20,7 +20,7 @@ protocol TrackersViewPresetnerCollectionViewProtocol: AnyObject {
     func didRecievedEmptyTrackers()
     func didRecievedNonEmptyTrackers()
 
-	func didTapPinTracker(shouldPin: Bool)
+	func didTapPinTracker(shouldPin: Bool, _ tracker: Tracker)
 	func didTapEditTracker()
 	func didTapDeleteTracker(_ tracker: Tracker)
     
@@ -82,6 +82,7 @@ final class TrackersViewPresenter {
 	private let trackersAddingService: TrackersAddingServiceProtocol
 	private let trackersCompletingService: TrackersCompletingServiceProtocol
 	private let trackersRecordService: TrackersRecordServiceProtocol
+	private let trackersPinningService: TrackersPinningServiceProtocol
 	private let router: TrackersViewRouterProtocol
     
     private var state: TrackersViewPresenterState = .normal
@@ -92,6 +93,7 @@ final class TrackersViewPresenter {
 		trackersAddingService: TrackersAddingServiceProtocol,
 		trackersCompletingService: TrackersCompletingServiceProtocol,
 		trackersRecordService: TrackersRecordServiceProtocol,
+		trackersPinningService: TrackersPinningServiceProtocol,
 		router: TrackersViewRouterProtocol,
 		analyticsService: AnalyticsServiceProtocol
 	) {
@@ -99,6 +101,7 @@ final class TrackersViewPresenter {
 		self.trackersAddingService = trackersAddingService
 		self.trackersCompletingService = trackersCompletingService
 		self.trackersRecordService = trackersRecordService
+		self.trackersPinningService = trackersPinningService
 		self.router = router
 		self.analyticsService = analyticsService
 
@@ -179,8 +182,12 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 		self.view?.shouldHidePlaceholderView(true)
     }
 
-	func didTapPinTracker(shouldPin: Bool) {
-		print(#function)
+	func didTapPinTracker(shouldPin: Bool, _ tracker: Tracker) {
+		if shouldPin {
+			self.trackersPinningService.pin(tracker: tracker)
+		} else {
+			self.trackersPinningService.unpin(tracker: tracker)
+		}
 	}
 
 	func didTapEditTracker() {
@@ -217,12 +224,17 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 // MARK: - TrackersDataProviderDelegate
 extension TrackersViewPresenter: TrackersDataProviderDelegate {
 	func storeDidUpdate() {
-		self.trackers = self.trackersService.trackers
 		self.updateTrackers()
 	}
 
 	func fetchDidPerformed() {
-		self.trackers = self.trackersService.trackers
+		self.updateTrackers()
+	}
+}
+
+// MARK: - TrackersDataProviderDelegate
+extension TrackersViewPresenter: TrackersPinningServiceDelegate {
+	func didUpdatePinnedTrackers() {
 		self.updateTrackers()
 	}
 }
@@ -245,6 +257,7 @@ private extension TrackersViewPresenter {
 	}
 
 	func updateTrackers() {
+		self.trackers = self.trackersService.trackers
 		DispatchQueue.main.async { [weak self] in
 			self?.view?.didRecieveTrackers()
 		}

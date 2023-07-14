@@ -26,6 +26,11 @@ private extension TabBarViewController {
         let trackersViewController = TrackersViewController()
 
 		let trackersFactory = TrackersFactory()
+		let trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
+
+		let pinnedCategoryService = TrackersPinnedCategoryService(trackersCategoryFactory: trackersCategoryFactory)
+		pinnedCategoryService?.checkPinnedCategory()
+
 		guard let trackersService = TrackersService(trackersFactory: trackersFactory),
 			  let trackersAddingService = TrackersAddingService(trackersFactory: trackersFactory),
 			  let completingService = TrackersCompletingService(),
@@ -35,10 +40,12 @@ private extension TabBarViewController {
 			return nil
 		}
 
-		let trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
-		let pinnedCategoryService = TrackersPinnedCategoryService(trackersCategoryFactory: trackersCategoryFactory)
-
-		pinnedCategoryService?.checkPinnedCategory()
+		guard let id = pinnedCategoryService?.pinnedCategoryId,
+			  let pinningService = TrackersPinningService(pinnedCategoryId: id, trackersFactory: trackersFactory)
+		else {
+			assertionFailure("Cannot pinning service")
+			return nil
+		}
 
 		let router = TrackersViewRouter(viewController: trackersViewController)
 		let analyticsService = AnalyticsService()
@@ -48,6 +55,7 @@ private extension TabBarViewController {
 			trackersAddingService: trackersAddingService,
 			trackersCompletingService: completingService,
 			trackersRecordService: recordService,
+			trackersPinningService: pinningService,
 			router: router,
 			analyticsService: analyticsService
 		)

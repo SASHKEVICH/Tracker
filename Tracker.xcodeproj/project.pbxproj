@@ -24,6 +24,8 @@
 		96251DF22A5FA8C600E13596 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 96251DF12A5FA8C600E13596 /* SnapshotTesting */; };
 		96251DF62A5FC69A00E13596 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96251DF52A5FC69A00E13596 /* AnalyticsService.swift */; };
 		96251DF92A5FF72400E13596 /* TrackersPinnedCategoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96251DF82A5FF72400E13596 /* TrackersPinnedCategoryService.swift */; };
+		96251DFF2A60504800E13596 /* TrackersPinningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96251DFE2A60504800E13596 /* TrackersPinningService.swift */; };
+		96251E022A6050F900E13596 /* TrackersDataPinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96251E012A6050F900E13596 /* TrackersDataPinner.swift */; };
 		9629563729CD846900A587C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9629563629CD846900A587C5 /* AppDelegate.swift */; };
 		9629563929CD846900A587C5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9629563829CD846900A587C5 /* SceneDelegate.swift */; };
 		9629563B29CD846900A587C5 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9629563A29CD846900A587C5 /* TrackersViewController.swift */; };
@@ -141,6 +143,8 @@
 		96251DE62A5FA84000E13596 /* TrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		96251DF52A5FC69A00E13596 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		96251DF82A5FF72400E13596 /* TrackersPinnedCategoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersPinnedCategoryService.swift; sourceTree = "<group>"; };
+		96251DFE2A60504800E13596 /* TrackersPinningService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersPinningService.swift; sourceTree = "<group>"; };
+		96251E012A6050F900E13596 /* TrackersDataPinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersDataPinner.swift; sourceTree = "<group>"; };
 		9629563329CD846900A587C5 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9629563629CD846900A587C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9629563829CD846900A587C5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -504,6 +508,7 @@
 			children = (
 				969CDB7A2A5822C5001EDB8B /* TrackersDataAdder.swift */,
 				969CDB7C2A5822CD001EDB8B /* TrackersDataCompleter.swift */,
+				96251E012A6050F900E13596 /* TrackersDataPinner.swift */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
@@ -548,6 +553,7 @@
 				969BE48329DFBE9A0056D813 /* TrackersService.swift */,
 				969CDB832A583B70001EDB8B /* TrackersAddingService.swift */,
 				969CDB852A583B7E001EDB8B /* TrackersCompletingService.swift */,
+				96251DFE2A60504800E13596 /* TrackersPinningService.swift */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
@@ -1006,7 +1012,9 @@
 				968A7E6D2A1E1F88007D75A5 /* OnboardingViewController.swift in Sources */,
 				9686FA5929E2829500BE2BC0 /* TrackersViewPresenterSearchControllerHelper.swift in Sources */,
 				969CDB732A57F615001EDB8B /* TrackersFactory.swift in Sources */,
+				96251E022A6050F900E13596 /* TrackersDataPinner.swift in Sources */,
 				969CDB8C2A58713E001EDB8B /* TrackersCategoryAddingService.swift in Sources */,
+				96251DFF2A60504800E13596 /* TrackersPinningService.swift in Sources */,
 				969CDB6E2A57E0F8001EDB8B /* TrackerNewCategoryViewModel.swift in Sources */,
 				96A606DB2A3C8D9F007C5262 /* TrackersCategoryService.swift in Sources */,
 				96F7032529FA44F900BBFF5C /* ColorsCollectionViewHelper.swift in Sources */,

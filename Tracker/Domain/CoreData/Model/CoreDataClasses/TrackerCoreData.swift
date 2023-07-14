@@ -24,6 +24,7 @@ final class TrackerCoreData: NSManagedObject {
     @NSManaged var title: String
     @NSManaged var type: Int16
     @NSManaged var weekDays: String
+	@NSManaged var isPinned: Bool
     @NSManaged var category: TrackerCategoryCoreData
     @NSManaged var records: NSSet
 }

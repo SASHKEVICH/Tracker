@@ -8,6 +8,7 @@
 import UIKit
 
 protocol TrackersPinnedCategoryServiceProtocol {
+	var pinnedCategoryId: UUID? { get }
 	func checkPinnedCategory()
 }
 
@@ -33,6 +34,13 @@ struct TrackersPinnedCategoryService {
 
 // MARK: - TrackersCategoryPinnedServiceProtocol
 extension TrackersPinnedCategoryService: TrackersPinnedCategoryServiceProtocol {
+	var pinnedCategoryId: UUID? {
+		guard let string = self.userDefaults.string(forKey: self.key),
+			  let id = UUID(uuidString: string)
+		else { return nil }
+		return id
+	}
+
 	func checkPinnedCategory() {
 		if let _ = self.pinnedCategoryId {
 			self.checkPinnedCategoryTitleAccordingToMainLanguage()
@@ -43,13 +51,6 @@ extension TrackersPinnedCategoryService: TrackersPinnedCategoryServiceProtocol {
 }
 
 private extension TrackersPinnedCategoryService {
-	var pinnedCategoryId: UUID? {
-		guard let string = self.userDefaults.string(forKey: self.key),
-			  let id = UUID(uuidString: string)
-		else { return nil }
-		return id
-	}
-
 	func storePinnedCategory(with id: UUID) {
 		self.userDefaults.set(id.uuidString, forKey: self.key)
 	}

@@ -131,7 +131,8 @@ extension TrackersViewPresenterCollectionHelper {
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
 			withReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier,
-			for: indexPath) as? TrackersCollectionViewCell,
+			for: indexPath
+		) as? TrackersCollectionViewCell,
 			  let presenter = self.presenter,
 			  let tracker = presenter.tracker(at: indexPath)
         else {
@@ -142,13 +143,12 @@ extension TrackersViewPresenterCollectionHelper {
         cell.tracker = tracker
 
 		let currentDate = presenter.currentDate
-		let completedTrackerForCurrentDay = presenter.completedTrackersRecords.first {
+		let isTrackerCompletedForCurrentDay = presenter.completedTrackersRecords.first {
 			$0.trackerId == tracker.id && $0.date.isDayEqualTo(currentDate)
 		}
-              
-        if completedTrackerForCurrentDay != nil {
-            cell.isCompleted = true
-        }
+
+		cell.isCompleted = isTrackerCompletedForCurrentDay != nil
+		cell.isPinned = tracker.isPinned
 
 		cell.dayCount = self.completedTimesCount(trackerId: tracker.id)
         cell.delegate = self
@@ -220,22 +220,22 @@ private extension TrackersViewPresenterCollectionHelper {
 		]
 
 		if cell.isPinned {
-			let unpinAction = self.getPinningAction(shouldPin: false, cell: cell)
+			let unpinAction = self.getPinningAction(shouldPin: false, cell: cell, tracker: tracker)
 			actions.insert(unpinAction, at: 0)
 		} else {
-			let pinAction = self.getPinningAction(shouldPin: true, cell: cell)
+			let pinAction = self.getPinningAction(shouldPin: true, cell: cell, tracker: tracker)
 			actions.insert(pinAction, at: 0)
 		}
 
 		return actions
 	}
 
-	func getPinningAction(shouldPin: Bool, cell: TrackersCollectionViewCell) -> UIAction {
+	func getPinningAction(shouldPin: Bool, cell: TrackersCollectionViewCell, tracker: Tracker) -> UIAction {
 		let localizable = R.string.localizable
 		let pinActionTitle = shouldPin ? localizable.trackersCollectionViewActionPin() : localizable.trackersCollectionViewActionUnpin()
 		let pinAction = UIAction(title: pinActionTitle) { [weak self] _ in
 			cell.isPinned = shouldPin
-			self?.presenter?.didTapPinTracker(shouldPin: shouldPin)
+			self?.presenter?.didTapPinTracker(shouldPin: shouldPin, tracker)
 		}
 		return pinAction
 	}
