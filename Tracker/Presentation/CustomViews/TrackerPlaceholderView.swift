@@ -48,6 +48,8 @@ final class TrackerPlaceholderView: UIView {
 		super.init(frame: .zero)
 		self.addSubviews()
 		self.addConstraints()
+
+		self.backgroundColor = .Dynamic.whiteDay
 	}
     
     required init?(coder: NSCoder) {
