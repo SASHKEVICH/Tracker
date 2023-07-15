@@ -87,6 +87,7 @@ private extension TrackersViewControllerSetupper {
 		)
 
 		trackersService.trackersDataProviderDelegate = presenter
+		recordService.delegate = presenter
 
 		return presenter
 	}

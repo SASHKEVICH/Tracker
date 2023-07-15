@@ -262,11 +262,18 @@ extension TrackersViewPresenter: TrackersDataProviderDelegate {
 
 	func didChangeContent(operations: [BlockOperation]) {
 		self.trackers = self.trackersService.trackers
-		self.view?.didChangeContent(operations: operations)
+		self.view?.didChangeContentAnimated(operations: operations)
 	}
 
 	func fetchDidPerformed() {
 		self.updateTrackers()
+	}
+}
+
+// MARK: - TrackersRecordServiceDelegate
+extension TrackersViewPresenter: TrackersRecordServiceDelegate {
+	func didRecieveCompletedTrackers(_ records: [TrackerRecord]) {
+		self.completedTrackersRecords = Set(records)
 	}
 }
 
@@ -283,8 +290,7 @@ private extension TrackersViewPresenter {
 	}
 
 	func fetchCompletedTrackersForCurrentDate() {
-		let completedTrackersForCurrentDate = self.trackersRecordService.fetchCompletedRecords(date: currentDate)
-		self.completedTrackersRecords = Set(completedTrackersForCurrentDate)
+		self.trackersRecordService.fetchCompletedRecords(for: self.currentDate)
 	}
 
 	func updateTrackers() {
