@@ -28,6 +28,8 @@ protocol TrackersDataProviderProtocol {
 	var trackers: [TrackerCoreData] { get }
     func numberOfItemsInSection(_ section: Int) -> Int
 	func fetchTrackersForToday()
+	func fetchCompletedTrackers(for weekDay: WeekDay)
+	func fetchIncompletedTrackers(for weekDay: WeekDay)
     func fetchTrackers(currentWeekDay: WeekDay)
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay)
     func tracker(at indexPath: IndexPath) -> TrackerCoreData?
@@ -100,21 +102,39 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
 	}
     
     func fetchTrackers(currentWeekDay: WeekDay) {
-		self.fetchedResultsController.fetchRequest.predicate = NSPredicate(
+		let predicate = NSPredicate(
             format: "%K CONTAINS[cd] %@",
-            #keyPath(TrackerCoreData.weekDays), currentWeekDay.englishStringRepresentation)
-		try? self.fetchedResultsController.performFetch()
-		self.delegate?.fetchDidPerformed()
+            #keyPath(TrackerCoreData.weekDays), currentWeekDay.englishStringRepresentation
+		)
+		self.performFetch(with: predicate)
     }
     
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay) {
-		self.fetchedResultsController.fetchRequest.predicate = NSPredicate(
+		let predicate = NSPredicate(
             format: "%K CONTAINS[cd] %@ AND %K CONTAINS[cd] %@",
             #keyPath(TrackerCoreData.title), titleSearchString,
-            #keyPath(TrackerCoreData.weekDays), currentWeekDay.englishStringRepresentation)
-		try? self.fetchedResultsController.performFetch()
-		self.delegate?.fetchDidPerformed()
+            #keyPath(TrackerCoreData.weekDays), currentWeekDay.englishStringRepresentation
+		)
+		self.performFetch(with: predicate)
     }
+
+	func fetchCompletedTrackers(for weekDay: WeekDay) {
+		let predicate = NSPredicate(
+			format: "%K CONTAINS[cd] %@ AND %K.@count != 0",
+			#keyPath(TrackerCoreData.weekDays), weekDay.englishStringRepresentation,
+			#keyPath(TrackerCoreData.records)
+		)
+		self.performFetch(with: predicate)
+	}
+
+	func fetchIncompletedTrackers(for weekDay: WeekDay) {
+		let predicate = NSPredicate(
+			format: "%K CONTAINS[cd] %@ AND %K.@count == 0",
+			#keyPath(TrackerCoreData.weekDays), weekDay.englishStringRepresentation,
+			#keyPath(TrackerCoreData.records)
+		)
+		self.performFetch(with: predicate)
+	}
     
     func tracker(at indexPath: IndexPath) -> TrackerCoreData? {
 		self.fetchedResultsController.object(at: indexPath)
@@ -188,5 +208,12 @@ extension TrackersDataProvider: NSFetchedResultsControllerDelegate {
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		self.delegate?.didChangeContent(operations: self.blockOperations)
 	}
+}
 
+private extension TrackersDataProvider {
+	func performFetch(with predicate: NSPredicate) {
+		self.fetchedResultsController.fetchRequest.predicate = predicate
+		try? self.fetchedResultsController.performFetch()
+		self.delegate?.fetchDidPerformed()
+	}
 }
