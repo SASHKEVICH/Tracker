@@ -48,6 +48,11 @@
 "TrackerCategory.addCategoryButton.title" = "Добавить категорию";
 "TrackerCategory.pinnedCategory.title" = "Закрепленные";
 
+"TrackerCategory.flow.filter.mode.all" = "Все трекеры";
+"TrackerCategory.flow.filter.mode.today" = "Трекеры на сегодня";
+"TrackerCategory.flow.filter.mode.completed" = "Завершенные";
+"TrackerCategory.flow.filter.mode.incompleted" = "Не завершенные";
+
 "TrackerNewCategory.viewController.title" = "Новая категория";
 "TrackerNewCategory.newCategoryTitleTextField.placeholder" = "Введите название категории";
 "TrackerNewCategory.addNewCategoryButton.title" = "Готово";

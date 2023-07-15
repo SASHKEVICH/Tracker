@@ -52,11 +52,12 @@ extension TrackerAddingRouter: TrackerAddingRouterProtocol {
 		)
 
 		let viewModel = TrackerCategoryViewModel(trackersCategoryService: trackersCategoryService)
+		viewModel.delegate = self.viewController as? TrackerCategoryViewControllerDelegate
+
 		let helper = TrackerCategoryTableViewHelper()
 		let router = TrackerCategoryRouter(trackersCategoryDataAdder: self.trackersCategoryDataAdder)
 
 		let vc = TrackerCategoryViewController(viewModel: viewModel, helper: helper, router: router, flow: .normal)
-		vc.delegate = self.viewController as? TrackerCategoryViewControllerDelegate
 
 		self.viewController?.present(vc, animated: true)
 	}

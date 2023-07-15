@@ -22,6 +22,10 @@ protocol TrackersServiceFetchingProtocol {
 	func eraseOperations()
 }
 
+protocol TrackersServiceFilteringProtocol {
+	func performFiltering(mode: TrackerFilterViewModel.FilterMode)
+}
+
 typealias TrackersServiceProtocol = TrackersServiceFetchingProtocol & TrackersServiceDataSourceProtocol
 
 // MARK: - TrackersService
@@ -76,4 +80,13 @@ extension TrackersService: TrackersServiceDataSourceProtocol {
     func categoryTitle(at indexPath: IndexPath) -> String? {
 		self.trackersDataProvider.categoryTitle(at: indexPath)
     }
+}
+
+// MARK: - TrackersServiceFilteringProtocol
+extension TrackersService: TrackersServiceFilteringProtocol {
+	func performFiltering(mode: TrackerFilterViewModel.FilterMode) {
+//		switch mode {
+//		case .
+//		}
+	}
 }

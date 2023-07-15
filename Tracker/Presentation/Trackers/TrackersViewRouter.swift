@@ -17,17 +17,20 @@ final class TrackersViewRouter {
 	private let trackersDataAdder: TrackersDataAdderProtocol
 	private let trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol
 	private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
+	private let trackersService: TrackersServiceFilteringProtocol
 
 	init(
 		viewController: UIViewController,
 		trackersDataAdder: TrackersDataAdderProtocol,
 		trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol,
-		trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
+		trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol,
+		trackersService: TrackersServiceFilteringProtocol
 	) {
 		self.viewController = viewController
 		self.trackersDataAdder = trackersDataAdder
 		self.trackersCategoryDataProvider = trackersCategoryDataProvider
 		self.trackersCategoryDataAdder = trackersCategoryDataAdder
+		self.trackersService = trackersService
 	}
 }
 
@@ -51,17 +54,13 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
 	func navigateToFilterScreen() {
 		let trackersFactory = TrackersFactory()
 		let categoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
-		let trackersCategoryService = TrackersCategoryService(
+
+		let viewModel = TrackerFilterViewModel(
 			trackersCategoryFactory: categoryFactory,
-			trackersCategoryDataProvider: self.trackersCategoryDataProvider
+			trackersService: self.trackersService
 		)
-
-		let viewModel = TrackerCategoryViewModel(trackersCategoryService: trackersCategoryService)
 		let helper = TrackerCategoryTableViewHelper()
-		let router = TrackerCategoryRouter(trackersCategoryDataAdder: self.trackersCategoryDataAdder)
-
-		let vc = TrackerCategoryViewController(viewModel: viewModel, helper: helper, router: router, flow: .filter)
-		vc.delegate = self.viewController as? TrackerCategoryViewControllerDelegate
+		let vc = TrackerCategoryViewController(viewModel: viewModel, helper: helper, router: nil, flow: .filter)
 
 		self.viewController?.present(vc, animated: true)
 	}

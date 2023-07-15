@@ -48,6 +48,11 @@
 "TrackerCategory.addCategoryButton.title" = "Neue Kategorie hinzufügen";
 "TrackerCategory.pinnedCategory.title" = "Angeheftet";
 
+"TrackerCategory.flow.filter.mode.all" = "Alle Tracker";
+"TrackerCategory.flow.filter.mode.today" = "Tracker für heute";
+"TrackerCategory.flow.filter.mode.completed" = "Abgeschlossen";
+"TrackerCategory.flow.filter.mode.incompleted" = "Nicht abgeschlossen";
+
 "TrackerNewCategory.viewController.title" = "Neue Kategorie";
 "TrackerNewCategory.newCategoryTitleTextField.placeholder" = "Titel der neuen Kategorie eingeben";
 "TrackerNewCategory.addNewCategoryButton.title" = "Erfolgen";
