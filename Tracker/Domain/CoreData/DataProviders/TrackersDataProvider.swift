@@ -27,6 +27,7 @@ protocol TrackersDataProviderProtocol {
     var numberOfSections: Int { get }
 	var trackers: [TrackerCoreData] { get }
     func numberOfItemsInSection(_ section: Int) -> Int
+	func fetchTrackersForToday()
     func fetchTrackers(currentWeekDay: WeekDay)
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay)
     func tracker(at indexPath: IndexPath) -> TrackerCoreData?
@@ -41,7 +42,7 @@ final class TrackersDataProvider: NSObject {
 	private let context: NSManagedObjectContext
 
 	private var blockOperations: [BlockOperation] = []
-	private var currentWeekDay = Date().weekDay?.englishStringRepresentation
+	private var currentWeekDay = Date().weekDay
 
 	private lazy var fetchedResultsController: NSFetchedResultsController = {
 		let request = TrackerCoreData.fetchRequest()
@@ -54,7 +55,7 @@ final class TrackersDataProvider: NSObject {
 
 		let predicate = NSPredicate(
 			format: "%K CONTAINS[cd] %@",
-			#keyPath(TrackerCoreData.weekDays), currentWeekDay ?? ""
+			#keyPath(TrackerCoreData.weekDays), self.currentWeekDay?.englishStringRepresentation ?? ""
 		)
 		request.predicate = predicate
 
@@ -92,6 +93,11 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
     func numberOfItemsInSection(_ section: Int) -> Int {
 		self.fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
+
+	func fetchTrackersForToday() {
+		guard let currentWeekDay = self.currentWeekDay else { return }
+		self.fetchTrackers(currentWeekDay: currentWeekDay)
+	}
     
     func fetchTrackers(currentWeekDay: WeekDay) {
 		self.fetchedResultsController.fetchRequest.predicate = NSPredicate(

@@ -163,10 +163,10 @@ extension TrackersViewController: TrackersViewControllerFetchingProtocol {
 	}
 }
 
-// MARK: - TrackerCategoryViewControllerDelegate
-extension TrackersViewController: TrackerCategoryViewControllerDelegate {
-	func didRecieveCategory(_ category: TrackerCategory) {
-		print(#function)
+// MARK: - TrackerFilterViewControllerDelegate
+extension TrackersViewController: TrackerFilterViewControllerDelegate {
+	func setCurrentDate() {
+		self.datePicker.date = Date()
 	}
 }
 
@@ -256,6 +256,6 @@ private extension TrackersViewController {
 
 	@objc
 	func didTapFilterButton() {
-		self.presenter?.navigateToFilterScreen()
+		self.presenter?.navigateToFilterScreen(chosenDate: self.datePicker.date)
 	}
 }

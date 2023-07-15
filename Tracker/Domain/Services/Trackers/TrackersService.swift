@@ -58,8 +58,8 @@ extension TrackersService: TrackersServiceFetchingProtocol {
 		self.trackersDataProvider.fetchTrackers(currentWeekDay: weekDay)
     }
     
-    func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay) {
-		self.trackersDataProvider.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: currentWeekDay)
+    func fetchTrackers(titleSearchString title: String, currentWeekDay weekDay: WeekDay) {
+		self.trackersDataProvider.fetchTrackers(titleSearchString: title, currentWeekDay: weekDay)
     }
 
 	func eraseOperations() {
@@ -85,8 +85,16 @@ extension TrackersService: TrackersServiceDataSourceProtocol {
 // MARK: - TrackersServiceFilteringProtocol
 extension TrackersService: TrackersServiceFilteringProtocol {
 	func performFiltering(mode: TrackerFilterViewModel.FilterMode) {
-//		switch mode {
-//		case .
-//		}
+		switch mode {
+		case .all(let currentDate):
+			guard let weekDay = currentDate.weekDay else { return }
+			self.fetchTrackers(weekDay: weekDay)
+		case .today:
+			self.trackersDataProvider.fetchTrackersForToday()
+		case .completed:
+			break
+		case .incompleted:
+			break
+		}
 	}
 }

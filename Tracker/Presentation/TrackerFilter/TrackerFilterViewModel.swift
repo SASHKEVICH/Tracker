@@ -7,12 +7,16 @@
 
 import Foundation
 
-struct TrackerFilterViewModel {
-	enum FilterMode {
-		case all
+protocol TrackerFilterViewControllerDelegate: AnyObject {
+	func setCurrentDate()
+}
+
+final class TrackerFilterViewModel {
+	enum FilterMode: Equatable {
+		case all(Date)
 		case today
-		case completed
-		case incompleted
+		case completed(Date)
+		case incompleted(Date)
 
 		var localized: String {
 			let localizable = R.string.localizable
@@ -25,12 +29,14 @@ struct TrackerFilterViewModel {
 		}
 	}
 
+	weak var delegate: TrackerFilterViewControllerDelegate?
+
 	var onCategoriesChanged: (() -> Void)?
 	var categories: [TrackerCategory] {
-		let allTrackers = self.prepareFilter(for: .all)
+		let allTrackers = self.prepareFilter(for: .all(self.chosenDate))
 		let todayTrackers = self.prepareFilter(for: .today)
-		let completedTrackers = self.prepareFilter(for: .completed)
-		let incompletedTrackers = self.prepareFilter(for: .incompleted)
+		let completedTrackers = self.prepareFilter(for: .completed(self.chosenDate))
+		let incompletedTrackers = self.prepareFilter(for: .incompleted(self.chosenDate))
 
 		return [allTrackers, todayTrackers, completedTrackers, incompletedTrackers]
 	}
@@ -40,8 +46,14 @@ struct TrackerFilterViewModel {
 
 	private let trackersCategoryFactory: TrackersCategoryFactory
 	private let trackersService: TrackersServiceFilteringProtocol
+	private let chosenDate: Date
 
-	init(trackersCategoryFactory: TrackersCategoryFactory, trackersService: TrackersServiceFilteringProtocol) {
+	init(
+		chosenDate: Date,
+		trackersCategoryFactory: TrackersCategoryFactory,
+		trackersService: TrackersServiceFilteringProtocol
+	) {
+		self.chosenDate = chosenDate
 		self.trackersCategoryFactory = trackersCategoryFactory
 		self.trackersService = trackersService
 	}
@@ -51,8 +63,11 @@ struct TrackerFilterViewModel {
 extension TrackerFilterViewModel: TrackerCategoryViewModelProtocol {
 	func didChoose(category: TrackerCategory) {
 		guard let mode = self.resolveFiltrationMode(for: category.title) else { return }
-		print(mode)
-//		self.trackersService.performFiltering(mode: mode)
+		if mode == .today {
+			self.delegate?.setCurrentDate()
+		}
+
+		self.trackersService.performFiltering(mode: mode)
 	}
 }
 
@@ -63,14 +78,14 @@ private extension TrackerFilterViewModel {
 
 	func resolveFiltrationMode(for title: String) -> FilterMode? {
 		switch title {
-		case FilterMode.all.localized:
-			return .all
+		case FilterMode.all(self.chosenDate).localized:
+			return .all(self.chosenDate)
 		case FilterMode.today.localized:
 			return .today
-		case FilterMode.completed.localized:
-			return .completed
-		case FilterMode.incompleted.localized:
-			return .incompleted
+		case FilterMode.completed(self.chosenDate).localized:
+			return .completed(self.chosenDate)
+		case FilterMode.incompleted(self.chosenDate).localized:
+			return .incompleted(self.chosenDate)
 		default:
 			return nil
 		}
