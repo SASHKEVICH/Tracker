@@ -23,8 +23,8 @@ struct TrackersRecordDataFetcher {
 
 extension TrackersRecordDataFetcher: TrackersRecordDataFetcherProtocol {
 	func fetchCompletedRecords(date: Date) -> [TrackerRecordCoreData] {
-		guard let onlyDate = date.onlyDate else { return [] }
-		let trackerRecordsCoreData = trackersRecordDataStore.completedTrackers(for: onlyDate as NSDate)
+		guard let date = date.withoutTime else { return [] }
+		let trackerRecordsCoreData = trackersRecordDataStore.completedTrackers(for: date as NSDate)
 		return trackerRecordsCoreData
 	}
 

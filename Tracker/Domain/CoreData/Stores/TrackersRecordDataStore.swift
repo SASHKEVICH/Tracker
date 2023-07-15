@@ -22,7 +22,7 @@ extension TrackersRecordDataStore {
     }
     
     func completeTracker(with id: String, date: Date) throws {
-        guard let date = date.onlyDate else { return }
+        guard let date = date.withoutTime else { return }
         let record = TrackerRecordCoreData(context: context)
         record.id = id
         record.date = date

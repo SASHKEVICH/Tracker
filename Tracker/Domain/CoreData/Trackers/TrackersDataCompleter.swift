@@ -22,12 +22,12 @@ struct TrackersDataCompleter {
 
 extension TrackersDataCompleter: TrackersDataCompleterProtocol {
 	func completeTracker(with id: String, date: Date) {
-		guard let date = date.onlyDate else { return }
+		guard let date = date.withoutTime else { return }
 		try? trackersRecordDataStore.completeTracker(with: id, date: date)
 	}
 
 	func incompleteTracker(with id: String, date: Date) {
-		guard let date = date.onlyDate else { return }
+		guard let date = date.withoutTime else { return }
 		guard let record = trackersRecordDataStore.record(with: id, date: date as NSDate) else { return }
 		try? trackersRecordDataStore.incompleteTracker(record)
 	}

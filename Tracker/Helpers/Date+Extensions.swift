@@ -42,7 +42,7 @@ extension Date {
         Calendar.current.isDate(self, equalTo: otherDate, toGranularity: .day)
     }
     
-    var onlyDate: Date? {
+    var withoutTime: Date? {
 		let calender = Calendar.current
 		var dateComponents = calender.dateComponents([.year, .month, .day], from: self)
 		dateComponents.timeZone = NSTimeZone.system
