@@ -42,7 +42,7 @@ protocol TrackersViewPresenterProtocol: AnyObject {
     func requestTrackers(for date: Date)
     func viewDidLoad()
 	func navigateToTrackerTypeScreen()
-	func navigateToFilterScreen(chosenDate: Date)
+	func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?)
 	func eraseOperations()
 }
 
@@ -135,8 +135,8 @@ extension TrackersViewPresenter: TrackersViewPresenterProtocol {
 		self.router.navigateToTrackerTypeScreen()
 	}
 
-	func navigateToFilterScreen(chosenDate: Date) {
-		self.router.navigateToFilterScreen(chosenDate: chosenDate)
+	func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?) {
+		self.router.navigateToFilterScreen(chosenDate: chosenDate, selectedFilter: selectedFilter)
 	}
 }
 

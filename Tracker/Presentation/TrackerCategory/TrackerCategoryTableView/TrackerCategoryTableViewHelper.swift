@@ -9,7 +9,8 @@ import UIKit
 
 protocol TrackerCategoryTableViewHelperDelegate {
 	var categories: [TrackerCategory] { get }
-	func didChoose(category: TrackerCategory)
+	var chosenCategory: TrackerCategory? { get }
+	func didSelect(category: TrackerCategory)
 }
 
 protocol TrackerCategoryTableViewHelperProtocol: UITableViewDelegate, UITableViewDataSource {
@@ -39,8 +40,8 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
 			filteredCells.forEach { $0.isCellSelected = false }
 		}
 
-		guard let chosenCategory = delegate?.categories[indexPath.row] else { return }
-		delegate?.didChoose(category: chosenCategory)
+		guard let selectedCategory = self.delegate?.categories[indexPath.row] else { return }
+		self.delegate?.didSelect(category: selectedCategory)
 	}
 	
 	// MARK: - UITableViewDataSource
@@ -64,6 +65,10 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
 		cell.categoryTitle = category.title
 
 		if let lastSelectedCell = self.lastSelectedCell, lastSelectedCell == cell {
+			cell.isCellSelected = true
+		}
+
+		if let selectedCategory = self.delegate?.chosenCategory, selectedCategory == category {
 			cell.isCellSelected = true
 		}
 

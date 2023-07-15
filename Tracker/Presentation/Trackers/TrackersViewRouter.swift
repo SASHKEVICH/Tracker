@@ -9,7 +9,7 @@ import UIKit
 
 protocol TrackersViewRouterProtocol {
 	func navigateToTrackerTypeScreen()
-	func navigateToFilterScreen(chosenDate: Date)
+	func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?)
 }
 
 final class TrackersViewRouter {
@@ -51,7 +51,7 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
 		self.viewController?.present(vc, animated: true)
 	}
 
-	func navigateToFilterScreen(chosenDate: Date) {
+	func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?) {
 		let trackersFactory = TrackersFactory()
 		let categoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
 
@@ -63,7 +63,13 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
 		viewModel.delegate = self.viewController as? TrackerFilterViewControllerDelegate
 
 		let helper = TrackerCategoryTableViewHelper()
-		let vc = TrackerCategoryViewController(viewModel: viewModel, helper: helper, router: nil, flow: .filter)
+		let vc = TrackerCategoryViewController(
+			viewModel: viewModel,
+			helper: helper,
+			router: nil,
+			flow: .filter,
+			selectedCategory: selectedFilter
+		)
 
 		self.viewController?.present(vc, animated: true)
 	}

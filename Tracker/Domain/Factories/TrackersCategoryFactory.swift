@@ -19,6 +19,10 @@ struct TrackersCategoryFactory {
 		TrackerCategory(id: UUID(), title: title, isPinning: isPinning, trackers: [])
 	}
 
+	func makeCategory(id: UUID, title: String, isPinning: Bool) -> TrackerCategory {
+		TrackerCategory(id: id, title: title, isPinning: isPinning, trackers: [])
+	}
+
 	func makeCategory(categoryCoreData: TrackerCategoryCoreData) -> TrackerCategory? {
 		guard let id = UUID(uuidString: categoryCoreData.id) else { return nil }
 		let trackers = categoryCoreData.trackers

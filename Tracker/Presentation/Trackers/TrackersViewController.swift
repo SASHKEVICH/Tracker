@@ -86,6 +86,8 @@ final class TrackersViewController: UIViewController {
 		return view
 	}()
 
+	private var selectedFilter: TrackerCategory?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 		self.view.backgroundColor = .Dynamic.whiteDay
@@ -179,6 +181,10 @@ extension TrackersViewController: TrackerFilterViewControllerDelegate {
 	func setCurrentDate() {
 		self.datePicker.date = Date()
 	}
+
+	func didSelectFilter(category: TrackerCategory) {
+		self.selectedFilter = category
+	}
 }
 
 // MARK: - Alert Presenter Delegate
@@ -260,6 +266,6 @@ private extension TrackersViewController {
 
 	@objc
 	func didTapFilterButton() {
-		self.presenter?.navigateToFilterScreen(chosenDate: self.datePicker.date)
+		self.presenter?.navigateToFilterScreen(chosenDate: self.datePicker.date, selectedFilter: self.selectedFilter)
 	}
 }

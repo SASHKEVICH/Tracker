@@ -133,7 +133,7 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterTableViewHelperP
     }
 
 	func didTapTrackerCategoryCell() {
-		self.router.navigateToCategoryScreen()
+		self.router.navigateToCategoryScreen(selectedCategory: selectedCategory)
 	}
 }
 

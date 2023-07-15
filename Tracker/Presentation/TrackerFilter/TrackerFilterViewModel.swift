@@ -9,6 +9,7 @@ import Foundation
 
 protocol TrackerFilterViewControllerDelegate: AnyObject {
 	func setCurrentDate()
+	func didSelectFilter(category: TrackerCategory)
 }
 
 final class TrackerFilterViewModel {
@@ -67,13 +68,24 @@ extension TrackerFilterViewModel: TrackerCategoryViewModelProtocol {
 			self.delegate?.setCurrentDate()
 		}
 
+		self.delegate?.didSelectFilter(category: category)
 		self.trackersService.performFiltering(mode: mode)
 	}
 }
 
 private extension TrackerFilterViewModel {
 	func prepareFilter(for mode: FilterMode) -> TrackerCategory {
-		self.trackersCategoryFactory.makeCategory(title: mode.localized, isPinning: false)
+		switch mode {
+		case .all(_):
+			return self.trackersCategoryFactory.makeCategory(id: StaticUUID.FilterCategories.all, title: mode.localized, isPinning: false)
+		case .today:
+			return self.trackersCategoryFactory.makeCategory(id: StaticUUID.FilterCategories.today, title: mode.localized, isPinning: false)
+		case .completed(_):
+			return self.trackersCategoryFactory.makeCategory(id: StaticUUID.FilterCategories.completed, title: mode.localized, isPinning: false)
+		case .incompleted(_):
+			return self.trackersCategoryFactory.makeCategory(id: StaticUUID.FilterCategories.incompleted, title: mode.localized, isPinning: false)
+		}
+
 	}
 
 	func resolveFiltrationMode(for title: String) -> FilterMode? {

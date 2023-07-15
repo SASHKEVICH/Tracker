@@ -60,6 +60,8 @@ final class TrackerCategoryViewController: UIViewController {
 		button.addTarget(self, action: #selector(self.didTapAddNewCategoryButton), for: .touchUpInside)
 		return button
 	}()
+
+	private var selectedCategory: TrackerCategory?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -77,12 +79,15 @@ final class TrackerCategoryViewController: UIViewController {
 		viewModel: TrackerCategoryViewModelProtocol,
 		helper: TrackerCategoryTableViewHelperProtocol,
 		router: TrackerCategoryRouterProtocol?,
-		flow: Flow
+		flow: Flow,
+		selectedCategory: TrackerCategory?
 	) {
 		self.viewModel = viewModel
 		self.helper = helper
 		self.router = router
 		self.flow = flow
+		self.selectedCategory = selectedCategory
+
 		super.init(nibName: nil, bundle: nil)
 	}
 	
@@ -91,13 +96,17 @@ final class TrackerCategoryViewController: UIViewController {
 	}
 }
 
-// MARK: - TrackerCategoryTableViewHelperDelagate
+// MARK: - TrackerCategoryTableViewHelperFullDelegate
 extension TrackerCategoryViewController: TrackerCategoryTableViewHelperDelegate {
 	var categories: [TrackerCategory] {
 		self.viewModel.categories
 	}
+
+	var chosenCategory: TrackerCategory? {
+		self.selectedCategory
+	}
 	
-	func didChoose(category: TrackerCategory) {
+	func didSelect(category: TrackerCategory) {
 		self.viewModel.didChoose(category: category)
 	}
 }

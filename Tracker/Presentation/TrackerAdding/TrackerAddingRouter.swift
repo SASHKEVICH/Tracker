@@ -9,7 +9,7 @@ import UIKit
 
 protocol TrackerAddingRouterProtocol {
 	func navigateToScheduleScreen(selectedWeekDays: Set<WeekDay>)
-	func navigateToCategoryScreen()
+	func navigateToCategoryScreen(selectedCategory: TrackerCategory?)
 	func navigateToMainScreen()
 }
 
@@ -43,7 +43,7 @@ extension TrackerAddingRouter: TrackerAddingRouterProtocol {
 		self.viewController?.present(vc, animated: true)
 	}
 
-	func navigateToCategoryScreen() {
+	func navigateToCategoryScreen(selectedCategory: TrackerCategory?) {
 		let trackersFactory = TrackersFactory()
 		let categoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
 		let trackersCategoryService = TrackersCategoryService(
@@ -57,7 +57,13 @@ extension TrackerAddingRouter: TrackerAddingRouterProtocol {
 		let helper = TrackerCategoryTableViewHelper()
 		let router = TrackerCategoryRouter(trackersCategoryDataAdder: self.trackersCategoryDataAdder)
 
-		let vc = TrackerCategoryViewController(viewModel: viewModel, helper: helper, router: router, flow: .normal)
+		let vc = TrackerCategoryViewController(
+			viewModel: viewModel,
+			helper: helper,
+			router: router,
+			flow: .normal,
+			selectedCategory: selectedCategory
+		)
 
 		self.viewController?.present(vc, animated: true)
 	}
