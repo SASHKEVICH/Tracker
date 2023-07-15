@@ -20,7 +20,7 @@ protocol TrackersViewControllerFetchingProtocol {
 	func deleteItems(at: [IndexPath])
 	func moveItems(at: IndexPath, to: IndexPath)
 	func reloadItems(at: [IndexPath])
-	func didChangeContent(operations: [BlockOperation])
+	func didChangeContentAnimated(operations: [BlockOperation])
 
 	func insertSections(at: IndexSet)
 	func deleteSections(at: IndexSet)
@@ -66,6 +66,17 @@ final class TrackersViewController: UIViewController {
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(self.didTapFilterButton), for: .touchUpInside)
 		return button
+	}()
+
+	private lazy var datePicker: UIDatePicker = {
+		let datePicker = UIDatePicker(frame: .zero)
+		datePicker.translatesAutoresizingMaskIntoConstraints = false
+		datePicker.widthAnchor.constraint(equalToConstant: 100).isActive = true
+		datePicker.preferredDatePickerStyle = .compact
+		datePicker.datePickerMode = .date
+		datePicker.locale = Locale.current
+		datePicker.addTarget(self, action: #selector(self.didCurrentDateValueChanged(_:)), for: .valueChanged)
+		return datePicker
 	}()
 	
 	private let collectionPlaceholderView = {
@@ -150,7 +161,7 @@ extension TrackersViewController: TrackersViewControllerFetchingProtocol {
 		self.trackersCollectionView.reloadItems(at: at)
 	}
 
-	func didChangeContent(operations: [BlockOperation]) {
+	func didChangeContentAnimated(operations: [BlockOperation]) {
 		self.trackersCollectionView.performBatchUpdates({
 			operations.forEach { $0.start() }
 		}, completion: { [weak self] finished in
@@ -230,14 +241,7 @@ private extension TrackersViewController {
 	}
 
 	func setupRightBarButtonItem() {
-		let datePicker = UIDatePicker(frame: .zero)
-		datePicker.translatesAutoresizingMaskIntoConstraints = false
-		datePicker.widthAnchor.constraint(equalToConstant: 100).isActive = true
-		datePicker.preferredDatePickerStyle = .compact
-		datePicker.datePickerMode = .date
-		datePicker.locale = Locale.current
-		datePicker.addTarget(self, action: #selector(self.didCurrentDateValueChanged(_:)), for: .valueChanged)
-		navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.datePicker)
 	}
 }
 
