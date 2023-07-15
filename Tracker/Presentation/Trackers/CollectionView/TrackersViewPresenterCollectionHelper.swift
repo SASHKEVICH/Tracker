@@ -177,7 +177,6 @@ extension TrackersViewPresenterCollectionHelper: TrackersViewPresenterCollection
         }
         
 		cell.dayCount = self.completedTimesCount(trackerId: tracker.id)
-        cell.isCompleted = !cell.isCompleted
     }
 }
 

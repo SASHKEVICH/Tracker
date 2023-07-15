@@ -53,11 +53,11 @@ extension TrackersRecordDataStore {
         return countInt
     }
     
-    func completedTrackers(for date: NSDate) -> [TrackerRecordCoreData] {
+    func completedTrackers(for date: Date) -> [TrackerRecordCoreData] {
         let request = TrackerRecordCoreData.fetchRequest()
         let predicate = NSPredicate(
             format: "%K == %@",
-            #keyPath(TrackerRecordCoreData.date), date)
+            #keyPath(TrackerRecordCoreData.date), date as NSDate)
         request.predicate = predicate
         
         let records = try? context.fetch(request)

@@ -258,6 +258,7 @@ extension TrackersViewPresenter: TrackersDataProviderDelegate {
 
 	func reloadItems(at: [IndexPath]) {
 		self.view?.reloadItems(at: at)
+		self.fetchCompletedTrackersForCurrentDate()
 	}
 
 	func didChangeContent(operations: [BlockOperation]) {
