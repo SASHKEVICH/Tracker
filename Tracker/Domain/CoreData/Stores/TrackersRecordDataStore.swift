@@ -18,20 +18,23 @@ struct TrackersRecordDataStore {
 
 extension TrackersRecordDataStore {
     var managedObjectContext: NSManagedObjectContext {
-        context
+		self.context
     }
     
-    func completeTracker(with id: String, date: Date) throws {
+	func complete(tracker: TrackerCoreData, date: Date) throws {
         guard let date = date.withoutTime else { return }
         let record = TrackerRecordCoreData(context: context)
-        record.id = id
+		record.id = tracker.id
         record.date = date
-        try context.save()
+
+		tracker.addToRecords(record)
+		try self.context.save()
     }
     
-    func incompleteTracker(_ record: TrackerRecordCoreData) throws {
-        context.delete(record)
-        try context.save()
+	func incomplete(tracker: TrackerCoreData, record: TrackerRecordCoreData) throws {
+		self.context.delete(record)
+		tracker.removeFromRecords(record)
+		try self.context.save()
     }
     
     func completedTimesCount(trackerId: String) throws -> Int {

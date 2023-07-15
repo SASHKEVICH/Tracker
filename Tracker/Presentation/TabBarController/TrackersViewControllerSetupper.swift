@@ -60,7 +60,11 @@ private extension TrackersViewControllerSetupper {
 			trackersCategoryDataStore: trackersCategoryDataStore
 		)
 
-		let completingService = self.prepareTrackersCompletingService(trackersRecordDataStore: trackersRecordDataStore)
+		let completingService = self.prepareTrackersCompletingService(
+			trackersRecordDataStore: trackersRecordDataStore,
+			trackersDataStore: trackersDataStore
+		)
+
 		let recordService = self.prepareTrackersRecordService(trackersRecordDataStore: trackersRecordDataStore)
 
 		guard let router = self.prepareRouter(
@@ -126,8 +130,14 @@ private extension TrackersViewControllerSetupper {
 		return trackersAddingService
 	}
 
-	func prepareTrackersCompletingService(trackersRecordDataStore: TrackersRecordDataStore) -> TrackersCompletingService {
-		let completer = TrackersDataCompleter(trackerRecordDataStore: trackersRecordDataStore)
+	func prepareTrackersCompletingService(
+		trackersRecordDataStore: TrackersRecordDataStore,
+		trackersDataStore: TrackersDataStore
+	) -> TrackersCompletingService {
+		let completer = TrackersDataCompleter(
+			trackersRecordDataStore: trackersRecordDataStore,
+			trackersDataStore: trackersDataStore
+		)
 		let service = TrackersCompletingService(trackersDataCompleter: completer)
 		return service
 	}
