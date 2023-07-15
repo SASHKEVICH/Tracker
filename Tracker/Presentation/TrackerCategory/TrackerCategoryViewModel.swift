@@ -13,9 +13,12 @@ protocol TrackerCategoryViewModelProtocol {
 
 	var onIsPlaceholderHiddenChanged: (() -> Void)? { get set }
 	var isPlaceholderHidden: Bool { get }
+	func didChoose(category: TrackerCategory)
 }
 
 final class TrackerCategoryViewModel {
+	weak var delegate: TrackerCategoryViewControllerDelegate?
+
 	var onCategoriesChanged: (() -> Void)?
 	var categories: [TrackerCategory] = [] {
 		didSet {
@@ -45,7 +48,11 @@ final class TrackerCategoryViewModel {
 }
 
 // MARK: - TrackerCategoryViewModelProtocol
-extension TrackerCategoryViewModel: TrackerCategoryViewModelProtocol {}
+extension TrackerCategoryViewModel: TrackerCategoryViewModelProtocol {
+	func didChoose(category: TrackerCategory) {
+		self.delegate?.didRecieveCategory(category)
+	}
+}
 
 // MARK: - TrackersCategoryDataProviderDelegate
 extension TrackerCategoryViewModel: TrackersCategoryDataProviderDelegate {

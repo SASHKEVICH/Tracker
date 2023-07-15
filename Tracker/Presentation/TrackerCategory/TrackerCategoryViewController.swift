@@ -17,12 +17,10 @@ final class TrackerCategoryViewController: UIViewController {
 		case filter
 	}
 
-	weak var delegate: TrackerCategoryViewControllerDelegate?
-
 	private let flow: Flow
 
 	private let helper: TrackerCategoryTableViewHelperProtocol
-	private let router: TrackerCategoryRouterProtocol
+	private let router: TrackerCategoryRouterProtocol?
 	private var viewModel: TrackerCategoryViewModelProtocol
 
 	private let titleLabel: UILabel = {
@@ -78,7 +76,7 @@ final class TrackerCategoryViewController: UIViewController {
 	init(
 		viewModel: TrackerCategoryViewModelProtocol,
 		helper: TrackerCategoryTableViewHelperProtocol,
-		router: TrackerCategoryRouterProtocol,
+		router: TrackerCategoryRouterProtocol?,
 		flow: Flow
 	) {
 		self.viewModel = viewModel
@@ -100,7 +98,7 @@ extension TrackerCategoryViewController: TrackerCategoryTableViewHelperDelegate 
 	}
 	
 	func didChoose(category: TrackerCategory) {
-		self.delegate?.didRecieveCategory(category)
+		self.viewModel.didChoose(category: category)
 	}
 }
 
@@ -168,7 +166,7 @@ private extension TrackerCategoryViewController {
 private extension TrackerCategoryViewController {
 	@objc
 	func didTapAddNewCategoryButton() {
-		self.router.navigateToNewCategoryScreen(from: self)
+		self.router?.navigateToNewCategoryScreen(from: self)
 	}
 }
 
