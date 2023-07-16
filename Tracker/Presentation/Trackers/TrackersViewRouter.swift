@@ -79,22 +79,31 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
 	}
 
 	func navigateToEditTrackerScreen(tracker: Tracker) {
-		let vc = TrackerAddingViewController()
 		let router = TrackerAddingRouter(
-			viewController: vc,
 			trackersCategoryDataProvider: self.trackersCategoryDataProvider,
 			trackersCategoryDataAdder: self.trackersCategoryDataAdder
 		)
 
-		let presenter = TrackerAddingViewPresenter(
-			trackersAddingService: self.trackersAddingService,
+		let viewModel = TrackerAddingViewModel(trackersAddingService: self.trackersAddingService, trackerType: tracker.type)
+
+		let optionsHelper = TrackerOptionsTableViewHelper()
+		let textFieldHelper = TrackerTitleTextFieldHelper()
+		let colorsHelper = ColorsCollectionViewHelper()
+		let emojisHelper = EmojisCollectionViewHelper()
+
+		let vc = TrackerAddingViewController(
+			viewModel: viewModel,
 			router: router,
-			trackerType: tracker.type,
-			flow: .edit(tracker)
+			optionsTableViewHelper: optionsHelper,
+			titleTextFieldHelper: textFieldHelper,
+			colorsHelper: colorsHelper,
+			emojisHelper: emojisHelper,
+			flow: .edit
 		)
 
-		vc.presenter = presenter
-		presenter.view = vc
+		optionsHelper.delegate = vc
+		colorsHelper.delegate = vc
+		emojisHelper.delegate = vc
 
 		vc.emptyTap = { [weak vc] in
 			vc?.view.endEditing(true)

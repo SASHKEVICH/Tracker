@@ -7,12 +7,20 @@
 
 import UIKit
 
+protocol TrackerOptionsTableViewDelegate: AnyObject {
+	var optionsTitles: [String] { get }
+	var selectedWeekDays: [WeekDay] { get }
+	var selectedCategory: TrackerCategory? { get }
+	func didTapScheduleCell()
+	func didTapCategoryCell()
+}
+
 protocol TrackerOptionsTableViewHelperProtocol: UITableViewDataSource, UITableViewDelegate {
-    var presenter: TrackerAddingViewPresenterTableViewHelperProtocol? { get set }
+    var delegate: TrackerOptionsTableViewDelegate? { get set }
 }
 
 final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelperProtocol {
-    weak var presenter: TrackerAddingViewPresenterTableViewHelperProtocol?
+    weak var delegate: TrackerOptionsTableViewDelegate?
     
     // MARK: UITableViewDelegate    
     func tableView(
@@ -30,9 +38,9 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         guard let cell = tableView.cellForRow(at: indexPath) as? TrackerOptionsTableViewCell else { return }
         
 		if cell.type == .schedule {
-			self.presenter?.didTapTrackerScheduleCell()
+			self.delegate?.didTapScheduleCell()
 		} else if cell.type == .category {
-			self.presenter?.didTapTrackerCategoryCell()
+			self.delegate?.didTapCategoryCell()
         }
     }
     
@@ -41,8 +49,8 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-		guard let optionsTitles = self.presenter?.optionsTitles else {
-            assertionFailure("presenter or options titles is nil")
+		guard let optionsTitles = self.delegate?.optionsTitles else {
+            assertionFailure("delegate or options titles is nil")
             return 0
         }
         return optionsTitles.count
@@ -52,13 +60,12 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-
         guard let cell = tableView.dequeueReusableCell(
 			withIdentifier: TrackerOptionsTableViewCell.reuseIdentifier,
 			for: indexPath) as? TrackerOptionsTableViewCell
 		else { return UITableViewCell() }
 
-		guard let optionsTitles = self.presenter?.optionsTitles else { return UITableViewCell() }
+		guard let optionsTitles = self.delegate?.optionsTitles else { return UITableViewCell() }
         
 		cell.set(cellTitle: optionsTitles[indexPath.row])
         cell.accessoryType = .disclosureIndicator
@@ -87,7 +94,7 @@ private extension TrackerOptionsTableViewHelper {
     }
     
     func configureSchduleAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
-        guard let selectedWeekDays = presenter?.selectedWeekDays, !selectedWeekDays.isEmpty else {
+		guard let selectedWeekDays = self.delegate?.selectedWeekDays, !selectedWeekDays.isEmpty else {
 			cell.set(additionalInfo: nil)
 			return
 		}
@@ -100,12 +107,14 @@ private extension TrackerOptionsTableViewHelper {
             return
         }
         
-        let additionalInfo = selectedWeekDaysArray.reduce("") { (result: String, weekDay: WeekDay) in result + weekDay.shortStringRepresentaion + ", " }
+        let additionalInfo = selectedWeekDaysArray.reduce("") { (result: String, weekDay: WeekDay) in
+			result + weekDay.shortStringRepresentaion + ", "
+		}
         cell.set(additionalInfo: String(additionalInfo.prefix(additionalInfo.count - 2)))
     }
 
 	func configureCategoryAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
-		guard let selectedCategory = self.presenter?.selectedCategory else {
+		guard let selectedCategory = self.delegate?.selectedCategory else {
 			cell.set(additionalInfo: nil)
 			return
 		}

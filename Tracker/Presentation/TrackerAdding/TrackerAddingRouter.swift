@@ -8,31 +8,28 @@
 import UIKit
 
 protocol TrackerAddingRouterProtocol {
-	func navigateToScheduleScreen(selectedWeekDays: Set<WeekDay>)
-	func navigateToCategoryScreen(selectedCategory: TrackerCategory?)
+	func navigateToScheduleScreen(selectedWeekDays: Set<WeekDay>, from viewController: UIViewController)
+	func navigateToCategoryScreen(selectedCategory: TrackerCategory?, from viewController: UIViewController)
 	func navigateToMainScreen()
 }
 
 final class TrackerAddingRouter {
-	private weak var viewController: UIViewController?
 	private let trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol
 	private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
 
 	init(
-		viewController: UIViewController,
 		trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol,
 		trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
 	) {
-		self.viewController = viewController
 		self.trackersCategoryDataProvider = trackersCategoryDataProvider
 		self.trackersCategoryDataAdder = trackersCategoryDataAdder
 	}
 }
 
 extension TrackerAddingRouter: TrackerAddingRouterProtocol {
-	func navigateToScheduleScreen(selectedWeekDays: Set<WeekDay>) {
+	func navigateToScheduleScreen(selectedWeekDays: Set<WeekDay>, from viewController: UIViewController) {
 		let vc = TrackerScheduleViewController()
-		vc.delegate = self.viewController as? TrackerScheduleViewControllerDelegate
+		vc.delegate = viewController as? TrackerScheduleViewControllerDelegate
 
 		let presenter = TrackerSchedulePresenter()
 		vc.presenter = presenter
@@ -40,10 +37,10 @@ extension TrackerAddingRouter: TrackerAddingRouterProtocol {
 
 		presenter.selectedWeekDays = selectedWeekDays
 
-		self.viewController?.present(vc, animated: true)
+		viewController.present(vc, animated: true)
 	}
 
-	func navigateToCategoryScreen(selectedCategory: TrackerCategory?) {
+	func navigateToCategoryScreen(selectedCategory: TrackerCategory?, from viewController: UIViewController) {
 		let trackersFactory = TrackersFactory()
 		let categoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
 		let trackersCategoryService = TrackersCategoryService(
@@ -52,7 +49,7 @@ extension TrackerAddingRouter: TrackerAddingRouterProtocol {
 		)
 
 		let viewModel = TrackerCategoryViewModel(trackersCategoryService: trackersCategoryService)
-		viewModel.delegate = self.viewController as? TrackerCategoryViewControllerDelegate
+		viewModel.delegate = viewController as? TrackerCategoryViewControllerDelegate
 
 		let helper = TrackerCategoryTableViewHelper()
 		let router = TrackerCategoryRouter(trackersCategoryDataAdder: self.trackersCategoryDataAdder)
@@ -65,7 +62,7 @@ extension TrackerAddingRouter: TrackerAddingRouterProtocol {
 			selectedCategory: selectedCategory
 		)
 
-		self.viewController?.present(vc, animated: true)
+		viewController.present(vc, animated: true)
 	}
 
 	func navigateToMainScreen() {

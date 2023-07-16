@@ -8,7 +8,6 @@
 import UIKit
 
 protocol TrackerScheduleViewControllerDelegate: AnyObject {
-	func dismissTrackerScheduleViewController()
 	func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>)
 }
 
@@ -100,6 +99,5 @@ private extension TrackerScheduleViewController {
     func didTapAddScheduleButton() {
 		guard let selectedWeekDays = self.presenter?.selectedWeekDays else { return }
 		self.delegate?.didRecieveSelectedWeekDays(selectedWeekDays)
-		self.delegate?.dismissTrackerScheduleViewController()
     }
 }

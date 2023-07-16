@@ -8,17 +8,15 @@
 import UIKit
 
 protocol TrackerAddingViewControllerProtocol: AnyObject {
-    var presenter: TrackerAddingViewPresenterProtocol? { get set }
 	var emptyTap: (() -> Void)? { get set }
-    func setViewControllerTitle(_ title: String)
-    func showError() -> Bool
-    func hideError() -> Bool
-    func enableAddButton()
-    func disableAddButton()
 }
 
 final class TrackerAddingViewController: UIViewController {
-	var presenter: TrackerAddingViewPresenterProtocol?
+	enum Flow {
+		case add
+		case edit
+	}
+
 	var emptyTap: (() -> Void)?
 	
 	private let scrollView: UIScrollView = {
@@ -33,19 +31,46 @@ final class TrackerAddingViewController: UIViewController {
 		return view
 	}()
 	
-	private let titleLabel: UILabel = {
+	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.font = .Medium.big
 		label.textColor = .Dynamic.blackDay
+		label.text = self.viewModel.viewControllerTitle
 		return label
+	}()
+
+	private let completedTimesCountLabel: UILabel = {
+		let label = UILabel()
+		label.translatesAutoresizingMaskIntoConstraints = false
+		label.font = .Bold.big
+		label.textColor = .Dynamic.blackDay
+		label.text = "5 дней"
+		label.adjustsFontSizeToFitWidth = true
+		return label
+	}()
+
+	private lazy var decreaseCompletedTimesButton: CompleteTrackerButton = {
+		let button = CompleteTrackerButton()
+		button.translatesAutoresizingMaskIntoConstraints = false
+		button.buttonState = .decrease
+		button.color = .Selection.color2
+		return button
+	}()
+
+	private lazy var increaseCompletedTimesButton: CompleteTrackerButton = {
+		let button = CompleteTrackerButton()
+		button.translatesAutoresizingMaskIntoConstraints = false
+		button.buttonState = .increase
+		button.color = .Selection.color2
+		return button
 	}()
 	
 	private lazy var trackerTitleTextField: TrackerCustomTextField = {
 		let textField = TrackerCustomTextField()
 		textField.translatesAutoresizingMaskIntoConstraints = false
 		textField.placeholder = R.string.localizable.trackerAddingTrackerTitleTextFieldPlaceholder()
-		textField.delegate = self.presenter?.textFieldHelper
+		textField.delegate = self.titleTextFieldHelper
 		textField.clearButtonMode = .whileEditing
 		textField.addTarget(self, action: #selector(self.didChangeTrackerTitleTextField(_:)), for: .editingChanged)
 		return textField
@@ -65,8 +90,8 @@ final class TrackerAddingViewController: UIViewController {
 	private lazy var trackerOptionsTableView: UITableView = {
 		let tableView = UITableView()
 		tableView.translatesAutoresizingMaskIntoConstraints = false
-		tableView.dataSource = self.presenter?.tableViewHelper
-		tableView.delegate = self.presenter?.tableViewHelper
+		tableView.dataSource = self.optionsTableViewHelper
+		tableView.delegate = self.optionsTableViewHelper
 		tableView.register(
 			TrackerOptionsTableViewCell.self,
 			forCellReuseIdentifier: TrackerOptionsTableViewCell.reuseIdentifier
@@ -78,8 +103,8 @@ final class TrackerAddingViewController: UIViewController {
 	private lazy var emojisCollectionView: UICollectionView = {
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
-		collectionView.dataSource = self.presenter?.emojisCollectionViewHelper
-		collectionView.delegate = self.presenter?.emojisCollectionViewHelper
+		collectionView.dataSource = self.emojisHelper
+		collectionView.delegate = self.emojisHelper
 		collectionView.register(
 			EmojisCollectionViewCell.self,
 			forCellWithReuseIdentifier: EmojisCollectionViewCell.reuseIdentifier
@@ -95,8 +120,8 @@ final class TrackerAddingViewController: UIViewController {
 	private lazy var colorsCollectionView: UICollectionView = {
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
-		collectionView.dataSource = self.presenter?.colorsCollectionViewHelper
-		collectionView.delegate = self.presenter?.colorsCollectionViewHelper
+		collectionView.dataSource = self.colorsHelper
+		collectionView.delegate = self.colorsHelper
 		collectionView.register(
 			ColorsCollectionViewCell.self,
 			forCellWithReuseIdentifier: ColorsCollectionViewCell.reuseIdentifier
@@ -161,6 +186,38 @@ final class TrackerAddingViewController: UIViewController {
 		multiplier: 1,
 		constant: 100)
 
+	private let flow: Flow
+	private let router: TrackerAddingRouterProtocol
+	private let optionsTableViewHelper: TrackerOptionsTableViewHelperProtocol
+	private let titleTextFieldHelper: TrackerTitleTextFieldHelperProtocol
+	private let colorsHelper: ColorsCollectionViewHelperProtocol
+	private let emojisHelper: EmojisCollectionViewHelperProtocol
+
+	private var viewModel: TrackerAddingViewModelProtocol
+
+	init(
+		viewModel: TrackerAddingViewModelProtocol,
+		router: TrackerAddingRouterProtocol,
+		optionsTableViewHelper: TrackerOptionsTableViewHelperProtocol,
+		titleTextFieldHelper: TrackerTitleTextFieldHelperProtocol,
+		colorsHelper: ColorsCollectionViewHelperProtocol,
+		emojisHelper: EmojisCollectionViewHelperProtocol,
+		flow: Flow
+	) {
+		self.viewModel = viewModel
+		self.router = router
+		self.optionsTableViewHelper = optionsTableViewHelper
+		self.titleTextFieldHelper = titleTextFieldHelper
+		self.colorsHelper = colorsHelper
+		self.emojisHelper = emojisHelper
+		self.flow = flow
+		super.init(nibName: nil, bundle: nil)
+	}
+
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -170,8 +227,8 @@ final class TrackerAddingViewController: UIViewController {
 		self.addSubviews()
 		self.addConstraints()
 		self.addGestureRecognizers()
-        
-		self.presenter?.viewDidLoad()
+		self.bind()
+
 		self.reloadData()
     }
     
@@ -189,75 +246,73 @@ final class TrackerAddingViewController: UIViewController {
     }
 }
 
-// MARK: - TrackerAddingViewControllerProtocol
-extension TrackerAddingViewController: TrackerAddingViewControllerProtocol {
-    func setViewControllerTitle(_ title: String) {
-		self.titleLabel.text = title
-		self.titleLabel.sizeToFit()
-    }
-
-	func showError() -> Bool {
-		guard self.errorLabel.isHidden else { return self.errorLabel.isHidden }
-
-		self.errorLabel.isHidden = false
-		self.addTrackerButton.buttonState = .disabled
-		self.tableViewTopConstraint.constant = 54
-
-		return shouldHideErrorLabelWithAnimation(false)
+// MARK: - TrackerOptionsTableViewDelegate
+extension TrackerAddingViewController: TrackerOptionsTableViewDelegate {
+	var optionsTitles: [String] {
+		self.viewModel.optionsTitles
 	}
 
-	func hideError() -> Bool {
-		guard !self.errorLabel.isHidden else { return self.errorLabel.isHidden }
-
-		self.addTrackerButton.buttonState = .normal
-		self.tableViewTopConstraint.constant = 24
-
-		return self.shouldHideErrorLabelWithAnimation(true)
+	var selectedWeekDays: [WeekDay] {
+		Array(self.viewModel.selectedWeekDays)
 	}
 
-	func enableAddButton() {
-		self.addTrackerButton.buttonState = .normal
+	var selectedCategory: TrackerCategory? {
+		self.viewModel.selectedCategory
 	}
 
-	func disableAddButton() {
-		self.addTrackerButton.buttonState = .disabled
+	func didTapScheduleCell() {
+		let weekDays = self.viewModel.selectedWeekDays
+		self.router.navigateToScheduleScreen(selectedWeekDays: weekDays, from: self)
+	}
+
+	func didTapCategoryCell() {
+		let category = self.viewModel.selectedCategory
+		self.router.navigateToCategoryScreen(selectedCategory: category, from: self)
 	}
 }
 
-// MARK: - TrackerScheduleViewControllerDelegate
-extension TrackerAddingViewController: TrackerScheduleViewControllerDelegate {
-    func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
-		self.presenter?.didRecieveSelectedTrackerSchedule(weekDays)
-		self.trackerOptionsTableView.reloadData()
-    }
-    
-    func dismissTrackerScheduleViewController() {
-		self.dismiss(animated: true)
-    }
+// MARK: - TrackerEmojisCollectionViewDelegate
+extension TrackerAddingViewController: TrackerEmojisCollectionViewDelegate {
+	var selectedEmoji: String? {
+		self.viewModel.selectedEmoji
+	}
+
+	func didSelect(emoji: String) {
+		self.viewModel.didSelect(emoji: emoji)
+	}
 }
 
-// MARK: - TrackerCategoryViewControllerDelegate
-extension TrackerAddingViewController: TrackerCategoryViewControllerDelegate {
-	func didRecieveCategory(_ category: TrackerCategory) {
-		self.presenter?.didRecieveSelectedCategory(category)
-		self.trackerOptionsTableView.reloadData()
+// MARK: - TrackerColorCollectionViewDelegate
+extension TrackerAddingViewController: TrackerColorCollectionViewDelegate {
+	var selectedColor: UIColor? {
+		self.viewModel.selectedColor
+	}
+
+	func didSelect(color: UIColor) {
+		self.viewModel.didSelect(color: color)
 	}
 }
 
 // MARK: - Layout views
 private extension TrackerAddingViewController {
 	func addSubviews() {
-		view.addSubview(scrollView)
-		scrollView.addSubview(contentView)
+		self.view.addSubview(scrollView)
+		self.scrollView.addSubview(contentView)
 
-		contentView.addSubview(titleLabel)
-		contentView.addSubview(trackerTitleTextField)
-		contentView.addSubview(errorLabel)
-		contentView.addSubview(trackerOptionsTableView)
-		contentView.addSubview(emojisCollectionView)
-		contentView.addSubview(colorsCollectionView)
-		contentView.addSubview(addTrackerButton)
-		contentView.addSubview(cancelTrackerButton)
+		self.contentView.addSubview(titleLabel)
+		self.contentView.addSubview(trackerTitleTextField)
+		self.contentView.addSubview(errorLabel)
+		self.contentView.addSubview(trackerOptionsTableView)
+		self.contentView.addSubview(emojisCollectionView)
+		self.contentView.addSubview(colorsCollectionView)
+		self.contentView.addSubview(addTrackerButton)
+		self.contentView.addSubview(cancelTrackerButton)
+
+		if self.flow == .edit {
+			self.contentView.addSubview(self.decreaseCompletedTimesButton)
+			self.contentView.addSubview(self.completedTimesCountLabel)
+			self.contentView.addSubview(self.increaseCompletedTimesButton)
+		}
 	}
 
 	func addConstraints() {
@@ -313,6 +368,27 @@ private extension TrackerAddingViewController {
 			colorsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 			colorsCollectionViewHeightConstraint
 		])
+
+		if self.flow == .edit {
+			NSLayoutConstraint.activate([
+				decreaseCompletedTimesButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 26),
+				decreaseCompletedTimesButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 80),
+				decreaseCompletedTimesButton.widthAnchor.constraint(equalToConstant: 34),
+				decreaseCompletedTimesButton.heightAnchor.constraint(equalToConstant: 34),
+			])
+
+			NSLayoutConstraint.activate([
+				completedTimesCountLabel.leadingAnchor.constraint(equalTo: decreaseCompletedTimesButton.trailingAnchor, constant: 24),
+				completedTimesCountLabel.trailingAnchor.constraint(equalTo: increaseCompletedTimesButton.leadingAnchor, constant: -24)
+			])
+
+			NSLayoutConstraint.activate([
+				increaseCompletedTimesButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 26),
+				increaseCompletedTimesButton.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: -80),
+				increaseCompletedTimesButton.widthAnchor.constraint(equalToConstant: 34),
+				increaseCompletedTimesButton.heightAnchor.constraint(equalToConstant: 34),
+			])
+		}
 	}
 
 	func addConstraintsToButtons() {
@@ -350,24 +426,35 @@ private extension TrackerAddingViewController {
 		self.emojisCollectionView.reloadData()
 		self.colorsCollectionView.reloadData()
 	}
+
+	func bind() {
+		self.viewModel.onSelectedCategoryChanged = { [weak self] in
+			self?.trackerOptionsTableView.reloadData()
+		}
+
+		self.viewModel.onSelectedWeekDaysChanged = { [weak self] in
+			self?.trackerOptionsTableView.reloadData()
+		}
+	}
 }
 
 // MARK: - Actions
 private extension TrackerAddingViewController {
 	@objc
 	func didTapCancelTrackerButton() {
-		self.presenter?.didCancelAddTracker()
+		self.router.navigateToMainScreen()
 	}
 
 	@objc
 	func didTapAddTrackerButton() {
-		self.presenter?.didConfirmAddTracker()
+		self.viewModel.didConfirmTracker()
+		self.router.navigateToMainScreen()
 	}
 
 	@objc
 	func didChangeTrackerTitleTextField(_ textField: UITextField) {
-		guard let title = textField.text else { return }
-		self.presenter?.didChangeTrackerTitle(title)
+//		guard let title = textField.text else { return }
+//		self.presenter?.didChangeTrackerTitle(title)
 	}
 
 	@objc

@@ -41,6 +41,7 @@
 		9654A97829EE869B00B4A718 /* TrackerScheduleTableViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9654A97729EE869B00B4A718 /* TrackerScheduleTableViewHelper.swift */; };
 		9654A97C29EE921300B4A718 /* TrackerScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9654A97B29EE921300B4A718 /* TrackerScheduleTableViewCell.swift */; };
 		965A5B612A62F2CD00458791 /* StaticUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965A5B602A62F2CD00458791 /* StaticUUID.swift */; };
+		965A5B642A63AAEF00458791 /* TrackerAddingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965A5B632A63AAEE00458791 /* TrackerAddingViewModel.swift */; };
 		9661855329F1746E0003C57A /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9661855229F1746E0003C57A /* Date+Extensions.swift */; };
 		966C65E62A5D7CB8007D575B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 966C65E82A5D7CB8007D575B /* Localizable.strings */; };
 		966C65F22A5EA679007D575B /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 966C65F42A5EA679007D575B /* Localizable.stringsdict */; };
@@ -167,6 +168,7 @@
 		9654A97729EE869B00B4A718 /* TrackerScheduleTableViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerScheduleTableViewHelper.swift; sourceTree = "<group>"; };
 		9654A97B29EE921300B4A718 /* TrackerScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		965A5B602A62F2CD00458791 /* StaticUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticUUID.swift; sourceTree = "<group>"; };
+		965A5B632A63AAEE00458791 /* TrackerAddingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerAddingViewModel.swift; sourceTree = "<group>"; };
 		9661855229F1746E0003C57A /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		966C65E72A5D7CB8007D575B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		966C65E92A5D7CBB007D575B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -597,6 +599,7 @@
 				966DD3B229E9BB2800296CDF /* TrackerAddingViewPresenter.swift */,
 				968C17602A5BAB8000769FC3 /* TrackerAddingRouter.swift */,
 				96C7E77029E9186B00BA7F67 /* TrackerAddingViewController.swift */,
+				965A5B632A63AAEE00458791 /* TrackerAddingViewModel.swift */,
 				966DD3AE29E9BA8600296CDF /* TrackerOptionsTableView */,
 				9654A96E29ED70E600B4A718 /* TrackerTitleTextField */,
 				96F7031329F9795500BBFF5C /* TrackerAddingCollectionViews */,
@@ -1013,6 +1016,7 @@
 				969509B52A21D0DC00DC1DF3 /* UIImage+Extensions.swift in Sources */,
 				9617C96629DD77180054987D /* Device.swift in Sources */,
 				96C7E77329E92B6D00BA7F67 /* TrackerCustomTextField.swift in Sources */,
+				965A5B642A63AAEF00458791 /* TrackerAddingViewModel.swift in Sources */,
 				969CDB8F2A587166001EDB8B /* TrackersCategoryDataAdder.swift in Sources */,
 				9617C96229DC77620054987D /* TrackerCollectionViewConstants.swift in Sources */,
 				96E316892A40519D00C08032 /* TrackerCategoryViewController.swift in Sources */,

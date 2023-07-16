@@ -7,12 +7,17 @@
 
 import UIKit
 
+protocol TrackerColorCollectionViewDelegate: AnyObject {
+	var selectedColor: UIColor? { get }
+	func didSelect(color: UIColor)
+}
+
 protocol ColorsCollectionViewHelperProtocol: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    var presenter: TrackerAddingViewPresenterCollectionColorsViewHelperProtocol? { get set }
+    var delegate: TrackerColorCollectionViewDelegate? { get set }
 }
 
 final class ColorsCollectionViewHelper: NSObject, ColorsCollectionViewHelperProtocol {
-    weak var presenter: TrackerAddingViewPresenterCollectionColorsViewHelperProtocol?
+    weak var delegate: TrackerColorCollectionViewDelegate?
     
     private let configuration = TrackerCollectionViewConstants.addTrackerCollectionsConfiguration
 	private let colors: [UIColor] = [
@@ -35,7 +40,7 @@ extension ColorsCollectionViewHelper {
 			  let color = cell.color
         else { return }
         
-		self.presenter?.didSelect(color: color)
+		self.delegate?.didSelect(color: color)
     }
     
     func collectionView(
@@ -107,8 +112,12 @@ extension ColorsCollectionViewHelper {
             assertionFailure("cannot dequeue colors cell")
             return UICollectionViewCell()
         }
-        
-		cell.color = self.colors[indexPath.row]
+		let color = self.colors[indexPath.row]
+		cell.color = color
+
+		guard let selectedColor = self.delegate?.selectedColor, selectedColor == color else { return cell }
+		cell.isSelected = true
+
         return cell
     }
     
@@ -125,7 +134,6 @@ extension ColorsCollectionViewHelper {
             assertionFailure("Cannot dequeue header view")
             return UICollectionReusableView()
         }
-        
 		view.headerText = R.string.localizable.trackerAddingColorCollectionViewHeaderTitle()
         return view
     }

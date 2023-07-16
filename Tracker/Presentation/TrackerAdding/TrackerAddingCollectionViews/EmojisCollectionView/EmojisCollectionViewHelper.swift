@@ -7,15 +7,19 @@
 
 import UIKit
 
+protocol TrackerEmojisCollectionViewDelegate: AnyObject {
+	var selectedEmoji: String? { get }
+	func didSelect(emoji: String)
+}
+
 protocol EmojisCollectionViewHelperProtocol: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    var presenter: TrackerAddingViewPresenterEmojisCollectionViewHelperProtocol? { get set }
+    var delegate: TrackerEmojisCollectionViewDelegate? { get set }
 }
 
 final class EmojisCollectionViewHelper: NSObject, EmojisCollectionViewHelperProtocol {
-    weak var presenter: TrackerAddingViewPresenterEmojisCollectionViewHelperProtocol?
+    weak var delegate: TrackerEmojisCollectionViewDelegate?
     
     private let configuration = TrackerCollectionViewConstants.addTrackerCollectionsConfiguration
-    
     private let emojis: [String] = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
         "😇", "😡", "🥶", "🤔", "🙌", "🍔",
@@ -33,7 +37,7 @@ extension EmojisCollectionViewHelper {
 			  let emoji = cell.emoji
         else { return }
 
-		self.presenter?.didSelect(emoji: emoji)
+		self.delegate?.didSelect(emoji: emoji)
     }
     
     func collectionView(
@@ -105,9 +109,11 @@ extension EmojisCollectionViewHelper {
             assertionFailure("cannot dequeue emojis cell")
             return UICollectionViewCell()
         }
-        
-		cell.emoji = self.emojis[indexPath.row]
-        
+		let emoji = self.emojis[indexPath.row]
+		cell.emoji = emoji
+
+		guard let selectedEmoji = self.delegate?.selectedEmoji, selectedEmoji == emoji else { return cell }
+		cell.isSelected = true
         return cell
     }
     
@@ -124,7 +130,6 @@ extension EmojisCollectionViewHelper {
             assertionFailure("Cannot dequeue header view")
             return UICollectionReusableView()
         }
-        
         view.headerText = "Emoji"
         return view
     }

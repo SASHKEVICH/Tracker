@@ -47,22 +47,31 @@ private extension TrackerTypeRouter {
 		let factory = TrackersFactory()
 		let addingService = TrackersAddingService(trackersFactory: factory, trackersDataAdder: self.trackersDataAdder)
 
-		let vc = TrackerAddingViewController()
 		let router = TrackerAddingRouter(
-			viewController: vc,
 			trackersCategoryDataProvider: self.trackersCategoryDataProvider,
 			trackersCategoryDataAdder: self.trackersCategoryDataAdder
 		)
 
-		let presenter = TrackerAddingViewPresenter(
-			trackersAddingService: addingService,
+		let viewModel = TrackerAddingViewModel(trackersAddingService: addingService, trackerType: trackerType)
+
+		let optionsHelper = TrackerOptionsTableViewHelper()
+		let textFieldHelper = TrackerTitleTextFieldHelper()
+		let colorsHelper = ColorsCollectionViewHelper()
+		let emojisHelper = EmojisCollectionViewHelper()
+
+		let vc = TrackerAddingViewController(
+			viewModel: viewModel,
 			router: router,
-			trackerType: trackerType,
+			optionsTableViewHelper: optionsHelper,
+			titleTextFieldHelper: textFieldHelper,
+			colorsHelper: colorsHelper,
+			emojisHelper: emojisHelper,
 			flow: .add
 		)
 
-		vc.presenter = presenter
-		presenter.view = vc
+		optionsHelper.delegate = vc
+		colorsHelper.delegate = vc
+		emojisHelper.delegate = vc
 
 		vc.emptyTap = { [weak vc] in
 			vc?.view.endEditing(true)

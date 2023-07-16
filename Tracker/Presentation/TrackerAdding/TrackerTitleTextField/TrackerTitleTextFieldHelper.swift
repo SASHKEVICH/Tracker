@@ -7,13 +7,9 @@
 
 import UIKit
 
-protocol TrackerTitleTextFieldHelperProtocol: UITextFieldDelegate {
-    var presenter: TrackerAddingViewPresenterProtocol? { get set }
-}
+protocol TrackerTitleTextFieldHelperProtocol: UITextFieldDelegate {}
 
-final class TrackerTitleTextFieldHelper: NSObject, TrackerTitleTextFieldHelperProtocol {
-    weak var presenter: TrackerAddingViewPresenterProtocol?
-    
+final class TrackerTitleTextFieldHelper: NSObject {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -24,3 +20,5 @@ final class TrackerTitleTextFieldHelper: NSObject, TrackerTitleTextFieldHelperPr
         return true
     }
 }
+
+extension TrackerTitleTextFieldHelper: TrackerTitleTextFieldHelperProtocol {}
