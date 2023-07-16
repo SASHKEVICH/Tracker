@@ -20,6 +20,7 @@ extension UIColor {
 		static let lightGray = UIColor.color(named: "TrackerLightGray")
 		static let red = UIColor.color(named: "TrackerRed")
 		static let switchBackground = UIColor.color(named: "TrackerSwitchBackgroundColor")
+		static let black = UIColor.color(named: "TrackerBlack")
 	}
 
 	struct Selection {

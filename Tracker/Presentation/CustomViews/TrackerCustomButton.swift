@@ -13,6 +13,7 @@ final class TrackerCustomButton: UIButton {
 		case normal
 		case disabled
 		case filter
+		case onboarding
 	}
 
 	var buttonState: TrackerCustomButton.State {
@@ -53,6 +54,8 @@ private extension TrackerCustomButton {
 			self.setDisabledState()
 		case .filter:
 			self.setFilterState()
+		case .onboarding:
+			self.setOnboardingState()
         }
     }
     
@@ -93,6 +96,14 @@ private extension TrackerCustomButton {
 		self.layer.backgroundColor = UIColor.Static.blue.cgColor
 
 		let font = UIFont.Regular.medium
+		self.setAttributedButtonTitle(with: .white, font: font)
+	}
+
+	func setOnboardingState() {
+		self.isEnabled = true
+		self.layer.backgroundColor = UIColor.Static.black.cgColor
+
+		let font = UIFont.Medium.big
 		self.setAttributedButtonTitle(with: .white, font: font)
 	}
     
