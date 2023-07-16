@@ -115,8 +115,9 @@ extension ColorsCollectionViewHelper {
 		let color = self.colors[indexPath.row]
 		cell.color = color
 
-		guard let selectedColor = self.delegate?.selectedColor, selectedColor == color else { return cell }
-		cell.isSelected = true
+		if isSelectedColorEqual(color: color, self.delegate?.selectedColor) {
+			collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
+		}
 
         return cell
     }
@@ -137,4 +138,13 @@ extension ColorsCollectionViewHelper {
 		view.headerText = R.string.localizable.trackerAddingColorCollectionViewHeaderTitle()
         return view
     }
+}
+
+private extension ColorsCollectionViewHelper {
+	func isSelectedColorEqual(color: UIColor, _ selectedColor: UIColor?) -> Bool {
+		guard let selectedColor = self.delegate?.selectedColor else { return false }
+		let selectedColorHex = UIColorMarshalling.serilizeToHex(color: selectedColor)
+		let colorHex = UIColorMarshalling.serilizeToHex(color: color)
+		return selectedColorHex == colorHex
+	}
 }

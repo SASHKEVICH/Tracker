@@ -113,7 +113,7 @@ extension EmojisCollectionViewHelper {
 		cell.emoji = emoji
 
 		guard let selectedEmoji = self.delegate?.selectedEmoji, selectedEmoji == emoji else { return cell }
-		cell.isSelected = true
+		collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
         return cell
     }
     
