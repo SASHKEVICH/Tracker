@@ -35,7 +35,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 
 	var isCompleted: Bool = false {
 		didSet {
-			completeTrackerButton.isDone = self.isCompleted
+			completeTrackerButton.buttonState = self.isCompleted ? .completed : .increase
 		}
 	}
 
@@ -106,7 +106,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 
 	override func prepareForReuse() {
 		self.dayCount = ""
-		self.completeTrackerButton.isDone = false
+		self.completeTrackerButton.buttonState = .increase
 	}
 }
 

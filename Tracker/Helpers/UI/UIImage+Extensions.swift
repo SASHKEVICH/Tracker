@@ -36,6 +36,12 @@ extension UIImage {
 		static let trackers = UIImage.image(named: "TrackersTabBarItem")
 		static let statistics = UIImage.image(named: "StatisticsTabBarItem")
 	}
+
+	struct CompleteTrackerButton {
+		static let completed = UIImage(systemName: "checkmark")
+		static let increase = UIImage(systemName: "plus")
+		static let decrease = UIImage(systemName: "minus")
+	}
 }
 
 extension UIImage {

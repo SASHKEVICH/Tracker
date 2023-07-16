@@ -426,14 +426,6 @@
 			path = CustomViews;
 			sourceTree = "<group>";
 		};
-		966DD3B529E9BB5300296CDF /* CustomViews */ = {
-			isa = PBXGroup;
-			children = (
-				9617C96A29DD88860054987D /* CompleteTrackerButton.swift */,
-			);
-			path = CustomViews;
-			sourceTree = "<group>";
-		};
 		966DD3BA29EA74A900296CDF /* TrackerSchedule */ = {
 			isa = PBXGroup;
 			children = (
@@ -685,7 +677,6 @@
 		96E63F4E29D735D900AA0970 /* Trackers */ = {
 			isa = PBXGroup;
 			children = (
-				966DD3B529E9BB5300296CDF /* CustomViews */,
 				9686FA5729E2826C00BE2BC0 /* SearchController */,
 				9602B0F529D9DCF900FD66D2 /* CollectionView */,
 				9629563A29CD846900A587C5 /* TrackersViewController.swift */,
@@ -736,6 +727,7 @@
 				9602B0F129D967BB00FD66D2 /* TrackerPlaceholderView.swift */,
 				9617C96C29DDCCE30054987D /* TrackersCollectionSectionHeader.swift */,
 				966DD3BD29EA7EEA00296CDF /* TrackerCustomButton.swift */,
+				9617C96A29DD88860054987D /* CompleteTrackerButton.swift */,
 				96CE2AC72A40C6C7002A08F0 /* CellSelectedBackgroundView.swift */,
 			);
 			path = CustomViews;
