@@ -383,7 +383,7 @@ private extension TrackerAddingView {
 		if self.flow == .edit {
 			NSLayoutConstraint.activate([
 				decreaseCompletedTimesButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 26),
-				decreaseCompletedTimesButton.leadingAnchor.constraint(lessThanOrEqualTo: leadingAnchor, constant: 80),
+				decreaseCompletedTimesButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 80),
 				decreaseCompletedTimesButton.widthAnchor.constraint(equalToConstant: 34),
 				decreaseCompletedTimesButton.heightAnchor.constraint(equalToConstant: 34),
 			])
@@ -396,7 +396,7 @@ private extension TrackerAddingView {
 
 			NSLayoutConstraint.activate([
 				increaseCompletedTimesButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 26),
-				increaseCompletedTimesButton.trailingAnchor.constraint(greaterThanOrEqualTo: trailingAnchor, constant: -80),
+				increaseCompletedTimesButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -80),
 				increaseCompletedTimesButton.widthAnchor.constraint(equalToConstant: 34),
 				increaseCompletedTimesButton.heightAnchor.constraint(equalToConstant: 34),
 			])

@@ -79,6 +79,8 @@ final class TrackerEditingViewModel {
 		}
 	}
 
+	private var completedTimes: Int = 0
+
 	private let tracker: Tracker
 	
 	private let trackersAddingService: TrackersAddingServiceProtocol
@@ -137,15 +139,8 @@ extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
 		else { return }
 
 		let schedule = self.tracker.type == .irregularEvent ? Set(WeekDay.allCases) : self.selectedWeekDays
-
-		self.trackersAddingService.addTracker(
-			title: title,
-			schedule: schedule,
-			type: self.tracker.type,
-			color: color,
-			emoji: emoji,
-			categoryId: category.id
-		)
+		
+		self.saveCompletedTimesCount()
 	}
 
 	func didSelect(color: UIColor) {
@@ -169,13 +164,14 @@ extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
 	}
 
 	func decreaseCompletedCount() {
-		self.trackersCompletetingService.incompleteTracker(trackerId: self.tracker.id, date: Date())
-		self.fetchCompletedCount()
+		guard self.completedTimes > 0 else { return }
+		self.completedTimes -= 1
+		self.completedCount = R.string.localizable.stringKey(days: completedTimes)
 	}
 
 	func increaseCompletedCount() {
-		self.trackersCompletetingService.completeTracker(trackerId: self.tracker.id, date: Date())
-		self.fetchCompletedCount()
+		self.completedTimes += 1
+		self.completedCount = R.string.localizable.stringKey(days: completedTimes)
 	}
 }
 
@@ -216,6 +212,22 @@ private extension TrackerEditingViewModel {
 
 	func fetchCompletedCount() {
 		let completedCount = self.trackersRecordService.completedTimesCount(trackerId: self.tracker.id)
+		self.completedTimes = completedCount
 		self.completedCount = R.string.localizable.stringKey(days: completedCount)
+	}
+
+	func saveCompletedTimesCount() {
+		let id = self.tracker.id
+		let previousTimesCount = self.trackersRecordService.completedTimesCount(trackerId: id)
+
+		if previousTimesCount < self.completedTimes {
+			for _ in 0..<self.completedTimes - previousTimesCount {
+				self.trackersCompletetingService.completeTracker(trackerId: id, date: Date())
+			}
+		} else if previousTimesCount > self.completedTimes {
+			for _ in 0..<previousTimesCount - self.completedTimes {
+				self.trackersCompletetingService.incompleteTracker(trackerId: id, date: Date())
+			}
+		}
 	}
 }
