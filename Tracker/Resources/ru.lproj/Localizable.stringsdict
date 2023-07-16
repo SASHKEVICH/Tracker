@@ -15,7 +15,7 @@
 			<key>zero</key>
 			<string>Ни разу</string>
 			<key>one</key>
-			<string>1 день</string>
+			<string>%d день</string>
 			<key>two</key>
 			<string>2 дня</string>
 			<key>few</key>
