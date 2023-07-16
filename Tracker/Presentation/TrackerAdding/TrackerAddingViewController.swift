@@ -137,6 +137,17 @@ private extension TrackerAddingViewController {
 			guard let self = self else { return }
 			self.viewModel.didSelect(title: title)
 		}
+
+		guard var viewModel = self.viewModel as? TrackerEditingViewModelProtocol else { return }
+		self.addingView.completedTimesCount = viewModel.completedCount
+
+		self.addingView.increaseCompletedCount = { [viewModel] in
+			viewModel.increaseCompletedCount()
+		}
+
+		self.addingView.decreaseCompletedCount = { [viewModel] in
+			viewModel.decreaseCompletedCount()
+		}
 	}
 
 	func bind() {
@@ -156,6 +167,11 @@ private extension TrackerAddingViewController {
 		self.viewModel.onIsErrorHiddenChanged = { [weak self] in
 			guard let self = self else { return }
 			self.addingView.shouldHideErrorLabelWithAnimation(self.viewModel.isErrorHidden)
+		}
+
+		guard var viewModel = self.viewModel as? TrackerEditingViewModelProtocol else { return }
+		viewModel.onCompletedCountChanged = { [weak self] in
+			self?.addingView.completedTimesCount = viewModel.completedCount
 		}
 	}
 }

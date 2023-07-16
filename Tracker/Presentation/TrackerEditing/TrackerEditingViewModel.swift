@@ -8,7 +8,10 @@
 import UIKit
 
 protocol TrackerEditingViewModelProtocol: TrackerAddingViewModelProtocol {
-
+	var onCompletedCountChanged: (() -> Void)? { get set }
+	var completedCount: String? { get }
+	func increaseCompletedCount()
+	func decreaseCompletedCount()
 }
 
 final class TrackerEditingViewModel {
@@ -20,6 +23,7 @@ final class TrackerEditingViewModel {
 	var onSelectedColorChanged: (() -> Void)?
 	var onIsErrorHiddenChanged: (() -> Void)?
 	var onIsConfirmButtonDisabledChanged: (() -> Void)?
+	var onCompletedCountChanged: (() -> Void)?
 
 	var trackerTitle: String? = nil {
 		didSet {
@@ -66,6 +70,12 @@ final class TrackerEditingViewModel {
 		didSet {
 			self.onIsErrorHiddenChanged?()
 			self.checkToEnableConfirmTrackerButton()
+		}
+	}
+
+	var completedCount: String? = nil {
+		didSet {
+			self.onCompletedCountChanged?()
 		}
 	}
 
@@ -157,6 +167,16 @@ extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
 	func didSelect(title: String) {
 		self.trackerTitle = title
 	}
+
+	func decreaseCompletedCount() {
+		self.trackersCompletetingService.incompleteTracker(trackerId: self.tracker.id, date: Date())
+		self.fetchCompletedCount()
+	}
+
+	func increaseCompletedCount() {
+		self.trackersCompletetingService.completeTracker(trackerId: self.tracker.id, date: Date())
+		self.fetchCompletedCount()
+	}
 }
 
 // MARK: - TrackerScheduleViewControllerDelegate
@@ -180,6 +200,7 @@ private extension TrackerEditingViewModel {
 		self.selectedEmoji = self.tracker.emoji
 		self.selectedColor = self.tracker.color
 		self.selectedCategory = self.trackersCategoryService.category(for: self.tracker)
+		self.fetchCompletedCount()
 	}
 
 	func checkToEnableConfirmTrackerButton() {
@@ -191,5 +212,10 @@ private extension TrackerEditingViewModel {
 
 		let enablingCondition = !trackerTitle.isEmpty && self.isErrorHidden && !self.selectedWeekDays.isEmpty
 		self.isConfirmButtonDisabled = enablingCondition == false
+	}
+
+	func fetchCompletedCount() {
+		let completedCount = self.trackersRecordService.completedTimesCount(trackerId: self.tracker.id)
+		self.completedCount = R.string.localizable.stringKey(days: completedCount)
 	}
 }

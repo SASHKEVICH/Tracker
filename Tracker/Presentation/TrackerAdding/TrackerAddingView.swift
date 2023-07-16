@@ -16,6 +16,8 @@ protocol TrackerAddingViewProtocol {
 	var didChangeTrackerTitle: ((String) -> Void)? { get set }
 	var didSelectTrackerTitle: ((String) -> Void)? { get set }
 	var emptyTap: (() -> Void)? { get set }
+	var decreaseCompletedCount: (() -> Void)? { get set }
+	var increaseCompletedCount: (() -> Void)? { get set }
 	func reloadCollections()
 	func reloadOptionsTable()
 	func shouldHideErrorLabelWithAnimation(_ shouldHide: Bool)
@@ -51,6 +53,8 @@ final class TrackerAddingView: UIView {
 	var didTapConfirm: (() -> Void)?
 	var didChangeTrackerTitle: ((String) -> Void)?
 	var didSelectTrackerTitle: ((String) -> Void)?
+	var decreaseCompletedCount: (() -> Void)?
+	var increaseCompletedCount: (() -> Void)?
 	var emptyTap: (() -> Void)?
 
 	private let scrollView: UIScrollView = {
@@ -89,6 +93,7 @@ final class TrackerAddingView: UIView {
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.buttonState = .decrease
 		button.color = .Selection.color2
+		button.addTarget(self, action: #selector(self.didTapDecreaseCompletedCount), for: .touchUpInside)
 		return button
 	}()
 
@@ -97,6 +102,7 @@ final class TrackerAddingView: UIView {
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.buttonState = .increase
 		button.color = .Selection.color2
+		button.addTarget(self, action: #selector(self.didTapIncreaseCompletedCount), for: .touchUpInside)
 		return button
 	}()
 
@@ -463,8 +469,17 @@ private extension TrackerAddingView {
 	@objc
 	func dismissKeyboard() {
 		self.emptyTap?()
-
 		guard let title = self.trackerTitleTextField.text else { return }
 		self.didSelectTrackerTitle?(title)
+	}
+
+	@objc
+	func didTapIncreaseCompletedCount() {
+		self.increaseCompletedCount?()
+	}
+
+	@objc
+	func didTapDecreaseCompletedCount() {
+		self.decreaseCompletedCount?()
 	}
 }
