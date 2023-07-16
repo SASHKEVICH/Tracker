@@ -33,6 +33,7 @@
 
 "TrackerAdding.tracker.viewController.title" = "Новая привычка";
 "TrackerAdding.irregularEvent.viewController.title" = "Новое нерегулярное событие";
+"TrackerAdding.flow.edit.viewController.title" = "Редактирование привычки";
 "TrackerAdding.trackerTitleTextField.placeholder" = "Введите название трекера";
 "TrackerAdding.errorLabel.text" = "Ограничение 38 символов";
 "TrackerAdding.cancelButton.title" = "Отменить";

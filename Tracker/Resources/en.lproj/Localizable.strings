@@ -33,6 +33,7 @@
 
 "TrackerAdding.tracker.viewController.title" = "New habbit";
 "TrackerAdding.irregularEvent.viewController.title" = "New irregular event";
+"TrackerAdding.flow.edit.viewController.title" = "Edit tracker";
 "TrackerAdding.trackerTitleTextField.placeholder" = "Enter tracker's title";
 "TrackerAdding.errorLabel.text" = "Limit is 38 symbols";
 "TrackerAdding.cancelButton.title" = "Cancel";

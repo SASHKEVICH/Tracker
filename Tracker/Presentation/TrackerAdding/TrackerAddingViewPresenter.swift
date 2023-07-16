@@ -38,6 +38,11 @@ protocol TrackerAddingViewPresenterProtocol: AnyObject {
 }
 
 final class TrackerAddingViewPresenter {
+	enum Flow {
+		case add
+		case edit(Tracker)
+	}
+
 	weak var view: TrackerAddingViewControllerProtocol?
 
 	var optionsTitles: [String] = []
@@ -81,6 +86,7 @@ final class TrackerAddingViewPresenter {
     private let trackersAddingService: TrackersAddingServiceProtocol
 	private let router: TrackerAddingRouterProtocol
 	private let trackerType: Tracker.TrackerType
+	private let flow: Flow
     
     private var isErrorLabelHidden: Bool? {
         didSet {
@@ -94,13 +100,13 @@ final class TrackerAddingViewPresenter {
         }
     }
     
-    private var selectedTrackerEmoji: String? {
+    private var selectedEmoji: String? {
         didSet {
 			self.checkToEnablingAddTrackerButton()
         }
     }
     
-    private var selectedTrackerColor: UIColor? {
+    private var selectedColor: UIColor? {
         didSet {
 			self.checkToEnablingAddTrackerButton()
         }
@@ -118,10 +124,12 @@ final class TrackerAddingViewPresenter {
     init(
         trackersAddingService: TrackersAddingServiceProtocol,
 		router: TrackerAddingRouterProtocol,
-		trackerType: Tracker.TrackerType
+		trackerType: Tracker.TrackerType,
+		flow: Flow
     ) {
 		self.trackersAddingService = trackersAddingService
 		self.router = router
+		self.flow = flow
         self.trackerType = trackerType
     }
 }
@@ -140,21 +148,26 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterTableViewHelperP
 // MARK: - AddTrackerViewPresenterCollectionColorsViewHelperProtocol
 extension TrackerAddingViewPresenter: TrackerAddingViewPresenterCollectionColorsViewHelperProtocol {
     func didSelect(color: UIColor) {
-		self.selectedTrackerColor = color
+		self.selectedColor = color
     }
 }
 
 // MARK: - AddTrackerViewPresenterEmojisCollectionViewHelperProtocol
 extension TrackerAddingViewPresenter: TrackerAddingViewPresenterEmojisCollectionViewHelperProtocol {
     func didSelect(emoji: String) {
-		self.selectedTrackerEmoji = emoji
+		self.selectedEmoji = emoji
     }
 }
 
 // MARK: - TrackerAddingViewPresenterProtocol
 extension TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     func viewDidLoad() {
-		self.setupViewController(for: trackerType)
+		switch self.flow {
+		case .add:
+			self.setupViewControllerAddingFlow(for: self.trackerType)
+		case .edit(let tracker):
+			self.setupViewControllerEditingFlow(tracker: tracker)
+		}
     }
     
     func didChangeTrackerTitle(_ title: String?) {
@@ -170,8 +183,8 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     
     func didConfirmAddTracker() {
 		guard let title = self.trackerTitle,
-			  let color = self.selectedTrackerColor,
-			  let emoji = self.selectedTrackerEmoji,
+			  let color = self.selectedColor,
+			  let emoji = self.selectedEmoji,
 			  let category = self.selectedCategory
         else { return }
         
@@ -203,7 +216,7 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
 
 // MARK: - Private methods
 private extension TrackerAddingViewPresenter {
-	func setupViewController(for type: Tracker.TrackerType) {
+	func setupViewControllerAddingFlow(for type: Tracker.TrackerType) {
 		let localizables = R.string.localizable
 		let categoryTitle = localizables.trackerAddingOptionTitleCategory()
         switch type {
@@ -216,6 +229,23 @@ private extension TrackerAddingViewPresenter {
 			self.view?.setViewControllerTitle(localizables.trackerAddingIrregularEventViewControllerTitle())
         }
     }
+
+	func setupViewControllerEditingFlow(tracker: Tracker) {
+		let localizable = R.string.localizable
+		let categoryTitle = localizable.trackerAddingOptionTitleCategory()
+		switch tracker.type {
+		case .tracker:
+			let scheduleTitle = localizable.trackerAddingOptionTitleSchedule()
+			self.optionsTitles = [categoryTitle, scheduleTitle]
+		case .irregularEvent:
+			self.optionsTitles = [categoryTitle]
+		}
+		self.view?.setViewControllerTitle(localizable.trackerAddingFlowEditViewControllerTitle())
+
+		self.selectedWeekDays = Set(tracker.schedule)
+		self.selectedColor = tracker.color
+		self.selectedEmoji = tracker.emoji
+	}
 }
 
 // MARK: - Checking enabling add tracker button
@@ -223,8 +253,8 @@ private extension TrackerAddingViewPresenter {
     func checkToEnablingAddTrackerButton() {
         guard let trackerTitle = self.trackerTitle,
 			  let isErrorLabelHidden = self.isErrorLabelHidden,
-			  let _ = self.selectedTrackerColor,
-			  let _ = self.selectedTrackerEmoji,
+			  let _ = self.selectedColor,
+			  let _ = self.selectedEmoji,
 			  let _ = self.selectedCategory
         else { return }
     

@@ -57,7 +57,8 @@ private extension TrackerTypeRouter {
 		let presenter = TrackerAddingViewPresenter(
 			trackersAddingService: addingService,
 			router: router,
-			trackerType: trackerType
+			trackerType: trackerType,
+			flow: .add
 		)
 
 		vc.presenter = presenter

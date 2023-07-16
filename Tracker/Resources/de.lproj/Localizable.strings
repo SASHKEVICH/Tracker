@@ -32,7 +32,8 @@
 "TrackerType.addIrregularEventButton.title" = "Unregelmäßiges Ereignis";
 
 "TrackerAdding.tracker.viewController.title" = "Eine neue Gewohnheit";
-"TrackerAdding.irregularEvent.viewController.title" = "Новое нерегулярное событие";
+"TrackerAdding.irregularEvent.viewController.title" = "Neues unregelmäßiges Ereignis";
+"TrackerAdding.flow.edit.viewController.title" = "Gewohnheit bearbeiten";
 "TrackerAdding.trackerTitleTextField.placeholder" = "Neues unregelmäßiges Ereignis";
 "TrackerAdding.errorLabel.text" = "Beschränkung auf 38 Zeichen";
 "TrackerAdding.cancelButton.title" = "Abschaffen";

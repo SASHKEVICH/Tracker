@@ -10,6 +10,7 @@ import UIKit
 protocol TrackersViewRouterProtocol {
 	func navigateToTrackerTypeScreen()
 	func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?)
+	func navigateToEditTrackerScreen(tracker: Tracker)
 }
 
 final class TrackersViewRouter {
@@ -18,19 +19,22 @@ final class TrackersViewRouter {
 	private let trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol
 	private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
 	private let trackersService: TrackersServiceFilteringProtocol
+	private let trackersAddingService: TrackersAddingServiceProtocol
 
 	init(
 		viewController: UIViewController,
 		trackersDataAdder: TrackersDataAdderProtocol,
 		trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol,
 		trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol,
-		trackersService: TrackersServiceFilteringProtocol
+		trackersService: TrackersServiceFilteringProtocol,
+		trackersAddingService: TrackersAddingServiceProtocol
 	) {
 		self.viewController = viewController
 		self.trackersDataAdder = trackersDataAdder
 		self.trackersCategoryDataProvider = trackersCategoryDataProvider
 		self.trackersCategoryDataAdder = trackersCategoryDataAdder
 		self.trackersService = trackersService
+		self.trackersAddingService = trackersAddingService
 	}
 }
 
@@ -70,6 +74,31 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
 			flow: .filter,
 			selectedCategory: selectedFilter
 		)
+
+		self.viewController?.present(vc, animated: true)
+	}
+
+	func navigateToEditTrackerScreen(tracker: Tracker) {
+		let vc = TrackerAddingViewController()
+		let router = TrackerAddingRouter(
+			viewController: vc,
+			trackersCategoryDataProvider: self.trackersCategoryDataProvider,
+			trackersCategoryDataAdder: self.trackersCategoryDataAdder
+		)
+
+		let presenter = TrackerAddingViewPresenter(
+			trackersAddingService: self.trackersAddingService,
+			router: router,
+			trackerType: tracker.type,
+			flow: .edit(tracker)
+		)
+
+		vc.presenter = presenter
+		presenter.view = vc
+
+		vc.emptyTap = { [weak vc] in
+			vc?.view.endEditing(true)
+		}
 
 		self.viewController?.present(vc, animated: true)
 	}
