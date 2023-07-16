@@ -26,7 +26,7 @@ protocol TrackerAddingViewPresenterTableViewHelperProtocol: AnyObject {
 protocol TrackerAddingViewPresenterProtocol: AnyObject {
     var view: TrackerAddingViewControllerProtocol? { get set }
     var tableViewHelper: TrackerOptionsTableViewHelperProtocol { get }
-    var textFieldHelper: TrackerTitleTextFieldHelperProtocol { get }
+//    var textFieldHelper: TrackerTitleTextFieldHelperProtocol { get }
     var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol { get }
     var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol { get }
     func viewDidLoad()
@@ -46,30 +46,6 @@ final class TrackerAddingViewPresenter {
 	weak var view: TrackerAddingViewControllerProtocol?
 
 	var optionsTitles: [String] = []
-
-	lazy var tableViewHelper: TrackerOptionsTableViewHelperProtocol = {
-		let helper = TrackerOptionsTableViewHelper()
-		helper.presenter = self
-		return helper
-	}()
-
-	lazy var textFieldHelper: TrackerTitleTextFieldHelperProtocol = {
-		let helper = TrackerTitleTextFieldHelper()
-		helper.presenter = self
-		return helper
-	}()
-
-	lazy var colorsCollectionViewHelper: ColorsCollectionViewHelperProtocol = {
-		let helper = ColorsCollectionViewHelper()
-		helper.presenter = self
-		return helper
-	}()
-
-	lazy var emojisCollectionViewHelper: EmojisCollectionViewHelperProtocol = {
-		let helper = EmojisCollectionViewHelper()
-		helper.presenter = self
-		return helper
-	}()
 
 	var selectedWeekDays: Set<WeekDay> = [] {
 		didSet {
@@ -135,32 +111,32 @@ final class TrackerAddingViewPresenter {
 }
 
 // MARK: - AddTrackerViewPresenterTableViewHelperProtocol
-extension TrackerAddingViewPresenter: TrackerAddingViewPresenterTableViewHelperProtocol {
+extension TrackerAddingViewPresenter {
     func didTapTrackerScheduleCell() {
-		self.router.navigateToScheduleScreen(selectedWeekDays: self.selectedWeekDays)
+//		self.router.navigateToScheduleScreen(selectedWeekDays: self.selectedWeekDays, from: <#T##UIViewController#>)
     }
 
 	func didTapTrackerCategoryCell() {
-		self.router.navigateToCategoryScreen(selectedCategory: selectedCategory)
+//		self.router.navigateToCategoryScreen(selectedCategory: selectedCategory)
 	}
 }
 
 // MARK: - AddTrackerViewPresenterCollectionColorsViewHelperProtocol
-extension TrackerAddingViewPresenter: TrackerAddingViewPresenterCollectionColorsViewHelperProtocol {
+extension TrackerAddingViewPresenter {
     func didSelect(color: UIColor) {
 		self.selectedColor = color
     }
 }
 
 // MARK: - AddTrackerViewPresenterEmojisCollectionViewHelperProtocol
-extension TrackerAddingViewPresenter: TrackerAddingViewPresenterEmojisCollectionViewHelperProtocol {
+extension TrackerAddingViewPresenter {
     func didSelect(emoji: String) {
 		self.selectedEmoji = emoji
     }
 }
 
 // MARK: - TrackerAddingViewPresenterProtocol
-extension TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
+extension TrackerAddingViewPresenter {
     func viewDidLoad() {
 		switch self.flow {
 		case .add:
@@ -171,14 +147,14 @@ extension TrackerAddingViewPresenter: TrackerAddingViewPresenterProtocol {
     }
     
     func didChangeTrackerTitle(_ title: String?) {
-        let maxSymbolsCount = 38
-        guard let title = title, title.count < maxSymbolsCount else {
-			self.isErrorLabelHidden = self.view?.showError()
-            return
-        }
-        
-		self.isErrorLabelHidden = self.view?.hideError()
-        self.trackerTitle = title
+//        let maxSymbolsCount = 38
+//        guard let title = title, title.count < maxSymbolsCount else {
+//			self.isErrorLabelHidden = self.view?.showError()
+//            return
+//        }
+//
+//		self.isErrorLabelHidden = self.view?.hideError()
+//        self.trackerTitle = title
     }
     
     func didConfirmAddTracker() {
@@ -219,49 +195,49 @@ private extension TrackerAddingViewPresenter {
 	func setupViewControllerAddingFlow(for type: Tracker.TrackerType) {
 		let localizables = R.string.localizable
 		let categoryTitle = localizables.trackerAddingOptionTitleCategory()
-        switch type {
-        case .tracker:
-			let scheduleTitle = localizables.trackerAddingOptionTitleSchedule()
-			self.optionsTitles = [categoryTitle, scheduleTitle]
-			self.view?.setViewControllerTitle(localizables.trackerAddingTrackerViewControllerTitle())
-        case .irregularEvent:
-            self.optionsTitles = [categoryTitle]
-			self.view?.setViewControllerTitle(localizables.trackerAddingIrregularEventViewControllerTitle())
-        }
+//        switch type {
+//        case .tracker:
+//			let scheduleTitle = localizables.trackerAddingOptionTitleSchedule()
+//			self.optionsTitles = [categoryTitle, scheduleTitle]
+//			self.view?.setViewControllerTitle(localizables.trackerAddingTrackerViewControllerTitle())
+//        case .irregularEvent:
+//            self.optionsTitles = [categoryTitle]
+//			self.view?.setViewControllerTitle(localizables.trackerAddingIrregularEventViewControllerTitle())
+//        }
     }
 
 	func setupViewControllerEditingFlow(tracker: Tracker) {
 		let localizable = R.string.localizable
 		let categoryTitle = localizable.trackerAddingOptionTitleCategory()
-		switch tracker.type {
-		case .tracker:
-			let scheduleTitle = localizable.trackerAddingOptionTitleSchedule()
-			self.optionsTitles = [categoryTitle, scheduleTitle]
-		case .irregularEvent:
-			self.optionsTitles = [categoryTitle]
-		}
-		self.view?.setViewControllerTitle(localizable.trackerAddingFlowEditViewControllerTitle())
-
-		self.selectedWeekDays = Set(tracker.schedule)
-		self.selectedColor = tracker.color
-		self.selectedEmoji = tracker.emoji
+//		switch tracker.type {
+//		case .tracker:
+//			let scheduleTitle = localizable.trackerAddingOptionTitleSchedule()
+//			self.optionsTitles = [categoryTitle, scheduleTitle]
+//		case .irregularEvent:
+//			self.optionsTitles = [categoryTitle]
+//		}
+//		self.view?.setViewControllerTitle(localizable.trackerAddingFlowEditViewControllerTitle())
+//
+//		self.selectedWeekDays = Set(tracker.schedule)
+//		self.selectedColor = tracker.color
+//		self.selectedEmoji = tracker.emoji
 	}
 }
 
 // MARK: - Checking enabling add tracker button
 private extension TrackerAddingViewPresenter {
     func checkToEnablingAddTrackerButton() {
-        guard let trackerTitle = self.trackerTitle,
-			  let isErrorLabelHidden = self.isErrorLabelHidden,
-			  let _ = self.selectedColor,
-			  let _ = self.selectedEmoji,
-			  let _ = self.selectedCategory
-        else { return }
-    
-        if !trackerTitle.isEmpty && isErrorLabelHidden && !doesItNeedToWaitSelectedWeekdays {
-			self.view?.enableAddButton()
-        } else {
-			self.view?.disableAddButton()
-        }
+//        guard let trackerTitle = self.trackerTitle,
+//			  let isErrorLabelHidden = self.isErrorLabelHidden,
+//			  let _ = self.selectedColor,
+//			  let _ = self.selectedEmoji,
+//			  let _ = self.selectedCategory
+//        else { return }
+//    
+//        if !trackerTitle.isEmpty && isErrorLabelHidden && !doesItNeedToWaitSelectedWeekdays {
+//			self.view?.enableAddButton()
+//        } else {
+//			self.view?.disableAddButton()
+//        }
     }
 }

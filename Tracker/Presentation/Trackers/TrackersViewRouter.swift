@@ -84,22 +84,22 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
 			trackersCategoryDataAdder: self.trackersCategoryDataAdder
 		)
 
-		let viewModel = TrackerAddingViewModel(trackersAddingService: self.trackersAddingService, trackerType: tracker.type)
-
 		let optionsHelper = TrackerOptionsTableViewHelper()
 		let textFieldHelper = TrackerTitleTextFieldHelper()
 		let colorsHelper = ColorsCollectionViewHelper()
 		let emojisHelper = EmojisCollectionViewHelper()
 
-		let vc = TrackerAddingViewController(
-			viewModel: viewModel,
-			router: router,
+		let viewModel = TrackerAddingViewModel(trackersAddingService: self.trackersAddingService, trackerType: tracker.type)
+
+		let view = TrackerAddingView(
 			optionsTableViewHelper: optionsHelper,
 			titleTextFieldHelper: textFieldHelper,
 			colorsHelper: colorsHelper,
 			emojisHelper: emojisHelper,
 			flow: .edit
 		)
+
+		let vc = TrackerAddingViewController(viewModel: viewModel, router: router, view: view)
 
 		optionsHelper.delegate = vc
 		colorsHelper.delegate = vc

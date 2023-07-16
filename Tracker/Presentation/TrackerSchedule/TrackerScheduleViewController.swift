@@ -46,7 +46,7 @@ final class TrackerScheduleViewController: UIViewController, TrackerScheduleView
 		let title = R.string.localizable.trackerScheduleAddScheduleButtonTitle()
 		let button = TrackerCustomButton(state: .normal, title: title)
 		button.translatesAutoresizingMaskIntoConstraints = false
-		button.addTarget(self, action: #selector(didTapAddScheduleButton), for: .touchUpInside)
+		button.addTarget(self, action: #selector(self.didTapAddScheduleButton), for: .touchUpInside)
 		return button
 	}()
     
