@@ -72,7 +72,9 @@ private extension TrackersViewControllerSetupper {
 			trackersCategoryDataStore: trackersCategoryDataStore,
 			trackersCategoryFactory: trackersCategoryFactory,
 			trackersService: trackersService,
-			trackersAddingService: addingService
+			trackersAddingService: addingService,
+			trackersRecordService: recordService,
+			trackersCompletingService: completingService
 		) else { return nil }
 
 		var alertPresenterService = AlertPresenterService()
@@ -170,7 +172,9 @@ private extension TrackersViewControllerSetupper {
 		trackersCategoryDataStore: TrackersCategoryDataStore,
 		trackersCategoryFactory: TrackersCategoryFactory,
 		trackersService: TrackersServiceFilteringProtocol,
-		trackersAddingService: TrackersAddingServiceProtocol
+		trackersAddingService: TrackersAddingServiceProtocol,
+		trackersRecordService: TrackersRecordServiceProtocol,
+		trackersCompletingService: TrackersCompletingService
 	) -> TrackersViewRouter? {
 		guard let adder = self.trackersDataAdder else { return nil }
 
@@ -186,7 +190,9 @@ private extension TrackersViewControllerSetupper {
 			trackersCategoryDataProvider: categoryDataProvider,
 			trackersCategoryDataAdder: categoryDataAdder,
 			trackersService: trackersService,
-			trackersAddingService: trackersAddingService
+			trackersAddingService: trackersAddingService,
+			trackersRecordService: trackersRecordService,
+			trackersCompletingService: trackersCompletingService
 		)
 		return router
 	}

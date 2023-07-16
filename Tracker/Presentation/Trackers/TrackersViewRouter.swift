@@ -20,6 +20,8 @@ final class TrackersViewRouter {
 	private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
 	private let trackersService: TrackersServiceFilteringProtocol
 	private let trackersAddingService: TrackersAddingServiceProtocol
+	private let trackersRecordService: TrackersRecordServiceProtocol
+	private let trackersCompletingService: TrackersCompletingServiceProtocol
 
 	init(
 		viewController: UIViewController,
@@ -27,7 +29,9 @@ final class TrackersViewRouter {
 		trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol,
 		trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol,
 		trackersService: TrackersServiceFilteringProtocol,
-		trackersAddingService: TrackersAddingServiceProtocol
+		trackersAddingService: TrackersAddingServiceProtocol,
+		trackersRecordService: TrackersRecordServiceProtocol,
+		trackersCompletingService: TrackersCompletingServiceProtocol
 	) {
 		self.viewController = viewController
 		self.trackersDataAdder = trackersDataAdder
@@ -35,6 +39,8 @@ final class TrackersViewRouter {
 		self.trackersCategoryDataAdder = trackersCategoryDataAdder
 		self.trackersService = trackersService
 		self.trackersAddingService = trackersAddingService
+		self.trackersRecordService = trackersRecordService
+		self.trackersCompletingService = trackersCompletingService
 	}
 }
 
@@ -89,7 +95,12 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
 		let colorsHelper = ColorsCollectionViewHelper()
 		let emojisHelper = EmojisCollectionViewHelper()
 
-		let viewModel = TrackerAddingViewModel(trackersAddingService: self.trackersAddingService, trackerType: tracker.type)
+		let viewModel = TrackerEditingViewModel(
+			trackersAddingService: self.trackersAddingService,
+			trackersRecordService: self.trackersRecordService,
+			trackersCompletingService: self.trackersCompletingService,
+			trackerType: tracker.type
+		)
 
 		let view = TrackerAddingView(
 			optionsTableViewHelper: optionsHelper,

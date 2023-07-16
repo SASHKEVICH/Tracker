@@ -1,5 +1,5 @@
 //
-//  TrackerAddingViewModel.swift
+//  TrackerEditingViewModel.swift
 //  Tracker
 //
 //  Created by Александр Бекренев on 16.07.2023.
@@ -7,15 +7,19 @@
 
 import UIKit
 
-final class TrackerAddingViewModel {
-	var onIsConfirmButtonDisabledChanged: (() -> Void)?
-	var onIsErrorHiddenChanged: (() -> Void)?
+protocol TrackerEditingViewModelProtocol: TrackerAddingViewModelProtocol {
+
+}
+
+final class TrackerEditingViewModel {
 	var onOptionsTitlesChanged: (() -> Void)?
 	var onTrackerTitleChanged: (() -> Void)?
 	var onSelectedWeekDaysChanged: (() -> Void)?
 	var onSelectedCategoryChanged: (() -> Void)?
 	var onSelectedEmojiChanged: (() -> Void)?
 	var onSelectedColorChanged: (() -> Void)?
+	var onIsErrorHiddenChanged: (() -> Void)?
+	var onIsConfirmButtonDisabledChanged: (() -> Void)?
 
 	var trackerTitle: String? = nil {
 		didSet {
@@ -66,13 +70,19 @@ final class TrackerAddingViewModel {
 	}
 
 	private let trackersAddingService: TrackersAddingServiceProtocol
+	private let trackersRecordService: TrackersRecordServiceProtocol
+	private let trackersCompletetingService: TrackersCompletingServiceProtocol
 	private let trackerType: Tracker.TrackerType
 
 	init(
 		trackersAddingService: TrackersAddingServiceProtocol,
+		trackersRecordService: TrackersRecordServiceProtocol,
+		trackersCompletingService: TrackersCompletingServiceProtocol,
 		trackerType: Tracker.TrackerType
 	) {
 		self.trackersAddingService = trackersAddingService
+		self.trackersRecordService = trackersRecordService
+		self.trackersCompletetingService = trackersCompletingService
 		self.trackerType = trackerType
 
 		if self.trackerType == .irregularEvent {
@@ -81,8 +91,8 @@ final class TrackerAddingViewModel {
 	}
 }
 
-// MARK: - TrackerAddingViewModelProtocol
-extension TrackerAddingViewModel: TrackerAddingViewModelProtocol {
+// MARK: - TrackerEditingViewModelProtocol
+extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
 	var optionsTitles: [String] {
 		let localizable = R.string.localizable
 		let categoryTitle = localizable.trackerAddingOptionTitleCategory()
@@ -96,13 +106,7 @@ extension TrackerAddingViewModel: TrackerAddingViewModelProtocol {
 	}
 
 	var viewControllerTitle: String {
-		let localizable = R.string.localizable
-		switch self.trackerType {
-		case .tracker:
-			return localizable.trackerAddingTrackerViewControllerTitle()
-		case .irregularEvent:
-			return localizable.trackerAddingIrregularEventViewControllerTitle()
-		}
+		return R.string.localizable.trackerAddingFlowEditViewControllerTitle()
 	}
 
 	func didChangeTracker(title: String) {
@@ -150,26 +154,26 @@ extension TrackerAddingViewModel: TrackerAddingViewModelProtocol {
 }
 
 // MARK: - TrackerScheduleViewControllerDelegate
-extension TrackerAddingViewModel: TrackerScheduleViewControllerDelegate {
+extension TrackerEditingViewModel: TrackerScheduleViewControllerDelegate {
 	func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
 		self.selectedWeekDays = weekDays
 	}
 }
 
 // MARK: - TrackerCategoryViewControllerDelegate
-extension TrackerAddingViewModel: TrackerCategoryViewControllerDelegate {
+extension TrackerEditingViewModel: TrackerCategoryViewControllerDelegate {
 	func didRecieveCategory(_ category: TrackerCategory) {
 		self.selectedCategory = category
 	}
 }
 
-private extension TrackerAddingViewModel {
+private extension TrackerEditingViewModel {
 	func checkToEnableConfirmTrackerButton() {
-        guard let trackerTitle = self.trackerTitle,
+		guard let trackerTitle = self.trackerTitle,
 			  let _ = self.selectedColor,
 			  let _ = self.selectedEmoji,
 			  let _ = self.selectedCategory
-        else { return }
+		else { return }
 
 		let enablingCondition = !trackerTitle.isEmpty && self.isErrorHidden && self.selectedWeekDays.isEmpty
 
