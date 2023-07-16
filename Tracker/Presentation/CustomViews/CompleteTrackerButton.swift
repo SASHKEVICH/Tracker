@@ -22,7 +22,7 @@ final class CompleteTrackerButton: UIButton {
 			case .increase:
 				self.setTrackerCountIncrease()
 			case .decrease:
-				self.setTrackerCountIncrease()
+				self.setTrackerCountDecrease()
 			}
 		}
 	}

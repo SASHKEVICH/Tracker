@@ -73,12 +73,13 @@ final class TrackerAddingView: UIView {
 		return label
 	}()
 
-	private let completedTimesCountLabel: UILabel = {
+	private lazy var completedTimesCountLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.font = .Bold.big
 		label.textColor = .Dynamic.blackDay
 		label.text = "5 дней"
+		label.textAlignment = .center
 		label.adjustsFontSizeToFitWidth = true
 		return label
 	}()
@@ -333,12 +334,6 @@ private extension TrackerAddingView {
 		])
 
 		NSLayoutConstraint.activate([
-			errorLabel.topAnchor.constraint(equalTo: trackerTitleTextField.bottomAnchor, constant: 8),
-			errorLabel.heightAnchor.constraint(equalToConstant: 22),
-			errorLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-		])
-
-		NSLayoutConstraint.activate([
 			titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
 			titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
 		])
@@ -346,8 +341,13 @@ private extension TrackerAddingView {
 		NSLayoutConstraint.activate([
 			trackerTitleTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
 			trackerTitleTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-			trackerTitleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
 			trackerTitleTextField.heightAnchor.constraint(equalToConstant: 75)
+		])
+
+		NSLayoutConstraint.activate([
+			errorLabel.topAnchor.constraint(equalTo: trackerTitleTextField.bottomAnchor, constant: 8),
+			errorLabel.heightAnchor.constraint(equalToConstant: 22),
+			errorLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 		])
 
 		NSLayoutConstraint.activate([
@@ -374,21 +374,30 @@ private extension TrackerAddingView {
 		if self.flow == .edit {
 			NSLayoutConstraint.activate([
 				decreaseCompletedTimesButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 26),
-				decreaseCompletedTimesButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 80),
+				decreaseCompletedTimesButton.leadingAnchor.constraint(lessThanOrEqualTo: leadingAnchor, constant: 80),
 				decreaseCompletedTimesButton.widthAnchor.constraint(equalToConstant: 34),
 				decreaseCompletedTimesButton.heightAnchor.constraint(equalToConstant: 34),
 			])
 
 			NSLayoutConstraint.activate([
 				completedTimesCountLabel.leadingAnchor.constraint(equalTo: decreaseCompletedTimesButton.trailingAnchor, constant: 24),
-				completedTimesCountLabel.trailingAnchor.constraint(equalTo: increaseCompletedTimesButton.leadingAnchor, constant: -24)
+				completedTimesCountLabel.trailingAnchor.constraint(equalTo: increaseCompletedTimesButton.leadingAnchor, constant: -24),
+				completedTimesCountLabel.centerYAnchor.constraint(equalTo: decreaseCompletedTimesButton.centerYAnchor)
 			])
 
 			NSLayoutConstraint.activate([
 				increaseCompletedTimesButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 26),
-				increaseCompletedTimesButton.trailingAnchor.constraint(equalTo: leadingAnchor, constant: -80),
+				increaseCompletedTimesButton.trailingAnchor.constraint(greaterThanOrEqualTo: trailingAnchor, constant: -80),
 				increaseCompletedTimesButton.widthAnchor.constraint(equalToConstant: 34),
 				increaseCompletedTimesButton.heightAnchor.constraint(equalToConstant: 34),
+			])
+
+			NSLayoutConstraint.activate([
+				 trackerTitleTextField.topAnchor.constraint(equalTo: decreaseCompletedTimesButton.bottomAnchor, constant: 40)
+			])
+		} else {
+			NSLayoutConstraint.activate([
+				trackerTitleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
 			])
 		}
 	}

@@ -200,7 +200,7 @@ private extension TrackersViewPresenterCollectionHelper {
 
 		var actions: [UIAction] = [
 			UIAction(title: editActionTitle) { [weak self] _ in
-				self?.presenter?.didTapEditTracker()
+				self?.presenter?.didTapEditTracker(tracker)
 			},
 			UIAction(title: deleteActionTitle, attributes: .destructive) { [weak self] _ in
 				self?.presenter?.didTapDeleteTracker(tracker)

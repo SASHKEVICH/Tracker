@@ -21,7 +21,7 @@ protocol TrackersViewPresetnerCollectionViewProtocol: AnyObject {
     func didRecievedNonEmptyTrackers()
 
 	func didTapPinTracker(shouldPin: Bool, _ tracker: Tracker)
-	func didTapEditTracker()
+	func didTapEditTracker(_ tracker: Tracker)
 	func didTapDeleteTracker(_ tracker: Tracker)
     
     func complete(tracker: Tracker) throws
@@ -201,8 +201,9 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 		}
 	}
 
-	func didTapEditTracker() {
+	func didTapEditTracker(_ tracker: Tracker) {
 		self.analyticsService.didEditTracker()
+		self.router.navigateToEditTrackerScreen(tracker: tracker)
 	}
 
 	func didTapDeleteTracker(_ tracker: Tracker) {
