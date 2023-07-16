@@ -171,9 +171,7 @@ private extension TrackerAddingViewModel {
 			  let _ = self.selectedCategory
         else { return }
 
-		let enablingCondition = !trackerTitle.isEmpty && self.isErrorHidden && self.selectedWeekDays.isEmpty
-
-		guard self.isConfirmButtonDisabled != enablingCondition else { return }
+		let enablingCondition = !trackerTitle.isEmpty && self.isErrorHidden && !self.selectedWeekDays.isEmpty
 		self.isConfirmButtonDisabled = enablingCondition == false
 	}
 }
