@@ -38,6 +38,7 @@
 "TrackerAdding.errorLabel.text" = "Limit is 38 symbols";
 "TrackerAdding.cancelButton.title" = "Cancel";
 "TrackerAdding.addTrackerButton.title" = "Create";
+"TrackerAdding.flow.edit.addTrackerButton.title" = "Save";
 "TrackerAdding.optionTitle.category" = "Category";
 "TrackerAdding.optionTitle.schedule" = "Schedule";
 "TrackerAdding.colorCollectionView.header.title" = "Color";

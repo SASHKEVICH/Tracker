@@ -38,6 +38,7 @@
 "TrackerAdding.errorLabel.text" = "Ограничение 38 символов";
 "TrackerAdding.cancelButton.title" = "Отменить";
 "TrackerAdding.addTrackerButton.title" = "Создать";
+"TrackerAdding.flow.edit.addTrackerButton.title" = "Сохранить";
 "TrackerAdding.optionTitle.category" = "Категория";
 "TrackerAdding.optionTitle.schedule" = "Расписание";
 "TrackerAdding.colorCollectionView.header.title" = "Цвет";

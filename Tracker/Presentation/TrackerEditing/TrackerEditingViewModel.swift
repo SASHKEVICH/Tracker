@@ -93,7 +93,7 @@ final class TrackerEditingViewModel {
 			self.selectedWeekDays = Set(WeekDay.allCases)
 		}
 
-		self.configure()
+		self.loadInfo()
 	}
 }
 
@@ -174,7 +174,7 @@ extension TrackerEditingViewModel: TrackerCategoryViewControllerDelegate {
 }
 
 private extension TrackerEditingViewModel {
-	func configure() {
+	func loadInfo() {
 		self.trackerTitle = self.tracker.title
 		self.selectedWeekDays = Set(self.tracker.schedule)
 		self.selectedEmoji = self.tracker.emoji
@@ -189,9 +189,7 @@ private extension TrackerEditingViewModel {
 			  let _ = self.selectedCategory
 		else { return }
 
-		let enablingCondition = !trackerTitle.isEmpty && self.isErrorHidden && self.selectedWeekDays.isEmpty
-
-		guard self.isConfirmButtonDisabled != enablingCondition else { return }
+		let enablingCondition = !trackerTitle.isEmpty && self.isErrorHidden && !self.selectedWeekDays.isEmpty
 		self.isConfirmButtonDisabled = enablingCondition == false
 	}
 }

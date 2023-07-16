@@ -38,6 +38,7 @@
 "TrackerAdding.errorLabel.text" = "Beschränkung auf 38 Zeichen";
 "TrackerAdding.cancelButton.title" = "Abschaffen";
 "TrackerAdding.addTrackerButton.title" = "Schaffen";
+"TrackerAdding.flow.edit.addTrackerButton.title" = "Speichern";
 "TrackerAdding.optionTitle.category" = "Kategorie";
 "TrackerAdding.optionTitle.schedule" = "Zeitplan";
 "TrackerAdding.colorCollectionView.header.title" = "Farbe";

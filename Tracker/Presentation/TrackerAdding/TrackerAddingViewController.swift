@@ -40,6 +40,12 @@ final class TrackerAddingViewController: UIViewController {
 		guard let view = self.addingView as? UIView else { return }
 		self.view = view
 	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+
+		self.addingView.shouldEnableConfirmButton(self.viewModel.isConfirmButtonDisabled)
+	}
 }
 
 // MARK: - TrackerCategoryViewControllerDelegate

@@ -177,7 +177,10 @@ final class TrackerAddingView: UIView {
 	}()
 
 	private lazy var confirmTrackerButton: TrackerCustomButton = {
-		let title = R.string.localizable.trackerAddingAddTrackerButtonTitle()
+		let localizable = R.string.localizable
+		let title = self.flow == .add
+			? localizable.trackerAddingAddTrackerButtonTitle()
+			: localizable.trackerAddingFlowEditAddTrackerButtonTitle()
 		let button = TrackerCustomButton(state: .disabled, title: title)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(self.didTapConfirmTrackerButton), for: .touchUpInside)
@@ -286,8 +289,8 @@ extension TrackerAddingView: TrackerAddingViewProtocol {
 		self.trackerOptionsTableView.reloadData()
 	}
 
-	func shouldEnableConfirmButton(_ shouldEnable: Bool) {
-		self.confirmTrackerButton.buttonState = shouldEnable ? .normal : .disabled
+	func shouldEnableConfirmButton(_ shouldDisable: Bool) {
+		self.confirmTrackerButton.buttonState = shouldDisable ? .disabled : .normal
 	}
 }
 
