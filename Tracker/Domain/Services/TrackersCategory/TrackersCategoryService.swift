@@ -12,6 +12,7 @@ protocol TrackersCategoryServiceProtocol {
 	var categories: [TrackerCategory] { get }
 	var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate? { get set }
 	func numberOfItemsInSection(_ section: Int) -> Int
+	func category(for tracker: Tracker) -> TrackerCategory?
 }
 
 struct TrackersCategoryService {
@@ -23,14 +24,21 @@ struct TrackersCategoryService {
 	}
 
 	private var trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol
+	private let trackersCategoryDataFetcher: TrackersCategoryDataFetcherProtocol
 	private let trackersCategoryFactory: TrackersCategoryFactory
 
-	init(trackersCategoryFactory: TrackersCategoryFactory, trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol) {
+	init(
+		trackersCategoryFactory: TrackersCategoryFactory,
+		trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol,
+		trackersCategoryDataFetcher: TrackersCategoryDataFetcherProtocol
+	) {
 		self.trackersCategoryFactory = trackersCategoryFactory
 		self.trackersCategoryDataProvider = trackersCategoryDataProvider
+		self.trackersCategoryDataFetcher = trackersCategoryDataFetcher
 	}
 }
 
+// MARK: - TrackersCategoryServiceProtocol
 extension TrackersCategoryService: TrackersCategoryServiceProtocol {
 	var categories: [TrackerCategory] {
 		let categories = self.trackersCategoryDataProvider.categories
@@ -40,5 +48,10 @@ extension TrackersCategoryService: TrackersCategoryServiceProtocol {
 
 	func numberOfItemsInSection(_ section: Int) -> Int {
 		self.trackersCategoryDataProvider.numberOfItemsInSection(section)
+	}
+
+	func category(for tracker: Tracker) -> TrackerCategory? {
+		guard let categoryCoreData = self.trackersCategoryDataFetcher.category(for: tracker) else { return nil }
+		return self.trackersCategoryFactory.makeCategory(categoryCoreData: categoryCoreData)
 	}
 }

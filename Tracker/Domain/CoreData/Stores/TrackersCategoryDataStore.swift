@@ -20,6 +20,19 @@ extension TrackersCategoryDataStore {
     var managedObjectContext: NSManagedObjectContext {
 		self.context
     }
+
+	func category(for tracker: Tracker) -> TrackerCategoryCoreData? {
+		let trackerRequest = TrackerCoreData.fetchRequest()
+		let trackerPredicate = NSPredicate(format: "%K MATCHES[cd] %@", #keyPath(TrackerCoreData.id), tracker.id.uuidString)
+		trackerRequest.predicate = trackerPredicate
+		trackerRequest.fetchLimit = 1
+
+		guard let object = try? self.context.fetch(trackerRequest),
+			  let trackerCoreData = object.first
+		else { return nil }
+
+		return self.category(with: trackerCoreData.category.id)
+	}
     
     func category(with id: String) -> TrackerCategoryCoreData? {
 		let request = TrackerCategoryCoreData.fetchRequest()

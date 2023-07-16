@@ -12,24 +12,17 @@ protocol TrackerCategoryRouterProtocol {
 }
 
 final class TrackerCategoryRouter {
-	private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
+	private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
 
-	init(trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol) {
-		self.trackersCategoryDataAdder = trackersCategoryDataAdder
+	init(trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol) {
+		self.trackersCategoryAddingService = trackersCategoryAddingService
 	}
 }
 
 // MARK: - TrackerCategoryRouterProtocol
 extension TrackerCategoryRouter: TrackerCategoryRouterProtocol {
 	func navigateToNewCategoryScreen(from viewController: TrackerCategoryViewController) {
-		let trackersFactory = TrackersFactory()
-		let trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
-		let addingService = TrackersCategoryAddingService(
-			trackersCategoryFactory: trackersCategoryFactory,
-			trackersCategoryDataAdder: self.trackersCategoryDataAdder
-		)
-
-		let viewModel = TrackerNewCategoryViewModel(trackersCategoryAddingService: addingService)
+		let viewModel = TrackerNewCategoryViewModel(trackersCategoryAddingService: self.trackersCategoryAddingService)
 		let vc = TrackerNewCategoryViewController(viewModel: viewModel)
 
 		vc.emptyTap = { [weak vc] in

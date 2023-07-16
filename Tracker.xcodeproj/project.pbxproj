@@ -45,6 +45,7 @@
 		965A5B6B2A63D6D400458791 /* TrackerAddingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965A5B6A2A63D6D400458791 /* TrackerAddingView.swift */; };
 		965A5B6F2A63FB4A00458791 /* TrackerEditingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965A5B6E2A63FB4A00458791 /* TrackerEditingViewModel.swift */; };
 		965A5B722A63FC1E00458791 /* TrackerAddingViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965A5B712A63FC1E00458791 /* TrackerAddingViewModelProtocol.swift */; };
+		965A5B752A64017200458791 /* TrackersCategoryDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965A5B742A64017200458791 /* TrackersCategoryDataFetcher.swift */; };
 		9661855329F1746E0003C57A /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9661855229F1746E0003C57A /* Date+Extensions.swift */; };
 		966C65E62A5D7CB8007D575B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 966C65E82A5D7CB8007D575B /* Localizable.strings */; };
 		966C65F22A5EA679007D575B /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 966C65F42A5EA679007D575B /* Localizable.stringsdict */; };
@@ -174,6 +175,7 @@
 		965A5B6A2A63D6D400458791 /* TrackerAddingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerAddingView.swift; sourceTree = "<group>"; };
 		965A5B6E2A63FB4A00458791 /* TrackerEditingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerEditingViewModel.swift; sourceTree = "<group>"; };
 		965A5B712A63FC1E00458791 /* TrackerAddingViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerAddingViewModelProtocol.swift; sourceTree = "<group>"; };
+		965A5B742A64017200458791 /* TrackersCategoryDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCategoryDataFetcher.swift; sourceTree = "<group>"; };
 		9661855229F1746E0003C57A /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		966C65E72A5D7CB8007D575B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		966C65E92A5D7CBB007D575B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -572,6 +574,7 @@
 			isa = PBXGroup;
 			children = (
 				969CDB8E2A587166001EDB8B /* TrackersCategoryDataAdder.swift */,
+				965A5B742A64017200458791 /* TrackersCategoryDataFetcher.swift */,
 			);
 			path = TrackersCategory;
 			sourceTree = "<group>";
@@ -1061,6 +1064,7 @@
 				9617C96D29DDCCE30054987D /* TrackersCollectionSectionHeader.swift in Sources */,
 				96CE2ACB2A41A38E002A08F0 /* UITableViewCell+Extensions.swift in Sources */,
 				965A5B722A63FC1E00458791 /* TrackerAddingViewModelProtocol.swift in Sources */,
+				965A5B752A64017200458791 /* TrackersCategoryDataFetcher.swift in Sources */,
 				9674A3252A61AD09003E614E /* TrackerFilterViewModel.swift in Sources */,
 				96F7031829F9798B00BBFF5C /* ColorsCollectionViewCell.swift in Sources */,
 				966DD3B929EA62F600296CDF /* UITableView+LastCellIndexPath.swift in Sources */,

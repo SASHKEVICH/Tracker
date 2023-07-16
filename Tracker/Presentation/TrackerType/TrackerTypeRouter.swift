@@ -14,20 +14,20 @@ protocol TrackerTypeRouterProtocol {
 
 final class TrackerTypeRouter {
 	private weak var viewController: TrackerTypeViewController?
-	private let trackersDataAdder: TrackersDataAdderProtocol
-	private let trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol
-	private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
+	private let trackersAddingService: TrackersAddingServiceProtocol
+	private let trackersCategoryService: TrackersCategoryServiceProtocol
+	private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
 
 	init(
 		viewController: TrackerTypeViewController,
-		trackersDataAdder: TrackersDataAdderProtocol,
-		trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol,
-		trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
+		trackersAddingService: TrackersAddingServiceProtocol,
+		trackersCategoryService: TrackersCategoryServiceProtocol,
+		trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
 	) {
 		self.viewController = viewController
-		self.trackersDataAdder = trackersDataAdder
-		self.trackersCategoryDataProvider = trackersCategoryDataProvider
-		self.trackersCategoryDataAdder = trackersCategoryDataAdder
+		self.trackersAddingService = trackersAddingService
+		self.trackersCategoryService = trackersCategoryService
+		self.trackersCategoryAddingService = trackersCategoryAddingService
 	}
 }
 
@@ -57,15 +57,12 @@ private extension TrackerTypeRouter {
 			flow: .add
 		)
 
-		let factory = TrackersFactory()
-		let addingService = TrackersAddingService(trackersFactory: factory, trackersDataAdder: self.trackersDataAdder)
-
 		let router = TrackerAddingRouter(
-			trackersCategoryDataProvider: self.trackersCategoryDataProvider,
-			trackersCategoryDataAdder: self.trackersCategoryDataAdder
+			trackersCategoryService: self.trackersCategoryService,
+			trackersCategoryAddingService: self.trackersCategoryAddingService
 		)
 
-		let viewModel = TrackerAddingViewModel(trackersAddingService: addingService, trackerType: trackerType)
+		let viewModel = TrackerAddingViewModel(trackersAddingService: self.trackersAddingService, trackerType: trackerType)
 		let vc = TrackerAddingViewController(viewModel: viewModel, router: router, view: view)
 
 		optionsHelper.delegate = vc

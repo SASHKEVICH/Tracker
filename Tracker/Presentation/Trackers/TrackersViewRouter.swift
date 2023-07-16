@@ -15,9 +15,8 @@ protocol TrackersViewRouterProtocol {
 
 final class TrackersViewRouter {
 	private weak var viewController: UIViewController?
-	private let trackersDataAdder: TrackersDataAdderProtocol
-	private let trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol
-	private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
+	private let trackersCategoryService: TrackersCategoryServiceProtocol
+	private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
 	private let trackersService: TrackersServiceFilteringProtocol
 	private let trackersAddingService: TrackersAddingServiceProtocol
 	private let trackersRecordService: TrackersRecordServiceProtocol
@@ -25,18 +24,16 @@ final class TrackersViewRouter {
 
 	init(
 		viewController: UIViewController,
-		trackersDataAdder: TrackersDataAdderProtocol,
-		trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol,
-		trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol,
+		trackersCategoryService: TrackersCategoryServiceProtocol,
+		trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol,
 		trackersService: TrackersServiceFilteringProtocol,
 		trackersAddingService: TrackersAddingServiceProtocol,
 		trackersRecordService: TrackersRecordServiceProtocol,
 		trackersCompletingService: TrackersCompletingServiceProtocol
 	) {
 		self.viewController = viewController
-		self.trackersDataAdder = trackersDataAdder
-		self.trackersCategoryDataProvider = trackersCategoryDataProvider
-		self.trackersCategoryDataAdder = trackersCategoryDataAdder
+		self.trackersCategoryService = trackersCategoryService
+		self.trackersCategoryAddingService = trackersCategoryAddingService
 		self.trackersService = trackersService
 		self.trackersAddingService = trackersAddingService
 		self.trackersRecordService = trackersRecordService
@@ -50,9 +47,9 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
 		let vc = TrackerTypeViewController()
 		let router = TrackerTypeRouter(
 			viewController: vc,
-			trackersDataAdder: self.trackersDataAdder,
-			trackersCategoryDataProvider: self.trackersCategoryDataProvider,
-			trackersCategoryDataAdder: self.trackersCategoryDataAdder
+			trackersAddingService: self.trackersAddingService,
+			trackersCategoryService: self.trackersCategoryService,
+			trackersCategoryAddingService: self.trackersCategoryAddingService
 		)
 		let presenter = TrackerTypePresenter(router: router)
 
@@ -86,8 +83,8 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
 
 	func navigateToEditTrackerScreen(tracker: Tracker) {
 		let router = TrackerAddingRouter(
-			trackersCategoryDataProvider: self.trackersCategoryDataProvider,
-			trackersCategoryDataAdder: self.trackersCategoryDataAdder
+			trackersCategoryService: self.trackersCategoryService,
+			trackersCategoryAddingService: self.trackersCategoryAddingService
 		)
 
 		let optionsHelper = TrackerOptionsTableViewHelper()
@@ -99,7 +96,7 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
 			trackersAddingService: self.trackersAddingService,
 			trackersRecordService: self.trackersRecordService,
 			trackersCompletingService: self.trackersCompletingService,
-			trackerType: tracker.type
+			tracker: tracker
 		)
 
 		let view = TrackerAddingView(

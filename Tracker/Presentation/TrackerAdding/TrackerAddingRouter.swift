@@ -14,15 +14,15 @@ protocol TrackerAddingRouterProtocol {
 }
 
 final class TrackerAddingRouter {
-	private let trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol
-	private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
+	private let trackersCategoryService: TrackersCategoryServiceProtocol
+	private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
 
 	init(
-		trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol,
-		trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
+		trackersCategoryService: TrackersCategoryServiceProtocol,
+		trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
 	) {
-		self.trackersCategoryDataProvider = trackersCategoryDataProvider
-		self.trackersCategoryDataAdder = trackersCategoryDataAdder
+		self.trackersCategoryService = trackersCategoryService
+		self.trackersCategoryAddingService = trackersCategoryAddingService
 	}
 }
 
@@ -41,18 +41,11 @@ extension TrackerAddingRouter: TrackerAddingRouterProtocol {
 	}
 
 	func navigateToCategoryScreen(selectedCategory: TrackerCategory?, from viewController: UIViewController) {
-		let trackersFactory = TrackersFactory()
-		let categoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
-		let trackersCategoryService = TrackersCategoryService(
-			trackersCategoryFactory: categoryFactory,
-			trackersCategoryDataProvider: self.trackersCategoryDataProvider
-		)
-
-		let viewModel = TrackerCategoryViewModel(trackersCategoryService: trackersCategoryService)
+		let viewModel = TrackerCategoryViewModel(trackersCategoryService: self.trackersCategoryService)
 		viewModel.delegate = viewController as? TrackerCategoryViewControllerDelegate
 
 		let helper = TrackerCategoryTableViewHelper()
-		let router = TrackerCategoryRouter(trackersCategoryDataAdder: self.trackersCategoryDataAdder)
+		let router = TrackerCategoryRouter(trackersCategoryAddingService: self.trackersCategoryAddingService)
 
 		let vc = TrackerCategoryViewController(
 			viewModel: viewModel,

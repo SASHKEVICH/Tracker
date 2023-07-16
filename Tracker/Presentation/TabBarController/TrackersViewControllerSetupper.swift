@@ -67,10 +67,19 @@ private extension TrackersViewControllerSetupper {
 
 		let recordService = self.prepareTrackersRecordService(trackersRecordDataStore: trackersRecordDataStore)
 
-		guard let router = self.prepareRouter(
-			trackersDataStore: trackersDataStore,
-			trackersCategoryDataStore: trackersCategoryDataStore,
+		let categoryService = self.prepareTrackersCategoryService(
 			trackersCategoryFactory: trackersCategoryFactory,
+			trackersCategoryDataStore: trackersCategoryDataStore
+		)
+
+		let categoryAddingService = self.prepareTrackersCategoryAddingService(
+			trackersCategoryFactory: trackersCategoryFactory,
+			trackersCategoryDataStore: trackersCategoryDataStore
+		)
+
+		guard let router = self.prepareRouter(
+			trackersCategoryService: categoryService,
+			trackersCategoryAddingService: categoryAddingService,
 			trackersService: trackersService,
 			trackersAddingService: addingService,
 			trackersRecordService: recordService,
@@ -167,28 +176,51 @@ private extension TrackersViewControllerSetupper {
 		return service
 	}
 
-	func prepareRouter(
-		trackersDataStore: TrackersDataStore,
-		trackersCategoryDataStore: TrackersCategoryDataStore,
+	func prepareTrackersCategoryService(
 		trackersCategoryFactory: TrackersCategoryFactory,
+		trackersCategoryDataStore: TrackersCategoryDataStore
+	) -> TrackersCategoryService {
+		let provider = TrackersCategoryDataProvider(context: trackersCategoryDataStore.managedObjectContext)
+		let fetcher = TrackersCategoryDataFetcher(trackersCategoryDataStore: trackersCategoryDataStore)
+
+		let service = TrackersCategoryService(
+			trackersCategoryFactory: trackersCategoryFactory,
+			trackersCategoryDataProvider: provider,
+			trackersCategoryDataFetcher: fetcher
+		)
+
+		return service
+	}
+
+	func prepareTrackersCategoryAddingService(
+		trackersCategoryFactory: TrackersCategoryFactory,
+		trackersCategoryDataStore: TrackersCategoryDataStore
+	) -> TrackersCategoryAddingService {
+		let adder = TrackersCategoryDataAdder(
+			trackersCategoryDataStore: trackersCategoryDataStore,
+			trackersCategoryFactory: trackersCategoryFactory
+		)
+
+		let service = TrackersCategoryAddingService(
+			trackersCategoryFactory: trackersCategoryFactory,
+			trackersCategoryDataAdder: adder
+		)
+
+		return service
+	}
+
+	func prepareRouter(
+		trackersCategoryService: TrackersCategoryServiceProtocol,
+		trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol,
 		trackersService: TrackersServiceFilteringProtocol,
 		trackersAddingService: TrackersAddingServiceProtocol,
 		trackersRecordService: TrackersRecordServiceProtocol,
 		trackersCompletingService: TrackersCompletingService
 	) -> TrackersViewRouter? {
-		guard let adder = self.trackersDataAdder else { return nil }
-
-		let categoryDataProvider = TrackersCategoryDataProvider(context: trackersDataStore.managedObjectContext)
-		let categoryDataAdder = TrackersCategoryDataAdder(
-			trackersCategoryDataStore: trackersCategoryDataStore,
-			trackersCategoryFactory: trackersCategoryFactory
-		)
-
 		let router = TrackersViewRouter(
 			viewController: self.trackersViewController,
-			trackersDataAdder: adder,
-			trackersCategoryDataProvider: categoryDataProvider,
-			trackersCategoryDataAdder: categoryDataAdder,
+			trackersCategoryService: trackersCategoryService,
+			trackersCategoryAddingService: trackersCategoryAddingService,
 			trackersService: trackersService,
 			trackersAddingService: trackersAddingService,
 			trackersRecordService: trackersRecordService,
