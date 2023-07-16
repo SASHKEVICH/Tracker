@@ -96,6 +96,7 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
 			trackersAddingService: self.trackersAddingService,
 			trackersRecordService: self.trackersRecordService,
 			trackersCompletingService: self.trackersCompletingService,
+			trackersCategoryService: trackersCategoryService,
 			tracker: tracker
 		)
 

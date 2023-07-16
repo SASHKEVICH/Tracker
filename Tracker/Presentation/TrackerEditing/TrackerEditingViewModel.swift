@@ -69,25 +69,31 @@ final class TrackerEditingViewModel {
 		}
 	}
 
+	private let tracker: Tracker
+	
 	private let trackersAddingService: TrackersAddingServiceProtocol
 	private let trackersRecordService: TrackersRecordServiceProtocol
 	private let trackersCompletetingService: TrackersCompletingServiceProtocol
-	private let trackerType: Tracker.TrackerType
+	private let trackersCategoryService: TrackersCategoryServiceProtocol
 
 	init(
 		trackersAddingService: TrackersAddingServiceProtocol,
 		trackersRecordService: TrackersRecordServiceProtocol,
 		trackersCompletingService: TrackersCompletingServiceProtocol,
-		trackerType: Tracker.TrackerType
+		trackersCategoryService: TrackersCategoryServiceProtocol,
+		tracker: Tracker
 	) {
 		self.trackersAddingService = trackersAddingService
 		self.trackersRecordService = trackersRecordService
 		self.trackersCompletetingService = trackersCompletingService
-		self.trackerType = trackerType
+		self.trackersCategoryService = trackersCategoryService
+		self.tracker = tracker
 
-		if self.trackerType == .irregularEvent {
+		if self.tracker.type == .irregularEvent {
 			self.selectedWeekDays = Set(WeekDay.allCases)
 		}
+
+		self.configure()
 	}
 }
 
@@ -96,7 +102,7 @@ extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
 	var optionsTitles: [String] {
 		let localizable = R.string.localizable
 		let categoryTitle = localizable.trackerAddingOptionTitleCategory()
-		switch self.trackerType {
+		switch self.tracker.type {
 		case .tracker:
 			let scheduleTitle = localizable.trackerAddingOptionTitleSchedule()
 			return [categoryTitle, scheduleTitle]
@@ -120,12 +126,12 @@ extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
 			  let category = self.selectedCategory
 		else { return }
 
-		let schedule = self.trackerType == .irregularEvent ? Set(WeekDay.allCases) : self.selectedWeekDays
+		let schedule = self.tracker.type == .irregularEvent ? Set(WeekDay.allCases) : self.selectedWeekDays
 
 		self.trackersAddingService.addTracker(
 			title: title,
 			schedule: schedule,
-			type: self.trackerType,
+			type: self.tracker.type,
 			color: color,
 			emoji: emoji,
 			categoryId: category.id
@@ -168,6 +174,14 @@ extension TrackerEditingViewModel: TrackerCategoryViewControllerDelegate {
 }
 
 private extension TrackerEditingViewModel {
+	func configure() {
+		self.trackerTitle = self.tracker.title
+		self.selectedWeekDays = Set(self.tracker.schedule)
+		self.selectedEmoji = self.tracker.emoji
+		self.selectedColor = self.tracker.color
+		self.selectedCategory = self.trackersCategoryService.category(for: self.tracker)
+	}
+
 	func checkToEnableConfirmTrackerButton() {
 		guard let trackerTitle = self.trackerTitle,
 			  let _ = self.selectedColor,
