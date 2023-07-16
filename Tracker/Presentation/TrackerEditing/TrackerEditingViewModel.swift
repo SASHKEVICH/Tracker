@@ -139,7 +139,17 @@ extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
 		else { return }
 
 		let schedule = self.tracker.type == .irregularEvent ? Set(WeekDay.allCases) : self.selectedWeekDays
-		
+
+		self.trackersAddingService.saveEdited(
+			trackerId: self.tracker.id,
+			title: title,
+			schedule: self.selectedWeekDays,
+			type: self.tracker.type,
+			color: color,
+			emoji: emoji,
+			categoryId: category.id,
+			isPinned: self.tracker.isPinned
+		)
 		self.saveCompletedTimesCount()
 	}
 

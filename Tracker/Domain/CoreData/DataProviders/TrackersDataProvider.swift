@@ -64,7 +64,7 @@ final class TrackersDataProvider: NSObject {
 		let fetchedResultsController = NSFetchedResultsController(
 			fetchRequest: request,
 			managedObjectContext: context,
-			sectionNameKeyPath: #keyPath(TrackerCoreData.category.title),
+			sectionNameKeyPath: #keyPath(TrackerCoreData.category.id),
 			cacheName: nil
 		)
 		fetchedResultsController.delegate = self

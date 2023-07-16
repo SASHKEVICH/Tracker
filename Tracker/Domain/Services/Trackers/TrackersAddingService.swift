@@ -18,6 +18,17 @@ protocol TrackersAddingServiceProtocol {
 	)
 
 	func delete(tracker: Tracker)
+
+	func saveEdited(
+		trackerId: UUID,
+		title: String,
+		schedule: Set<WeekDay>,
+		type: Tracker.TrackerType,
+		color: UIColor,
+		emoji: String,
+		categoryId: UUID,
+		isPinned: Bool
+	)
 }
 
 struct TrackersAddingService {
@@ -40,7 +51,7 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
 		emoji: String,
 		categoryId: UUID
 	) {
-		let tracker = trackersFactory.makeTracker(
+		let newTracker = trackersFactory.makeTracker(
 			type: type,
 			title: title,
 			color: color,
@@ -49,10 +60,33 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
 			isPinned: false,
 			schedule: Array(schedule)
 		)
-		try? self.trackersDataAdder.add(tracker: tracker, for: categoryId)
+		try? self.trackersDataAdder.add(tracker: newTracker, for: categoryId)
 	}
 
 	func delete(tracker: Tracker) {
 		self.trackersDataAdder.delete(tracker: tracker)
+	}
+
+	func saveEdited(
+		trackerId: UUID,
+		title: String,
+		schedule: Set<WeekDay>,
+		type: Tracker.TrackerType,
+		color: UIColor,
+		emoji: String,
+		categoryId: UUID,
+		isPinned: Bool
+	) {
+		let editedTracker = self.trackersFactory.makeTracker(
+			id: trackerId,
+			type: type,
+			title: title,
+			color: color,
+			emoji: emoji,
+			previousCategoryId: categoryId,
+			isPinned: isPinned,
+			schedule: Array(schedule)
+		)
+		self.trackersDataAdder.saveEdited(tracker: editedTracker)
 	}
 }

@@ -76,10 +76,14 @@ struct TrackersFactory {
 
 	func makeTrackerCoreData(from tracker: Tracker, context: NSManagedObjectContext) -> TrackerCoreData {
 		let trackerCoreData = TrackerCoreData(context: context)
+		return editTrackerCoreData(from: tracker, trackerCoreData: trackerCoreData)
+	}
+
+	func editTrackerCoreData(from tracker: Tracker, trackerCoreData: TrackerCoreData) -> TrackerCoreData {
+		trackerCoreData.id = tracker.id.uuidString
 		trackerCoreData.title = tracker.title
 		trackerCoreData.emoji = tracker.emoji
 		trackerCoreData.colorHex = UIColorMarshalling.serilizeToHex(color: tracker.color)
-		trackerCoreData.id = tracker.id.uuidString
 		trackerCoreData.previousCategoryId = tracker.previousCategoryId.uuidString
 		trackerCoreData.type = Int16(tracker.type.rawValue)
 		trackerCoreData.isPinned = tracker.isPinned

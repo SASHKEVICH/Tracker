@@ -11,6 +11,7 @@ import CoreData
 protocol TrackersDataAdderProtocol {
 	func add(tracker: Tracker, for categoryId: UUID) throws
 	func delete(tracker: Tracker)
+	func saveEdited(tracker: Tracker)
 }
 
 struct TrackersDataAdder {
@@ -48,5 +49,9 @@ extension TrackersDataAdder: TrackersDataAdderProtocol {
 
 	func delete(tracker: Tracker) {
 		self.trackersDataStore.delete(tracker: tracker)
+	}
+
+	func saveEdited(tracker: Tracker) {
+		self.trackersDataStore.saveEdited(tracker: tracker)
 	}
 }

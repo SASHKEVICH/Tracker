@@ -220,7 +220,9 @@ private extension TrackersViewPresenterCollectionHelper {
 
 	func getPinningAction(shouldPin: Bool, cell: TrackersCollectionViewCell, tracker: Tracker) -> UIAction {
 		let localizable = R.string.localizable
-		let pinActionTitle = shouldPin ? localizable.trackersCollectionViewActionPin() : localizable.trackersCollectionViewActionUnpin()
+		let pinActionTitle = shouldPin
+			? localizable.trackersCollectionViewActionPin()
+			: localizable.trackersCollectionViewActionUnpin()
 		let pinAction = UIAction(title: pinActionTitle) { [weak self] _ in
 			cell.isPinned = shouldPin
 			self?.presenter?.didTapPinTracker(shouldPin: shouldPin, tracker)
