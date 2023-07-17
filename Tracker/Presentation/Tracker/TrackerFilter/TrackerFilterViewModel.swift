@@ -32,7 +32,7 @@ public final class TrackerFilterViewModel {
 
 	weak var delegate: TrackerFilterViewControllerDelegate?
 
-	var onCategoriesChanged: (() -> Void)?
+	var onCategoriesChanged: Binding?
 	var categories: [TrackerCategory] {
 		let allTrackers = self.prepareFilter(for: .all(self.chosenDate))
 		let todayTrackers = self.prepareFilter(for: .today)
@@ -42,7 +42,7 @@ public final class TrackerFilterViewModel {
 		return [allTrackers, todayTrackers, completedTrackers, incompletedTrackers]
 	}
 
-	var onIsPlaceholderHiddenChanged: (() -> Void)?
+	var onIsPlaceholderHiddenChanged: Binding?
 	var isPlaceholderHidden: Bool { true }
 
 	private let trackersCategoryFactory: TrackersCategoryFactory

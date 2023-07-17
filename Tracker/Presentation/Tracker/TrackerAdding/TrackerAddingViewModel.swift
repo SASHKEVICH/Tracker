@@ -7,15 +7,17 @@
 
 import UIKit
 
+typealias Binding = (() -> Void)
+
 final class TrackerAddingViewModel {
-	var onIsConfirmButtonDisabledChanged: (() -> Void)?
-	var onIsErrorHiddenChanged: (() -> Void)?
-	var onOptionsTitlesChanged: (() -> Void)?
-	var onTrackerTitleChanged: (() -> Void)?
-	var onSelectedWeekDaysChanged: (() -> Void)?
-	var onSelectedCategoryChanged: (() -> Void)?
-	var onSelectedEmojiChanged: (() -> Void)?
-	var onSelectedColorChanged: (() -> Void)?
+	var onIsConfirmButtonDisabledChanged: Binding?
+	var onIsErrorHiddenChanged: Binding?
+	var onOptionsTitlesChanged: Binding?
+	var onTrackerTitleChanged: Binding?
+	var onSelectedWeekDaysChanged: Binding?
+	var onSelectedCategoryChanged: Binding?
+	var onSelectedEmojiChanged: Binding?
+	var onSelectedColorChanged: Binding?
 
 	let optionsTitles: [String]
 	let viewControllerTitle: String

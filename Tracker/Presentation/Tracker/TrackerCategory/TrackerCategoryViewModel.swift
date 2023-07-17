@@ -8,10 +8,10 @@
 import Foundation
 
 protocol TrackerCategoryViewModelProtocol {
-	var onCategoriesChanged: (() -> Void)? { get set }
+	var onCategoriesChanged: Binding? { get set }
 	var categories: [TrackerCategory] { get }
 
-	var onIsPlaceholderHiddenChanged: (() -> Void)? { get set }
+	var onIsPlaceholderHiddenChanged: Binding? { get set }
 	var isPlaceholderHidden: Bool { get }
 	func didChoose(category: TrackerCategory)
 }
@@ -19,7 +19,7 @@ protocol TrackerCategoryViewModelProtocol {
 final class TrackerCategoryViewModel {
 	weak var delegate: TrackerCategoryViewControllerDelegate?
 
-	var onCategoriesChanged: (() -> Void)?
+	var onCategoriesChanged: Binding?
 	var categories: [TrackerCategory] = [] {
 		didSet {
 			self.onCategoriesChanged?()
@@ -27,7 +27,7 @@ final class TrackerCategoryViewModel {
 		}
 	}
 	
-	var onIsPlaceholderHiddenChanged: (() -> Void)?
+	var onIsPlaceholderHiddenChanged: Binding?
 	var isPlaceholderHidden: Bool = true {
 		didSet {
 			self.onIsPlaceholderHiddenChanged?()

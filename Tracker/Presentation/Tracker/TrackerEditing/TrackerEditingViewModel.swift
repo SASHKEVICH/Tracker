@@ -15,15 +15,15 @@ protocol TrackerEditingViewModelProtocol: TrackerAddingViewModelProtocol {
 }
 
 final class TrackerEditingViewModel {
-	var onOptionsTitlesChanged: (() -> Void)?
-	var onTrackerTitleChanged: (() -> Void)?
-	var onSelectedWeekDaysChanged: (() -> Void)?
-	var onSelectedCategoryChanged: (() -> Void)?
-	var onSelectedEmojiChanged: (() -> Void)?
-	var onSelectedColorChanged: (() -> Void)?
-	var onIsErrorHiddenChanged: (() -> Void)?
-	var onIsConfirmButtonDisabledChanged: (() -> Void)?
-	var onCompletedCountChanged: (() -> Void)?
+	var onOptionsTitlesChanged: Binding?
+	var onTrackerTitleChanged: Binding?
+	var onSelectedWeekDaysChanged: Binding?
+	var onSelectedCategoryChanged: Binding?
+	var onSelectedEmojiChanged: Binding?
+	var onSelectedColorChanged: Binding?
+	var onIsErrorHiddenChanged: Binding?
+	var onIsConfirmButtonDisabledChanged: Binding?
+	var onCompletedCountChanged: Binding?
 
 	var trackerTitle: String? = nil {
 		didSet {
