@@ -14,9 +14,9 @@ protocol ServiceSetupperProtocol {
 	var trackersRecordService: TrackersRecordService { get }
 	var trackersCategoryService: TrackersCategoryService { get }
 	var trackersCategoryAddingService: TrackersCategoryAddingService { get }
-	var trackersPinningService: TrackersPinningServiceProtocol { get }
+	var trackersPinningService: TrackersPinningService { get }
 	var alertPresenterService: AlertPresenterService { get }
-	var analyticsService: AnalyticsServiceProtocol { get }
+	var analyticsService: AnalyticsService { get }
 	var pinnedCategoryId: UUID? { get }
 }
 
@@ -27,9 +27,9 @@ final class ServiceSetupper {
 	let trackersRecordService: TrackersRecordService
 	let trackersCategoryService: TrackersCategoryService
 	let trackersCategoryAddingService: TrackersCategoryAddingService
-	let trackersPinningService: TrackersPinningServiceProtocol
+	let trackersPinningService: TrackersPinningService
 	let alertPresenterService: AlertPresenterService
-	let analyticsService: AnalyticsServiceProtocol
+	let analyticsService: AnalyticsService
 
 	var pinnedCategoryId: UUID?
 

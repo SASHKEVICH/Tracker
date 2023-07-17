@@ -143,7 +143,7 @@ extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
 		self.trackersAddingService.saveEdited(
 			trackerId: self.tracker.id,
 			title: title,
-			schedule: self.selectedWeekDays,
+			schedule: schedule,
 			type: self.tracker.type,
 			color: color,
 			emoji: emoji,

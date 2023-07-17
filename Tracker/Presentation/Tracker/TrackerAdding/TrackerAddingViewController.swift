@@ -138,7 +138,7 @@ private extension TrackerAddingViewController {
 			self.viewModel.didSelect(title: title)
 		}
 
-		guard var viewModel = self.viewModel as? TrackerEditingViewModelProtocol else { return }
+		guard let viewModel = self.viewModel as? TrackerEditingViewModelProtocol else { return }
 		self.addingView.completedTimesCount = viewModel.completedCount
 
 		self.addingView.increaseCompletedCount = { [viewModel] in
