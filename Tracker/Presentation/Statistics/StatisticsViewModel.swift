@@ -8,6 +8,9 @@
 import Foundation
 
 protocol StatisticsViewModelProtocol {
+	var onStatisticsChanged: (() -> Void)? { get set }
+	var statistics: [Statistics] { get }
+
 	var onIsPlaceholderHiddenChanged: (() -> Void)? { get set }
 	var isPlaceholderHidden: Bool { get }
 
@@ -15,9 +18,16 @@ protocol StatisticsViewModelProtocol {
 	var trackersCompletedCount: String? { get }
 }
 
-struct StatisticsViewModel {
+final class StatisticsViewModel {
+	var onStatisticsChanged: (() -> Void)?
 	var onIsPlaceholderHiddenChanged: (() -> Void)?
 	var onTrackersCompletedCountChanged: (() -> Void)?
+
+	var statistics: [Statistics] = [Statistics(title: R.string.localizable.statisticsStatisticTrackersCompletedTitle(), count: 0)] {
+		didSet {
+			self.onStatisticsChanged?()
+		}
+	}
 
 	var isPlaceholderHidden: Bool = false {
 		didSet {
@@ -30,9 +40,21 @@ struct StatisticsViewModel {
 			self.onTrackersCompletedCountChanged?()
 		}
 	}
+
+	private let trackersRecordService: TrackersRecordServiceProtocol
+
+	init(trackersRecordService: TrackersRecordServiceProtocol) {
+		self.trackersRecordService = trackersRecordService
+	}
 }
 
 // MARK: - StatisticsViewModelProtocol
 extension StatisticsViewModel: StatisticsViewModelProtocol {
 	
+}
+
+extension StatisticsViewModel: TrackersRecordStatisticsDelegate {
+	func didChanged(completedTrackers: Int) {
+		self.trackersCompletedCount = "\(completedTrackers)"
+	}
 }

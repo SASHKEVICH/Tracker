@@ -61,6 +61,7 @@
 "TrackerNewCategory.addNewCategoryButton.title" = "Готово";
 
 "Statistics.navigationItem.title" = "Статистика";
+"Statistics.statistic.trackersCompleted.title" = "Трекеров завершено";
 
 "WeekDay.monday" = "Понедельник";
 "WeekDay.tuesday" = "Вторник";

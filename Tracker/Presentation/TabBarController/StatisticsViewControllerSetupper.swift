@@ -17,7 +17,7 @@ struct StatisticsViewControllerSetupper {
 
 extension StatisticsViewControllerSetupper {
 	func getViewController() -> UINavigationController {
-		let viewModel = StatisticsViewModel()
+		let viewModel = StatisticsViewModel(trackersRecordService: self.trackersRecordService)
 		let statisticsViewController = StatisticsViewController(viewModel: viewModel)
 		let navigationController = UINavigationController(rootViewController: statisticsViewController)
 		navigationController.navigationBar.prefersLargeTitles = true

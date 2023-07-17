@@ -61,6 +61,7 @@
 "TrackerNewCategory.addNewCategoryButton.title" = "Erfolgen";
 
 "Statistics.navigationItem.title" = "Statistik";
+"Statistics.statistic.trackersCompleted.title" = "Trecker abgeschlossen";
 
 "WeekDay.monday" = "Montag";
 "WeekDay.tuesday" = "Dienstag";
