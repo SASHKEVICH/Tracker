@@ -245,11 +245,11 @@ extension TrackersViewPresenter: TrackersDataProviderDelegate {
 		self.view?.reloadSections(at: at)
 	}
 
-	func insertItems(at: [IndexPath]) {
+	func insertItems(at: TrackersCollectionCellIndices) {
 		self.view?.insertItems(at: at)
 	}
 
-	func deleteItems(at: [IndexPath]) {
+	func deleteItems(at: TrackersCollectionCellIndices) {
 		self.view?.deleteItems(at: at)
 	}
 
@@ -257,7 +257,7 @@ extension TrackersViewPresenter: TrackersDataProviderDelegate {
 		self.view?.moveItems(at: at, to: to)
 	}
 
-	func reloadItems(at: [IndexPath]) {
+	func reloadItems(at: TrackersCollectionCellIndices) {
 		self.view?.reloadItems(at: at)
 		self.fetchCompletedTrackersForCurrentDate()
 	}

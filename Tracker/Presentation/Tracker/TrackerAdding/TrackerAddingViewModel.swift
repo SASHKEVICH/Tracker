@@ -17,6 +17,9 @@ final class TrackerAddingViewModel {
 	var onSelectedEmojiChanged: (() -> Void)?
 	var onSelectedColorChanged: (() -> Void)?
 
+	let optionsTitles: [String]
+	let viewControllerTitle: String
+
 	var trackerTitle: String? = nil {
 		didSet {
 			self.onTrackerTitleChanged?()
@@ -70,10 +73,14 @@ final class TrackerAddingViewModel {
 
 	init(
 		trackersAddingService: TrackersAddingServiceProtocol,
-		trackerType: Tracker.TrackerType
+		trackerType: Tracker.TrackerType,
+		optionTitles: [String],
+		viewControllerTitle: String
 	) {
 		self.trackersAddingService = trackersAddingService
 		self.trackerType = trackerType
+		self.optionsTitles = optionTitles
+		self.viewControllerTitle = viewControllerTitle
 
 		if self.trackerType == .irregularEvent {
 			self.selectedWeekDays = Set(WeekDay.allCases)
@@ -83,28 +90,6 @@ final class TrackerAddingViewModel {
 
 // MARK: - TrackerAddingViewModelProtocol
 extension TrackerAddingViewModel: TrackerAddingViewModelProtocol {
-	var optionsTitles: [String] {
-		let localizable = R.string.localizable
-		let categoryTitle = localizable.trackerAddingOptionTitleCategory()
-		switch self.trackerType {
-		case .tracker:
-			let scheduleTitle = localizable.trackerAddingOptionTitleSchedule()
-			return [categoryTitle, scheduleTitle]
-		case .irregularEvent:
-			return [categoryTitle]
-		}
-	}
-
-	var viewControllerTitle: String {
-		let localizable = R.string.localizable
-		switch self.trackerType {
-		case .tracker:
-			return localizable.trackerAddingTrackerViewControllerTitle()
-		case .irregularEvent:
-			return localizable.trackerAddingIrregularEventViewControllerTitle()
-		}
-	}
-
 	func didChangeTracker(title: String) {
 		self.isErrorHidden = title.count < 38
 	}

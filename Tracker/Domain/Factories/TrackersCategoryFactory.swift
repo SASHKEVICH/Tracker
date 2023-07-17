@@ -16,19 +16,19 @@ public struct TrackersCategoryFactory {
 	}
 
 	public func makeCategory(title: String, isPinning: Bool) -> TrackerCategory {
-		TrackerCategory(id: UUID(), title: title, isPinning: isPinning, trackers: [])
+		TrackerCategory(id: UUID(), title: title, trackers: [], isPinning: isPinning)
 	}
 
 	func makeCategory(id: UUID, title: String, isPinning: Bool) -> TrackerCategory {
-		TrackerCategory(id: id, title: title, isPinning: isPinning, trackers: [])
+		TrackerCategory(id: id, title: title, trackers: [], isPinning: isPinning)
 	}
 
-	func makeCategory(categoryCoreData: TrackerCategoryCoreData) -> TrackerCategory? {
-		guard let id = UUID(uuidString: categoryCoreData.id) else { return nil }
-		let trackers = categoryCoreData.trackers
+	func makeCategory(categoryCoreData category: TrackerCategoryCoreData) -> TrackerCategory? {
+		guard let id = UUID(uuidString: category.id) else { return nil }
+		let trackers = category.trackers
 			.compactMap { $0 as? TrackerCoreData }
 			.compactMap { trackersFactory.makeTracker(from: $0) }
-		return TrackerCategory(id: id, title: categoryCoreData.title, isPinning: categoryCoreData.isPinning, trackers: trackers)
+		return TrackerCategory(id: id, title: category.title, trackers: trackers, isPinning: category.isPinning)
 	}
 
 	func makeCategoryCoreData(

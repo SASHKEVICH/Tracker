@@ -27,8 +27,8 @@ public struct TrackersFactory {
 			title: title,
 			color: color,
 			emoji: emoji,
-			isPinned: isPinned,
-			schedule: schedule
+			schedule: schedule,
+			isPinned: isPinned
 		)
 	}
 
@@ -49,8 +49,8 @@ public struct TrackersFactory {
 			title: title,
 			color: color,
 			emoji: emoji,
-			isPinned: isPinned,
-			schedule: schedule
+			schedule: schedule,
+			isPinned: isPinned
 		)
 	}
 
@@ -71,8 +71,8 @@ public struct TrackersFactory {
 			title: trackerCoreData.title,
 			color: color,
 			emoji: trackerCoreData.emoji,
-			isPinned: trackerCoreData.isPinned,
-			schedule: schedule
+			schedule: schedule,
+			isPinned: trackerCoreData.isPinned
 		)
 	}
 

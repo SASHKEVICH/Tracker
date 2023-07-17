@@ -14,6 +14,6 @@ public struct TrackerCategory: Equatable {
 
 	let id: UUID
 	let title: String
-	let isPinning: Bool
 	let trackers: [Tracker]
+	let isPinning: Bool
 }

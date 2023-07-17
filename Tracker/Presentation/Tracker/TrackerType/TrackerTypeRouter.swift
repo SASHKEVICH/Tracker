@@ -62,7 +62,16 @@ private extension TrackerTypeRouter {
 			trackersCategoryAddingService: self.trackersCategoryAddingService
 		)
 
-		let viewModel = TrackerAddingViewModel(trackersAddingService: self.trackersAddingService, trackerType: trackerType)
+		let optionsTitle = self.prepareOptionsTitles(for: trackerType)
+		let viewControllerTitle = self.prepareAddingViewControllerTitle(for: trackerType)
+
+		let viewModel = TrackerAddingViewModel(
+			trackersAddingService: self.trackersAddingService,
+			trackerType: trackerType,
+			optionTitles: optionsTitle,
+			viewControllerTitle: viewControllerTitle
+		)
+		
 		let vc = TrackerAddingViewController(viewModel: viewModel, router: router, view: view)
 
 		optionsHelper.delegate = vc
@@ -74,5 +83,29 @@ private extension TrackerTypeRouter {
 		}
 
 		self.viewController?.present(vc, animated: true)
+	}
+}
+
+private extension TrackerTypeRouter {
+	func prepareOptionsTitles(for type: Tracker.TrackerType) -> [String] {
+		let localizable = R.string.localizable
+		let categoryTitle = localizable.trackerAddingOptionTitleCategory()
+		switch type {
+		case .tracker:
+			let scheduleTitle = localizable.trackerAddingOptionTitleSchedule()
+			return [categoryTitle, scheduleTitle]
+		case .irregularEvent:
+			return [categoryTitle]
+		}
+	}
+
+	func prepareAddingViewControllerTitle(for type: Tracker.TrackerType) -> String {
+		let localizable = R.string.localizable
+		switch type {
+		case .tracker:
+			return localizable.trackerAddingTrackerViewControllerTitle()
+		case .irregularEvent:
+			return localizable.trackerAddingIrregularEventViewControllerTitle()
+		}
 	}
 }

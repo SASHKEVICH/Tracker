@@ -147,11 +147,11 @@ extension TrackersViewController: TrackersViewControllerFetchingProtocol {
 		self.trackersCollectionView.reloadSections(at)
 	}
 
-	func insertItems(at: [IndexPath]) {
+	func insertItems(at: TrackersCollectionCellIndices) {
 		self.trackersCollectionView.insertItems(at: at)
 	}
 
-	func deleteItems(at: [IndexPath]) {
+	func deleteItems(at: TrackersCollectionCellIndices) {
 		self.trackersCollectionView.deleteItems(at: at)
 	}
 
@@ -159,7 +159,7 @@ extension TrackersViewController: TrackersViewControllerFetchingProtocol {
 		self.trackersCollectionView.moveItem(at: at, to: to)
 	}
 
-	func reloadItems(at: [IndexPath]) {
+	func reloadItems(at: TrackersCollectionCellIndices) {
 		self.trackersCollectionView.reloadItems(at: at)
 	}
 

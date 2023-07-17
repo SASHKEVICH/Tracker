@@ -8,13 +8,15 @@
 import Foundation
 import CoreData
 
+public typealias TrackersCollectionCellIndices = [IndexPath]
+
 public protocol TrackersDataProviderDelegate: AnyObject {
 	func fetchDidPerformed()
 
-	func insertItems(at: [IndexPath])
-	func deleteItems(at: [IndexPath])
+	func insertItems(at: TrackersCollectionCellIndices)
+	func deleteItems(at: TrackersCollectionCellIndices)
 	func moveItems(at: IndexPath, to: IndexPath)
-	func reloadItems(at: [IndexPath])
+	func reloadItems(at: TrackersCollectionCellIndices)
 	func didChangeContent(operations: [BlockOperation])
 
 	func insertSections(at: IndexSet)
@@ -174,7 +176,7 @@ extension TrackersDataProvider: NSFetchedResultsControllerDelegate {
 			guard let indexPath = indexPath else { return }
 			operation = BlockOperation { self.delegate?.reloadItems(at: [indexPath]) }
 		@unknown default:
-			assertionFailure("some fetchedresultscontroller error")
+			assertionFailure("some fetched results controller error")
 			break
 		}
 
