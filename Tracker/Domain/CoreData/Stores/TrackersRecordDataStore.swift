@@ -37,6 +37,38 @@ extension TrackersRecordDataStore {
 		try self.context.save()
     }
 
+	func addRecords(for trackerId: String, amount: Int) {
+		let request = TrackerCoreData.fetchRequest()
+		let predicate = NSPredicate(
+			format: "%K == %@",
+			#keyPath(TrackerCoreData.id), trackerId)
+		request.predicate = predicate
+
+		guard let tracker = try? self.context.fetch(request).first else { return }
+		for _ in 0..<amount {
+			let record = TrackerRecordCoreData(context: self.context)
+			record.id = trackerId
+			record.date = Date()
+			tracker.addToRecords(record)
+		}
+
+		try? self.context.save()
+	}
+
+	func removeRecords(for trackerId: String, amount: Int) {
+		let request = TrackerRecordCoreData.fetchRequest()
+		let predicate = NSPredicate(
+			format: "%K == %@",
+			#keyPath(TrackerRecordCoreData.id), trackerId)
+		request.predicate = predicate
+
+		guard let records = try? self.context.fetch(request) else { return }
+		for i in 0..<amount {
+			self.context.delete(records[i])
+		}
+
+		try? self.context.save()
+	}
 
 	func completedTrackersCount() -> Int? {
 		let request = TrackerRecordCoreData.fetchRequest()

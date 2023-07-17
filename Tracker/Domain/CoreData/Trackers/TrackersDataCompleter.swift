@@ -11,6 +11,8 @@ protocol TrackersDataCompleterProtocol {
 	var completedTrackersCount: Int { get }
 	func completeTracker(with id: String, date: Date)
 	func incompleteTracker(with id: String, date: Date)
+	func addRecords(for trackerId: String, amount: Int)
+	func removeRecords(for trackerId: String, amount: Int)
 }
 
 struct TrackersDataCompleter {
@@ -42,5 +44,13 @@ extension TrackersDataCompleter: TrackersDataCompleterProtocol {
 		guard let tracker = self.trackersDataStore.tracker(with: id) else { return }
 		
 		try? self.trackersRecordDataStore.incomplete(tracker: tracker, record: record)
+	}
+
+	func addRecords(for trackerId: String, amount: Int) {
+		self.trackersRecordDataStore.addRecords(for: trackerId, amount: amount)
+	}
+
+	func removeRecords(for trackerId: String, amount: Int) {
+		self.trackersRecordDataStore.removeRecords(for: trackerId, amount: amount)
 	}
 }

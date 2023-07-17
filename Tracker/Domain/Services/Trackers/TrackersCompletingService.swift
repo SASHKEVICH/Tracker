@@ -19,6 +19,9 @@ protocol TrackersCompletingServiceStatisticsProtocol {
 protocol TrackersCompletingServiceProtocol {
 	func completeTracker(trackerId id: UUID, date: Date)
 	func incompleteTracker(trackerId id: UUID, date: Date)
+
+	func addRecords(for tracker: Tracker, amount: Int)
+	func removeRecords(for tracker: Tracker, amount: Int)
 }
 
 final class TrackersCompletingService {
@@ -40,6 +43,16 @@ extension TrackersCompletingService: TrackersCompletingServiceProtocol {
 
 	func incompleteTracker(trackerId: UUID, date: Date) {
 		self.trackersDataCompleter.incompleteTracker(with: trackerId.uuidString, date: date)
+		self.delegate?.didChangeCompletedTrackers()
+	}
+
+	func addRecords(for tracker: Tracker, amount: Int) {
+		self.trackersDataCompleter.addRecords(for: tracker.id.uuidString, amount: amount)
+		self.delegate?.didChangeCompletedTrackers()
+	}
+
+	func removeRecords(for tracker: Tracker, amount: Int) {
+		self.trackersDataCompleter.removeRecords(for: tracker.id.uuidString, amount: amount)
 		self.delegate?.didChangeCompletedTrackers()
 	}
 }

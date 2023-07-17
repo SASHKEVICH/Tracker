@@ -231,13 +231,11 @@ private extension TrackerEditingViewModel {
 		let previousTimesCount = self.trackersRecordService.completedTimesCount(trackerId: id)
 
 		if previousTimesCount < self.completedTimes {
-			for _ in 0..<self.completedTimes - previousTimesCount {
-				self.trackersCompletetingService.completeTracker(trackerId: id, date: Date())
-			}
+			let amount = self.completedTimes - previousTimesCount
+			self.trackersCompletetingService.addRecords(for: self.tracker, amount: amount)
 		} else if previousTimesCount > self.completedTimes {
-			for _ in 0..<previousTimesCount - self.completedTimes {
-				self.trackersCompletetingService.incompleteTracker(trackerId: id, date: Date())
-			}
+			let amount = previousTimesCount - self.completedTimes
+			self.trackersCompletetingService.removeRecords(for: self.tracker, amount: amount)
 		}
 	}
 }
