@@ -59,6 +59,8 @@
 "TrackerNewCategory.newCategoryTitleTextField.placeholder" = "Введите название категории";
 "TrackerNewCategory.addNewCategoryButton.title" = "Готово";
 
+"Statistics.navigationItem.title" = "Статистика";
+
 "WeekDay.monday" = "Понедельник";
 "WeekDay.tuesday" = "Вторник";
 "WeekDay.wednesday" = "Среда";

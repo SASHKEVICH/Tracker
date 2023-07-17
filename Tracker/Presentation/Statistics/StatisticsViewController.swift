@@ -23,5 +23,14 @@ final class StatisticsViewController: UIViewController {
         super.viewDidLoad()
         
 		view.backgroundColor = .Dynamic.whiteDay
+		self.setupNavigationItem()
     }
+}
+
+private extension StatisticsViewController {
+	func setupNavigationItem() {
+		self.navigationItem.largeTitleDisplayMode = .always
+		self.navigationItem.title = R.string.localizable.statisticsNavigationItemTitle()
+		self.definesPresentationContext = true
+	}
 }

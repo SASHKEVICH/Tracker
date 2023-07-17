@@ -59,6 +59,8 @@
 "TrackerNewCategory.newCategoryTitleTextField.placeholder" = "Enter title of the new category";
 "TrackerNewCategory.addNewCategoryButton.title" = "Done";
 
+"Statistics.navigationItem.title" = "Statistics";
+
 "WeekDay.monday" = "Monday";
 "WeekDay.tuesday" = "Tuesday";
 "WeekDay.wednesday" = "Wednesday";
