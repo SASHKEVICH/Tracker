@@ -9,7 +9,8 @@ import UIKit
 
 struct StatisticsViewControllerSetupper {
 	func getViewController() -> UINavigationController {
-		let statisticsViewController = StatisticsViewController()
+		let viewModel = StatisticsViewModel()
+		let statisticsViewController = StatisticsViewController(viewModel: viewModel)
 		let navigationController = UINavigationController(rootViewController: statisticsViewController)
 		navigationController.navigationBar.prefersLargeTitles = true
 
