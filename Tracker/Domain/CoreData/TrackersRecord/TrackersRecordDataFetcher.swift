@@ -29,7 +29,7 @@ extension TrackersRecordDataFetcher: TrackersRecordDataFetcherProtocol {
 	}
 
 	func completedTimesCount(trackerId: String) -> Int {
-		let count = try? self.trackersRecordDataStore.completedTimesCount(trackerId: trackerId)
+		let count = self.trackersRecordDataStore.completedTimesCount(trackerId: trackerId)
 		return count ?? 0
 	}
 }

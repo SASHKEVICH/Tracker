@@ -7,16 +7,16 @@
 
 import Foundation
 
-protocol TrackersCompletingServiceStatisticsDelegate {
+public protocol TrackersCompletingServiceStatisticsDelegate {
 	func didChangeCompletedTrackers()
 }
 
-protocol TrackersCompletingServiceStatisticsProtocol {
+public protocol TrackersCompletingServiceStatisticsProtocol {
 	var delegate: TrackersCompletingServiceStatisticsDelegate? { get set }
 	var completedTrackersCount: Int { get }
 }
 
-protocol TrackersCompletingServiceProtocol {
+public protocol TrackersCompletingServiceProtocol {
 	func completeTracker(trackerId id: UUID, date: Date)
 	func incompleteTracker(trackerId id: UUID, date: Date)
 
