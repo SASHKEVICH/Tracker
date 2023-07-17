@@ -26,6 +26,7 @@
 "PlaceholderView.emptyForDay.textLabel.text" = "Что будем отслеживать?";
 "PlaceholderView.emptySearch.textLabel.text" = "Ничего не найдено";
 "PlaceholderView.emptyCategories.textLabel.text" = "Привычки и события можно \n объединить по смыслу";
+"PlaceholderView.emptyStatistics.textLabel.text" = "Анализировать пока нечего";
 
 "TrackerType.viewController.title" = "Создание трекера";
 "TrackerType.addTrackerButton.title" = "Привычка";

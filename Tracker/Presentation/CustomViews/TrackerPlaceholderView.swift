@@ -12,6 +12,7 @@ final class TrackerPlaceholderView: UIView {
 		case emptyTrackersForDay
 		case emptyTrackersSearch
 		case emptyCategories
+		case emptyStatistics
 	}
 
 	private let imageView: UIImageView = {
@@ -32,13 +33,13 @@ final class TrackerPlaceholderView: UIView {
 
 	private var image: UIImage? {
 		didSet {
-			imageView.image = image
+			self.imageView.image = self.image
 		}
 	}
 
 	private var text: String? {
 		didSet {
-			textLabel.text = text
+			self.textLabel.text = self.text
 		}
 	}
 
@@ -59,16 +60,20 @@ final class TrackerPlaceholderView: UIView {
 
 extension TrackerPlaceholderView {
 	func set(state: TrackerPlaceholderView.State) {
+		let localizable = R.string.localizable
 		switch state {
 		case .emptyTrackersForDay:
-			let text = R.string.localizable.placeholderViewEmptyForDayTextLabelText()
+			let text = localizable.placeholderViewEmptyForDayTextLabelText()
 			self.set(image: .Placeholder.emptyForDay, text: text, newState: state)
 		case .emptyTrackersSearch:
-			let text = R.string.localizable.placeholderViewEmptySearchTextLabelText()
+			let text = localizable.placeholderViewEmptySearchTextLabelText()
 			self.set(image: .Placeholder.emptySearch, text: text, newState: state)
 		case .emptyCategories:
-			let text = R.string.localizable.placeholderViewEmptyCategoriesTextLabelText()
+			let text = localizable.placeholderViewEmptyCategoriesTextLabelText()
 			self.set(image: .Placeholder.emptyForDay, text: text, newState: state)
+		case .emptyStatistics:
+			let text = localizable.placeholderViewEmptyStatisticsTextLabelText()
+			self.set(image: .Placeholder.emptyStatistics, text: text, newState: state)
 		}
 	}
 

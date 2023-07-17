@@ -30,6 +30,7 @@ extension UIImage {
 	struct Placeholder {
 		static let emptyForDay = UIImage.image(named: "TrackersPlaceholderViewEmptyForDay")
 		static let emptySearch = UIImage.image(named: "TrackersPlaceholderViewEmptySearch")
+		static let emptyStatistics = UIImage.image(named: "TrackersPlaceholderViewEmptyStatistics")
 	}
 
 	struct TabBar {

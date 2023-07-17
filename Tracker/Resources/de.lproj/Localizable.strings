@@ -26,6 +26,7 @@
 "PlaceholderView.emptyForDay.textLabel.text" = "Was werden wir verfolgen?";
 "PlaceholderView.emptySearch.textLabel.text" = "Nichts gefunden";
 "PlaceholderView.emptyCategories.textLabel.text" = "Gewohnheiten und Ereignisse können in \n der Bedeutung kombiniert werden";
+"PlaceholderView.emptyStatistics.textLabel.text" = "Es gibt noch nichts zu analysieren";
 
 "TrackerType.viewController.title" = "Einen Tracker erstellen";
 "TrackerType.addTrackerButton.title" = "Gewohnheit";
