@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-protocol TrackersDataProviderDelegate: AnyObject {
+public protocol TrackersDataProviderDelegate: AnyObject {
 	func fetchDidPerformed()
 
 	func insertItems(at: [IndexPath])

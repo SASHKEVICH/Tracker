@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol TrackersServiceDataSourceProtocol {
+public protocol TrackersServiceDataSourceProtocol {
     var numberOfSections: Int { get }
     func numberOfItemsInSection(_ section: Int) -> Int
     func categoryTitle(at indexPath: IndexPath) -> String?
 }
 
-protocol TrackersServiceFetchingProtocol {
+public protocol TrackersServiceFetchingProtocol {
     var trackersDataProviderDelegate: TrackersDataProviderDelegate? { get set }
 	var trackers: [Tracker] { get }
     func fetchTrackers(weekDay: WeekDay)
@@ -22,7 +22,7 @@ protocol TrackersServiceFetchingProtocol {
 	func eraseOperations()
 }
 
-protocol TrackersServiceFilteringProtocol {
+public protocol TrackersServiceFilteringProtocol {
 	func performFiltering(mode: TrackerFilterViewModel.FilterMode)
 }
 

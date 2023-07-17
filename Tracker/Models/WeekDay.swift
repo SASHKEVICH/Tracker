@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum WeekDay: Int, Comparable, CaseIterable, Codable {
+public enum WeekDay: Int, Comparable, CaseIterable, Codable {
     case sunday = 1
     case monday
     case tuesday
@@ -54,7 +54,7 @@ enum WeekDay: Int, Comparable, CaseIterable, Codable {
         }
     }
     
-    static func < (lhs: WeekDay, rhs: WeekDay) -> Bool {
+    public static func < (lhs: WeekDay, rhs: WeekDay) -> Bool {
         lhs.rawValue < rhs.rawValue
     }
 }

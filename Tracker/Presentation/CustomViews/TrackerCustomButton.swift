@@ -106,12 +106,12 @@ private extension TrackerCustomButton {
 		let font = UIFont.Medium.big
 		self.setAttributedButtonTitle(with: .white, font: font)
 	}
-    
+
 	func setAttributedButtonTitle(with color: UIColor, font: UIFont) {
-        let attributedTitle = NSAttributedString(
-            string: title,
+		let attributedTitle = NSAttributedString(
+			string: title,
 			attributes: [NSAttributedString.Key.font: font,
 						 NSAttributedString.Key.foregroundColor: color])
 		self.setAttributedTitle(attributedTitle, for: .normal)
-    }
+	}
 }

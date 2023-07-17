@@ -44,6 +44,13 @@
 		965A5B722A63FC1E00458791 /* TrackerAddingViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965A5B712A63FC1E00458791 /* TrackerAddingViewModelProtocol.swift */; };
 		965A5B752A64017200458791 /* TrackersCategoryDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965A5B742A64017200458791 /* TrackersCategoryDataFetcher.swift */; };
 		9661855329F1746E0003C57A /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9661855229F1746E0003C57A /* Date+Extensions.swift */; };
+		966819532A6584D300A9C048 /* TrackersCategoryServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9668194A2A6584D300A9C048 /* TrackersCategoryServiceStub.swift */; };
+		966819542A6584D300A9C048 /* TrackersCategoryAddingServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9668194B2A6584D300A9C048 /* TrackersCategoryAddingServiceStub.swift */; };
+		966819552A6584D300A9C048 /* TrackersAddingServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9668194D2A6584D300A9C048 /* TrackersAddingServiceStub.swift */; };
+		966819562A6584D300A9C048 /* TrackersServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9668194E2A6584D300A9C048 /* TrackersServiceStub.swift */; };
+		966819572A6584D300A9C048 /* TrackersPinningServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9668194F2A6584D300A9C048 /* TrackersPinningServiceStub.swift */; };
+		966819582A6584D300A9C048 /* TrackersCompletingServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966819502A6584D300A9C048 /* TrackersCompletingServiceStub.swift */; };
+		966819592A6584D300A9C048 /* TrackersRecordServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966819522A6584D300A9C048 /* TrackersRecordServiceStub.swift */; };
 		966C65E62A5D7CB8007D575B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 966C65E82A5D7CB8007D575B /* Localizable.strings */; };
 		966C65F22A5EA679007D575B /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 966C65F42A5EA679007D575B /* Localizable.stringsdict */; };
 		966DD3B129E9BACE00296CDF /* TrackerOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966DD3B029E9BACE00296CDF /* TrackerOptionsTableViewCell.swift */; };
@@ -53,7 +60,6 @@
 		966DD3BE29EA7EEA00296CDF /* TrackerCustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966DD3BD29EA7EEA00296CDF /* TrackerCustomButton.swift */; };
 		9671FA982A5EEA460066EB41 /* YandexMetricaConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9671FA972A5EEA460066EB41 /* YandexMetricaConfiguration.swift */; };
 		9674A3252A61AD09003E614E /* TrackerFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9674A3242A61AD09003E614E /* TrackerFilterViewModel.swift */; };
-		9679C6052A655862003E7F20 /* TrackersCompletingServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9679C6042A655862003E7F20 /* TrackersCompletingServiceStub.swift */; };
 		9679C6092A655994003E7F20 /* YandexMobileMetrica in Frameworks */ = {isa = PBXBuildFile; productRef = 9679C6082A655994003E7F20 /* YandexMobileMetrica */; };
 		9679C60D2A6559E3003E7F20 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 9679C60C2A6559E3003E7F20 /* SnapshotTesting */; };
 		967A69882A556E1400224970 /* UICollectionViewCell+reuseIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967A69872A556E1400224970 /* UICollectionViewCell+reuseIdentifier.swift */; };
@@ -178,6 +184,13 @@
 		965A5B712A63FC1E00458791 /* TrackerAddingViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerAddingViewModelProtocol.swift; sourceTree = "<group>"; };
 		965A5B742A64017200458791 /* TrackersCategoryDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCategoryDataFetcher.swift; sourceTree = "<group>"; };
 		9661855229F1746E0003C57A /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		9668194A2A6584D300A9C048 /* TrackersCategoryServiceStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackersCategoryServiceStub.swift; sourceTree = "<group>"; };
+		9668194B2A6584D300A9C048 /* TrackersCategoryAddingServiceStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackersCategoryAddingServiceStub.swift; sourceTree = "<group>"; };
+		9668194D2A6584D300A9C048 /* TrackersAddingServiceStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackersAddingServiceStub.swift; sourceTree = "<group>"; };
+		9668194E2A6584D300A9C048 /* TrackersServiceStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackersServiceStub.swift; sourceTree = "<group>"; };
+		9668194F2A6584D300A9C048 /* TrackersPinningServiceStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackersPinningServiceStub.swift; sourceTree = "<group>"; };
+		966819502A6584D300A9C048 /* TrackersCompletingServiceStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackersCompletingServiceStub.swift; sourceTree = "<group>"; };
+		966819522A6584D300A9C048 /* TrackersRecordServiceStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackersRecordServiceStub.swift; sourceTree = "<group>"; };
 		966C65E72A5D7CB8007D575B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		966C65E92A5D7CBB007D575B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		966C65EA2A5D7CC9007D575B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -191,7 +204,6 @@
 		966DD3BD29EA7EEA00296CDF /* TrackerCustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCustomButton.swift; sourceTree = "<group>"; };
 		9671FA972A5EEA460066EB41 /* YandexMetricaConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMetricaConfiguration.swift; sourceTree = "<group>"; };
 		9674A3242A61AD09003E614E /* TrackerFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerFilterViewModel.swift; sourceTree = "<group>"; };
-		9679C6042A655862003E7F20 /* TrackersCompletingServiceStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCompletingServiceStub.swift; sourceTree = "<group>"; };
 		967A69872A556E1400224970 /* UICollectionViewCell+reuseIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+reuseIdentifier.swift"; sourceTree = "<group>"; };
 		967A69892A557E8000224970 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
 		967A698B2A55808500224970 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
@@ -408,6 +420,34 @@
 			path = TrackerEditing;
 			sourceTree = "<group>";
 		};
+		966819492A6584D300A9C048 /* TrackersCategory */ = {
+			isa = PBXGroup;
+			children = (
+				9668194A2A6584D300A9C048 /* TrackersCategoryServiceStub.swift */,
+				9668194B2A6584D300A9C048 /* TrackersCategoryAddingServiceStub.swift */,
+			);
+			path = TrackersCategory;
+			sourceTree = "<group>";
+		};
+		9668194C2A6584D300A9C048 /* Trackers */ = {
+			isa = PBXGroup;
+			children = (
+				9668194D2A6584D300A9C048 /* TrackersAddingServiceStub.swift */,
+				9668194E2A6584D300A9C048 /* TrackersServiceStub.swift */,
+				9668194F2A6584D300A9C048 /* TrackersPinningServiceStub.swift */,
+				966819502A6584D300A9C048 /* TrackersCompletingServiceStub.swift */,
+			);
+			path = Trackers;
+			sourceTree = "<group>";
+		};
+		966819512A6584D300A9C048 /* TrackersRecord */ = {
+			isa = PBXGroup;
+			children = (
+				966819522A6584D300A9C048 /* TrackersRecordServiceStub.swift */,
+			);
+			path = TrackersRecord;
+			sourceTree = "<group>";
+		};
 		966DD3AE29E9BA8600296CDF /* TrackerOptionsTableView */ = {
 			isa = PBXGroup;
 			children = (
@@ -488,7 +528,9 @@
 		967D63692A6553D600C5ADD9 /* StubServices */ = {
 			isa = PBXGroup;
 			children = (
-				9679C6042A655862003E7F20 /* TrackersCompletingServiceStub.swift */,
+				9668194C2A6584D300A9C048 /* Trackers */,
+				966819492A6584D300A9C048 /* TrackersCategory */,
+				966819512A6584D300A9C048 /* TrackersRecord */,
 			);
 			path = StubServices;
 			sourceTree = "<group>";
@@ -1082,8 +1124,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9679C6052A655862003E7F20 /* TrackersCompletingServiceStub.swift in Sources */,
+				966819562A6584D300A9C048 /* TrackersServiceStub.swift in Sources */,
+				966819552A6584D300A9C048 /* TrackersAddingServiceStub.swift in Sources */,
+				966819542A6584D300A9C048 /* TrackersCategoryAddingServiceStub.swift in Sources */,
+				966819592A6584D300A9C048 /* TrackersRecordServiceStub.swift in Sources */,
+				966819572A6584D300A9C048 /* TrackersPinningServiceStub.swift in Sources */,
 				967D63772A65577900C5ADD9 /* TrackerTests.swift in Sources */,
+				966819582A6584D300A9C048 /* TrackersCompletingServiceStub.swift in Sources */,
+				966819532A6584D300A9C048 /* TrackersCategoryServiceStub.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

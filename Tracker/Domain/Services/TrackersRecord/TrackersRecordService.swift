@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol TrackersRecordServiceDelegate: AnyObject {
+public protocol TrackersRecordServiceDelegate: AnyObject {
 	func didRecieveCompletedTrackers(_ records: [TrackerRecord])
 }
 
-protocol TrackersRecordServiceProtocol {
+public protocol TrackersRecordServiceProtocol {
 	var delegate: TrackersRecordServiceDelegate? { get set }
 	func fetchCompletedRecords(for date: Date)
 	func completedTimesCount(trackerId: UUID) -> Int

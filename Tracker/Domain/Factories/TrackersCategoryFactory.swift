@@ -8,14 +8,14 @@
 import Foundation
 import CoreData
 
-struct TrackersCategoryFactory {
+public struct TrackersCategoryFactory {
 	private let trackersFactory: TrackersFactory
 
-	init(trackersFactory: TrackersFactory) {
+	public init(trackersFactory: TrackersFactory) {
 		self.trackersFactory = trackersFactory
 	}
 
-	func makeCategory(title: String, isPinning: Bool) -> TrackerCategory {
+	public func makeCategory(title: String, isPinning: Bool) -> TrackerCategory {
 		TrackerCategory(id: UUID(), title: title, isPinning: isPinning, trackers: [])
 	}
 

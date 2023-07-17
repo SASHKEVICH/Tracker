@@ -12,8 +12,8 @@ protocol TrackerFilterViewControllerDelegate: AnyObject {
 	func didSelectFilter(category: TrackerCategory)
 }
 
-final class TrackerFilterViewModel {
-	enum FilterMode: Equatable {
+public final class TrackerFilterViewModel {
+	public enum FilterMode: Equatable {
 		case all(Date)
 		case today
 		case completed(Date)

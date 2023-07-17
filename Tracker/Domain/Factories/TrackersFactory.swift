@@ -8,8 +8,10 @@
 import UIKit
 import CoreData
 
-struct TrackersFactory {
-	func makeTracker(
+public struct TrackersFactory {
+	public init() {}
+
+	public func makeTracker(
 		type: Tracker.TrackerType,
 		title: String,
 		color: UIColor,

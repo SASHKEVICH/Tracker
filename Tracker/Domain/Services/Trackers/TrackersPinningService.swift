@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TrackersPinningServiceProtocol {
+public protocol TrackersPinningServiceProtocol {
 	func pin(tracker: Tracker)
 	func unpin(tracker: Tracker)
 }

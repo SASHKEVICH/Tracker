@@ -8,11 +8,11 @@
 import Foundation
 import CoreData
 
-protocol TrackersCategoryDataProviderDelegate: AnyObject {
+public protocol TrackersCategoryDataProviderDelegate: AnyObject {
 	func storeDidUpdate()
 }
 
-protocol TrackersCategoryDataProviderProtocol {
+public protocol TrackersCategoryDataProviderProtocol {
 	var delegate: TrackersCategoryDataProviderDelegate? { get set }
 	var categories: [TrackerCategoryCoreData] { get }
 	func numberOfItemsInSection(_ section: Int) -> Int

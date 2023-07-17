@@ -28,4 +28,90 @@ final class TrackerTests: XCTestCase {
 			.image(traits: UITraitCollection(userInterfaceStyle: .dark))
 		])
 	}
+
+	func testTrackersScreenEmpty() throws {
+		let vc = TrackersViewController()
+
+		let categoryService = TrackersCategoryServiceStub(state: .empty)
+		let categoryAddingService = TrackersCategoryAddingServiceStub()
+		let trackersService = TrackersServiceStub(state: .empty)
+		let tracersAddingService = TrackersAddingServiceStub()
+		let trackersRecordService = TrackersRecordServiceStub()
+		let trackerCompletingService = TrackersCompletingServiceStub()
+		let trakersPinningService = TrackersPinningServiceStub()
+
+		let router = TrackersViewRouter(
+			viewController: vc,
+			trackersCategoryService: categoryService,
+			trackersCategoryAddingService: categoryAddingService,
+			trackersService: trackersService,
+			trackersAddingService: tracersAddingService,
+			trackersRecordService: trackersRecordService,
+			trackersCompletingService: trackerCompletingService
+		)
+
+		let presenter = TrackersViewPresenter(
+			trackersService: trackersService,
+			trackersAddingService: tracersAddingService,
+			trackersCompletingService: trackerCompletingService,
+			trackersRecordService: trackersRecordService,
+			trackersPinningService: trakersPinningService,
+			router: router,
+			alertPresenterService: AlertPresenterService(),
+			analyticsService: AnalyticsService()
+		)
+
+		vc.presenter = presenter
+		presenter.view = vc
+
+		assertSnapshots(matching: vc, as: [
+			.image(traits: UITraitCollection(userInterfaceStyle: .light))
+		])
+		assertSnapshots(matching: vc, as: [
+			.image(traits: UITraitCollection(userInterfaceStyle: .dark))
+		])
+	}
+
+	func testTrackersScreenNotEmpty() throws {
+		let vc = TrackersViewController()
+
+		let categoryService = TrackersCategoryServiceStub(state: .notEmpty)
+		let categoryAddingService = TrackersCategoryAddingServiceStub()
+		let trackersService = TrackersServiceStub(state: .notEmpty)
+		let tracersAddingService = TrackersAddingServiceStub()
+		let trackersRecordService = TrackersRecordServiceStub()
+		let trackerCompletingService = TrackersCompletingServiceStub()
+		let trakersPinningService = TrackersPinningServiceStub()
+
+		let router = TrackersViewRouter(
+			viewController: vc,
+			trackersCategoryService: categoryService,
+			trackersCategoryAddingService: categoryAddingService,
+			trackersService: trackersService,
+			trackersAddingService: tracersAddingService,
+			trackersRecordService: trackersRecordService,
+			trackersCompletingService: trackerCompletingService
+		)
+
+		let presenter = TrackersViewPresenter(
+			trackersService: trackersService,
+			trackersAddingService: tracersAddingService,
+			trackersCompletingService: trackerCompletingService,
+			trackersRecordService: trackersRecordService,
+			trackersPinningService: trakersPinningService,
+			router: router,
+			alertPresenterService: AlertPresenterService(),
+			analyticsService: AnalyticsService()
+		)
+
+		vc.presenter = presenter
+		presenter.view = vc
+
+		assertSnapshots(matching: vc, as: [
+			.image(traits: UITraitCollection(userInterfaceStyle: .light))
+		])
+		assertSnapshots(matching: vc, as: [
+			.image(traits: UITraitCollection(userInterfaceStyle: .dark))
+		])
+	}
 }

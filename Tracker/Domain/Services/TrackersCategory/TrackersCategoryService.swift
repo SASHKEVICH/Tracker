@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol TrackersCategoryServiceProtocol {
+public protocol TrackersCategoryServiceProtocol {
 	var numberOfSections: Int { get }
 	var categories: [TrackerCategory] { get }
 	var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate? { get set }

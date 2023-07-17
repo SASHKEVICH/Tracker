@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TrackersAddingServiceProtocol {
+public protocol TrackersAddingServiceProtocol {
 	func addTracker(
 		title: String,
 		schedule: Set<WeekDay>,

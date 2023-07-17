@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol TrackersCategoryAddingServiceProtocol {
+public protocol TrackersCategoryAddingServiceProtocol {
 	func addCategory(title: String)
 }
 
