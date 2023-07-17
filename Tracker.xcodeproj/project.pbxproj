@@ -60,6 +60,7 @@
 		967A698A2A557E8000224970 /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967A69892A557E8000224970 /* UIFont+Extensions.swift */; };
 		967A698C2A55808500224970 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 967A698B2A55808500224970 /* Colors.xcassets */; };
 		967D63562A64E83B00C5ADD9 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967D63552A64E83B00C5ADD9 /* StatisticsViewModel.swift */; };
+		967D63602A64FFD900C5ADD9 /* ServiceSetupper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967D635F2A64FFD900C5ADD9 /* ServiceSetupper.swift */; };
 		96816CDD2A5D6FAE003795A4 /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 96816CDC2A5D6FAE003795A4 /* RswiftLibrary */; };
 		9686FA5929E2829500BE2BC0 /* TrackersViewPresenterSearchControllerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9686FA5829E2829500BE2BC0 /* TrackersViewPresenterSearchControllerHelper.swift */; };
 		968A7E6D2A1E1F88007D75A5 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968A7E6C2A1E1F88007D75A5 /* OnboardingViewController.swift */; };
@@ -195,6 +196,7 @@
 		967A69892A557E8000224970 /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
 		967A698B2A55808500224970 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		967D63552A64E83B00C5ADD9 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
+		967D635F2A64FFD900C5ADD9 /* ServiceSetupper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceSetupper.swift; sourceTree = "<group>"; };
 		9686FA5829E2829500BE2BC0 /* TrackersViewPresenterSearchControllerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewPresenterSearchControllerHelper.swift; sourceTree = "<group>"; };
 		968A7E6C2A1E1F88007D75A5 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		968A7E6F2A1E2013007D75A5 /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
@@ -309,12 +311,11 @@
 		9617C96029DB10320054987D /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				967D635D2A64FFCA00C5ADD9 /* Other */,
 				969CDB822A583B2B001EDB8B /* TrackersCategory */,
 				969CDB812A583B24001EDB8B /* TrackersRecord */,
 				96A606DC2A3C8F9D007C5262 /* Trackers */,
-				96C7E76429E65ED200BA7F67 /* AlertPresenterService.swift */,
-				96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */,
-				96251DF52A5FC69A00E13596 /* AnalyticsService.swift */,
+				967D635F2A64FFD900C5ADD9 /* ServiceSetupper.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -469,6 +470,24 @@
 				96E316872A40517000C08032 /* TrackerCategory */,
 			);
 			path = Tracker;
+			sourceTree = "<group>";
+		};
+		967D63572A64FC0A00C5ADD9 /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+				967D63582A64FC1900C5ADD9 /* Statistics.swift */,
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
+		967D635D2A64FFCA00C5ADD9 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				96C7E76429E65ED200BA7F67 /* AlertPresenterService.swift */,
+				96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */,
+				96251DF52A5FC69A00E13596 /* AnalyticsService.swift */,
+			);
+			path = Other;
 			sourceTree = "<group>";
 		};
 		96816CE22A5D723A003795A4 /* Resources */ = {
@@ -1043,6 +1062,7 @@
 				96251E042A61119000E13596 /* StatisticsViewControllerSetupper.swift in Sources */,
 				9617C96B29DD88860054987D /* CompleteTrackerButton.swift in Sources */,
 				969509B52A21D0DC00DC1DF3 /* UIImage+Extensions.swift in Sources */,
+				967D63602A64FFD900C5ADD9 /* ServiceSetupper.swift in Sources */,
 				9617C96629DD77180054987D /* Device.swift in Sources */,
 				96C7E77329E92B6D00BA7F67 /* TrackerCustomTextField.swift in Sources */,
 				965A5B642A63AAEF00458791 /* TrackerAddingViewModel.swift in Sources */,

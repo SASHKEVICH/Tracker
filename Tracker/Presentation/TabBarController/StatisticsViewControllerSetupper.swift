@@ -8,6 +8,14 @@
 import UIKit
 
 struct StatisticsViewControllerSetupper {
+	private let trackersRecordService: TrackersRecordServiceProtocol
+
+	init(trackersRecordService: TrackersRecordServiceProtocol) {
+		self.trackersRecordService = trackersRecordService
+	}
+}
+
+extension StatisticsViewControllerSetupper {
 	func getViewController() -> UINavigationController {
 		let viewModel = StatisticsViewModel()
 		let statisticsViewController = StatisticsViewController(viewModel: viewModel)
