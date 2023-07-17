@@ -8,6 +8,7 @@
 import Foundation
 
 protocol TrackersDataCompleterProtocol {
+	var completedTrackersCount: Int { get }
 	func completeTracker(with id: String, date: Date)
 	func incompleteTracker(with id: String, date: Date)
 }
@@ -24,6 +25,10 @@ struct TrackersDataCompleter {
 
 // MARK: - TrackersDataCompleterProtocol
 extension TrackersDataCompleter: TrackersDataCompleterProtocol {
+	var completedTrackersCount: Int {
+		self.trackersRecordDataStore.completedTrackersCount() ?? 0
+	}
+
 	func completeTracker(with id: String, date: Date) {
 		guard let date = date.withoutTime else { return }
 		guard let tracker = self.trackersDataStore.tracker(with: id) else { return }

@@ -7,18 +7,28 @@
 
 import UIKit
 
-struct StatisticsViewControllerSetupper {
-	private let trackersRecordService: TrackersRecordServiceProtocol
+final class StatisticsViewControllerSetupper {
+	private var trackersCompletingService: TrackersCompletingServiceStatisticsProtocol
 
-	init(trackersRecordService: TrackersRecordServiceProtocol) {
-		self.trackersRecordService = trackersRecordService
+	init(trackersCompletingService: TrackersCompletingServiceStatisticsProtocol) {
+		self.trackersCompletingService = trackersCompletingService
 	}
 }
 
 extension StatisticsViewControllerSetupper {
 	func getViewController() -> UINavigationController {
-		let viewModel = StatisticsViewModel(trackersRecordService: self.trackersRecordService)
-		let statisticsViewController = StatisticsViewController(viewModel: viewModel)
+		let viewModel = StatisticsViewModel(trackersCompletingService: self.trackersCompletingService)
+
+		self.trackersCompletingService.delegate = viewModel
+
+		let tableViewHelper = StatisticsTableViewHelper()
+		let statisticsViewController = StatisticsViewController(
+			viewModel: viewModel,
+			tableViewHelper: tableViewHelper
+		)
+
+		tableViewHelper.delegate = statisticsViewController
+
 		let navigationController = UINavigationController(rootViewController: statisticsViewController)
 		navigationController.navigationBar.prefersLargeTitles = true
 

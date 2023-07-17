@@ -31,7 +31,7 @@ final class TabBarViewController: UITabBarController {
 		}
 
 		let statisticsSetupper = StatisticsViewControllerSetupper(
-			trackersRecordService: serviceSetupper.trackersRecordService
+			trackersCompletingService: serviceSetupper.trackersCompletingService
 		)
 
 		let statisticsViewController = statisticsSetupper.getViewController()

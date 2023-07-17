@@ -7,24 +7,18 @@
 
 import Foundation
 
-protocol TrackersRecordStatisticsDelegate: AnyObject {
-	func didChanged(completedTrackers: Int)
-}
-
 protocol TrackersRecordServiceDelegate: AnyObject {
 	func didRecieveCompletedTrackers(_ records: [TrackerRecord])
 }
 
 protocol TrackersRecordServiceProtocol {
 	var delegate: TrackersRecordServiceDelegate? { get set }
-	var statisticsDelegate: TrackersRecordStatisticsDelegate? { get set }
 	func fetchCompletedRecords(for date: Date)
 	func completedTimesCount(trackerId: UUID) -> Int
 }
 
 final class TrackersRecordService {
 	weak var delegate: TrackersRecordServiceDelegate?
-	weak var statisticsDelegate: TrackersRecordStatisticsDelegate?
 
 	private let trackersRecordDataFetcher: TrackersRecordDataFetcherProtocol
 

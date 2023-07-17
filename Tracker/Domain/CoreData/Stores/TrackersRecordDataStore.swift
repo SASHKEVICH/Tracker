@@ -36,33 +36,43 @@ extension TrackersRecordDataStore {
 		tracker.removeFromRecords(record)
 		try self.context.save()
     }
+
+
+	func completedTrackersCount() -> Int? {
+		let request = TrackerRecordCoreData.fetchRequest()
+		do {
+			let object = try self.context.fetch(request)
+			return object.count
+		} catch {
+			return nil
+		}
+	}
     
-    func completedTimesCount(trackerId: String) throws -> Int {
+    func completedTimesCount(trackerId: String) -> Int? {
         let request = TrackerRecordCoreData.fetchRequest()
         let predicate = NSPredicate(
             format: "%K == %@",
             #keyPath(TrackerRecordCoreData.id), trackerId)
         request.predicate = predicate
-        request.resultType = .countResultType
-        
-        let fetchResult = try context.execute(request) as! NSAsynchronousFetchResult<NSFetchRequestResult>
-        guard let count = fetchResult.finalResult?.first,
-			  let countInt = count as? Int
-        else { return 0 }
-        
-        return countInt
+
+		do {
+			let object = try self.context.fetch(request)
+			return object.count
+		} catch {
+			return nil
+		}
     }
     
-    func completedTrackers(for date: Date) -> [TrackerRecordCoreData] {
-        let request = TrackerRecordCoreData.fetchRequest()
-        let predicate = NSPredicate(
-            format: "%K == %@",
-            #keyPath(TrackerRecordCoreData.date), date as NSDate)
-        request.predicate = predicate
-        
-        let records = try? context.fetch(request)
-        return records ?? []
-    }
+	func completedTrackers(for date: Date) -> [TrackerRecordCoreData] {
+		let request = TrackerRecordCoreData.fetchRequest()
+		let predicate = NSPredicate(
+			format: "%K == %@",
+			#keyPath(TrackerRecordCoreData.date), date as NSDate)
+		request.predicate = predicate
+
+		let records = try? context.fetch(request)
+		return records ?? []
+	}
     
     func record(with id: String, date: NSDate) -> TrackerRecordCoreData? {
         let request = TrackerRecordCoreData.fetchRequest()
