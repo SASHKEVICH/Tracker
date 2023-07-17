@@ -9,21 +9,17 @@ import Foundation
 
 protocol StatisticsViewModelProtocol {
 	var onStatisticsChanged: (() -> Void)? { get set }
-	var statistics: [Statistics] { get }
+	var statistics: Set<Statistics> { get }
 
 	var onIsPlaceholderHiddenChanged: (() -> Void)? { get set }
 	var isPlaceholderHidden: Bool { get }
-
-	var onTrackersCompletedCountChanged: (() -> Void)? { get set }
-	var trackersCompletedCount: String? { get }
 }
 
 final class StatisticsViewModel {
 	var onStatisticsChanged: (() -> Void)?
 	var onIsPlaceholderHiddenChanged: (() -> Void)?
-	var onTrackersCompletedCountChanged: (() -> Void)?
 
-	var statistics: [Statistics] = [Statistics(title: R.string.localizable.statisticsStatisticTrackersCompletedTitle(), count: 0)] {
+	var statistics: Set<Statistics> = [] {
 		didSet {
 			self.onStatisticsChanged?()
 		}
@@ -35,26 +31,45 @@ final class StatisticsViewModel {
 		}
 	}
 
-	var trackersCompletedCount: String? = nil {
-		didSet {
-			self.onTrackersCompletedCountChanged?()
-		}
-	}
+	private let trackersCompletingService: TrackersCompletingServiceStatisticsProtocol
 
-	private let trackersRecordService: TrackersRecordServiceProtocol
-
-	init(trackersRecordService: TrackersRecordServiceProtocol) {
-		self.trackersRecordService = trackersRecordService
+	init(trackersCompletingService: TrackersCompletingServiceStatisticsProtocol) {
+		self.trackersCompletingService = trackersCompletingService
+		self.fetchCompletedTrackers()
 	}
 }
 
 // MARK: - StatisticsViewModelProtocol
-extension StatisticsViewModel: StatisticsViewModelProtocol {
-	
+extension StatisticsViewModel: StatisticsViewModelProtocol {}
+
+extension StatisticsViewModel: TrackersCompletingServiceStatisticsDelegate {
+	func didChangeCompletedTrackers() {
+		let completedTrackersCount = self.trackersCompletingService.completedTrackersCount
+		guard completedTrackersCount > 0 else {
+			self.isPlaceholderHidden = false
+			return
+		}
+
+		let title = R.string.localizable.statisticsStatisticTrackersCompletedTitle()
+		let newStatistics = Statistics(title: title, count: completedTrackersCount)
+
+		guard let completedTrackersStatistics = self.statistics.first(where: { $0.title == title }) else { return }
+		self.statistics.remove(completedTrackersStatistics)
+		self.statistics.insert(newStatistics)
+
+		self.isPlaceholderHidden = true
+	}
 }
 
-extension StatisticsViewModel: TrackersRecordStatisticsDelegate {
-	func didChanged(completedTrackers: Int) {
-		self.trackersCompletedCount = "\(completedTrackers)"
+private extension StatisticsViewModel {
+	func fetchCompletedTrackers() {
+		let completedTrackersCount = self.trackersCompletingService.completedTrackersCount
+		guard completedTrackersCount > 0 else { return }
+
+		let title = R.string.localizable.statisticsStatisticTrackersCompletedTitle()
+		let statistics = Statistics(title: title, count: completedTrackersCount)
+		self.statistics.insert(statistics)
+
+		self.isPlaceholderHidden = true
 	}
 }

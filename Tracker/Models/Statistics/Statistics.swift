@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Statistics {
+struct Statistics: Hashable {
 	let title: String
 	let count: Int
 }
