@@ -41,11 +41,17 @@ protocol TrackersDataProviderProtocol {
 
 // MARK: - TrackersDataProvider
 final class TrackersDataProvider: NSObject {
-	weak var delegate: TrackersDataProviderDelegate?
+	weak var delegate: TrackersDataProviderDelegate? {
+		didSet {
+			self.blockOperationFactory.delegate = self.delegate
+		}
+	}
 
 	private let context: NSManagedObjectContext
 
 	private var blockOperations: [BlockOperation] = []
+	private var blockOperationFactory: BlockOperationFactoryProtocol
+
 	private var currentWeekDay = Date().weekDay
 
 	private lazy var fetchedResultsController: NSFetchedResultsController = {
@@ -75,8 +81,9 @@ final class TrackersDataProvider: NSObject {
 		return fetchedResultsController
 	}()
 
-	init(context: NSManagedObjectContext) {
+	init(context: NSManagedObjectContext, blockOperationFactory: BlockOperationFactoryProtocol) {
 		self.context = context
+		self.blockOperationFactory = blockOperationFactory
     }
 
 	deinit {
@@ -161,26 +168,10 @@ extension TrackersDataProvider: NSFetchedResultsControllerDelegate {
 		for type: NSFetchedResultsChangeType,
 		newIndexPath: IndexPath?
 	) {
-		var operation = BlockOperation()
-		switch type {
-		case .insert:
-			guard let newIndexPath = newIndexPath else { return }
-			operation = BlockOperation { self.delegate?.insertItems(at: [newIndexPath]) }
-		case .delete:
-			guard let indexPath = indexPath else { return }
-			operation = BlockOperation { self.delegate?.deleteItems(at: [indexPath]) }
-		case .move:
-			guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-			operation = BlockOperation { self.delegate?.moveItems(at: indexPath, to: newIndexPath) }
-		case .update:
-			guard let indexPath = indexPath else { return }
-			operation = BlockOperation { self.delegate?.reloadItems(at: [indexPath]) }
-		@unknown default:
-			assertionFailure("some fetched results controller error")
-			break
+		guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
+		if let operation = self.blockOperationFactory.makeObjectOperation(at: indexPath, to: newIndexPath, for: type) {
+			self.blockOperations.append(operation)
 		}
-
-		self.blockOperations.append(operation)
 	}
 
 	func controller(
@@ -189,22 +180,9 @@ extension TrackersDataProvider: NSFetchedResultsControllerDelegate {
 		atSectionIndex sectionIndex: Int,
 		for type: NSFetchedResultsChangeType
 	) {
-		let indexSet = IndexSet(integer: sectionIndex)
-
-		var operation = BlockOperation()
-		switch type {
-		case .insert:
-			operation = BlockOperation { self.delegate?.insertSections(at: indexSet) }
-		case .delete:
-			operation = BlockOperation { self.delegate?.deleteSections(at: indexSet) }
-		case .update:
-			operation = BlockOperation { self.delegate?.reloadSections(at: indexSet) }
-		default:
-			assertionFailure("some fetchedresultscontroller error")
-			break
+		if let operation = self.blockOperationFactory.makeSectionOperation(sectionIndex: sectionIndex, for: type) {
+			self.blockOperations.append(operation)
 		}
-
-		self.blockOperations.append(operation)
 	}
 
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

@@ -51,6 +51,7 @@
 		966819572A6584D300A9C048 /* TrackersPinningServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9668194F2A6584D300A9C048 /* TrackersPinningServiceStub.swift */; };
 		966819582A6584D300A9C048 /* TrackersCompletingServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966819502A6584D300A9C048 /* TrackersCompletingServiceStub.swift */; };
 		966819592A6584D300A9C048 /* TrackersRecordServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966819522A6584D300A9C048 /* TrackersRecordServiceStub.swift */; };
+		9668195F2A65958B00A9C048 /* BlockOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9668195E2A65958B00A9C048 /* BlockOperationFactory.swift */; };
 		966C65E62A5D7CB8007D575B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 966C65E82A5D7CB8007D575B /* Localizable.strings */; };
 		966C65F22A5EA679007D575B /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 966C65F42A5EA679007D575B /* Localizable.stringsdict */; };
 		966DD3B129E9BACE00296CDF /* TrackerOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966DD3B029E9BACE00296CDF /* TrackerOptionsTableViewCell.swift */; };
@@ -191,6 +192,7 @@
 		9668194F2A6584D300A9C048 /* TrackersPinningServiceStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackersPinningServiceStub.swift; sourceTree = "<group>"; };
 		966819502A6584D300A9C048 /* TrackersCompletingServiceStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackersCompletingServiceStub.swift; sourceTree = "<group>"; };
 		966819522A6584D300A9C048 /* TrackersRecordServiceStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackersRecordServiceStub.swift; sourceTree = "<group>"; };
+		9668195E2A65958B00A9C048 /* BlockOperationFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockOperationFactory.swift; sourceTree = "<group>"; };
 		966C65E72A5D7CB8007D575B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		966C65E92A5D7CBB007D575B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		966C65EA2A5D7CC9007D575B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -605,6 +607,7 @@
 				969CDB722A57F615001EDB8B /* TrackersFactory.swift */,
 				969CDB892A58447B001EDB8B /* TrackersCategoryFactory.swift */,
 				967D635B2A64FC4900C5ADD9 /* StatisticsFactory.swift */,
+				9668195E2A65958B00A9C048 /* BlockOperationFactory.swift */,
 			);
 			path = Factories;
 			sourceTree = "<group>";
@@ -1108,6 +1111,7 @@
 				969CDB802A583885001EDB8B /* TrackersRecordDataFetcher.swift in Sources */,
 				96F7038829FD1BF100BBFF5C /* TrackersRecordDataStore.swift in Sources */,
 				969CDB882A583B93001EDB8B /* TrackersRecordService.swift in Sources */,
+				9668195F2A65958B00A9C048 /* BlockOperationFactory.swift in Sources */,
 				968C17672A5BC23400769FC3 /* TrackersViewRouter.swift in Sources */,
 				96F703A329FEA4C100BBFF5C /* PersistentContainerCreater.swift in Sources */,
 				96C7E76E29E802D800BA7F67 /* TrackerTypeViewController.swift in Sources */,

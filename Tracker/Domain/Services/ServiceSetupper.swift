@@ -100,7 +100,11 @@ private extension ServiceSetupper {
 		trackersFactory: TrackersFactory,
 		trackersDataStore: TrackersDataStore
 	) -> TrackersService {
-		let provider = TrackersDataProvider(context: trackersDataStore.managedObjectContext)
+		let operationFactory = BlockOperationFactory()
+		let provider = TrackersDataProvider(
+			context: trackersDataStore.managedObjectContext,
+			blockOperationFactory: operationFactory
+		)
 		let service = TrackersService(trackersFactory: trackersFactory, trackersDataProvider: provider)
 		return service
 	}
