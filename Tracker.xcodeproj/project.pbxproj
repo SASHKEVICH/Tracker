@@ -302,7 +302,7 @@
 		9602B0F529D9DCF900FD66D2 /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
-				969BE48229DE88A90056D813 /* Cell */,
+				9602B0F629D9DD1600FD66D2 /* TrackersCollectionViewCell.swift */,
 				9617C95E29DB0CF70054987D /* TrackersViewPresenterCollectionHelper.swift */,
 			);
 			path = CollectionView;
@@ -591,14 +591,6 @@
 				968A7E762A1E238A007D75A5 /* OnboardingViewControllerHelper.swift */,
 			);
 			path = Helpers;
-			sourceTree = "<group>";
-		};
-		969BE48229DE88A90056D813 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				9602B0F629D9DD1600FD66D2 /* TrackersCollectionViewCell.swift */,
-			);
-			path = Cell;
 			sourceTree = "<group>";
 		};
 		969CDB712A57F60A001EDB8B /* Factories */ = {
