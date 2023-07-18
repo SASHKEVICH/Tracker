@@ -49,7 +49,7 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
 		_ tableView: UITableView,
 		numberOfRowsInSection section: Int
 	) -> Int {
-		delegate?.categories.count ?? .zero
+		self.delegate?.categories.count ?? .zero
 	}
 	
 	func tableView(
@@ -61,7 +61,7 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
 			for: indexPath
 		) as? TrackerCategoryTableViewCell else { return UITableViewCell() }
 
-		guard let category = delegate?.categories[indexPath.row] else { return UITableViewCell() }
+		guard let category = self.delegate?.categories[indexPath.row] else { return UITableViewCell() }
 		cell.categoryTitle = category.title
 
 		if let lastSelectedCell = self.lastSelectedCell, lastSelectedCell == cell {

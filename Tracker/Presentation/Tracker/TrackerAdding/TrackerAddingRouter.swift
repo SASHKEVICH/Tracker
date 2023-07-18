@@ -16,13 +16,16 @@ protocol TrackerAddingRouterProtocol {
 final class TrackerAddingRouter {
 	private let trackersCategoryService: TrackersCategoryServiceProtocol
 	private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
+	private let pinnedCategoryId: UUID?
 
 	init(
 		trackersCategoryService: TrackersCategoryServiceProtocol,
-		trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
+		trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol,
+		pinnedCategoryId: UUID? = nil
 	) {
 		self.trackersCategoryService = trackersCategoryService
 		self.trackersCategoryAddingService = trackersCategoryAddingService
+		self.pinnedCategoryId = pinnedCategoryId
 	}
 }
 
@@ -41,7 +44,10 @@ extension TrackerAddingRouter: TrackerAddingRouterProtocol {
 	}
 
 	func navigateToCategoryScreen(selectedCategory: TrackerCategory?, from viewController: UIViewController) {
-		let viewModel = TrackerCategoryViewModel(trackersCategoryService: self.trackersCategoryService)
+		let viewModel = TrackerCategoryViewModel(
+			trackersCategoryService: self.trackersCategoryService,
+			pinnedCategoryId: self.pinnedCategoryId
+		)
 		viewModel.delegate = viewController as? TrackerCategoryViewControllerDelegate
 
 		let helper = TrackerCategoryTableViewHelper()

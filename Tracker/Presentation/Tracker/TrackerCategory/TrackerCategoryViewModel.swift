@@ -34,10 +34,13 @@ final class TrackerCategoryViewModel {
 		}
 	}
 
+	private let pinnedCategoryId: UUID?
+
 	private var trackersCategoryService: TrackersCategoryServiceProtocol
 
-	init(trackersCategoryService: TrackersCategoryServiceProtocol) {
+	init(trackersCategoryService: TrackersCategoryServiceProtocol, pinnedCategoryId: UUID? = nil) {
 		self.trackersCategoryService = trackersCategoryService
+		self.pinnedCategoryId = pinnedCategoryId
 		self.trackersCategoryService.trackersCategoryDataProviderDelegate = self
 
 		DispatchQueue.main.async { [weak self] in
@@ -67,6 +70,10 @@ private extension TrackerCategoryViewModel {
 	}
 
 	func getCategoriesFromStore() -> [TrackerCategory] {
-		self.trackersCategoryService.categories
+		let categories = self.trackersCategoryService.categories
+		if let pinnedCategoryId = self.pinnedCategoryId {
+			return categories.filter { $0.id != pinnedCategoryId }
+		}
+		return categories
 	}
 }

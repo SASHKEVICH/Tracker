@@ -17,17 +17,21 @@ final class TrackerTypeRouter {
 	private let trackersAddingService: TrackersAddingServiceProtocol
 	private let trackersCategoryService: TrackersCategoryServiceProtocol
 	private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
+	private let pinnedCategoryId: UUID?
 
 	init(
 		viewController: TrackerTypeViewController,
 		trackersAddingService: TrackersAddingServiceProtocol,
 		trackersCategoryService: TrackersCategoryServiceProtocol,
-		trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
+		trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol,
+		pinnedCategoryId: UUID?
+
 	) {
 		self.viewController = viewController
 		self.trackersAddingService = trackersAddingService
 		self.trackersCategoryService = trackersCategoryService
 		self.trackersCategoryAddingService = trackersCategoryAddingService
+		self.pinnedCategoryId = pinnedCategoryId
 	}
 }
 
@@ -59,7 +63,8 @@ private extension TrackerTypeRouter {
 
 		let router = TrackerAddingRouter(
 			trackersCategoryService: self.trackersCategoryService,
-			trackersCategoryAddingService: self.trackersCategoryAddingService
+			trackersCategoryAddingService: self.trackersCategoryAddingService,
+			pinnedCategoryId: self.pinnedCategoryId
 		)
 
 		let optionsTitle = self.prepareOptionsTitles(for: trackerType)

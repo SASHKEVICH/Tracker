@@ -47,7 +47,8 @@ final class TrackerTests: XCTestCase {
 			trackersService: trackersService,
 			trackersAddingService: tracersAddingService,
 			trackersRecordService: trackersRecordService,
-			trackersCompletingService: trackerCompletingService
+			trackersCompletingService: trackerCompletingService,
+			pinnedCategoryId: UUID()
 		)
 
 		let presenter = TrackersViewPresenter(
@@ -90,7 +91,8 @@ final class TrackerTests: XCTestCase {
 			trackersService: trackersService,
 			trackersAddingService: tracersAddingService,
 			trackersRecordService: trackersRecordService,
-			trackersCompletingService: trackerCompletingService
+			trackersCompletingService: trackerCompletingService,
+			pinnedCategoryId: UUID()
 		)
 
 		let presenter = TrackersViewPresenter(

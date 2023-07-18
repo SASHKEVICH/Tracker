@@ -18,6 +18,7 @@ final class TrackersViewControllerSetupper {
 	private let trackersPinningService: TrackersPinningServiceProtocol
 	private let alertPresenterService: AlertPresenterService
 	private let analyticsService: AnalyticsServiceProtocol
+	private let pinnedCategoryId: UUID
 
 	func getViewController() -> UINavigationController? {
 		guard let presenter = self.preparePresenter() else { return nil }
@@ -38,7 +39,8 @@ final class TrackersViewControllerSetupper {
 		trackersCompletingService: TrackersCompletingServiceProtocol,
 		trackersPinningService: TrackersPinningServiceProtocol,
 		alertPresenterService: AlertPresenterService,
-		analyticsService: AnalyticsServiceProtocol
+		analyticsService: AnalyticsServiceProtocol,
+		pinnedCategoryId: UUID
 	) {
 		self.trackersCategoryService = trackersCategoryService
 		self.trackersCategoryAddingService = trackersCategoryAddingService
@@ -49,6 +51,7 @@ final class TrackersViewControllerSetupper {
 		self.trackersPinningService = trackersPinningService
 		self.alertPresenterService = alertPresenterService
 		self.analyticsService = analyticsService
+		self.pinnedCategoryId = pinnedCategoryId
 	}
 }
 
@@ -60,7 +63,8 @@ private extension TrackersViewControllerSetupper {
 			trackersService: self.trackersService,
 			trackersAddingService: self.trackersAddingService,
 			trackersRecordService: self.trackersRecordService,
-			trackersCompletingService: self.trackersCompletingService
+			trackersCompletingService: self.trackersCompletingService,
+			pinnedCategoryId: self.pinnedCategoryId
 		) else { return nil }
 
 		var alertPresenterService = self.alertPresenterService
@@ -102,7 +106,8 @@ private extension TrackersViewControllerSetupper {
 		trackersService: TrackersServiceProtocol,
 		trackersAddingService: TrackersAddingServiceProtocol,
 		trackersRecordService: TrackersRecordServiceProtocol,
-		trackersCompletingService: TrackersCompletingServiceProtocol
+		trackersCompletingService: TrackersCompletingServiceProtocol,
+		pinnedCategoryId: UUID
 	) -> TrackersViewRouter? {
 		guard let trackersService = trackersService as? TrackersServiceFilteringProtocol else { return nil }
 		let router = TrackersViewRouter(
@@ -112,7 +117,8 @@ private extension TrackersViewControllerSetupper {
 			trackersService: trackersService,
 			trackersAddingService: trackersAddingService,
 			trackersRecordService: trackersRecordService,
-			trackersCompletingService: trackersCompletingService
+			trackersCompletingService: trackersCompletingService,
+			pinnedCategoryId: pinnedCategoryId
 		)
 		return router
 	}

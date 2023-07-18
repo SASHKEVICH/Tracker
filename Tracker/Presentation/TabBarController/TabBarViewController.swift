@@ -11,7 +11,9 @@ final class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-		guard let serviceSetupper = self.prepareServiceSetupper() else { return }
+		guard let serviceSetupper = self.prepareServiceSetupper(),
+			  let pinnedCategoryId = serviceSetupper.pinnedCategoryId
+		else { return }
 
 		let trackersSetupper = TrackersViewControllerSetupper(
 			trackersCategoryService: serviceSetupper.trackersCategoryService,
@@ -22,7 +24,8 @@ final class TabBarViewController: UITabBarController {
 			trackersCompletingService: serviceSetupper.trackersCompletingService,
 			trackersPinningService: serviceSetupper.trackersPinningService,
 			alertPresenterService: serviceSetupper.alertPresenterService,
-			analyticsService: serviceSetupper.analyticsService
+			analyticsService: serviceSetupper.analyticsService,
+			pinnedCategoryId: pinnedCategoryId
 		)
 
 		guard let trackersViewController = trackersSetupper.getViewController() else {

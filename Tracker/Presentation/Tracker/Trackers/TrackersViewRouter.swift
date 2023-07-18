@@ -21,6 +21,7 @@ final class TrackersViewRouter {
 	private let trackersAddingService: TrackersAddingServiceProtocol
 	private let trackersRecordService: TrackersRecordServiceProtocol
 	private let trackersCompletingService: TrackersCompletingServiceProtocol
+	private let pinnedCategoryId: UUID
 
 	init(
 		viewController: UIViewController,
@@ -29,7 +30,8 @@ final class TrackersViewRouter {
 		trackersService: TrackersServiceFilteringProtocol,
 		trackersAddingService: TrackersAddingServiceProtocol,
 		trackersRecordService: TrackersRecordServiceProtocol,
-		trackersCompletingService: TrackersCompletingServiceProtocol
+		trackersCompletingService: TrackersCompletingServiceProtocol,
+		pinnedCategoryId: UUID
 	) {
 		self.viewController = viewController
 		self.trackersCategoryService = trackersCategoryService
@@ -38,6 +40,7 @@ final class TrackersViewRouter {
 		self.trackersAddingService = trackersAddingService
 		self.trackersRecordService = trackersRecordService
 		self.trackersCompletingService = trackersCompletingService
+		self.pinnedCategoryId = pinnedCategoryId
 	}
 }
 
@@ -49,7 +52,8 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
 			viewController: vc,
 			trackersAddingService: self.trackersAddingService,
 			trackersCategoryService: self.trackersCategoryService,
-			trackersCategoryAddingService: self.trackersCategoryAddingService
+			trackersCategoryAddingService: self.trackersCategoryAddingService,
+			pinnedCategoryId: self.pinnedCategoryId
 		)
 		let presenter = TrackerTypePresenter(router: router)
 
