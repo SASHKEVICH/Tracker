@@ -42,6 +42,14 @@ extension TrackersDataStore {
 	}
 
 	func delete(trackerCoreData: TrackerCoreData) {
+		let categoryRequest = TrackerCategoryCoreData.fetchRequest()
+		categoryRequest.predicate = NSPredicate(
+			format: "%K == %@", #keyPath(TrackerCategoryCoreData.id), trackerCoreData.category.id
+		)
+		guard let category = try? self.context.fetch(categoryRequest).first else { return }
+
+		category.removeFromTrackers(trackerCoreData)
+
 		do {
 			self.context.delete(trackerCoreData)
 			try self.context.save()
@@ -52,7 +60,9 @@ extension TrackersDataStore {
 
 	func saveEdited(tracker: Tracker, newCategoryId: String) {
 		let categoryRequest = TrackerCategoryCoreData.fetchRequest()
-		categoryRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerCategoryCoreData.id), newCategoryId)
+		categoryRequest.predicate = NSPredicate(
+			format: "%K == %@", #keyPath(TrackerCategoryCoreData.id), newCategoryId
+		)
 		guard let newCategory = try? self.context.fetch(categoryRequest).first else { return }
 
 		guard let trackerCoreData = self.tracker(with: tracker.id.uuidString) else { return }
@@ -68,10 +78,7 @@ extension TrackersDataStore {
 		let schedule = tracker.schedule.reduce("") { $0 + ", " + $1.englishStringRepresentation }
 		trackerCoreData.weekDays = schedule
 
-		let newTrackerCoreData = self.trackerWithRecords(convert: trackerCoreData)
-
 		do {
-			self.delete(trackerCoreData: trackerCoreData)
 			try self.context.save()
 		} catch {
 			print(error)
