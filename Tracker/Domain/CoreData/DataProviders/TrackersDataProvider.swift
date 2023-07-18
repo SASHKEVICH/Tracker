@@ -30,8 +30,8 @@ protocol TrackersDataProviderProtocol {
 	var trackers: [TrackerCoreData] { get }
     func numberOfItemsInSection(_ section: Int) -> Int
 	func fetchTrackersForToday()
-	func fetchCompletedTrackers(for weekDay: WeekDay)
-	func fetchIncompletedTrackers(for weekDay: WeekDay)
+	func fetchCompletedTrackers(for date: Date)
+	func fetchIncompletedTrackers(for date: Date)
     func fetchTrackers(currentWeekDay: WeekDay)
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay)
     func tracker(at indexPath: IndexPath) -> TrackerCoreData?
@@ -53,6 +53,7 @@ final class TrackersDataProvider: NSObject {
 	private var blockOperationFactory: BlockOperationFactoryProtocol
 
 	private var currentWeekDay = Date().weekDay
+	private var currentDay = Date()
 
 	private lazy var fetchedResultsController: NSFetchedResultsController = {
 		let request = TrackerCoreData.fetchRequest()
@@ -127,20 +128,26 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
 		self.performFetch(with: predicate)
     }
 
-	func fetchCompletedTrackers(for weekDay: WeekDay) {
+	func fetchCompletedTrackers(for date: Date) {
+		guard let date = date.withoutTime,
+			  let weekDay = date.weekDay
+		else { return }
 		let predicate = NSPredicate(
-			format: "%K CONTAINS[cd] %@ AND %K.@count != 0",
+			format: "%K CONTAINS[cd] %@ AND %K.@count > 0 AND SUBQUERY(records, $record, $record.date == %@).@count > 0",
 			#keyPath(TrackerCoreData.weekDays), weekDay.englishStringRepresentation,
-			#keyPath(TrackerCoreData.records)
+			#keyPath(TrackerCoreData.records), date as NSDate
 		)
 		self.performFetch(with: predicate)
 	}
 
-	func fetchIncompletedTrackers(for weekDay: WeekDay) {
+	func fetchIncompletedTrackers(for date: Date) {
+		guard let date = date.withoutTime,
+			  let weekDay = date.weekDay
+		else { return }
 		let predicate = NSPredicate(
-			format: "%K CONTAINS[cd] %@ AND %K.@count == 0",
+			format: "%K CONTAINS[cd] %@ AND %K.@count == 0 AND SUBQUERY(records, $record, $record.date == %@).@count == 0",
 			#keyPath(TrackerCoreData.weekDays), weekDay.englishStringRepresentation,
-			#keyPath(TrackerCoreData.records)
+			#keyPath(TrackerCoreData.records), date as NSDate
 		)
 		self.performFetch(with: predicate)
 	}

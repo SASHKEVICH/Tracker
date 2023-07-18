@@ -92,11 +92,9 @@ extension TrackersService: TrackersServiceFilteringProtocol {
 		case .today:
 			self.trackersDataProvider.fetchTrackersForToday()
 		case .completed(let currentDate):
-			guard let weekDay = currentDate.weekDay else { return }
-			self.trackersDataProvider.fetchCompletedTrackers(for: weekDay)
+			self.trackersDataProvider.fetchCompletedTrackers(for: currentDate)
 		case .incompleted(let currentDate):
-			guard let weekDay = currentDate.weekDay else { return }
-			self.trackersDataProvider.fetchIncompletedTrackers(for: weekDay)
+			self.trackersDataProvider.fetchIncompletedTrackers(for: currentDate)
 		}
 	}
 }

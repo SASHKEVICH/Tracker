@@ -48,7 +48,7 @@ extension TrackersRecordDataStore {
 		for _ in 0..<amount {
 			let record = TrackerRecordCoreData(context: self.context)
 			record.id = trackerId
-			record.date = Date()
+			record.date = Date(timeIntervalSince1970: 2)
 			tracker.addToRecords(record)
 		}
 
