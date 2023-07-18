@@ -9,7 +9,7 @@ import Foundation
 import Tracker
 
 final class TrackersRecordServiceStub {
-	var delegate: TrackersRecordServiceDelegate?
+	weak var delegate: TrackersRecordServiceDelegate?
 }
 
 // MARK: - TrackersRecordServiceProtocol

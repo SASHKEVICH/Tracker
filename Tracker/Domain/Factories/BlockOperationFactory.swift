@@ -23,7 +23,7 @@ protocol BlockOperationFactoryProtocol {
 }
 
 final class BlockOperationFactory {
-	var delegate: TrackersDataProviderDelegate?
+	weak var delegate: TrackersDataProviderDelegate?
 }
 
 // MARK: - BlockOperationFactoryProtocol

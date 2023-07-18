@@ -8,7 +8,7 @@
 import UIKit
 
 final class TrackerScheduleTableViewCell: UITableViewCell {
-	var delegate: TrackerScheduleTableViewHelperDelegateProtocol?
+	weak var delegate: TrackerScheduleTableViewHelperDelegateProtocol?
 	var weekDay: WeekDay?
 
 	var cellTitle: String? {
@@ -86,6 +86,6 @@ private extension TrackerScheduleTableViewCell {
 private extension TrackerScheduleTableViewCell {
     @objc
     func didChangeSwitchValue(_ sender: UISwitch) {
-        delegate?.didChangeSwitchValue(self, isOn: sender.isOn)
+		self.delegate?.didChangeSwitchValue(self, isOn: sender.isOn)
     }
 }

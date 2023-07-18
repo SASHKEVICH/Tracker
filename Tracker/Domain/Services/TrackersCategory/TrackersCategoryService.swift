@@ -17,9 +17,9 @@ public protocol TrackersCategoryServiceProtocol {
 
 struct TrackersCategoryService {
 	var numberOfSections: Int = 1
-	var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate? {
+	weak var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate? {
 		didSet {
-			trackersCategoryDataProvider.delegate = trackersCategoryDataProviderDelegate
+			self.trackersCategoryDataProvider.delegate = self.trackersCategoryDataProviderDelegate
 		}
 	}
 

@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TrackersViewPresenterCollectionHelperCellDelegate {
+protocol TrackersViewPresenterCollectionHelperCellDelegate: AnyObject {
     func didTapCompleteCellButton(_ cell: TrackersCollectionViewCell)
 }
 

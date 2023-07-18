@@ -17,7 +17,7 @@ protocol ColorsCollectionViewHelperProtocol: UICollectionViewDelegateFlowLayout,
 }
 
 final class ColorsCollectionViewHelper: NSObject, ColorsCollectionViewHelperProtocol {
-    var delegate: TrackerColorCollectionViewDelegate?
+    weak var delegate: TrackerColorCollectionViewDelegate?
     
     private let configuration = TrackerCollectionViewConstants.addTrackerCollectionsConfiguration
 	private let colors: [UIColor] = [

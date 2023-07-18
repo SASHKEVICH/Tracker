@@ -30,9 +30,9 @@ typealias TrackersServiceProtocol = TrackersServiceFetchingProtocol & TrackersSe
 
 // MARK: - TrackersService
 struct TrackersService {
-	var trackersDataProviderDelegate: TrackersDataProviderDelegate? {
+	weak var trackersDataProviderDelegate: TrackersDataProviderDelegate? {
 		didSet {
-			trackersDataProvider.delegate = trackersDataProviderDelegate
+			self.trackersDataProvider.delegate = self.trackersDataProviderDelegate
 		}
 	}
 

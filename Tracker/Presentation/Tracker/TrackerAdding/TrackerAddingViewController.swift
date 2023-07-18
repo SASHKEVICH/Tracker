@@ -14,14 +14,14 @@ protocol TrackerAddingViewControllerProtocol: AnyObject {
 final class TrackerAddingViewController: UIViewController {
 	var emptyTap: (() -> Void)?
 
-	private var addingView: TrackerAddingViewProtocol
 	private let router: TrackerAddingRouterProtocol
+	private var addingView: TrackerAddingViewProtocol
 	private var viewModel: TrackerAddingViewModelProtocol
 
 	init(
-		viewModel: TrackerAddingViewModelProtocol,
 		router: TrackerAddingRouterProtocol,
-		view: TrackerAddingViewProtocol
+		view: TrackerAddingViewProtocol,
+		viewModel: TrackerAddingViewModelProtocol
 	) {
 		self.viewModel = viewModel
 		self.router = router
@@ -141,12 +141,12 @@ private extension TrackerAddingViewController {
 		guard let viewModel = self.viewModel as? TrackerEditingViewModelProtocol else { return }
 		self.addingView.completedTimesCount = viewModel.completedCount
 
-		self.addingView.increaseCompletedCount = { [viewModel] in
-			viewModel.increaseCompletedCount()
+		self.addingView.increaseCompletedCount = { [weak viewModel] in
+			viewModel?.increaseCompletedCount()
 		}
 
-		self.addingView.decreaseCompletedCount = { [viewModel] in
-			viewModel.decreaseCompletedCount()
+		self.addingView.decreaseCompletedCount = { [weak viewModel] in
+			viewModel?.decreaseCompletedCount()
 		}
 	}
 
@@ -170,8 +170,8 @@ private extension TrackerAddingViewController {
 		}
 
 		guard var viewModel = self.viewModel as? TrackerEditingViewModelProtocol else { return }
-		viewModel.onCompletedCountChanged = { [weak self] in
-			self?.addingView.completedTimesCount = viewModel.completedCount
+		viewModel.onCompletedCountChanged = { [weak self, weak viewModel] in
+			self?.addingView.completedTimesCount = viewModel?.completedCount
 		}
 	}
 }

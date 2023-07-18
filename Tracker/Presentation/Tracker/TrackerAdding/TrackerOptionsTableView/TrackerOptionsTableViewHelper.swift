@@ -20,7 +20,7 @@ protocol TrackerOptionsTableViewHelperProtocol: UITableViewDataSource, UITableVi
 }
 
 final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelperProtocol {
-    var delegate: TrackerOptionsTableViewDelegate?
+    weak var delegate: TrackerOptionsTableViewDelegate?
     
     // MARK: UITableViewDelegate    
     func tableView(

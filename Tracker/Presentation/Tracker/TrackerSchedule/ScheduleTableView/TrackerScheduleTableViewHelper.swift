@@ -11,12 +11,12 @@ protocol TrackerScheduleTableViewHelperProtocol: UITableViewDelegate, UITableVie
     var presenter: TrackerSchedulePresenterProtocol? { get set }
 }
 
-protocol TrackerScheduleTableViewHelperDelegateProtocol {
+protocol TrackerScheduleTableViewHelperDelegateProtocol: AnyObject {
     func didChangeSwitchValue(_ cell: TrackerScheduleTableViewCell, isOn: Bool)
 }
 
 final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHelperProtocol {
-    var presenter: TrackerSchedulePresenterProtocol?
+    weak var presenter: TrackerSchedulePresenterProtocol?
     
     // MARK: - UITableViewDelegate
     func tableView(

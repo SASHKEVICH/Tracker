@@ -14,7 +14,7 @@ final class TrackersCategoryServiceStub {
 		case notEmpty
 	}
 
-	var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate?
+	weak var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate?
 
 	private let state: State
 	private let trackersCategoryFactory: TrackersCategoryFactory

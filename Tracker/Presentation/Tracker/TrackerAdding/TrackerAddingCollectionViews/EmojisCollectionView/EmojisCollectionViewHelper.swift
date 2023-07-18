@@ -17,7 +17,7 @@ protocol EmojisCollectionViewHelperProtocol: UICollectionViewDelegateFlowLayout,
 }
 
 final class EmojisCollectionViewHelper: NSObject, EmojisCollectionViewHelperProtocol {
-    var delegate: TrackerEmojisCollectionViewDelegate?
+    weak var delegate: TrackerEmojisCollectionViewDelegate?
     
     private let configuration = TrackerCollectionViewConstants.addTrackerCollectionsConfiguration
     private let emojis: [String] = [

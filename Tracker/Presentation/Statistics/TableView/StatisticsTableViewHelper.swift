@@ -16,7 +16,7 @@ protocol StatisticsTableViewHelperProtocol: UITableViewDataSource, UITableViewDe
 }
 
 final class StatisticsTableViewHelper: NSObject {
-	var delegate: StatisticsTableViewHelperDelegate?
+	weak var delegate: StatisticsTableViewHelperDelegate?
 }
 
 extension StatisticsTableViewHelper: StatisticsTableViewHelperProtocol {

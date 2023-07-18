@@ -9,7 +9,7 @@ import Foundation
 import Tracker
 
 final class TrackersCompletingServiceStub {
-	var delegate: TrackersCompletingServiceStatisticsDelegate?
+	weak var delegate: TrackersCompletingServiceStatisticsDelegate?
 }
 
 // MARK: - TrackersCompletingServiceProtocol

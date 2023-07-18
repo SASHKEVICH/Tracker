@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TrackerCategoryTableViewHelperDelegate {
+protocol TrackerCategoryTableViewHelperDelegate: AnyObject {
 	var categories: [TrackerCategory] { get }
 	var chosenCategory: TrackerCategory? { get }
 	func didSelect(category: TrackerCategory)
@@ -18,7 +18,7 @@ protocol TrackerCategoryTableViewHelperProtocol: UITableViewDelegate, UITableVie
 }
 
 final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHelperProtocol {
-	var delegate: TrackerCategoryTableViewHelperDelegate?
+	weak var delegate: TrackerCategoryTableViewHelperDelegate?
 	
 	private var lastSelectedCell: TrackerCategoryTableViewCell?
 	

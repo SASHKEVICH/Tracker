@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol TrackersCompletingServiceStatisticsDelegate {
+public protocol TrackersCompletingServiceStatisticsDelegate: AnyObject {
 	func didChangeCompletedTrackers()
 }
 
@@ -25,7 +25,7 @@ public protocol TrackersCompletingServiceProtocol {
 }
 
 final class TrackersCompletingService {
-	var delegate: TrackersCompletingServiceStatisticsDelegate?
+	weak var delegate: TrackersCompletingServiceStatisticsDelegate?
 
 	private let trackersDataCompleter: TrackersDataCompleterProtocol
 
