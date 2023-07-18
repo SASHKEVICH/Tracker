@@ -30,7 +30,8 @@ extension TrackersAddingServiceStub: TrackersAddingServiceProtocol {
 		type: Tracker.TrackerType,
 		color: UIColor,
 		emoji: String,
-		categoryId: UUID,
+		newCategoryId: UUID,
+		previousCategoryId: UUID,
 		isPinned: Bool
 	) {}
 }

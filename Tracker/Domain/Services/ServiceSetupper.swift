@@ -45,12 +45,6 @@ final class ServiceSetupper {
 			trackersDataStore: trackersDataStore
 		)
 
-		self.trackersAddingService = ServiceSetupper.prepareTrackersAddingService(
-			trackersFactory: trackersFactory,
-			trackersDataStore: trackersDataStore,
-			trackersCategoryDataStore: trackersCategoryDataStore
-		)
-
 		self.trackersCompletingService = ServiceSetupper.prepareTrackersCompletingService(
 			trackersRecordDataStore: trackersRecordDataStore,
 			trackersDataStore: trackersDataStore
@@ -87,6 +81,13 @@ final class ServiceSetupper {
 			trackersCategoryDataStore: trackersCategoryDataStore
 		)
 
+		self.trackersAddingService = ServiceSetupper.prepareTrackersAddingService(
+			trackersFactory: trackersFactory,
+			trackersDataStore: trackersDataStore,
+			trackersCategoryDataStore: trackersCategoryDataStore,
+			pinnedCategoryId: pinnedCategoryId 
+		)
+
 		self.analyticsService = AnalyticsService()
 		self.alertPresenterService = AlertPresenterService()
 	}
@@ -112,11 +113,13 @@ private extension ServiceSetupper {
 	static func prepareTrackersAddingService(
 		trackersFactory: TrackersFactory,
 		trackersDataStore: TrackersDataStore,
-		trackersCategoryDataStore: TrackersCategoryDataStore
+		trackersCategoryDataStore: TrackersCategoryDataStore,
+		pinnedCategoryId: UUID
 	) -> TrackersAddingService {
 		let adder = TrackersDataAdder(
 			trackersCategoryDataStore: trackersCategoryDataStore,
 			trackersDataStore: trackersDataStore,
+			pinnedCategoryId: pinnedCategoryId,
 			trackersFactory: trackersFactory
 		)
 

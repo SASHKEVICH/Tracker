@@ -147,7 +147,8 @@ extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
 			type: self.tracker.type,
 			color: color,
 			emoji: emoji,
-			categoryId: category.id,
+			newCategoryId: category.id,
+			previousCategoryId: self.tracker.previousCategoryId,
 			isPinned: self.tracker.isPinned
 		)
 		self.saveCompletedTimesCount()

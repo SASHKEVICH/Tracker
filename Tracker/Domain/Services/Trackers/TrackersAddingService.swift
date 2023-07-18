@@ -26,7 +26,8 @@ public protocol TrackersAddingServiceProtocol {
 		type: Tracker.TrackerType,
 		color: UIColor,
 		emoji: String,
-		categoryId: UUID,
+		newCategoryId: UUID,
+		previousCategoryId: UUID,
 		isPinned: Bool
 	)
 }
@@ -74,7 +75,8 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
 		type: Tracker.TrackerType,
 		color: UIColor,
 		emoji: String,
-		categoryId: UUID,
+		newCategoryId: UUID,
+		previousCategoryId: UUID,
 		isPinned: Bool
 	) {
 		let editedTracker = self.trackersFactory.makeTracker(
@@ -83,10 +85,10 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
 			title: title,
 			color: color,
 			emoji: emoji,
-			previousCategoryId: categoryId,
+			previousCategoryId: previousCategoryId,
 			isPinned: isPinned,
 			schedule: Array(schedule)
 		)
-		self.trackersDataAdder.saveEdited(tracker: editedTracker)
+		self.trackersDataAdder.saveEdited(tracker: editedTracker, newCategoryId: newCategoryId)
 	}
 }

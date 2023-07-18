@@ -50,9 +50,9 @@ extension TrackersDataStore {
 		}
 	}
 
-	func saveEdited(tracker: Tracker) {
+	func saveEdited(tracker: Tracker, newCategoryId: String) {
 		let categoryRequest = TrackerCategoryCoreData.fetchRequest()
-		categoryRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerCategoryCoreData.id), tracker.previousCategoryId.uuidString)
+		categoryRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerCategoryCoreData.id), newCategoryId)
 		guard let newCategory = try? self.context.fetch(categoryRequest).first else { return }
 
 		guard let trackerCoreData = self.tracker(with: tracker.id.uuidString) else { return }
