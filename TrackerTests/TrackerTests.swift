@@ -108,10 +108,10 @@ final class TrackerTests: XCTestCase {
 		presenter.view = vc
 
 		assertSnapshots(matching: vc, as: [
-			.image(traits: UITraitCollection(userInterfaceStyle: .light))
+			.image(drawHierarchyInKeyWindow: true, traits: UITraitCollection(userInterfaceStyle: .light))
 		])
 		assertSnapshots(matching: vc, as: [
-			.image(traits: UITraitCollection(userInterfaceStyle: .dark))
+			.image(drawHierarchyInKeyWindow: true, traits: UITraitCollection(userInterfaceStyle: .dark))
 		])
 	}
 }
