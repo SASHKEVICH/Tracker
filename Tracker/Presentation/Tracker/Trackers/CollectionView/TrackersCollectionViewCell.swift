@@ -44,6 +44,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 		lable.translatesAutoresizingMaskIntoConstraints = false
 		lable.font = .Medium.medium
 		lable.textColor = .white
+		lable.contentMode = .bottomLeft
 		lable.numberOfLines = 0
 		return lable
 	}()
