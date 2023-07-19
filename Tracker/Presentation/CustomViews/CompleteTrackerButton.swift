@@ -52,18 +52,21 @@ private extension CompleteTrackerButton {
     func setTrackerDone() {
 		let image = UIImage.CompleteTrackerButton.completed
 		self.setImage(image, for: .normal)
-		self.backgroundColor = self.color?.withAlphaComponent(0.3)
+		self.backgroundColor = self.color
+		self.alpha = 0.3
     }
     
     func setTrackerCountIncrease() {
         let image = UIImage.CompleteTrackerButton.increase
 		self.setImage(image, for: .normal)
 		self.backgroundColor = self.color
+		self.alpha = 1
     }
 
 	func setTrackerCountDecrease() {
 		let image = UIImage.CompleteTrackerButton.decrease
 		self.setImage(image, for: .normal)
 		self.backgroundColor = self.color
+		self.alpha = 1
 	}
 }
