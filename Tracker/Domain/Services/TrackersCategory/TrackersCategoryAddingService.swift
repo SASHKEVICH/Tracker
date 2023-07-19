@@ -11,7 +11,7 @@ public protocol TrackersCategoryAddingServiceProtocol {
 	func addCategory(title: String)
 }
 
-struct TrackersCategoryAddingService {
+final class TrackersCategoryAddingService {
 	private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
 	private let trackersCategoryFactory: TrackersCategoryFactory
 

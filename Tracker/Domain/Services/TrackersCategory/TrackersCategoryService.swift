@@ -15,7 +15,7 @@ public protocol TrackersCategoryServiceProtocol {
 	func category(for tracker: Tracker) -> TrackerCategory?
 }
 
-struct TrackersCategoryService {
+final class TrackersCategoryService {
 	var numberOfSections: Int = 1
 	weak var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate? {
 		didSet {

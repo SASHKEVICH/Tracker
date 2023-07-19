@@ -12,7 +12,7 @@ protocol FirstLaunchServiceProtocol {
 }
 
 // MARK: - FirstLaunchService
-struct FirstLaunchService {
+final class FirstLaunchService {
 	private let userDefaults = UserDefaults.standard
 	private let key = "isAppAlreadyLaunchedOnce"
 }

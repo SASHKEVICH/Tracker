@@ -18,7 +18,7 @@ protocol AnalyticsServiceProtocol {
 	func didDeleteTracker()
 }
 
-struct AnalyticsService {
+final class AnalyticsService {
 	init() {
 		guard let configuration = YMMYandexMetricaConfiguration(apiKey: YandexMetricaConfiguration.Api.key) else {
 			return

@@ -18,7 +18,7 @@ protocol AlertPresenterSerivceProtocol {
 }
 
 // MARK: - AlertPresenterService
-struct AlertPresenterService {
+final class AlertPresenterService {
     weak var delegate: AlertPresenterServiceDelegate?
 	private let localizable = R.string.localizable
 }

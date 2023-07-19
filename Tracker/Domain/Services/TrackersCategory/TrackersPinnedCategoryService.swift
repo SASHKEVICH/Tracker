@@ -12,7 +12,7 @@ protocol TrackersPinnedCategoryServiceProtocol {
 	func checkPinnedCategory()
 }
 
-struct TrackersPinnedCategoryService {
+final class TrackersPinnedCategoryService {
 	private let userDefaults = UserDefaults.standard
 	private let key = "pinnedCategoryId"
 

@@ -29,7 +29,7 @@ public protocol TrackersServiceFilteringProtocol {
 typealias TrackersServiceProtocol = TrackersServiceFetchingProtocol & TrackersServiceDataSourceProtocol
 
 // MARK: - TrackersService
-struct TrackersService {
+final class TrackersService {
 	weak var trackersDataProviderDelegate: TrackersDataProviderDelegate? {
 		didSet {
 			self.trackersDataProvider.delegate = self.trackersDataProviderDelegate

@@ -32,7 +32,7 @@ public protocol TrackersAddingServiceProtocol {
 	)
 }
 
-struct TrackersAddingService {
+final class TrackersAddingService {
 	private let trackersDataAdder: TrackersDataAdderProtocol
 	private let trackersFactory: TrackersFactory
 
