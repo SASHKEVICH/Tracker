@@ -40,6 +40,19 @@ extension TrackersServiceStub: TrackersServiceFetchingProtocol {
 		return self.state == .empty ? [] : [tracker]
 	}
 
+	func tracker(at indexPath: IndexPath) -> Tracker? {
+		let tracker = self.trackersFactory.makeTracker(
+			type: .irregularEvent,
+			title: "Test",
+			color: .systemBlue,
+			emoji: "😤",
+			previousCategoryId: UUID(),
+			isPinned: false,
+			schedule: WeekDay.allCases
+		)
+
+		return self.state == .empty ? nil : tracker
+	}
 	func fetchTrackers(weekDay: WeekDay) {}
 	func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay) {}
 	func requestDataProviderErrorAlert() {}

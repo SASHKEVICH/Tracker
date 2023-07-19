@@ -24,14 +24,11 @@ extension TrackersDataStore {
 	func tracker(with id: String) -> TrackerCoreData? {
 		let request = TrackerCoreData.fetchRequest()
 		request.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerCoreData.id), id)
-		do {
-			return try self.context.fetch(request).first
-		} catch {
-			return nil
-		}
+		return try? self.context.fetch(request).first
 	}
     
     func add(tracker: TrackerCoreData, in category: TrackerCategoryCoreData) throws {
+		tracker.category = category
         category.addToTrackers(tracker)
 		try self.context.save()
     }
@@ -87,10 +84,8 @@ extension TrackersDataStore {
 
 	func pin(tracker: TrackerCoreData, pinnedCategory: TrackerCategoryCoreData) {
 		let trackerWithRecords = self.trackerWithRecords(convert: tracker)
-		let previousCategory = trackerWithRecords.category
-		trackerWithRecords.previousCategoryId = previousCategory.id
 
-		previousCategory.removeFromTrackers(tracker)
+		trackerWithRecords.category = pinnedCategory
 		pinnedCategory.addToTrackers(trackerWithRecords)
 
 		do {
@@ -98,21 +93,22 @@ extension TrackersDataStore {
 			try self.context.save()
 		} catch {
 			assertionFailure(error.localizedDescription)
+			return
 		}
 	}
 
 	func unpin(tracker: TrackerCoreData, previousCategory: TrackerCategoryCoreData) {
 		let trackerWithRecords = self.trackerWithRecords(convert: tracker)
 
-		let pinnedCategory = tracker.category
-		pinnedCategory.removeFromTrackers(tracker)
+		trackerWithRecords.category = previousCategory
 		previousCategory.addToTrackers(trackerWithRecords)
 
 		do {
-			self.context.delete(tracker)
+			self.delete(trackerCoreData: tracker)
 			try self.context.save()
 		} catch {
 			assertionFailure(error.localizedDescription)
+			return
 		}
 	}
 }
@@ -123,7 +119,6 @@ private extension TrackersDataStore {
 		trackerWithRecords.id = tracker.id
 		trackerWithRecords.title = tracker.title
 		trackerWithRecords.records = tracker.records
-		trackerWithRecords.category = tracker.category
 		trackerWithRecords.colorHex = tracker.colorHex
 		trackerWithRecords.emoji = tracker.emoji
 		trackerWithRecords.isPinned = tracker.isPinned

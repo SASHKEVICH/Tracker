@@ -11,8 +11,8 @@ import CoreData
 protocol BlockOperationFactoryProtocol {
 	var delegate: TrackersDataProviderDelegate? { get set }
 	func makeObjectOperation(
-		at indexPath: IndexPath,
-		to newIndexPath: IndexPath,
+		at indexPath: IndexPath?,
+		to newIndexPath: IndexPath?,
 		for type: NSFetchedResultsChangeType
 	) -> BlockOperation?
 
@@ -29,18 +29,22 @@ final class BlockOperationFactory {
 // MARK: - BlockOperationFactoryProtocol
 extension BlockOperationFactory: BlockOperationFactoryProtocol {
 	func makeObjectOperation(
-		at indexPath: IndexPath,
-		to newIndexPath: IndexPath,
+		at indexPath: IndexPath?,
+		to newIndexPath: IndexPath?,
 		for type: NSFetchedResultsChangeType
 	) -> BlockOperation? {
 		switch type {
 		case .insert:
+			guard let newIndexPath = newIndexPath else { return nil }
 			return BlockOperation { self.delegate?.insertItems(at: [newIndexPath]) }
 		case .delete:
+			guard let indexPath = indexPath else { return nil }
 			return BlockOperation { self.delegate?.deleteItems(at: [indexPath]) }
 		case .move:
+			guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return nil }
 			return BlockOperation { self.delegate?.moveItems(at: indexPath, to: newIndexPath) }
 		case .update:
+			guard let indexPath = indexPath else { return nil }
 			return BlockOperation { self.delegate?.reloadItems(at: [indexPath]) }
 		@unknown default:
 			assertionFailure("some fetched results controller error")
@@ -61,7 +65,7 @@ extension BlockOperationFactory: BlockOperationFactoryProtocol {
 		case .update:
 			return BlockOperation { self.delegate?.reloadSections(at: indexSet) }
 		default:
-			assertionFailure("some fetchedresultscontroller error")
+			assertionFailure("some fetched results controller error")
 			return nil
 		}
 	}

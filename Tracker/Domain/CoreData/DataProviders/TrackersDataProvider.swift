@@ -175,7 +175,6 @@ extension TrackersDataProvider: NSFetchedResultsControllerDelegate {
 		for type: NSFetchedResultsChangeType,
 		newIndexPath: IndexPath?
 	) {
-		guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
 		if let operation = self.blockOperationFactory.makeObjectOperation(at: indexPath, to: newIndexPath, for: type) {
 			self.blockOperations.append(operation)
 		}

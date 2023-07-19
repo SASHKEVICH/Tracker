@@ -89,7 +89,6 @@ final class TrackersViewPresenter {
 	private let alertPresenterService: AlertPresenterSerivceProtocol
     
     private var state: TrackersViewPresenterState = .normal
-	private var trackers: [Tracker] = []
 
 	init(
 		trackersService: TrackersServiceProtocol,
@@ -127,7 +126,6 @@ extension TrackersViewPresenter: TrackersViewPresenterProtocol {
 	}
 
 	func viewDidLoad() {
-		self.trackers = self.trackersService.trackers
 		self.fetchCompletedTrackersForCurrentDate()
 	}
 
@@ -166,10 +164,8 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 		self.trackersService.numberOfItemsInSection(section)
     }
     
-    func tracker(at indexPath: IndexPath) -> Tracker? {
-		guard self.trackers.isEmpty == false else { return nil }
-		let index = indexPath.row + indexPath.section
-		return self.trackers[index]
+	func tracker(at indexPath: IndexPath) -> Tracker? {
+		self.trackersService.tracker(at: indexPath)
     }
     
     func categoryTitle(at indexPath: IndexPath) -> String? {
@@ -263,7 +259,6 @@ extension TrackersViewPresenter: TrackersDataProviderDelegate {
 	}
 
 	func didChangeContent(operations: [BlockOperation]) {
-		self.trackers = self.trackersService.trackers
 		self.view?.didChangeContentAnimated(operations: operations)
 	}
 
@@ -296,7 +291,6 @@ private extension TrackersViewPresenter {
 	}
 
 	func updateTrackers() {
-		self.trackers = self.trackersService.trackers
 		DispatchQueue.main.async { [weak self] in
 			self?.view?.didRecieveTrackers()
 		}

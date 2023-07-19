@@ -12,7 +12,7 @@ public protocol TrackersPinningServiceProtocol {
 	func unpin(tracker: Tracker)
 }
 
-struct TrackersPinningService {
+final class TrackersPinningService {
 	private let trackersDataPinner: TrackersDataPinnerProtocol
 	private let trackersFactory: TrackersFactory
 

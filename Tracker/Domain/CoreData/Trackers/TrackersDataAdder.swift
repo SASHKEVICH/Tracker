@@ -47,10 +47,6 @@ extension TrackersDataAdder: TrackersDataAdderProtocol {
 			throw TrackersDataAdderError.cannotFindCategory
 		}
 
-		if self.pinnedCategoryId == categoryId {
-			trackersCoreData.isPinned = true
-		}
-
 		try self.trackersDataStore.add(tracker: trackersCoreData, in: categoryCoreData)
 	}
 
