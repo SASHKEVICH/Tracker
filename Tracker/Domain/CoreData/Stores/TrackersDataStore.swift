@@ -55,33 +55,6 @@ extension TrackersDataStore {
 		}
 	}
 
-	func saveEdited(tracker: Tracker, newCategoryId: String) {
-		let categoryRequest = TrackerCategoryCoreData.fetchRequest()
-		categoryRequest.predicate = NSPredicate(
-			format: "%K == %@", #keyPath(TrackerCategoryCoreData.id), newCategoryId
-		)
-		guard let newCategory = try? self.context.fetch(categoryRequest).first else { return }
-
-		guard let trackerCoreData = self.tracker(with: tracker.id.uuidString) else { return }
-		trackerCoreData.id = tracker.id.uuidString
-		trackerCoreData.title = tracker.title
-		trackerCoreData.emoji = tracker.emoji
-		trackerCoreData.colorHex = UIColorMarshalling.serilizeToHex(color: tracker.color)
-		trackerCoreData.previousCategoryId = tracker.previousCategoryId.uuidString
-		trackerCoreData.type = Int16(tracker.type.rawValue)
-		trackerCoreData.isPinned = tracker.isPinned
-		trackerCoreData.category = newCategory
-
-		let schedule = tracker.schedule.reduce("") { $0 + ", " + $1.englishStringRepresentation }
-		trackerCoreData.weekDays = schedule
-
-		do {
-			try self.context.save()
-		} catch {
-			print(error)
-		}
-	}
-
 	func pin(tracker: TrackerCoreData, pinnedCategory: TrackerCategoryCoreData) {
 		let trackerWithRecords = self.trackerWithRecords(convert: tracker)
 

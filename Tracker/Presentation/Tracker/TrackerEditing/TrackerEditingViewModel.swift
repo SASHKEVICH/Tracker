@@ -79,7 +79,7 @@ final class TrackerEditingViewModel {
 		}
 	}
 
-	private var completedTimes: Int = 0
+	private var newCompletedTimes: Int = 0
 
 	private let tracker: Tracker
 	
@@ -175,14 +175,14 @@ extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
 	}
 
 	func decreaseCompletedCount() {
-		guard self.completedTimes > 0 else { return }
-		self.completedTimes -= 1
-		self.completedCount = R.string.localizable.stringKey(days: completedTimes)
+		guard self.newCompletedTimes > 0 else { return }
+		self.newCompletedTimes -= 1
+		self.completedCount = R.string.localizable.stringKey(days: newCompletedTimes)
 	}
 
 	func increaseCompletedCount() {
-		self.completedTimes += 1
-		self.completedCount = R.string.localizable.stringKey(days: completedTimes)
+		self.newCompletedTimes += 1
+		self.completedCount = R.string.localizable.stringKey(days: newCompletedTimes)
 	}
 }
 
@@ -223,19 +223,20 @@ private extension TrackerEditingViewModel {
 
 	func fetchCompletedCount() {
 		let completedCount = self.trackersRecordService.completedTimesCount(trackerId: self.tracker.id)
-		self.completedTimes = completedCount
 		self.completedCount = R.string.localizable.stringKey(days: completedCount)
 	}
 
 	func saveCompletedTimesCount() {
-		let id = self.tracker.id
-		let previousTimesCount = self.trackersRecordService.completedTimesCount(trackerId: id)
+		guard self.newCompletedTimes != 0 else { return }
 
-		if previousTimesCount < self.completedTimes {
-			let amount = self.completedTimes - previousTimesCount
+		let id = self.tracker.id
+		let storedTimesCount = self.trackersRecordService.completedTimesCount(trackerId: id)
+
+		if storedTimesCount < self.newCompletedTimes {
+			let amount = self.newCompletedTimes - storedTimesCount
 			self.trackersCompletetingService.addRecords(for: self.tracker, amount: amount)
-		} else if previousTimesCount > self.completedTimes {
-			let amount = previousTimesCount - self.completedTimes
+		} else if storedTimesCount > self.newCompletedTimes {
+			let amount = storedTimesCount - self.newCompletedTimes
 			self.trackersCompletetingService.removeRecords(for: self.tracker, amount: amount)
 		}
 	}

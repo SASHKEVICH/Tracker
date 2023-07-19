@@ -55,20 +55,14 @@ extension TrackersDataAdder: TrackersDataAdderProtocol {
 	}
 
 	func saveEdited(tracker: Tracker, newCategoryId: UUID) {
-		if self.pinnedCategoryId == newCategoryId {
-			let newTracker = self.trackersFactory.makeTracker(
-				id: tracker.id,
-				type: tracker.type,
-				title: tracker.title,
-				color: tracker.color,
-				emoji: tracker.emoji,
-				previousCategoryId: tracker.previousCategoryId,
-				isPinned: true,
-				schedule: tracker.schedule
-			)
-			self.trackersDataStore.saveEdited(tracker: newTracker, newCategoryId: newCategoryId.uuidString)
-		}
+		guard let newCategoryCoreData = self.trackersCategoryDataStore.category(with: newCategoryId.uuidString) else { return }
+		guard let oldTrackerCoreData = self.trackersDataStore.tracker(with: tracker.id.uuidString) else { return }
 
-		self.trackersDataStore.saveEdited(tracker: tracker, newCategoryId: newCategoryId.uuidString)
+		let newTrackerCoreData = self.trackersFactory.makeTrackerCoreData(from: tracker, context: self.trackersDataStore.managedObjectContext)
+		newTrackerCoreData.records = oldTrackerCoreData.records
+
+		try? self.trackersDataStore.add(tracker: newTrackerCoreData, in: newCategoryCoreData)
+
+		self.trackersDataStore.delete(trackerCoreData: oldTrackerCoreData)
 	}
 }
