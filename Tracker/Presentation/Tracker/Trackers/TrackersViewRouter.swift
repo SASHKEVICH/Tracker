@@ -88,7 +88,8 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
 	func navigateToEditTrackerScreen(tracker: Tracker) {
 		let router = TrackerAddingRouter(
 			trackersCategoryService: self.trackersCategoryService,
-			trackersCategoryAddingService: self.trackersCategoryAddingService
+			trackersCategoryAddingService: self.trackersCategoryAddingService,
+			pinnedCategoryId: self.pinnedCategoryId
 		)
 
 		let optionsHelper = TrackerOptionsTableViewHelper()

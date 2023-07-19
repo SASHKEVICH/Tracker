@@ -71,9 +71,6 @@ private extension TrackerCategoryViewModel {
 
 	func getCategoriesFromStore() -> [TrackerCategory] {
 		let categories = self.trackersCategoryService.categories
-		if let pinnedCategoryId = self.pinnedCategoryId {
-			return categories.filter { $0.id != pinnedCategoryId }
-		}
-		return categories
+		return categories.filter { $0.id != self.pinnedCategoryId }
 	}
 }
