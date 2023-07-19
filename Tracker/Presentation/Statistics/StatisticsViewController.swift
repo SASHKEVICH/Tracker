@@ -50,10 +50,14 @@ final class StatisticsViewController: UIViewController {
 		self.addSubviews()
 		self.addConstraints()
 		self.bind()
+    }
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 
 		self.statisticsTableView.reloadData()
-		self.placeholderView.isHidden = self.viewModel.isPlaceholderHidden
-    }
+		self.viewModel.fetchCompletedTrackers()
+	}
 }
 
 // MARK: - StatisticsTableViewHelperDelegate
