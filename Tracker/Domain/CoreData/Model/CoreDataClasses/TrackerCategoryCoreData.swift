@@ -10,9 +10,16 @@ import Foundation
 import CoreData
 
 @objc(TrackerCategoryCoreData)
-class TrackerCategoryCoreData: NSManagedObject {
+public final class TrackerCategoryCoreData: NSManagedObject {
+	static let entityName = String(describing: TrackerCategoryCoreData.self)
+
+	@nonobjc class func fetchRequest() -> NSFetchRequest<TrackerCategoryCoreData> {
+		NSFetchRequest<TrackerCategoryCoreData>(entityName: TrackerCategoryCoreData.entityName)
+	}
+
     @NSManaged var id: String
     @NSManaged var title: String
+	@NSManaged var isPinning: Bool
     @NSManaged var trackers: NSSet
 }
 

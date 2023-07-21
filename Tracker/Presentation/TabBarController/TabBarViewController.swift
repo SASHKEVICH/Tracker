@@ -10,63 +10,38 @@ import UIKit
 final class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-		guard let trackersViewController = self.setupTrackersViewController() else { return }
 
-		let statisticsViewController = self.setupStatisticsViewController()
+		guard let serviceSetupper = self.prepareServiceSetupper(),
+			  let pinnedCategoryId = serviceSetupper.pinnedCategoryId
+		else { return }
+
+		let trackersSetupper = TrackersViewControllerSetupper(
+			trackersCategoryService: serviceSetupper.trackersCategoryService,
+			trackersCategoryAddingService: serviceSetupper.trackersCategoryAddingService,
+			trackersService: serviceSetupper.trackersService,
+			trackersAddingService: serviceSetupper.trackersAddingService,
+			trackersRecordService: serviceSetupper.trackersRecordService,
+			trackersCompletingService: serviceSetupper.trackersCompletingService,
+			trackersPinningService: serviceSetupper.trackersPinningService,
+			alertPresenterService: serviceSetupper.alertPresenterService,
+			analyticsService: serviceSetupper.analyticsService,
+			pinnedCategoryId: pinnedCategoryId
+		)
+
+		guard let trackersViewController = trackersSetupper.getViewController() else {
+			assertionFailure("Cannot get trackers view controller")
+			return
+		}
+
+		let statisticsSetupper = StatisticsViewControllerSetupper(
+			trackersCompletingService: serviceSetupper.trackersCompletingService
+		)
+
+		let statisticsViewController = statisticsSetupper.getViewController()
+
 		self.viewControllers = [trackersViewController, statisticsViewController]
         
 		self.setupTabBar()
-    }
-}
-
-// MARK: - Setup view controllers
-private extension TabBarViewController {
-    func setupTrackersViewController() -> UINavigationController? {
-        let trackersViewController = TrackersViewController()
-
-		let trackersFactory = TrackersFactory()
-		guard let trackersService = TrackersService(trackersFactory: trackersFactory),
-			  let completingService = TrackersCompletingService(),
-			  let recordService = TrackersRecordService()
-		else {
-			assertionFailure("Cannot init services")
-			return nil
-		}
-
-		let router = TrackersViewRouter(viewController: trackersViewController)
-        let presenter = TrackersViewPresenter(
-            trackersService: trackersService,
-			trackersCompletingService: completingService,
-			trackersRecordService: recordService,
-			router: router
-		)
-        
-        trackersViewController.presenter = presenter
-        presenter.view = trackersViewController
-        
-        trackersViewController.tabBarItem = UITabBarItem(
-            title: "Трекеры",
-            image: .TabBar.trackers,
-            selectedImage: nil)
-        
-        let navigationController = UINavigationController(
-            rootViewController: trackersViewController)
-        navigationController.navigationBar.prefersLargeTitles = true
-        
-        return navigationController
-    }
-    
-    func setupStatisticsViewController() -> UINavigationController {
-        let statisticsViewController = StatisticsViewController()
-        let navigationController = UINavigationController(
-            rootViewController: statisticsViewController)
-        navigationController.navigationBar.prefersLargeTitles = true
-        statisticsViewController.tabBarItem = UITabBarItem(
-            title: "Статистика",
-			image: .TabBar.statistics,
-            selectedImage: nil)
-        return navigationController
     }
 }
 
@@ -75,5 +50,25 @@ private extension TabBarViewController {
 		let appearance = UITabBarAppearance()
 		appearance.backgroundColor = .Dynamic.whiteDay
 		self.tabBar.standardAppearance = appearance
+	}
+
+	func prepareServiceSetupper() -> ServiceSetupperProtocol? {
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+			  let trackersDataStore = appDelegate.trackersDataStore,
+			  let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore,
+			  let trackersRecordDataStore = appDelegate.trackersRecordDataStore
+		else { return nil }
+
+		let trackersFactory = TrackersFactory()
+		let trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
+
+		let serviceSetupper = ServiceSetupper(
+			trackersFactory: trackersFactory,
+			trackersCategoryFactory: trackersCategoryFactory,
+			trackersDataStore: trackersDataStore,
+			trackersCategoryDataStore: trackersCategoryDataStore,
+			trackersRecordDataStore: trackersRecordDataStore
+		)
+		return serviceSetupper
 	}
 }

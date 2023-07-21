@@ -33,7 +33,7 @@ final class OnboardingPageViewController: UIViewController {
 		label.numberOfLines = 0
 		label.textAlignment = .center
 		label.font = .Bold.medium
-		label.textColor = .Dynamic.blackDay
+		label.textColor = .Static.black
 		return label
 	}()
 	

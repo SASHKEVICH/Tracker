@@ -10,9 +10,11 @@ import Foundation
 import CoreData
 
 @objc(TrackerRecordCoreData)
-class TrackerRecordCoreData: NSManagedObject {
+final class TrackerRecordCoreData: NSManagedObject {
+	static let entityName = String(describing: TrackerRecordCoreData.self)
+
     @nonobjc class func fetchRequest() -> NSFetchRequest<TrackerRecordCoreData> {
-        NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+		NSFetchRequest<TrackerRecordCoreData>(entityName: TrackerRecordCoreData.entityName)
     }
     
     @NSManaged var id: String

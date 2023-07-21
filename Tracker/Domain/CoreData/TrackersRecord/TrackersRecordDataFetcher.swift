@@ -23,13 +23,13 @@ struct TrackersRecordDataFetcher {
 
 extension TrackersRecordDataFetcher: TrackersRecordDataFetcherProtocol {
 	func fetchCompletedRecords(date: Date) -> [TrackerRecordCoreData] {
-		guard let onlyDate = date.onlyDate else { return [] }
-		let trackerRecordsCoreData = trackersRecordDataStore.completedTrackers(for: onlyDate as NSDate)
-		return trackerRecordsCoreData
+		guard let date = date.withoutTime else { return [] }
+		let records = self.trackersRecordDataStore.completedTrackers(for: date)
+		return records
 	}
 
 	func completedTimesCount(trackerId: String) -> Int {
-		let count = try? trackersRecordDataStore.completedTimesCount(trackerId: trackerId)
+		let count = self.trackersRecordDataStore.completedTimesCount(trackerId: trackerId)
 		return count ?? 0
 	}
 }

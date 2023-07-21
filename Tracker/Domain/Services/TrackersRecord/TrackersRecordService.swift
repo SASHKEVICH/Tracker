@@ -5,39 +5,41 @@
 //  Created by Александр Бекренев on 07.07.2023.
 //
 
-import UIKit
+import Foundation
 
-protocol TrackersRecordServiceProtocol {
-	func fetchCompletedRecords(date: Date) -> [TrackerRecord]
+public protocol TrackersRecordServiceDelegate: AnyObject {
+	func didRecieveCompletedTrackers(_ records: [TrackerRecord])
+}
+
+public protocol TrackersRecordServiceProtocol {
+	var delegate: TrackersRecordServiceDelegate? { get set }
+	func fetchCompletedRecords(for date: Date)
 	func completedTimesCount(trackerId: UUID) -> Int
 }
 
-struct TrackersRecordService {
+final class TrackersRecordService {
+	weak var delegate: TrackersRecordServiceDelegate?
+
 	private let trackersRecordDataFetcher: TrackersRecordDataFetcherProtocol
 
-	init?() {
-		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-			  let trackersRecordDataStore = appDelegate.trackersRecordDataStore
-		else {
-			assertionFailure("Cannot activate data stores")
-			return nil
-		}
-
-		self.trackersRecordDataFetcher = TrackersRecordDataFetcher(trackersRecordDataStore: trackersRecordDataStore)
+	init(trackersRecordDataFetcher: TrackersRecordDataFetcherProtocol) {
+		self.trackersRecordDataFetcher = trackersRecordDataFetcher
 	}
 }
 
+// MARK: - TrackersRecordServiceProtocol
 extension TrackersRecordService: TrackersRecordServiceProtocol {
-	func fetchCompletedRecords(date: Date) -> [TrackerRecord] {
-		let trackerRecordsCoreData = trackersRecordDataFetcher.fetchCompletedRecords(date: date)
+	func fetchCompletedRecords(for date: Date) {
+		let trackerRecordsCoreData = self.trackersRecordDataFetcher.fetchCompletedRecords(date: date)
 		let trackerRecords = trackerRecordsCoreData.compactMap { trackerRecordCoreData -> TrackerRecord? in
 			guard let id = UUID(uuidString: trackerRecordCoreData.id) else { return nil }
 			return TrackerRecord(trackerId: id, date: trackerRecordCoreData.date)
 		}
-		return trackerRecords
+
+		self.delegate?.didRecieveCompletedTrackers(trackerRecords)
 	}
 
 	func completedTimesCount(trackerId: UUID) -> Int {
-		trackersRecordDataFetcher.completedTimesCount(trackerId: trackerId.uuidString)
+		self.trackersRecordDataFetcher.completedTimesCount(trackerId: trackerId.uuidString)
 	}
 }

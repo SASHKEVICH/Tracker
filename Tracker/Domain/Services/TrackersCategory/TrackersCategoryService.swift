@@ -5,41 +5,40 @@
 //  Created by Александр Бекренев on 16.06.2023.
 //
 
-import UIKit
+import Foundation
 
-protocol TrackersCategoryServiceProtocol {
+public protocol TrackersCategoryServiceProtocol {
 	var numberOfSections: Int { get }
 	var categories: [TrackerCategory] { get }
 	var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate? { get set }
 	func numberOfItemsInSection(_ section: Int) -> Int
+	func category(for tracker: Tracker) -> TrackerCategory?
 }
 
-struct TrackersCategoryService {
+final class TrackersCategoryService {
 	var numberOfSections: Int = 1
-	var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate? {
+	weak var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate? {
 		didSet {
-			trackersCategoryDataProvider.delegate = trackersCategoryDataProviderDelegate
+			self.trackersCategoryDataProvider.delegate = self.trackersCategoryDataProviderDelegate
 		}
 	}
 
 	private var trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol
+	private let trackersCategoryDataFetcher: TrackersCategoryDataFetcherProtocol
 	private let trackersCategoryFactory: TrackersCategoryFactory
 
-	init?(trackersCategoryFactory: TrackersCategoryFactory) {
-		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-			  let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore
-		else {
-			assertionFailure("Cannot activate data store")
-			return nil
-		}
-
+	init(
+		trackersCategoryFactory: TrackersCategoryFactory,
+		trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol,
+		trackersCategoryDataFetcher: TrackersCategoryDataFetcherProtocol
+	) {
 		self.trackersCategoryFactory = trackersCategoryFactory
-		self.trackersCategoryDataProvider = TrackersCategoryDataProvider(
-			context: trackersCategoryDataStore.managedObjectContext
-		)
+		self.trackersCategoryDataProvider = trackersCategoryDataProvider
+		self.trackersCategoryDataFetcher = trackersCategoryDataFetcher
 	}
 }
 
+// MARK: - TrackersCategoryServiceProtocol
 extension TrackersCategoryService: TrackersCategoryServiceProtocol {
 	var categories: [TrackerCategory] {
 		let categories = self.trackersCategoryDataProvider.categories
@@ -49,5 +48,10 @@ extension TrackersCategoryService: TrackersCategoryServiceProtocol {
 
 	func numberOfItemsInSection(_ section: Int) -> Int {
 		self.trackersCategoryDataProvider.numberOfItemsInSection(section)
+	}
+
+	func category(for tracker: Tracker) -> TrackerCategory? {
+		guard let categoryCoreData = self.trackersCategoryDataFetcher.category(for: tracker) else { return nil }
+		return self.trackersCategoryFactory.makeCategory(categoryCoreData: categoryCoreData)
 	}
 }

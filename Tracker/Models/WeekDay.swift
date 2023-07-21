@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum WeekDay: Int, Comparable, CaseIterable, Codable {
+public enum WeekDay: Int, Comparable, CaseIterable, Codable {
     case sunday = 1
     case monday
     case tuesday
@@ -17,26 +17,28 @@ enum WeekDay: Int, Comparable, CaseIterable, Codable {
     case saturday
     
     var fullStringRepresentaion: String {
+		let localizable = R.string.localizable
         switch self {
-        case .monday: return "Понедельник"
-        case .tuesday: return "Вторник"
-        case .wednesday: return "Среда"
-        case .thursday: return "Четверг"
-        case .friday: return "Пятница"
-        case .saturday: return "Суббота"
-        case .sunday: return "Воскресенье"
+		case .monday: return localizable.weekDayMonday()
+        case .tuesday: return localizable.weekDayTuesday()
+        case .wednesday: return localizable.weekDayWednesday()
+        case .thursday: return localizable.weekDayThursday()
+        case .friday: return localizable.weekDayFriday()
+        case .saturday: return localizable.weekDaySaturday()
+		case .sunday: return localizable.weekDaySunday()
         }
     }
     
     var shortStringRepresentaion: String {
+		let localizable = R.string.localizable
         switch self {
-        case .monday: return "Пн"
-        case .tuesday: return "Вт"
-        case .wednesday: return "Ср"
-        case .thursday: return "Чт"
-        case .friday: return "Пт"
-        case .saturday: return "Сб"
-        case .sunday: return "Вс"
+		case .monday: return localizable.weekDayMondayShort()
+		case .tuesday: return localizable.weekDayTuesdayShort()
+		case .wednesday: return localizable.weekDayWednesdayShort()
+		case .thursday: return localizable.weekDayThursdayShort()
+		case .friday: return localizable.weekDayFridayShort()
+		case .saturday: return localizable.weekDaySaturdayShort()
+		case .sunday: return localizable.weekDaySundayShort()
         }
     }
     
@@ -52,7 +54,7 @@ enum WeekDay: Int, Comparable, CaseIterable, Codable {
         }
     }
     
-    static func < (lhs: WeekDay, rhs: WeekDay) -> Bool {
+    public static func < (lhs: WeekDay, rhs: WeekDay) -> Bool {
         lhs.rawValue < rhs.rawValue
     }
 }

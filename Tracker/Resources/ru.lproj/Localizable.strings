@@ -1,0 +1,89 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Александр Бекренев on 11.07.2023.
+  
+*/
+
+"Tabbar.tracker" = "Трекеры";
+"Tabbar.statistics" = "Статистика";
+
+"Onboarding.button.title" = "Вот это технологии!";
+"Onboarding.pageLabel.first" = "Отслеживайте только то, что хотите";
+"Onboarding.pageLabel.second" = "Даже если это не литры воды и йога";
+
+"Trackers.searchController.placeholder" = "Поиск";
+"Trackers.navigationItem.title" = "Трекеры";
+
+"Trackers.collectionView.action.pin" = "Закрепить";
+"Trackers.collectionView.action.unpin" = "Открепить";
+"Trackers.collectionView.action.edit" = "Редактировать";
+"Trackers.collectionView.action.delete" = "Удалить";
+
+"Trackers.filterButton.title" = "Фильтры";
+
+"PlaceholderView.emptyForDay.textLabel.text" = "Что будем отслеживать?";
+"PlaceholderView.emptySearch.textLabel.text" = "Ничего не найдено";
+"PlaceholderView.emptyCategories.textLabel.text" = "Привычки и события можно \n объединить по смыслу";
+"PlaceholderView.emptyStatistics.textLabel.text" = "Анализировать пока нечего";
+
+"TrackerType.viewController.title" = "Создание трекера";
+"TrackerType.addTrackerButton.title" = "Привычка";
+"TrackerType.addIrregularEventButton.title" = "Нерегулярное событие";
+
+"TrackerAdding.tracker.viewController.title" = "Новая привычка";
+"TrackerAdding.irregularEvent.viewController.title" = "Новое нерегулярное событие";
+"TrackerAdding.flow.edit.viewController.title" = "Редактирование привычки";
+"TrackerAdding.trackerTitleTextField.placeholder" = "Введите название трекера";
+"TrackerAdding.errorLabel.text" = "Ограничение 38 символов";
+"TrackerAdding.cancelButton.title" = "Отменить";
+"TrackerAdding.addTrackerButton.title" = "Создать";
+"TrackerAdding.flow.edit.addTrackerButton.title" = "Сохранить";
+"TrackerAdding.optionTitle.category" = "Категория";
+"TrackerAdding.optionTitle.schedule" = "Расписание";
+"TrackerAdding.colorCollectionView.header.title" = "Цвет";
+
+"TrackerSchedule.addScheduleButton.title" = "Готово";
+
+"TrackerCategory.flow.normal.viewController.title" = "Категория";
+"TrackerCategory.flow.filter.viewController.title" = "Фильтры";
+"TrackerCategory.addCategoryButton.title" = "Добавить категорию";
+"TrackerCategory.pinnedCategory.title" = "Закрепленные";
+
+"TrackerCategory.flow.filter.mode.all" = "Все трекеры";
+"TrackerCategory.flow.filter.mode.today" = "Трекеры на сегодня";
+"TrackerCategory.flow.filter.mode.completed" = "Завершенные";
+"TrackerCategory.flow.filter.mode.incompleted" = "Не завершенные";
+
+"TrackerNewCategory.viewController.title" = "Новая категория";
+"TrackerNewCategory.newCategoryTitleTextField.placeholder" = "Введите название категории";
+"TrackerNewCategory.addNewCategoryButton.title" = "Готово";
+
+"Statistics.navigationItem.title" = "Статистика";
+"Statistics.statistic.trackersCompleted.title" = "Трекеров завершено";
+
+"WeekDay.monday" = "Понедельник";
+"WeekDay.tuesday" = "Вторник";
+"WeekDay.wednesday" = "Среда";
+"WeekDay.thursday" = "Четверг";
+"WeekDay.friday" = "Пятница";
+"WeekDay.saturday" = "Суббота";
+"WeekDay.sunday" = "Воскресенье";
+"WeekDay.allCases" = "Каждый день";
+
+"WeekDay.monday.short" = "Пн";
+"WeekDay.tuesday.short" = "Вт";
+"WeekDay.wednesday.short" = "Ср";
+"WeekDay.thursday.short" = "Чт";
+"WeekDay.friday.short" = "Пт";
+"WeekDay.saturday.short" = "Сб";
+"WeekDay.sunday.short" = "Вс";
+
+"Alert.chosenFutureDate.title" = "Некорректная дата";
+"Alert.chosenFutureDate.message" = "Вы отмечаете трекер в будущем >:[";
+"Alert.chosenFutureDate.action.ok" = "OK";
+
+"Alert.deleteTracker.message" = "Уверены, что хотите удалить этот трекер?";
+"Alert.deleteTracker.action.delete" = "Удалить";
+"Alert.deleteTracker.action.cancel" = "Отменить";

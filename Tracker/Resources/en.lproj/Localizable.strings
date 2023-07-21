@@ -1,0 +1,89 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Александр Бекренев on 11.07.2023.
+  
+*/
+
+"Tabbar.tracker" = "Trackers";
+"Tabbar.statistics" = "Statistics";
+
+"Onboarding.button.title" = "What a technologies!";
+"Onboarding.pageLabel.first" = "Track only what you want";
+"Onboarding.pageLabel.second" = "Even if it's not liters of water and yoga";
+
+"Trackers.searchController.placeholder" = "Find a tracker";
+"Trackers.navigationItem.title" = "Trackers";
+
+"Trackers.collectionView.action.pin" = "Pin";
+"Trackers.collectionView.action.unpin" = "Unpin";
+"Trackers.collectionView.action.edit" = "Edit";
+"Trackers.collectionView.action.delete" = "Delete";
+
+"Trackers.filterButton.title" = "Filters";
+
+"PlaceholderView.emptyForDay.textLabel.text" = "What do we gonna track?";
+"PlaceholderView.emptySearch.textLabel.text" = "Nothing found";
+"PlaceholderView.emptyCategories.textLabel.text" = "Habbits and events can be \n combined in meaning";
+"PlaceholderView.emptyStatistics.textLabel.text" = "There is nothing to analyze yet";
+
+"TrackerType.viewController.title" = "Creating a Tracker";
+"TrackerType.addTrackerButton.title" = "Habbit";
+"TrackerType.addIrregularEventButton.title" = "Irregular Event";
+
+"TrackerAdding.tracker.viewController.title" = "New habbit";
+"TrackerAdding.irregularEvent.viewController.title" = "New irregular event";
+"TrackerAdding.flow.edit.viewController.title" = "Edit tracker";
+"TrackerAdding.trackerTitleTextField.placeholder" = "Enter tracker's title";
+"TrackerAdding.errorLabel.text" = "Limit is 38 symbols";
+"TrackerAdding.cancelButton.title" = "Cancel";
+"TrackerAdding.addTrackerButton.title" = "Create";
+"TrackerAdding.flow.edit.addTrackerButton.title" = "Save";
+"TrackerAdding.optionTitle.category" = "Category";
+"TrackerAdding.optionTitle.schedule" = "Schedule";
+"TrackerAdding.colorCollectionView.header.title" = "Color";
+
+"TrackerSchedule.addScheduleButton.title" = "Done";
+
+"TrackerCategory.flow.normal.viewController.title" = "Category";
+"TrackerCategory.flow.filter.viewController.title" = "Filters";
+"TrackerCategory.addCategoryButton.title" = "Add a new category";
+"TrackerCategory.pinnedCategory.title" = "Pinned";
+
+"TrackerCategory.flow.filter.mode.all" = "All trackers";
+"TrackerCategory.flow.filter.mode.today" = "Trackers for today";
+"TrackerCategory.flow.filter.mode.completed" = "Completed";
+"TrackerCategory.flow.filter.mode.incompleted" = "Incompleted";
+
+"TrackerNewCategory.viewController.title" = "New category";
+"TrackerNewCategory.newCategoryTitleTextField.placeholder" = "Enter title of the new category";
+"TrackerNewCategory.addNewCategoryButton.title" = "Done";
+
+"Statistics.navigationItem.title" = "Statistics";
+"Statistics.statistic.trackersCompleted.title" = "Completed Trackers";
+
+"WeekDay.monday" = "Monday";
+"WeekDay.tuesday" = "Tuesday";
+"WeekDay.wednesday" = "Wednesday";
+"WeekDay.thursday" = "Thursday";
+"WeekDay.friday" = "Friday";
+"WeekDay.saturday" = "Saturday";
+"WeekDay.sunday" = "Sunday";
+"WeekDay.allCases" = "Whole week";
+
+"WeekDay.monday.short" = "Mon";
+"WeekDay.tuesday.short" = "Tue";
+"WeekDay.wednesday.short" = "Wed";
+"WeekDay.thursday.short" = "Thu";
+"WeekDay.friday.short" = "Fri";
+"WeekDay.saturday.short" = "Sat";
+"WeekDay.sunday.short" = "Sun";
+
+"Alert.chosenFutureDate.title" = "Wrong date";
+"Alert.chosenFutureDate.message" = "You completing the tracker in the future >:[";
+"Alert.chosenFutureDate.action.ok" = "OK";
+
+"Alert.deleteTracker.message" = "Are you sure you want to delete this tracker?";
+"Alert.deleteTracker.action.delete" = "Delete";
+"Alert.deleteTracker.action.cancel" = "Cancel";

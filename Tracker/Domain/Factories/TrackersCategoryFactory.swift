@@ -8,23 +8,27 @@
 import Foundation
 import CoreData
 
-struct TrackersCategoryFactory {
+public struct TrackersCategoryFactory {
 	private let trackersFactory: TrackersFactory
 
-	init(trackersFactory: TrackersFactory) {
+	public init(trackersFactory: TrackersFactory) {
 		self.trackersFactory = trackersFactory
 	}
 
-	func makeCategory(title: String) -> TrackerCategory {
-		return TrackerCategory(id: UUID(), title: title, trackers: [])
+	public func makeCategory(title: String, isPinning: Bool) -> TrackerCategory {
+		TrackerCategory(id: UUID(), title: title, trackers: [], isPinning: isPinning)
 	}
 
-	func makeCategory(categoryCoreData: TrackerCategoryCoreData) -> TrackerCategory? {
-		guard let id = UUID(uuidString: categoryCoreData.id) else { return nil }
-		let trackers = categoryCoreData.trackers
+	func makeCategory(id: UUID, title: String, isPinning: Bool) -> TrackerCategory {
+		TrackerCategory(id: id, title: title, trackers: [], isPinning: isPinning)
+	}
+
+	func makeCategory(categoryCoreData category: TrackerCategoryCoreData) -> TrackerCategory? {
+		guard let id = UUID(uuidString: category.id) else { return nil }
+		let trackers = category.trackers
 			.compactMap { $0 as? TrackerCoreData }
 			.compactMap { trackersFactory.makeTracker(from: $0) }
-		return TrackerCategory(id: id, title: categoryCoreData.title, trackers: trackers)
+		return TrackerCategory(id: id, title: category.title, trackers: trackers, isPinning: category.isPinning)
 	}
 
 	func makeCategoryCoreData(
@@ -34,6 +38,7 @@ struct TrackersCategoryFactory {
 		let categoryCoreData = TrackerCategoryCoreData(context: context)
 		categoryCoreData.id = category.id.uuidString
 		categoryCoreData.title = category.title
+		categoryCoreData.isPinning = category.isPinning
 		categoryCoreData.trackers = NSSet(array: category.trackers)
 		return categoryCoreData
 	}

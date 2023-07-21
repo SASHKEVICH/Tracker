@@ -18,18 +18,18 @@ final class OnboardingViewController: UIPageViewController {
 	
 	private lazy var pageControl: UIPageControl = {
 		let pageControl = UIPageControl()
-		pageControl.numberOfPages = presenter?.pagesCount ?? 0
+		pageControl.translatesAutoresizingMaskIntoConstraints = false
+		pageControl.numberOfPages = self.presenter?.pagesCount ?? 0
 		pageControl.currentPage = 0
 		
-		pageControl.currentPageIndicatorTintColor = .Dynamic.blackDay
-		pageControl.pageIndicatorTintColor = .Dynamic.blackDay.withAlphaComponent(0.3)
-		
-		pageControl.translatesAutoresizingMaskIntoConstraints = false
+		pageControl.currentPageIndicatorTintColor = .Static.black
+		pageControl.pageIndicatorTintColor = .Static.black.withAlphaComponent(0.3)
 		return pageControl
 	}()
 
 	private lazy var confirmOnboardingButton: TrackerCustomButton = {
-		let button = TrackerCustomButton(state: .normal, title: "Вот это технологии!")
+		let buttonTitle = R.string.localizable.onboardingButtonTitle()
+		let button = TrackerCustomButton(state: .onboarding, title: buttonTitle)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.addTarget(self, action: #selector(self.didTapOnboardingButton), for: .touchUpInside)
 		return button

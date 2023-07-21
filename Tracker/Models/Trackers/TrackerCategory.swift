@@ -7,8 +7,13 @@
 
 import Foundation
 
-struct TrackerCategory {
-    let id: UUID
-    let title: String
-    let trackers: [Tracker]
+public struct TrackerCategory: Equatable {
+	public static func == (lhs: TrackerCategory, rhs: TrackerCategory) -> Bool {
+		lhs.id == rhs.id
+	}
+
+	let id: UUID
+	let title: String
+	let trackers: [Tracker]
+	let isPinning: Bool
 }

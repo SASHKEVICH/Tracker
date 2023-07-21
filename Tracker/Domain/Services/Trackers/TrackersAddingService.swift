@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TrackersAddingServiceProtocol {
+public protocol TrackersAddingServiceProtocol {
 	func addTracker(
 		title: String,
 		schedule: Set<WeekDay>,
@@ -16,32 +16,33 @@ protocol TrackersAddingServiceProtocol {
 		emoji: String,
 		categoryId: UUID
 	)
+
+	func delete(tracker: Tracker)
+
+	func saveEdited(
+		trackerId: UUID,
+		title: String,
+		schedule: Set<WeekDay>,
+		type: Tracker.TrackerType,
+		color: UIColor,
+		emoji: String,
+		newCategoryId: UUID,
+		previousCategoryId: UUID,
+		isPinned: Bool
+	)
 }
 
-struct TrackersAddingService {
+final class TrackersAddingService {
 	private let trackersDataAdder: TrackersDataAdderProtocol
 	private let trackersFactory: TrackersFactory
 
-	init?(trackersFactory: TrackersFactory) {
-		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-			  let trackersCategoryDataStore = appDelegate.trackersCategoryDataStore,
-			  let trackersDataStore = appDelegate.trackersDataStore
-		else {
-			assertionFailure("Cannot activate data stores")
-			return nil
-		}
-
+	init(trackersFactory: TrackersFactory, trackersDataAdder: TrackersDataAdderProtocol) {
 		self.trackersFactory = trackersFactory
-
-		let trackersDataAdder = TrackersDataAdder(
-			trackersCategoryDataStore: trackersCategoryDataStore,
-			trackersDataStore: trackersDataStore,
-			trackersFactory: trackersFactory
-		)
 		self.trackersDataAdder = trackersDataAdder
 	}
 }
 
+// MARK: - TrackersAddingServiceProtocol
 extension TrackersAddingService: TrackersAddingServiceProtocol {
 	func addTracker(
 		title: String,
@@ -51,13 +52,43 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
 		emoji: String,
 		categoryId: UUID
 	) {
-		let tracker = trackersFactory.makeTracker(
+		let newTracker = trackersFactory.makeTracker(
 			type: type,
 			title: title,
 			color: color,
 			emoji: emoji,
+			previousCategoryId: categoryId,
+			isPinned: false,
 			schedule: Array(schedule)
 		)
-		try? trackersDataAdder.add(tracker: tracker, for: categoryId)
+		try? self.trackersDataAdder.add(tracker: newTracker, for: categoryId)
+	}
+
+	func delete(tracker: Tracker) {
+		self.trackersDataAdder.delete(tracker: tracker)
+	}
+
+	func saveEdited(
+		trackerId: UUID,
+		title: String,
+		schedule: Set<WeekDay>,
+		type: Tracker.TrackerType,
+		color: UIColor,
+		emoji: String,
+		newCategoryId: UUID,
+		previousCategoryId: UUID,
+		isPinned: Bool
+	) {
+		let editedTracker = self.trackersFactory.makeTracker(
+			id: trackerId,
+			type: type,
+			title: title,
+			color: color,
+			emoji: emoji,
+			previousCategoryId: previousCategoryId,
+			isPinned: isPinned,
+			schedule: Array(schedule)
+		)
+		self.trackersDataAdder.saveEdited(tracker: editedTracker, newCategoryId: newCategoryId)
 	}
 }
