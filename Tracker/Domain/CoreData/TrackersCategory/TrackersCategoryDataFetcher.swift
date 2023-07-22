@@ -26,4 +26,3 @@ extension TrackersCategoryDataFetcher: TrackersCategoryDataFetcherProtocol {
 		self.trackersCategoryDataStore.category(for: tracker)
 	}
 }
-

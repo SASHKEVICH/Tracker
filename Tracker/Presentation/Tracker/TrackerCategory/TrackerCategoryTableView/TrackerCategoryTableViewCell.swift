@@ -19,7 +19,7 @@ final class TrackerCategoryTableViewCell: UITableViewCell {
 			selectedCellImageView.isHidden = !isCellSelected
 		}
 	}
-	
+
 	private let categoryTitleLable: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +37,7 @@ final class TrackerCategoryTableViewCell: UITableViewCell {
 		imageView.isHidden = true
 		return imageView
 	}()
-	
+
 	private let selectBackgroundView = CellSelectBackgroundView()
 
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -48,7 +48,7 @@ final class TrackerCategoryTableViewCell: UITableViewCell {
 		selectedBackgroundView = selectBackgroundView
 		backgroundColor = .Dynamic.backgroundDay
 	}
-	
+
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
@@ -65,7 +65,7 @@ private extension TrackerCategoryTableViewCell {
 		contentView.addSubview(categoryTitleLable)
 		contentView.addSubview(selectedCellImageView)
 	}
-	
+
 	func addConstraints() {
 		NSLayoutConstraint.activate([
 			categoryTitleLable.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25),

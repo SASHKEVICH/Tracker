@@ -15,7 +15,7 @@ public enum WeekDay: Int, Comparable, CaseIterable, Codable {
     case thursday
     case friday
     case saturday
-    
+
     var fullStringRepresentaion: String {
 		let localizable = R.string.localizable
         switch self {
@@ -28,7 +28,7 @@ public enum WeekDay: Int, Comparable, CaseIterable, Codable {
 		case .sunday: return localizable.weekDaySunday()
         }
     }
-    
+
     var shortStringRepresentaion: String {
 		let localizable = R.string.localizable
         switch self {
@@ -41,7 +41,7 @@ public enum WeekDay: Int, Comparable, CaseIterable, Codable {
 		case .sunday: return localizable.weekDaySundayShort()
         }
     }
-    
+
     var englishStringRepresentation: String {
         switch self {
         case .monday: return "monday"
@@ -53,7 +53,7 @@ public enum WeekDay: Int, Comparable, CaseIterable, Codable {
         case .sunday: return "sunday"
         }
     }
-    
+
     public static func < (lhs: WeekDay, rhs: WeekDay) -> Bool {
         lhs.rawValue < rhs.rawValue
     }

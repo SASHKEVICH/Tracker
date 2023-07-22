@@ -23,7 +23,7 @@ final class TrackerTypeViewController: UIViewController {
 		label.sizeToFit()
         return label
     }()
-    
+
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +32,7 @@ final class TrackerTypeViewController: UIViewController {
         stackView.distribution = .fillEqually
         return stackView
     }()
-    
+
 	private lazy var addTrackerButton = {
 		let title = R.string.localizable.trackerTypeAddTrackerButtonTitle()
 		let button = TrackerCustomButton(state: .normal, title: title)
@@ -48,11 +48,11 @@ final class TrackerTypeViewController: UIViewController {
 		button.addTarget(self, action: #selector(self.didTapAddIrregularEventButton), for: .touchUpInside)
 		return button
 	}()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 		self.view.backgroundColor = .Dynamic.whiteDay
-        
+
 		self.addSubviews()
 		self.addConstraints()
     }
@@ -66,11 +66,11 @@ private extension TrackerTypeViewController {
     func addSubviews() {
 		self.view.addSubview(self.titleLabel)
 		self.view.addSubview(self.stackView)
-        
+
 		self.stackView.addArrangedSubview(self.addTrackerButton)
 		self.stackView.addArrangedSubview(self.addIrregularEventButton)
     }
-    
+
     func addConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
@@ -99,7 +99,7 @@ private extension TrackerTypeViewController {
     func didTapAddTrackerButton() {
 		self.presenter?.navigateToTrackerScreen()
     }
-    
+
     @objc
     func didTapAddIrregularEventButton() {
 		self.presenter?.navigateToIrregularEventScreen()

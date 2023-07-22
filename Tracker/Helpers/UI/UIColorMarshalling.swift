@@ -19,7 +19,7 @@ struct UIColorMarshalling {
 
         return hexString
     }
-    
+
 	static func deserilizeFrom(hex: String) -> UIColor? {
         guard hex.hasPrefix("#") else {
             assertionFailure("string is not hex")

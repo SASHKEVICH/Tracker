@@ -85,7 +85,7 @@ final class ServiceSetupper {
 			trackersFactory: trackersFactory,
 			trackersDataStore: trackersDataStore,
 			trackersCategoryDataStore: trackersCategoryDataStore,
-			pinnedCategoryId: pinnedCategoryId 
+			pinnedCategoryId: pinnedCategoryId
 		)
 
 		self.analyticsService = AnalyticsService()

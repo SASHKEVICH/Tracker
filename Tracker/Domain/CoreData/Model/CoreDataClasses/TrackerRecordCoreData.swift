@@ -16,7 +16,7 @@ final class TrackerRecordCoreData: NSManagedObject {
     @nonobjc class func fetchRequest() -> NSFetchRequest<TrackerRecordCoreData> {
 		NSFetchRequest<TrackerRecordCoreData>(entityName: TrackerRecordCoreData.entityName)
     }
-    
+
     @NSManaged var id: String
     @NSManaged var date: Date
     @NSManaged var tracker: TrackerCoreData

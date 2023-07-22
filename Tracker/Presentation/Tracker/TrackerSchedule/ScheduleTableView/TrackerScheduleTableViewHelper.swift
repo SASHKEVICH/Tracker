@@ -17,7 +17,7 @@ protocol TrackerScheduleTableViewHelperDelegateProtocol: AnyObject {
 
 final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHelperProtocol {
     weak var presenter: TrackerSchedulePresenterProtocol?
-    
+
     // MARK: - UITableViewDelegate
     func tableView(
         _ tableView: UITableView,
@@ -25,14 +25,14 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
     ) -> CGFloat {
         75
     }
-    
+
     func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
+
     // MARK: - UITableViewDataSource
     func tableView(
         _ tableView: UITableView,
@@ -40,7 +40,7 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
     ) -> Int {
         presenter?.weekDays.count ?? 0
     }
-    
+
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
@@ -51,12 +51,12 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
         else { return UITableViewCell() }
 
 		guard let presenter = presenter else { return UITableViewCell() }
-        
+
         let weekDay = presenter.weekDays[indexPath.row]
         cell.weekDay = weekDay
         cell.cellTitle = weekDay.fullStringRepresentaion
         cell.delegate = self
-        
+
         if presenter.selectedWeekDays.contains(weekDay) {
             cell.isDaySwitchOn = true
         }
@@ -67,7 +67,7 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
 			entityCount: presenter.weekDays.count,
 			tableViewWidth: tableView.bounds.width
 		)
-        
+
         return configuredCell
     }
 }

@@ -36,7 +36,7 @@ extension TrackerCategoryCoreData {
 
     @objc(removeTrackers:)
     @NSManaged func removeFromTrackers(_ values: NSSet)
-    
+
     func trackers(for weekDay: String) -> [TrackerCoreData] {
         let predicate = NSPredicate(format: "weekDays CONTAINS[c] %@", weekDay)
         return Array(trackers.filtered(using: predicate)) as! [TrackerCoreData]

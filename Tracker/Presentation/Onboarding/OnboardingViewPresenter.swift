@@ -20,7 +20,7 @@ final class OnboardingViewPresenter {
 	var pagesViewControllerHelper: OnboardingViewControllerHelperProtocol?
 
 	private let router: OnboardingRouterProtocol
-    
+
 	init(helper: OnboardingViewControllerHelperProtocol, router: OnboardingRouterProtocol) {
 		self.router = router
 		self.pagesViewControllerHelper = helper
@@ -34,7 +34,7 @@ extension OnboardingViewPresenter: OnboardingViewPresenterProtocol {
 	var pagesCount: Int {
 		self.pagesViewControllerHelper?.pagesCount ?? 0
 	}
-	
+
 	func setCurrentPage(index: Int) {
 		self.view?.setCurrentPage(index: index)
 	}

@@ -34,7 +34,7 @@ final class EmojisCollectionViewCell: UICollectionViewCell {
 		super.draw(rect)
 		setupBackgroundView()
 	}
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -51,7 +51,7 @@ private extension EmojisCollectionViewCell {
             emojiLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
-    
+
     func setupBackgroundView() {
         selectedBackgroundView = selectBackgroundView
     }

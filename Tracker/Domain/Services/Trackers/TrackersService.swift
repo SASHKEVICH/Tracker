@@ -38,7 +38,7 @@ final class TrackersService {
 
 	private let trackersFactory: TrackersFactory
     private var trackersDataProvider: TrackersDataProviderProtocol
-    
+
 	init(trackersFactory: TrackersFactory, trackersDataProvider: TrackersDataProviderProtocol) {
 		self.trackersFactory = trackersFactory
 		self.trackersDataProvider = trackersDataProvider
@@ -53,11 +53,11 @@ extension TrackersService: TrackersServiceFetchingProtocol {
 	}
 
     func requestDataProviderErrorAlert() { print("data provider error") }
-    
+
     func fetchTrackers(weekDay: WeekDay) {
 		self.trackersDataProvider.fetchTrackers(currentWeekDay: weekDay)
     }
-    
+
     func fetchTrackers(titleSearchString title: String, currentWeekDay weekDay: WeekDay) {
 		self.trackersDataProvider.fetchTrackers(titleSearchString: title, currentWeekDay: weekDay)
     }
@@ -72,11 +72,11 @@ extension TrackersService: TrackersServiceDataSourceProtocol {
     var numberOfSections: Int {
 		self.trackersDataProvider.numberOfSections
     }
-    
+
     func numberOfItemsInSection(_ section: Int) -> Int {
 		self.trackersDataProvider.numberOfItemsInSection(section)
     }
-    
+
     func categoryTitle(at indexPath: IndexPath) -> String? {
 		self.trackersDataProvider.categoryTitle(at: indexPath)
     }

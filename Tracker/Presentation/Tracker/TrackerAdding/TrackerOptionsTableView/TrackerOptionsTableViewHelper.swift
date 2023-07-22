@@ -21,29 +21,29 @@ protocol TrackerOptionsTableViewHelperProtocol: UITableViewDataSource, UITableVi
 
 final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelperProtocol {
     weak var delegate: TrackerOptionsTableViewDelegate?
-    
-    // MARK: UITableViewDelegate    
+
+    // MARK: UITableViewDelegate
     func tableView(
         _ tableView: UITableView,
         estimatedHeightForRowAt indexPath: IndexPath
     ) -> CGFloat {
         75
     }
-    
+
     func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let cell = tableView.cellForRow(at: indexPath) as? TrackerOptionsTableViewCell else { return }
-        
+
 		if cell.type == .schedule {
 			self.delegate?.didTapScheduleCell()
 		} else if cell.type == .category {
 			self.delegate?.didTapCategoryCell()
         }
     }
-    
+
     // MARK: UITableViewDataSource
     func tableView(
         _ tableView: UITableView,
@@ -55,7 +55,7 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         }
         return optionsTitles.count
     }
-    
+
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
@@ -66,10 +66,10 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
 		else { return UITableViewCell() }
 
 		guard let optionsTitles = self.delegate?.optionsTitles else { return UITableViewCell() }
-        
+
 		cell.set(cellTitle: optionsTitles[indexPath.row])
         cell.accessoryType = .disclosureIndicator
-        
+
 		self.configureAdditionalInfo(for: cell)
 
 		let configuredCell = cell.configure(
@@ -78,7 +78,7 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
 			entityCount: optionsTitles.count,
 			tableViewWidth: tableView.bounds.width
 		)
-        
+
         return configuredCell
     }
 }
@@ -92,7 +92,7 @@ private extension TrackerOptionsTableViewHelper {
 			self.configureCategoryAdditionalInfo(for: cell)
 		}
     }
-    
+
     func configureSchduleAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
 		guard let selectedWeekDays = self.delegate?.selectedWeekDays, !selectedWeekDays.isEmpty else {
 			cell.set(additionalInfo: nil)
@@ -100,13 +100,13 @@ private extension TrackerOptionsTableViewHelper {
 		}
 
         let selectedWeekDaysArray = Array(selectedWeekDays).sorted()
-        
+
         guard selectedWeekDaysArray.count != 7 else {
 			let additionalInfo = R.string.localizable.weekDayAllCases()
 			cell.set(additionalInfo: additionalInfo)
             return
         }
-        
+
         let additionalInfo = selectedWeekDaysArray.reduce("") { (result: String, weekDay: WeekDay) in
 			result + weekDay.shortStringRepresentaion + ", "
 		}

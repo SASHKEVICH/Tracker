@@ -76,7 +76,7 @@ private extension TrackerTypeRouter {
 			optionTitles: optionsTitle,
 			viewControllerTitle: viewControllerTitle
 		)
-		
+
 		let vc = TrackerAddingViewController(router: router, view: view, viewModel: viewModel)
 
 		optionsHelper.delegate = vc

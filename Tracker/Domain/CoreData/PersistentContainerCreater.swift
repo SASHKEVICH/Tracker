@@ -8,12 +8,12 @@
 import Foundation
 import CoreData
 
-struct PersistentContainerCreater {    
+struct PersistentContainerCreater {
     private let modelName = "Tracker"
-    
+
     func persistentContainer() throws -> NSPersistentContainer {
         let container = NSPersistentContainer(name: modelName)
-        
+
         var loadError: Error?
         container.loadPersistentStores { description, error in
             if error != nil {
@@ -21,9 +21,9 @@ struct PersistentContainerCreater {
                 loadError = error
             }
         }
-        
+
         try loadError.map { throw $0 }
-        
+
         return container
     }
 }

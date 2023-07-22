@@ -37,14 +37,14 @@ final class StatisticsViewController: UIViewController {
 		self.tableViewHelper = tableViewHelper
 		super.init(nibName: nil, bundle: nil)
 	}
-	
+
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
 		view.backgroundColor = .Dynamic.whiteDay
 		self.setupNavigationItem()
 		self.addSubviews()
@@ -81,17 +81,17 @@ private extension StatisticsViewController {
 
 	func addConstraints() {
 		NSLayoutConstraint.activate([
-			placeholderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-			placeholderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-			placeholderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			placeholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+			self.placeholderView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+			self.placeholderView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+			self.placeholderView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+			self.placeholderView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
 		])
 
 		NSLayoutConstraint.activate([
-			statisticsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-			statisticsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-			statisticsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			statisticsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+			self.statisticsTableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+			self.statisticsTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+			self.statisticsTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+			self.statisticsTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
 		])
 	}
 

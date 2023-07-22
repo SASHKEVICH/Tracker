@@ -52,7 +52,7 @@ final class TrackerPlaceholderView: UIView {
 
 		self.backgroundColor = .Dynamic.whiteDay
 	}
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }

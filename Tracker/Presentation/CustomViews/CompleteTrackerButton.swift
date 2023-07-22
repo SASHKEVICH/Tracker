@@ -26,13 +26,13 @@ final class CompleteTrackerButton: UIButton {
 			}
 		}
 	}
-    
+
     var color: UIColor? {
         didSet {
 			self.backgroundColor = self.color
         }
     }
-    
+
     override func draw(_ rect: CGRect) {
 		self.setupButton()
     }
@@ -48,14 +48,14 @@ private extension CompleteTrackerButton {
 		self.imageView?.contentMode = .center
 		self.imageView?.tintColor = .Dynamic.whiteDay
     }
-    
+
     func setTrackerDone() {
 		let image = UIImage.CompleteTrackerButton.completed
 		self.setImage(image, for: .normal)
 		self.backgroundColor = self.color
 		self.alpha = 0.3
     }
-    
+
     func setTrackerCountIncrease() {
         let image = UIImage.CompleteTrackerButton.increase
 		self.setImage(image, for: .normal)

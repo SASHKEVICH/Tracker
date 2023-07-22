@@ -21,23 +21,23 @@ final class TrackerCustomButton: UIButton {
 			self.setNeededButtonState()
 		}
 	}
-	
+
     private var title: String
-    
+
 	init(state: TrackerCustomButton.State, title: String) {
         self.buttonState = state
         self.title = title
         super.init(frame: .zero)
     }
-    
+
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         layer.cornerRadius = 16
         layer.masksToBounds = true
-        
+
 		self.setNeededButtonState()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -58,10 +58,10 @@ private extension TrackerCustomButton {
 			self.setOnboardingState()
         }
     }
-    
+
     func setCancelState() {
         self.isEnabled = true
-        
+
         let border = CAShapeLayer()
         border.frame = self.bounds
 
@@ -75,7 +75,7 @@ private extension TrackerCustomButton {
 		let font = UIFont.Medium.big
 		self.setAttributedButtonTitle(with: color, font: font)
     }
-    
+
     func setNormalState() {
         self.isEnabled = true
 		self.layer.backgroundColor = UIColor.Dynamic.blackDay.cgColor
@@ -83,7 +83,7 @@ private extension TrackerCustomButton {
 		let font = UIFont.Medium.big
 		self.setAttributedButtonTitle(with: .Dynamic.whiteDay, font: font)
     }
-    
+
     func setDisabledState() {
         self.isEnabled = false
 		self.layer.backgroundColor = UIColor.Static.gray.cgColor

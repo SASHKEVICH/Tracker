@@ -49,7 +49,7 @@ final class TrackerScheduleTableViewCell: UITableViewCell {
         setupDefaultCellBackground()
         setupDaySwitch()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -58,7 +58,7 @@ final class TrackerScheduleTableViewCell: UITableViewCell {
 private extension TrackerScheduleTableViewCell {
     func setupCellTitleLabel() {
         contentView.addSubview(cellTitleLabel)
-        
+
         NSLayoutConstraint.activate([
             cellTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             cellTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -41),
@@ -66,10 +66,10 @@ private extension TrackerScheduleTableViewCell {
             cellTitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25)
         ])
     }
-    
+
     func setupDaySwitch() {
         contentView.addSubview(daySwitch)
-        
+
         NSLayoutConstraint.activate([
             daySwitch.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             daySwitch.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)

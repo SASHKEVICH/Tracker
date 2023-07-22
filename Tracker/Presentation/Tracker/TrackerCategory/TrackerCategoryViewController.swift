@@ -62,7 +62,7 @@ final class TrackerCategoryViewController: UIViewController {
 	}()
 
 	private var selectedCategory: TrackerCategory?
-	
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -74,7 +74,7 @@ final class TrackerCategoryViewController: UIViewController {
 		self.addConstraints()
 		self.bind()
 	}
-	
+
 	init(
 		viewModel: TrackerCategoryViewModelProtocol,
 		helper: TrackerCategoryTableViewHelperProtocol,
@@ -90,7 +90,7 @@ final class TrackerCategoryViewController: UIViewController {
 
 		super.init(nibName: nil, bundle: nil)
 	}
-	
+
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
@@ -105,7 +105,7 @@ extension TrackerCategoryViewController: TrackerCategoryTableViewHelperDelegate 
 	var chosenCategory: TrackerCategory? {
 		self.selectedCategory
 	}
-	
+
 	func didSelect(category: TrackerCategory) {
 		self.viewModel.didChoose(category: category)
 	}

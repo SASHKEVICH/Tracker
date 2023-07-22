@@ -31,7 +31,7 @@ typealias TrackersViewControllerFullProtocol = TrackersViewControllerProtocol & 
 
 final class TrackersViewController: UIViewController {
 	var presenter: TrackersViewPresenterFullProtocol?
-	
+
 	private lazy var trackersCollectionView: UICollectionView = {
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +50,7 @@ final class TrackersViewController: UIViewController {
 			withReuseIdentifier: TrackersCollectionSectionHeader.reuseIdentifier)
 		return collectionView
 	}()
-	
+
 	private lazy var searchController: UISearchController = {
 		let search = UISearchController()
 		search.searchResultsUpdater = self.presenter?.searchControllerHelper
@@ -78,7 +78,7 @@ final class TrackersViewController: UIViewController {
 		datePicker.addTarget(self, action: #selector(self.didCurrentDateValueChanged(_:)), for: .valueChanged)
 		return datePicker
 	}()
-	
+
 	private let collectionPlaceholderView = {
 		let view = TrackerPlaceholderView()
 		view.translatesAutoresizingMaskIntoConstraints = false
@@ -232,7 +232,7 @@ private extension TrackersViewController {
 		self.navigationItem.title = R.string.localizable.trackersNavigationItemTitle()
 		self.navigationItem.searchController = self.searchController
 		self.definesPresentationContext = true
-		
+
 		self.setupLeftBarButtonItem()
 		self.setupRightBarButtonItem()
 	}

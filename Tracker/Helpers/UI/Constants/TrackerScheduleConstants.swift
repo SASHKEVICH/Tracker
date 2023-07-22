@@ -9,7 +9,7 @@ import Foundation
 
 struct TrackerScheduleConstants {
     let bottomConstantConstraint: CGFloat
-    
+
     static var configuration: TrackerScheduleConstants {
         let currentDeviceType = Device.model
         switch currentDeviceType {

@@ -40,7 +40,7 @@ final class TabBarViewController: UITabBarController {
 		let statisticsViewController = statisticsSetupper.getViewController()
 
 		self.viewControllers = [trackersViewController, statisticsViewController]
-        
+
 		self.setupTabBar()
     }
 }

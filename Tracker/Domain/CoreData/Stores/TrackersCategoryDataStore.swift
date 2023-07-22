@@ -10,7 +10,7 @@ import CoreData
 
 struct TrackersCategoryDataStore {
     private let context: NSManagedObjectContext
-    
+
     init(context: NSManagedObjectContext) {
         self.context = context
     }
@@ -33,7 +33,7 @@ extension TrackersCategoryDataStore {
 
 		return self.category(with: trackerCoreData.category.id)
 	}
-    
+
     func category(with id: String) -> TrackerCategoryCoreData? {
 		let request = TrackerCategoryCoreData.fetchRequest()
         let predicate = NSPredicate(format: "%K MATCHES[cd] %@", #keyPath(TrackerCategoryCoreData.id), id)
@@ -58,11 +58,11 @@ extension TrackersCategoryDataStore {
 			print(error)
 		}
 	}
-    
+
     func add(category: TrackerCategoryCoreData) throws {
 		try? self.context.save()
 	}
-    
+
     func delete(_ record: NSManagedObject) throws {
         context.delete(record)
         try context.save()

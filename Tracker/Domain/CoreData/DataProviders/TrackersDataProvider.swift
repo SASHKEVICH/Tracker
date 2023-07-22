@@ -101,7 +101,7 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
 	var trackers: [TrackerCoreData] {
 		self.fetchedResultsController.fetchedObjects ?? []
 	}
-    
+
     func numberOfItemsInSection(_ section: Int) -> Int {
 		self.fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
@@ -110,7 +110,7 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
 		guard let currentWeekDay = self.currentWeekDay else { return }
 		self.fetchTrackers(currentWeekDay: currentWeekDay)
 	}
-    
+
     func fetchTrackers(currentWeekDay: WeekDay) {
 		let predicate = NSPredicate(
             format: "%K CONTAINS[cd] %@",
@@ -118,7 +118,7 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
 		)
 		self.performFetch(with: predicate)
     }
-    
+
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay) {
 		let predicate = NSPredicate(
             format: "%K CONTAINS[cd] %@ AND %K CONTAINS[cd] %@",
@@ -151,11 +151,11 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
 		)
 		self.performFetch(with: predicate)
 	}
-    
+
     func tracker(at indexPath: IndexPath) -> TrackerCoreData? {
 		self.fetchedResultsController.object(at: indexPath)
     }
-    
+
     func categoryTitle(at indexPath: IndexPath) -> String? {
 		let trackerCoreData = self.fetchedResultsController.object(at: indexPath)
         return trackerCoreData.category.title

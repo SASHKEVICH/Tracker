@@ -32,7 +32,7 @@ extension TrackersViewPresenterCollectionHelper {
 		let horizontalCellSpacing = self.collectionViewConstants.horizontalCellSpacing
         return CGSize(width: (collectionView.bounds.width - (leftInset + rightInset + horizontalCellSpacing)) / 2, height: 148)
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -40,7 +40,7 @@ extension TrackersViewPresenterCollectionHelper {
     ) -> CGFloat {
 		self.collectionViewConstants.horizontalCellSpacing
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -48,7 +48,7 @@ extension TrackersViewPresenterCollectionHelper {
     ) -> CGFloat {
 		self.collectionViewConstants.verticalCellSpacing
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -56,7 +56,7 @@ extension TrackersViewPresenterCollectionHelper {
     ) -> UIEdgeInsets {
 		self.collectionViewConstants.collectionViewInsets
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -98,7 +98,7 @@ extension TrackersViewPresenterCollectionHelper {
 
         return presenter.numberOfItemsInSection(section)
     }
-    
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
 		guard let presenter = self.presenter else {
             assertionFailure("Presenter is nil")
@@ -110,10 +110,10 @@ extension TrackersViewPresenterCollectionHelper {
         } else {
             presenter.didRecievedNonEmptyTrackers()
         }
-        
+
         return presenter.numberOfSections
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
@@ -141,10 +141,10 @@ extension TrackersViewPresenterCollectionHelper {
 
 		cell.dayCount = self.completedTimesCount(trackerId: tracker.id)
         cell.delegate = self
-        
+
         return cell
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         viewForSupplementaryElementOfKind kind: String,
@@ -158,7 +158,7 @@ extension TrackersViewPresenterCollectionHelper {
             assertionFailure("Cannot dequeue header view")
             return UICollectionReusableView()
         }
-        
+
 		view.headerText = self.presenter?.categoryTitle(at: indexPath)
         return view
     }
@@ -169,13 +169,13 @@ extension TrackersViewPresenterCollectionHelper: TrackersViewPresenterCollection
     func didTapCompleteCellButton(_ cell: TrackersCollectionViewCell) {
         guard let tracker = cell.tracker else { return }
 		guard let presenter = self.presenter else { return }
-        
+
 		if cell.isCompleted {
             guard let _ = try? presenter.incomplete(tracker: tracker) else { return }
         } else {
             guard let _ = try? presenter.complete(tracker: tracker) else { return }
         }
-        
+
 		cell.dayCount = self.completedTimesCount(trackerId: tracker.id)
     }
 }

@@ -49,14 +49,14 @@ final class TrackerScheduleViewController: UIViewController, TrackerScheduleView
 		button.addTarget(self, action: #selector(self.didTapAddScheduleButton), for: .touchUpInside)
 		return button
 	}()
-    
+
     private let trackerScheduleConfiguration = TrackerScheduleConstants.configuration
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
 		view.backgroundColor = .Dynamic.whiteDay
-        
+
 		self.addSubviews()
 		self.addConstraints()
     }

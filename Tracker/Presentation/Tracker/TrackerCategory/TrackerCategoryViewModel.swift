@@ -26,7 +26,7 @@ final class TrackerCategoryViewModel {
 			self.shouldHidePlaceholder()
 		}
 	}
-	
+
 	var onIsPlaceholderHiddenChanged: Binding?
 	var isPlaceholderHidden: Bool = true {
 		didSet {

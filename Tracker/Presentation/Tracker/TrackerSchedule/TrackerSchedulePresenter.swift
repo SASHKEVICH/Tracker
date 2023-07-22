@@ -18,10 +18,10 @@ protocol TrackerSchedulePresenterProtocol: AnyObject {
 final class TrackerSchedulePresenter: TrackerSchedulePresenterProtocol {
     weak var view: TrackerScheduleViewControllerProtocol?
     var scheduleTableViewHelper: TrackerScheduleTableViewHelperProtocol?
-    
+
     var weekDays: [WeekDay] = WeekDay.allCases
     var selectedWeekDays: Set<WeekDay> = []
-    
+
     init() {
         setupScheduleTableViewHelper()
     }

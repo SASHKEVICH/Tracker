@@ -15,13 +15,13 @@ protocol OnboardingViewControllerProtocol: AnyObject {
 // MARK: - OnboardingViewController
 final class OnboardingViewController: UIPageViewController {
     var presenter: OnboardingViewPresenterProtocol?
-	
+
 	private lazy var pageControl: UIPageControl = {
 		let pageControl = UIPageControl()
 		pageControl.translatesAutoresizingMaskIntoConstraints = false
 		pageControl.numberOfPages = self.presenter?.pagesCount ?? 0
 		pageControl.currentPage = 0
-		
+
 		pageControl.currentPageIndicatorTintColor = .Static.black
 		pageControl.pageIndicatorTintColor = .Static.black.withAlphaComponent(0.3)
 		return pageControl
@@ -37,10 +37,10 @@ final class OnboardingViewController: UIPageViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
 		self.dataSource = self.presenter?.pagesViewControllerHelper
 		self.delegate = self.presenter?.pagesViewControllerHelper
-		
+
 		self.setViewControllers()
 		self.addSubviews()
 		self.addConstraints()
@@ -73,7 +73,7 @@ private extension OnboardingViewController {
 		self.view.addSubview(confirmOnboardingButton)
 		self.view.addSubview(pageControl)
 	}
-	
+
 	func addConstraints() {
 		NSLayoutConstraint.activate([
 			confirmOnboardingButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -81,7 +81,7 @@ private extension OnboardingViewController {
 			confirmOnboardingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
 			confirmOnboardingButton.heightAnchor.constraint(equalToConstant: 60)
 		])
-		
+
 		NSLayoutConstraint.activate([
 			pageControl.bottomAnchor.constraint(equalTo: confirmOnboardingButton.topAnchor, constant: -24),
 			pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)

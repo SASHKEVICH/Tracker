@@ -10,20 +10,20 @@ import Foundation
 protocol TrackersViewPresetnerCollectionViewProtocol: AnyObject {
     var completedTrackersRecords: Set<TrackerRecord> { get }
     var currentDate: Date { get }
-    
+
     var numberOfSections: Int { get }
     func numberOfItemsInSection(_ section: Int) -> Int
     func tracker(at indexPath: IndexPath) -> Tracker?
     func completedTimesCount(trackerId: UUID) -> Int
     func categoryTitle(at indexPath: IndexPath) -> String?
-    
+
     func didRecievedEmptyTrackers()
     func didRecievedNonEmptyTrackers()
 
 	func didTapPinTracker(shouldPin: Bool, _ tracker: Tracker)
 	func didTapEditTracker(_ tracker: Tracker)
 	func didTapDeleteTracker(_ tracker: Tracker)
-    
+
     func complete(tracker: Tracker) throws
     func incomplete(tracker: Tracker) throws
 }
@@ -56,7 +56,7 @@ final class TrackersViewPresenter {
     enum TrackersViewPresenterError: Error {
         case currentDateLaterThanToday
     }
-    
+
     private enum TrackersViewPresenterState {
         case search
         case normal
@@ -79,7 +79,7 @@ final class TrackersViewPresenter {
 		searchControllerHelper.presenter = self
 		return searchControllerHelper
 	}()
-    
+
     private let trackersService: TrackersServiceProtocol
 	private let trackersAddingService: TrackersAddingServiceProtocol
 	private let trackersCompletingService: TrackersCompletingServiceProtocol
@@ -87,7 +87,7 @@ final class TrackersViewPresenter {
 	private let trackersPinningService: TrackersPinningServiceProtocol
 	private let router: TrackersViewRouterProtocol
 	private let alertPresenterService: AlertPresenterSerivceProtocol
-    
+
     private var state: TrackersViewPresenterState = .normal
 
 	init(
@@ -159,23 +159,23 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     var numberOfSections: Int {
 		self.trackersService.numberOfSections
     }
-    
+
     func numberOfItemsInSection(_ section: Int) -> Int {
 		self.trackersService.numberOfItemsInSection(section)
     }
-    
+
 	func tracker(at indexPath: IndexPath) -> Tracker? {
 		self.trackersService.tracker(at: indexPath)
     }
-    
+
     func categoryTitle(at indexPath: IndexPath) -> String? {
 		self.trackersService.categoryTitle(at: indexPath)
     }
-    
+
     func completedTimesCount(trackerId: UUID) -> Int {
 		self.trackersRecordService.completedTimesCount(trackerId: trackerId)
     }
-    
+
     func didRecievedEmptyTrackers() {
 		switch self.state {
 		case .normal:
@@ -184,7 +184,7 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 			self.view?.showPlaceholderViewForEmptySearch()
 		}
     }
-    
+
     func didRecievedNonEmptyTrackers() {
 		self.view?.shouldHidePlaceholderView(true)
     }
@@ -209,7 +209,7 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 			self.trackersAddingService.delete(tracker: tracker)
 		}
 	}
-    
+
     func requestChosenFutureDateAlert() {
 		self.alertPresenterService.requestChosenFutureDateAlert()
     }

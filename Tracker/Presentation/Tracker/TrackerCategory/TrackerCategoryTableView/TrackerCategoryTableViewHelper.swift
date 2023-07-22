@@ -19,16 +19,16 @@ protocol TrackerCategoryTableViewHelperProtocol: UITableViewDelegate, UITableVie
 
 final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHelperProtocol {
 	weak var delegate: TrackerCategoryTableViewHelperDelegate?
-	
+
 	private var lastSelectedCell: TrackerCategoryTableViewCell?
-	
+
 	// MARK: - UITableViewDelegate
 	func tableView(
 		_ tableView: UITableView,
 		didSelectRowAt indexPath: IndexPath
 	) {
 		tableView.deselectRow(at: indexPath, animated: true)
-		
+
 		guard let cell = tableView.cellForRow(at: indexPath) as? TrackerCategoryTableViewCell else { return }
 		guard let cells = tableView.visibleCells as? [TrackerCategoryTableViewCell] else { return }
 
@@ -43,7 +43,7 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
 		guard let selectedCategory = self.delegate?.categories[indexPath.row] else { return }
 		self.delegate?.didSelect(category: selectedCategory)
 	}
-	
+
 	// MARK: - UITableViewDataSource
 	func tableView(
 		_ tableView: UITableView,
@@ -51,7 +51,7 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
 	) -> Int {
 		self.delegate?.categories.count ?? .zero
 	}
-	
+
 	func tableView(
 		_ tableView: UITableView,
 		cellForRowAt indexPath: IndexPath

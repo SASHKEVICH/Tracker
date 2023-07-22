@@ -10,7 +10,7 @@ import CoreData
 
 struct TrackersRecordDataStore {
     private let context: NSManagedObjectContext
-    
+
     init(context: NSManagedObjectContext) {
         self.context = context
     }
@@ -20,7 +20,7 @@ extension TrackersRecordDataStore {
     var managedObjectContext: NSManagedObjectContext {
 		self.context
     }
-    
+
 	func complete(tracker: TrackerCoreData, date: Date) throws {
         guard let date = date.withoutTime else { return }
         let record = TrackerRecordCoreData(context: context)
@@ -30,7 +30,7 @@ extension TrackersRecordDataStore {
 		tracker.addToRecords(record)
 		try self.context.save()
     }
-    
+
 	func incomplete(tracker: TrackerCoreData, record: TrackerRecordCoreData) throws {
 		self.context.delete(record)
 		tracker.removeFromRecords(record)
@@ -79,7 +79,7 @@ extension TrackersRecordDataStore {
 			return nil
 		}
 	}
-    
+
     func completedTimesCount(trackerId: String) -> Int? {
         let request = TrackerRecordCoreData.fetchRequest()
         let predicate = NSPredicate(
@@ -94,7 +94,7 @@ extension TrackersRecordDataStore {
 			return nil
 		}
     }
-    
+
 	func completedTrackers(for date: Date) -> [TrackerRecordCoreData] {
 		let request = TrackerRecordCoreData.fetchRequest()
 		let predicate = NSPredicate(
@@ -105,7 +105,7 @@ extension TrackersRecordDataStore {
 		let records = try? context.fetch(request)
 		return records ?? []
 	}
-    
+
     func record(with id: String, date: NSDate) -> TrackerRecordCoreData? {
         let request = TrackerRecordCoreData.fetchRequest()
         let predicate = NSPredicate(
@@ -114,7 +114,7 @@ extension TrackersRecordDataStore {
             #keyPath(TrackerRecordCoreData.date), date)
         request.predicate = predicate
         request.fetchLimit = 1
-        
+
         let records = try? context.fetch(request)
         return records?.first
     }

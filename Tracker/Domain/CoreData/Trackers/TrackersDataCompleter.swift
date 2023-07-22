@@ -42,7 +42,7 @@ extension TrackersDataCompleter: TrackersDataCompleterProtocol {
 		guard let date = date.withoutTime else { return }
 		guard let record = trackersRecordDataStore.record(with: id, date: date as NSDate) else { return }
 		guard let tracker = self.trackersDataStore.tracker(with: id) else { return }
-		
+
 		try? self.trackersRecordDataStore.incomplete(tracker: tracker, record: record)
 	}
 

@@ -9,7 +9,7 @@ import UIKit
 
 final class TrackersCollectionSectionHeader: UICollectionReusableView {
     static let reuseIdentifier = String(describing: TrackersCollectionSectionHeader.self)
-    
+
     var headerText: String? {
         didSet {
 			self.headerLabel.text = self.headerText
@@ -23,13 +23,13 @@ final class TrackersCollectionSectionHeader: UICollectionReusableView {
 		label.font = .Bold.small
 		return label
 	}()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 		self.addSubviews()
 		self.addConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }

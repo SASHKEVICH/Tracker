@@ -13,13 +13,13 @@ protocol TrackersViewPresenterSearchControllerHelperProtocol: UISearchTextFieldD
 
 final class TrackersViewPresenterSearchControllerHelper: NSObject, TrackersViewPresenterSearchControllerHelperProtocol {
     weak var presenter: TrackersViewPresetnerSearchControllerProtocol?
-    
+
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         guard let text = searchBar.text, !text.isEmpty else { return }
 		self.presenter?.requestFilteredTrackers(for: text)
     }
-    
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 		self.presenter?.requestShowAllCategoriesForCurrentDay()
     }

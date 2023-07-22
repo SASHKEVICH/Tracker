@@ -11,7 +11,7 @@ struct TrackerCollectionViewConstants {
     let collectionViewInsets: UIEdgeInsets
     let horizontalCellSpacing: CGFloat
     let verticalCellSpacing: CGFloat
-    
+
 	static var trackersCollectionConfiguration: TrackerCollectionViewConstants {
 		let currentDeviceType = Device.model
 		switch currentDeviceType {

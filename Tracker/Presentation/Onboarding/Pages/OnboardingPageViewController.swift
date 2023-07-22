@@ -26,7 +26,7 @@ final class OnboardingPageViewController: UIViewController {
 		imageView.contentMode = .scaleAspectFill
 		return imageView
 	}()
-	
+
 	private let onboardingLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
@@ -36,9 +36,9 @@ final class OnboardingPageViewController: UIViewController {
 		label.textColor = .Static.black
 		return label
 	}()
-	
+
 	private let constantConfiguration = OnboardingConstants.configuration
-	
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -52,7 +52,7 @@ private extension OnboardingPageViewController {
 		self.view.addSubview(imageView)
 		self.view.addSubview(onboardingLabel)
 	}
-	
+
 	func addConstraints() {
 		NSLayoutConstraint.activate([
 			imageView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -60,7 +60,7 @@ private extension OnboardingPageViewController {
 			imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
 			imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 		])
-		
+
 		NSLayoutConstraint.activate([
 			onboardingLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: constantConfiguration.topConstantConstraint),
 			onboardingLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -constantConfiguration.bottomConstantConstraint),

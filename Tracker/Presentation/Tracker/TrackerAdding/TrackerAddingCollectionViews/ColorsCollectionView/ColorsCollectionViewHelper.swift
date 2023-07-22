@@ -18,7 +18,7 @@ protocol ColorsCollectionViewHelperProtocol: UICollectionViewDelegateFlowLayout,
 
 final class ColorsCollectionViewHelper: NSObject, ColorsCollectionViewHelperProtocol {
     weak var delegate: TrackerColorCollectionViewDelegate?
-    
+
     private let configuration = TrackerCollectionViewConstants.addTrackerCollectionsConfiguration
 	private let colors: [UIColor] = [
 		.Selection.color1, .Selection.color2, .Selection.color3,
@@ -39,10 +39,10 @@ extension ColorsCollectionViewHelper {
         guard let cell = collectionView.cellForItem(at: indexPath) as? ColorsCollectionViewCell,
 			  let color = cell.color
         else { return }
-        
+
 		self.delegate?.didSelect(color: color)
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -51,14 +51,14 @@ extension ColorsCollectionViewHelper {
         let leftInset = configuration.collectionViewInsets.left
         let rightInset = configuration.collectionViewInsets.right
         let horizontalCellSpacing = configuration.horizontalCellSpacing
-        
+
         let cellsPerRow: CGFloat = 6
         let cellsHorizontalSpace = leftInset + rightInset + horizontalCellSpacing * cellsPerRow
-        
+
         let width = (collectionView.bounds.width - cellsHorizontalSpace) / cellsPerRow
         return CGSize(width: width, height: width)
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -66,7 +66,7 @@ extension ColorsCollectionViewHelper {
     ) -> CGFloat {
 		self.configuration.horizontalCellSpacing
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -74,7 +74,7 @@ extension ColorsCollectionViewHelper {
     ) -> CGFloat {
 		self.configuration.verticalCellSpacing
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -82,7 +82,7 @@ extension ColorsCollectionViewHelper {
     ) -> UIEdgeInsets {
 		self.configuration.collectionViewInsets
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -100,7 +100,7 @@ extension ColorsCollectionViewHelper {
     ) -> Int {
 		self.colors.count
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
@@ -121,7 +121,7 @@ extension ColorsCollectionViewHelper {
 
         return cell
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         viewForSupplementaryElementOfKind kind: String,

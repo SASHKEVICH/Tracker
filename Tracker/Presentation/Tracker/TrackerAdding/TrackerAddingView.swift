@@ -251,7 +251,7 @@ final class TrackerAddingView: UIView {
 		super.init(frame: .zero)
 		self.configure()
 	}
-	
+
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
@@ -286,7 +286,7 @@ extension TrackerAddingView: TrackerAddingViewProtocol {
 			self?.errorLabel.isHidden = shouldHide
 		}
 	}
-	
+
 	func reloadCollections() {
 		self.reloadData()
 	}

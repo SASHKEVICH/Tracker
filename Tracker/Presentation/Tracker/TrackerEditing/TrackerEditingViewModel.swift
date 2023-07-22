@@ -82,7 +82,7 @@ final class TrackerEditingViewModel {
 	private var newCompletedTimes: Int = 0
 
 	private let tracker: Tracker
-	
+
 	private let trackersAddingService: TrackersAddingServiceProtocol
 	private let trackersRecordService: TrackersRecordServiceProtocol
 	private let trackersCompletetingService: TrackersCompletingServiceProtocol

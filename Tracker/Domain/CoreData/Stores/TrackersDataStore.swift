@@ -10,7 +10,7 @@ import CoreData
 
 struct TrackersDataStore {
     private let context: NSManagedObjectContext
-    
+
     init(context: NSManagedObjectContext) {
         self.context = context
     }
@@ -26,7 +26,7 @@ extension TrackersDataStore {
 		request.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerCoreData.id), id)
 		return try? self.context.fetch(request).first
 	}
-    
+
     func add(tracker: TrackerCoreData, in category: TrackerCategoryCoreData) throws {
 		tracker.category = category
         category.addToTrackers(tracker)

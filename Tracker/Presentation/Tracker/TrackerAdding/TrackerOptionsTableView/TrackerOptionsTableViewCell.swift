@@ -45,7 +45,7 @@ final class TrackerOptionsTableViewCell: UITableViewCell {
 	}()
 
     private let selectBackgroundView = CellSelectBackgroundView()
-    
+
     private lazy var titleLableTopConstraint = NSLayoutConstraint(
 		item: self.cellTitleLabel,
 		attribute: .top,
@@ -63,14 +63,14 @@ final class TrackerOptionsTableViewCell: UITableViewCell {
 		attribute: .bottom,
 		multiplier: 1,
 		constant: -25)
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubviews()
 		addConstraints()
         configureDefaultCellBackground()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -113,7 +113,7 @@ private extension TrackerOptionsTableViewCell {
 			additionalInfoLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -14)
 		])
 	}
-    
+
     func configureDefaultCellBackground() {
 		backgroundColor = .Dynamic.backgroundDay
         selectedBackgroundView = selectBackgroundView

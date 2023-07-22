@@ -10,7 +10,7 @@ import Foundation
 struct OnboardingConstants {
 	let topConstantConstraint: CGFloat
 	let bottomConstantConstraint: CGFloat
-	
+
 	static var configuration: OnboardingConstants {
 		let currentDeviceType = Device.model
 		switch currentDeviceType {
