@@ -1,6 +1,30 @@
 --exclude Pods
 
 --indent 4
+--lineAfterMarks false
+
+--enable \
+	andOperator \
+	anyObjectProtocol \
+	assertionFailures \
+	blankLineAfterImports \
+	blankLinesAroundMark \
+	blankLinesAtEndOfScope \
+	blankLinesAtStartOfScope \
+	blankLinesBetweenImports \
+	blankLinesBetweenScopes \
+	braces \
+	consecutiveBlankLines \
+	docComments \
+	duplicateImports \
+	elseOnSameLine \
+	emptyBraces \
+	extensionAccessControl \
+
 
 --disable \
-	redundantSelf
+	redundantSelf \
+	conditionalAssignment \
+	consecutiveSpaces \
+	preferKeyPath \
+
