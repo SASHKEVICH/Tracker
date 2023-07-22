@@ -20,9 +20,9 @@ protocol TrackersViewPresetnerCollectionViewProtocol: AnyObject {
     func didRecievedEmptyTrackers()
     func didRecievedNonEmptyTrackers()
 
-	func didTapPinTracker(shouldPin: Bool, _ tracker: Tracker)
-	func didTapEditTracker(_ tracker: Tracker)
-	func didTapDeleteTracker(_ tracker: Tracker)
+    func didTapPinTracker(shouldPin: Bool, _ tracker: Tracker)
+    func didTapEditTracker(_ tracker: Tracker)
+    func didTapDeleteTracker(_ tracker: Tracker)
 
     func complete(tracker: Tracker) throws
     func incomplete(tracker: Tracker) throws
@@ -37,21 +37,22 @@ protocol TrackersViewPresenterProtocol: AnyObject {
     var view: TrackersViewControllerFullProtocol? { get set }
     var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol { get }
     var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol { get }
-	var analyticsService: AnalyticsServiceProtocol { get }
+    var analyticsService: AnalyticsServiceProtocol { get }
     var currentDate: Date { get }
     func requestTrackers(for date: Date)
     func viewDidLoad()
-	func navigateToTrackerTypeScreen()
-	func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?)
-	func eraseOperations()
+    func navigateToTrackerTypeScreen()
+    func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?)
+    func eraseOperations()
 }
 
 typealias TrackersViewPresenterFullProtocol =
-	TrackersViewPresenterProtocol
-	& TrackersViewPresetnerCollectionViewProtocol
-	& TrackersViewPresetnerSearchControllerProtocol
+    TrackersViewPresenterProtocol
+        & TrackersViewPresetnerCollectionViewProtocol
+        & TrackersViewPresetnerSearchControllerProtocol
 
 // MARK: - TrackersViewPresenter
+
 final class TrackersViewPresenter {
     enum TrackersViewPresenterError: Error {
         case currentDateLaterThanToday
@@ -62,242 +63,247 @@ final class TrackersViewPresenter {
         case normal
     }
 
-	let analyticsService: AnalyticsServiceProtocol
+    let analyticsService: AnalyticsServiceProtocol
 
-	weak var view: TrackersViewControllerFullProtocol?
-	var completedTrackersRecords: Set<TrackerRecord> = []
-	var currentDate: Date = Date()
+    weak var view: TrackersViewControllerFullProtocol?
+    var completedTrackersRecords: Set<TrackerRecord> = []
+    var currentDate: Date = .init()
 
-	lazy var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol = {
-		let collectionHelper = TrackersViewPresenterCollectionHelper()
-		collectionHelper.presenter = self
-		return collectionHelper
-	}()
+    lazy var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol = {
+        let collectionHelper = TrackersViewPresenterCollectionHelper()
+        collectionHelper.presenter = self
+        return collectionHelper
+    }()
 
-	lazy var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol = {
-		let searchControllerHelper = TrackersViewPresenterSearchControllerHelper()
-		searchControllerHelper.presenter = self
-		return searchControllerHelper
-	}()
+    lazy var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol = {
+        let searchControllerHelper = TrackersViewPresenterSearchControllerHelper()
+        searchControllerHelper.presenter = self
+        return searchControllerHelper
+    }()
 
     private let trackersService: TrackersServiceProtocol
-	private let trackersAddingService: TrackersAddingServiceProtocol
-	private let trackersCompletingService: TrackersCompletingServiceProtocol
-	private let trackersRecordService: TrackersRecordServiceProtocol
-	private let trackersPinningService: TrackersPinningServiceProtocol
-	private let router: TrackersViewRouterProtocol
-	private let alertPresenterService: AlertPresenterSerivceProtocol
+    private let trackersAddingService: TrackersAddingServiceProtocol
+    private let trackersCompletingService: TrackersCompletingServiceProtocol
+    private let trackersRecordService: TrackersRecordServiceProtocol
+    private let trackersPinningService: TrackersPinningServiceProtocol
+    private let router: TrackersViewRouterProtocol
+    private let alertPresenterService: AlertPresenterSerivceProtocol
 
     private var state: TrackersViewPresenterState = .normal
 
-	init(
-		trackersService: TrackersServiceProtocol,
-		trackersAddingService: TrackersAddingServiceProtocol,
-		trackersCompletingService: TrackersCompletingServiceProtocol,
-		trackersRecordService: TrackersRecordServiceProtocol,
-		trackersPinningService: TrackersPinningServiceProtocol,
-		router: TrackersViewRouterProtocol,
-		alertPresenterService: AlertPresenterSerivceProtocol,
-		analyticsService: AnalyticsServiceProtocol
-	) {
+    init(
+        trackersService: TrackersServiceProtocol,
+        trackersAddingService: TrackersAddingServiceProtocol,
+        trackersCompletingService: TrackersCompletingServiceProtocol,
+        trackersRecordService: TrackersRecordServiceProtocol,
+        trackersPinningService: TrackersPinningServiceProtocol,
+        router: TrackersViewRouterProtocol,
+        alertPresenterService: AlertPresenterSerivceProtocol,
+        analyticsService: AnalyticsServiceProtocol
+    ) {
         self.trackersService = trackersService
-		self.trackersAddingService = trackersAddingService
-		self.trackersCompletingService = trackersCompletingService
-		self.trackersRecordService = trackersRecordService
-		self.trackersPinningService = trackersPinningService
-		self.router = router
-		self.alertPresenterService = alertPresenterService
-		self.analyticsService = analyticsService
+        self.trackersAddingService = trackersAddingService
+        self.trackersCompletingService = trackersCompletingService
+        self.trackersRecordService = trackersRecordService
+        self.trackersPinningService = trackersPinningService
+        self.router = router
+        self.alertPresenterService = alertPresenterService
+        self.analyticsService = analyticsService
     }
 }
 
 // MARK: - TrackersViewPresenterProtocol
+
 extension TrackersViewPresenter: TrackersViewPresenterProtocol {
-	func eraseOperations() {
-		self.trackersService.eraseOperations()
-	}
+    func eraseOperations() {
+        trackersService.eraseOperations()
+    }
 
-	func requestTrackers(for date: Date) {
-		guard let weekDay = date.weekDay else { return }
-		self.currentDate = date
+    func requestTrackers(for date: Date) {
+        guard let weekDay = date.weekDay else { return }
+        currentDate = date
 
-		self.trackersService.fetchTrackers(weekDay: weekDay)
-		self.fetchCompletedTrackersForCurrentDate()
-	}
+        trackersService.fetchTrackers(weekDay: weekDay)
+        fetchCompletedTrackersForCurrentDate()
+    }
 
-	func viewDidLoad() {
-		self.fetchCompletedTrackersForCurrentDate()
-	}
+    func viewDidLoad() {
+        fetchCompletedTrackersForCurrentDate()
+    }
 
-	func navigateToTrackerTypeScreen() {
-		self.router.navigateToTrackerTypeScreen()
-	}
+    func navigateToTrackerTypeScreen() {
+        router.navigateToTrackerTypeScreen()
+    }
 
-	func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?) {
-		self.router.navigateToFilterScreen(chosenDate: chosenDate, selectedFilter: selectedFilter)
-	}
+    func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?) {
+        router.navigateToFilterScreen(chosenDate: chosenDate, selectedFilter: selectedFilter)
+    }
 }
 
 // MARK: - TrackersViewPresetnerSearchControllerProtocol
+
 extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
     func requestFilteredTrackers(for searchText: String?) {
         guard let titleSearchString = searchText, let weekDay = currentDate.weekDay else { return }
-		self.state = .search
+        state = .search
 
-		self.trackersService.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: weekDay)
-		self.fetchCompletedTrackersForCurrentDate()
+        trackersService.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: weekDay)
+        fetchCompletedTrackersForCurrentDate()
     }
 
     func requestShowAllCategoriesForCurrentDay() {
-		self.state = .normal
-		self.requestTrackers(for: self.currentDate)
+        state = .normal
+        requestTrackers(for: currentDate)
     }
 }
 
 // MARK: - TrackersViewPresetnerCollectionViewProtocol
+
 extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     var numberOfSections: Int {
-		self.trackersService.numberOfSections
+        trackersService.numberOfSections
     }
 
     func numberOfItemsInSection(_ section: Int) -> Int {
-		self.trackersService.numberOfItemsInSection(section)
+        trackersService.numberOfItemsInSection(section)
     }
 
-	func tracker(at indexPath: IndexPath) -> Tracker? {
-		self.trackersService.tracker(at: indexPath)
+    func tracker(at indexPath: IndexPath) -> Tracker? {
+        trackersService.tracker(at: indexPath)
     }
 
     func categoryTitle(at indexPath: IndexPath) -> String? {
-		self.trackersService.categoryTitle(at: indexPath)
+        trackersService.categoryTitle(at: indexPath)
     }
 
     func completedTimesCount(trackerId: UUID) -> Int {
-		self.trackersRecordService.completedTimesCount(trackerId: trackerId)
+        trackersRecordService.completedTimesCount(trackerId: trackerId)
     }
 
     func didRecievedEmptyTrackers() {
-		switch self.state {
-		case .normal:
-			self.view?.showPlaceholderViewForCurrentDay()
-		case .search:
-			self.view?.showPlaceholderViewForEmptySearch()
-		}
+        switch state {
+        case .normal:
+            view?.showPlaceholderViewForCurrentDay()
+        case .search:
+            view?.showPlaceholderViewForEmptySearch()
+        }
     }
 
     func didRecievedNonEmptyTrackers() {
-		self.view?.shouldHidePlaceholderView(true)
+        view?.shouldHidePlaceholderView(true)
     }
 
-	func didTapPinTracker(shouldPin: Bool, _ tracker: Tracker) {
-		if shouldPin {
-			self.trackersPinningService.pin(tracker: tracker)
-		} else {
-			self.trackersPinningService.unpin(tracker: tracker)
-		}
-	}
+    func didTapPinTracker(shouldPin: Bool, _ tracker: Tracker) {
+        if shouldPin {
+            trackersPinningService.pin(tracker: tracker)
+        } else {
+            trackersPinningService.unpin(tracker: tracker)
+        }
+    }
 
-	func didTapEditTracker(_ tracker: Tracker) {
-		self.analyticsService.didEditTracker()
-		self.router.navigateToEditTrackerScreen(tracker: tracker)
-	}
+    func didTapEditTracker(_ tracker: Tracker) {
+        analyticsService.didEditTracker()
+        router.navigateToEditTrackerScreen(tracker: tracker)
+    }
 
-	func didTapDeleteTracker(_ tracker: Tracker) {
-		self.alertPresenterService.requestDeleteTrackerAlert { [weak self] _ in
-			guard let self = self else { return }
-			self.analyticsService.didDeleteTracker()
-			self.trackersAddingService.delete(tracker: tracker)
-		}
-	}
+    func didTapDeleteTracker(_ tracker: Tracker) {
+        alertPresenterService.requestDeleteTrackerAlert { [weak self] _ in
+            guard let self = self else { return }
+            self.analyticsService.didDeleteTracker()
+            self.trackersAddingService.delete(tracker: tracker)
+        }
+    }
 
     func requestChosenFutureDateAlert() {
-		self.alertPresenterService.requestChosenFutureDateAlert()
+        alertPresenterService.requestChosenFutureDateAlert()
     }
 
-	func complete(tracker: Tracker) throws {
-		try self.checkCurrentDate()
-		self.analyticsService.didTapTracker()
-		self.trackersCompletingService.completeTracker(trackerId: tracker.id, date: currentDate)
-	}
+    func complete(tracker: Tracker) throws {
+        try checkCurrentDate()
+        analyticsService.didTapTracker()
+        trackersCompletingService.completeTracker(trackerId: tracker.id, date: currentDate)
+    }
 
-	func incomplete(tracker: Tracker) throws {
-		try self.checkCurrentDate()
-		self.analyticsService.didTapTracker()
-		self.trackersCompletingService.incompleteTracker(trackerId: tracker.id, date: currentDate)
-	}
+    func incomplete(tracker: Tracker) throws {
+        try checkCurrentDate()
+        analyticsService.didTapTracker()
+        trackersCompletingService.incompleteTracker(trackerId: tracker.id, date: currentDate)
+    }
 }
 
 // MARK: - TrackersDataProviderDelegate
+
 extension TrackersViewPresenter: TrackersDataProviderDelegate {
-	func insertSections(at: IndexSet) {
-		self.view?.insertSections(at: at)
-		self.fetchCompletedTrackersForCurrentDate()
-	}
+    func insertSections(at: IndexSet) {
+        view?.insertSections(at: at)
+        fetchCompletedTrackersForCurrentDate()
+    }
 
-	func deleteSections(at: IndexSet) {
-		self.view?.deleteSections(at: at)
-		self.fetchCompletedTrackersForCurrentDate()
-	}
+    func deleteSections(at: IndexSet) {
+        view?.deleteSections(at: at)
+        fetchCompletedTrackersForCurrentDate()
+    }
 
-	func reloadSections(at: IndexSet) {
-		self.view?.reloadSections(at: at)
-	}
+    func reloadSections(at: IndexSet) {
+        view?.reloadSections(at: at)
+    }
 
-	func insertItems(at: TrackersCollectionCellIndices) {
-		self.view?.insertItems(at: at)
-		self.fetchCompletedTrackersForCurrentDate()
-	}
+    func insertItems(at: TrackersCollectionCellIndices) {
+        view?.insertItems(at: at)
+        fetchCompletedTrackersForCurrentDate()
+    }
 
-	func deleteItems(at: TrackersCollectionCellIndices) {
-		self.view?.deleteItems(at: at)
-		self.fetchCompletedTrackersForCurrentDate()
-	}
+    func deleteItems(at: TrackersCollectionCellIndices) {
+        view?.deleteItems(at: at)
+        fetchCompletedTrackersForCurrentDate()
+    }
 
-	func moveItems(at: IndexPath, to: IndexPath) {
-		self.view?.moveItems(at: at, to: to)
-		self.fetchCompletedTrackersForCurrentDate()
-	}
+    func moveItems(at: IndexPath, to: IndexPath) {
+        view?.moveItems(at: at, to: to)
+        fetchCompletedTrackersForCurrentDate()
+    }
 
-	func reloadItems(at: TrackersCollectionCellIndices) {
-		self.view?.reloadItems(at: at)
-		self.fetchCompletedTrackersForCurrentDate()
-	}
+    func reloadItems(at: TrackersCollectionCellIndices) {
+        view?.reloadItems(at: at)
+        fetchCompletedTrackersForCurrentDate()
+    }
 
-	func didChangeContent(operations: [BlockOperation]) {
-		self.view?.didChangeContentAnimated(operations: operations)
-	}
+    func didChangeContent(operations: [BlockOperation]) {
+        view?.didChangeContentAnimated(operations: operations)
+    }
 
-	func fetchDidPerformed() {
-		self.updateTrackers()
-	}
+    func fetchDidPerformed() {
+        updateTrackers()
+    }
 }
 
 // MARK: - TrackersRecordServiceDelegate
+
 extension TrackersViewPresenter: TrackersRecordServiceDelegate {
-	func didRecieveCompletedTrackers(_ records: [TrackerRecord]) {
-		self.completedTrackersRecords = Set(records)
-	}
+    func didRecieveCompletedTrackers(_ records: [TrackerRecord]) {
+        completedTrackersRecords = Set(records)
+    }
 }
 
 private extension TrackersViewPresenter {
-	var isCurrentDateLaterThanToday: Bool {
-		self.currentDate > Date()
-	}
+    var isCurrentDateLaterThanToday: Bool {
+        currentDate > Date()
+    }
 
-	func checkCurrentDate() throws {
-		if self.isCurrentDateLaterThanToday {
-			self.requestChosenFutureDateAlert()
-			throw TrackersViewPresenterError.currentDateLaterThanToday
-		}
-	}
+    func checkCurrentDate() throws {
+        if isCurrentDateLaterThanToday {
+            requestChosenFutureDateAlert()
+            throw TrackersViewPresenterError.currentDateLaterThanToday
+        }
+    }
 
-	func fetchCompletedTrackersForCurrentDate() {
-		self.trackersRecordService.fetchCompletedRecords(for: self.currentDate)
-	}
+    func fetchCompletedTrackersForCurrentDate() {
+        trackersRecordService.fetchCompletedRecords(for: currentDate)
+    }
 
-	func updateTrackers() {
-		DispatchQueue.main.async { [weak self] in
-			self?.view?.didRecieveTrackers()
-		}
-	}
+    func updateTrackers() {
+        DispatchQueue.main.async { [weak self] in
+            self?.view?.didRecieveTrackers()
+        }
+    }
 }

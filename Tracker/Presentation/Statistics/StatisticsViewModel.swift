@@ -8,72 +8,74 @@
 import Foundation
 
 protocol StatisticsViewModelProtocol {
-	var onStatisticsChanged: (() -> Void)? { get set }
-	var statistics: Set<Statistics> { get }
+    var onStatisticsChanged: (() -> Void)? { get set }
+    var statistics: Set<Statistics> { get }
 
-	var onIsPlaceholderHiddenChanged: (() -> Void)? { get set }
-	var isPlaceholderHidden: Bool { get }
+    var onIsPlaceholderHiddenChanged: (() -> Void)? { get set }
+    var isPlaceholderHidden: Bool { get }
 
-	func fetchCompletedTrackers()
+    func fetchCompletedTrackers()
 }
 
 final class StatisticsViewModel {
-	var onStatisticsChanged: (() -> Void)?
-	var onIsPlaceholderHiddenChanged: (() -> Void)?
+    var onStatisticsChanged: (() -> Void)?
+    var onIsPlaceholderHiddenChanged: (() -> Void)?
 
-	var statistics: Set<Statistics> = [] {
-		didSet {
-			self.onStatisticsChanged?()
-		}
-	}
+    var statistics: Set<Statistics> = [] {
+        didSet {
+            onStatisticsChanged?()
+        }
+    }
 
-	var isPlaceholderHidden: Bool = false {
-		didSet {
-			self.onIsPlaceholderHiddenChanged?()
-		}
-	}
+    var isPlaceholderHidden: Bool = false {
+        didSet {
+            onIsPlaceholderHiddenChanged?()
+        }
+    }
 
-	private let trackersCompletingService: TrackersCompletingServiceStatisticsProtocol
+    private let trackersCompletingService: TrackersCompletingServiceStatisticsProtocol
 
-	init(trackersCompletingService: TrackersCompletingServiceStatisticsProtocol) {
-		self.trackersCompletingService = trackersCompletingService
-		self.fetchCompletedTrackers()
-	}
+    init(trackersCompletingService: TrackersCompletingServiceStatisticsProtocol) {
+        self.trackersCompletingService = trackersCompletingService
+        fetchCompletedTrackers()
+    }
 }
 
 // MARK: - StatisticsViewModelProtocol
+
 extension StatisticsViewModel: StatisticsViewModelProtocol {
-	func fetchCompletedTrackers() {
-		let completedTrackersCount = self.trackersCompletingService.completedTrackersCount
-		guard completedTrackersCount > 0 else {
-			self.isPlaceholderHidden = false
-			return
-		}
+    func fetchCompletedTrackers() {
+        let completedTrackersCount = trackersCompletingService.completedTrackersCount
+        guard completedTrackersCount > 0 else {
+            isPlaceholderHidden = false
+            return
+        }
 
-		let title = R.string.localizable.statisticsStatisticTrackersCompletedTitle()
-		let statistics = Statistics(title: title, count: completedTrackersCount)
-		self.statistics.insert(statistics)
+        let title = R.string.localizable.statisticsStatisticTrackersCompletedTitle()
+        let statistics = Statistics(title: title, count: completedTrackersCount)
+        self.statistics.insert(statistics)
 
-		self.isPlaceholderHidden = true
-	}
+        isPlaceholderHidden = true
+    }
 }
 
 // MARK: - TrackersCompletingServiceStatisticsDelegate
+
 extension StatisticsViewModel: TrackersCompletingServiceStatisticsDelegate {
-	func didChangeCompletedTrackers() {
-		let completedTrackersCount = self.trackersCompletingService.completedTrackersCount
-		guard completedTrackersCount > 0 else {
-			self.isPlaceholderHidden = false
-			return
-		}
+    func didChangeCompletedTrackers() {
+        let completedTrackersCount = trackersCompletingService.completedTrackersCount
+        guard completedTrackersCount > 0 else {
+            isPlaceholderHidden = false
+            return
+        }
 
-		let title = R.string.localizable.statisticsStatisticTrackersCompletedTitle()
-		let newStatistics = Statistics(title: title, count: completedTrackersCount)
+        let title = R.string.localizable.statisticsStatisticTrackersCompletedTitle()
+        let newStatistics = Statistics(title: title, count: completedTrackersCount)
 
-		guard let completedTrackersStatistics = self.statistics.first(where: { $0.title == title }) else { return }
-		self.statistics.remove(completedTrackersStatistics)
-		self.statistics.insert(newStatistics)
+        guard let completedTrackersStatistics = statistics.first(where: { $0.title == title }) else { return }
+        statistics.remove(completedTrackersStatistics)
+        statistics.insert(newStatistics)
 
-		self.isPlaceholderHidden = true
-	}
+        isPlaceholderHidden = true
+    }
 }

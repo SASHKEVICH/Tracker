@@ -8,77 +8,79 @@
 import UIKit
 
 protocol TrackerCategoryTableViewHelperDelegate: AnyObject {
-	var categories: [TrackerCategory] { get }
-	var chosenCategory: TrackerCategory? { get }
-	func didSelect(category: TrackerCategory)
+    var categories: [TrackerCategory] { get }
+    var chosenCategory: TrackerCategory? { get }
+    func didSelect(category: TrackerCategory)
 }
 
 protocol TrackerCategoryTableViewHelperProtocol: UITableViewDelegate, UITableViewDataSource {
-	var delegate: TrackerCategoryTableViewHelperDelegate? { get set }
+    var delegate: TrackerCategoryTableViewHelperDelegate? { get set }
 }
 
 final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHelperProtocol {
-	weak var delegate: TrackerCategoryTableViewHelperDelegate?
+    weak var delegate: TrackerCategoryTableViewHelperDelegate?
 
-	private var lastSelectedCell: TrackerCategoryTableViewCell?
+    private var lastSelectedCell: TrackerCategoryTableViewCell?
 
-	// MARK: - UITableViewDelegate
-	func tableView(
-		_ tableView: UITableView,
-		didSelectRowAt indexPath: IndexPath
-	) {
-		tableView.deselectRow(at: indexPath, animated: true)
+    // MARK: - UITableViewDelegate
 
-		guard let cell = tableView.cellForRow(at: indexPath) as? TrackerCategoryTableViewCell else { return }
-		guard let cells = tableView.visibleCells as? [TrackerCategoryTableViewCell] else { return }
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
+        tableView.deselectRow(at: indexPath, animated: true)
 
-		if cell != self.lastSelectedCell {
-			cell.isCellSelected = true
-			self.lastSelectedCell = cell
+        guard let cell = tableView.cellForRow(at: indexPath) as? TrackerCategoryTableViewCell else { return }
+        guard let cells = tableView.visibleCells as? [TrackerCategoryTableViewCell] else { return }
 
-			let filteredCells = cells.filter { $0 != cell }
-			filteredCells.forEach { $0.isCellSelected = false }
-		}
+        if cell != lastSelectedCell {
+            cell.isCellSelected = true
+            lastSelectedCell = cell
 
-		guard let selectedCategory = self.delegate?.categories[indexPath.row] else { return }
-		self.delegate?.didSelect(category: selectedCategory)
-	}
+            let filteredCells = cells.filter { $0 != cell }
+            filteredCells.forEach { $0.isCellSelected = false }
+        }
 
-	// MARK: - UITableViewDataSource
-	func tableView(
-		_ tableView: UITableView,
-		numberOfRowsInSection section: Int
-	) -> Int {
-		self.delegate?.categories.count ?? .zero
-	}
+        guard let selectedCategory = delegate?.categories[indexPath.row] else { return }
+        delegate?.didSelect(category: selectedCategory)
+    }
 
-	func tableView(
-		_ tableView: UITableView,
-		cellForRowAt indexPath: IndexPath
-	) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: TrackerCategoryTableViewCell.reuseIdentifier,
-			for: indexPath
-		) as? TrackerCategoryTableViewCell else { return UITableViewCell() }
+    // MARK: - UITableViewDataSource
 
-		guard let category = self.delegate?.categories[indexPath.row] else { return UITableViewCell() }
-		cell.categoryTitle = category.title
+    func tableView(
+        _: UITableView,
+        numberOfRowsInSection _: Int
+    ) -> Int {
+        delegate?.categories.count ?? .zero
+    }
 
-		if let lastSelectedCell = self.lastSelectedCell, lastSelectedCell == cell {
-			cell.isCellSelected = true
-		}
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: TrackerCategoryTableViewCell.reuseIdentifier,
+            for: indexPath
+        ) as? TrackerCategoryTableViewCell else { return UITableViewCell() }
 
-		if let selectedCategory = self.delegate?.chosenCategory, selectedCategory == category {
-			cell.isCellSelected = true
-		}
+        guard let category = delegate?.categories[indexPath.row] else { return UITableViewCell() }
+        cell.categoryTitle = category.title
 
-		let configuredCell = cell.configure(
-			cellIndexPath: indexPath,
-			lastCellIndexPath: tableView.lastCellIndexPath,
-			entityCount: delegate?.categories.count,
-			tableViewWidth: tableView.bounds.width
-		)
+        if let lastSelectedCell = lastSelectedCell, lastSelectedCell == cell {
+            cell.isCellSelected = true
+        }
 
-		return configuredCell
-	}
+        if let selectedCategory = delegate?.chosenCategory, selectedCategory == category {
+            cell.isCellSelected = true
+        }
+
+        let configuredCell = cell.configure(
+            cellIndexPath: indexPath,
+            lastCellIndexPath: tableView.lastCellIndexPath,
+            entityCount: delegate?.categories.count,
+            tableViewWidth: tableView.bounds.width
+        )
+
+        return configuredCell
+    }
 }

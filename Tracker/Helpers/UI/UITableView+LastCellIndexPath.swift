@@ -9,7 +9,7 @@ import UIKit
 
 extension UITableView {
     var lastCellIndexPath: IndexPath? {
-        for section in (0..<self.numberOfSections).reversed() {
+        for section in (0 ..< numberOfSections).reversed() {
             let rows = numberOfRows(inSection: section)
             guard rows > 0 else { continue }
             return IndexPath(row: rows - 1, section: section)

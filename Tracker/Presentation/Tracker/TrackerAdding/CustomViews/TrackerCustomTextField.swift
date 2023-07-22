@@ -8,21 +8,22 @@
 import UIKit
 
 final class TrackerCustomTextField: UITextField {
-	private enum Padding {
-		static let insets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 40)
-	}
+    private enum Padding {
+        static let insets: UIEdgeInsets = .init(top: 0, left: 20, bottom: 0, right: 40)
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupTextField()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-		bounds.inset(by: Padding.insets)
+        bounds.inset(by: Padding.insets)
     }
 
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
@@ -36,18 +37,19 @@ final class TrackerCustomTextField: UITextField {
 
 private extension TrackerCustomTextField {
     func setupTextField() {
-		self.textColor = .Dynamic.blackDay
-		self.backgroundColor = .Dynamic.backgroundDay
+        textColor = .Dynamic.blackDay
+        backgroundColor = .Dynamic.backgroundDay
 
-		self.layer.cornerRadius = 16
-		self.layer.masksToBounds = true
+        layer.cornerRadius = 16
+        layer.masksToBounds = true
 
-		self.font = .Regular.medium
+        font = .Regular.medium
 
         if let placeholder = placeholder {
             attributedPlaceholder = NSAttributedString(
                 string: placeholder,
-				attributes: [NSAttributedString.Key.foregroundColor: UIColor.Static.gray])
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor.Static.gray]
+            )
         }
     }
 }

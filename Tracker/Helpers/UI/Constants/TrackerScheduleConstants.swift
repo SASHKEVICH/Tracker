@@ -22,11 +22,11 @@ struct TrackerScheduleConstants {
 }
 
 private extension TrackerScheduleConstants {
-	static var iPhoneXConfiguration: TrackerScheduleConstants {
-		TrackerScheduleConstants(bottomConstantConstraint: 16)
-	}
+    static var iPhoneXConfiguration: TrackerScheduleConstants {
+        TrackerScheduleConstants(bottomConstantConstraint: 16)
+    }
 
-	static var iPhoneSEConfiguration: TrackerScheduleConstants {
-		TrackerScheduleConstants(bottomConstantConstraint: 24)
-	}
+    static var iPhoneSEConfiguration: TrackerScheduleConstants {
+        TrackerScheduleConstants(bottomConstantConstraint: 24)
+    }
 }

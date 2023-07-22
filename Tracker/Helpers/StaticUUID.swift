@@ -8,10 +8,10 @@
 import Foundation
 
 struct StaticUUID {
-	struct FilterCategories {
-		static let all = UUID()
-		static let today = UUID()
-		static let completed = UUID()
-		static let incompleted = UUID()
-	}
+    enum FilterCategories {
+        static let all = UUID()
+        static let today = UUID()
+        static let completed = UUID()
+        static let incompleted = UUID()
+    }
 }

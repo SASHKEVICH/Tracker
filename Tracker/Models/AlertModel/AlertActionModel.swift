@@ -8,7 +8,7 @@
 import UIKit
 
 struct AlertActionModel {
-	let title: String?
-	let style: UIAlertAction.Style
-	let completion: ((UIAlertAction) -> Void)?
+    let title: String?
+    let style: UIAlertAction.Style
+    let completion: ((UIAlertAction) -> Void)?
 }

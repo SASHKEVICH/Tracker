@@ -8,31 +8,32 @@
 import UIKit
 
 protocol OnboardingRouterProtocol {
-	func navigateToMainScreen(animated: Bool)
+    func navigateToMainScreen(animated: Bool)
 }
 
 final class OnboardingRouter {
-	private weak var window: UIWindow?
+    private weak var window: UIWindow?
 
-	init(window: UIWindow?) {
-		self.window = window
-	}
+    init(window: UIWindow?) {
+        self.window = window
+    }
 }
 
 // MARK: - OnboardingRouterProtocol
-extension OnboardingRouter: OnboardingRouterProtocol {
-	func navigateToMainScreen(animated: Bool) {
-		guard let window = self.window else { return }
-		let tabBarController = TabBarViewController()
-		window.rootViewController = tabBarController
-		window.makeKeyAndVisible()
 
-		UIView.transition(
-			with: window,
-			duration: 0.3,
-			options: .transitionCrossDissolve,
-			animations: nil,
-			completion: nil
-		)
-	}
+extension OnboardingRouter: OnboardingRouterProtocol {
+    func navigateToMainScreen(animated _: Bool) {
+        guard let window = window else { return }
+        let tabBarController = TabBarViewController()
+        window.rootViewController = tabBarController
+        window.makeKeyAndVisible()
+
+        UIView.transition(
+            with: window,
+            duration: 0.3,
+            options: .transitionCrossDissolve,
+            animations: nil,
+            completion: nil
+        )
+    }
 }

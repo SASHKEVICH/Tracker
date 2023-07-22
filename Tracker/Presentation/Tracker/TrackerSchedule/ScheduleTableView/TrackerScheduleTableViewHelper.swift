@@ -19,9 +19,10 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
     weak var presenter: TrackerSchedulePresenterProtocol?
 
     // MARK: - UITableViewDelegate
+
     func tableView(
-        _ tableView: UITableView,
-        estimatedHeightForRowAt indexPath: IndexPath
+        _: UITableView,
+        estimatedHeightForRowAt _: IndexPath
     ) -> CGFloat {
         75
     }
@@ -34,9 +35,10 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
     }
 
     // MARK: - UITableViewDataSource
+
     func tableView(
-        _ tableView: UITableView,
-        numberOfRowsInSection section: Int
+        _: UITableView,
+        numberOfRowsInSection _: Int
     ) -> Int {
         presenter?.weekDays.count ?? 0
     }
@@ -46,11 +48,12 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-			withIdentifier: TrackerScheduleTableViewCell.reuseIdentifier,
-			for: indexPath) as? TrackerScheduleTableViewCell
+            withIdentifier: TrackerScheduleTableViewCell.reuseIdentifier,
+            for: indexPath
+        ) as? TrackerScheduleTableViewCell
         else { return UITableViewCell() }
 
-		guard let presenter = presenter else { return UITableViewCell() }
+        guard let presenter = presenter else { return UITableViewCell() }
 
         let weekDay = presenter.weekDays[indexPath.row]
         cell.weekDay = weekDay
@@ -61,12 +64,12 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
             cell.isDaySwitchOn = true
         }
 
-		let configuredCell = cell.configure(
-			cellIndexPath: indexPath,
-			lastCellIndexPath: tableView.lastCellIndexPath,
-			entityCount: presenter.weekDays.count,
-			tableViewWidth: tableView.bounds.width
-		)
+        let configuredCell = cell.configure(
+            cellIndexPath: indexPath,
+            lastCellIndexPath: tableView.lastCellIndexPath,
+            entityCount: presenter.weekDays.count,
+            tableViewWidth: tableView.bounds.width
+        )
 
         return configuredCell
     }

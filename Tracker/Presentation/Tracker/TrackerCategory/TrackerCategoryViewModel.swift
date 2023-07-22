@@ -8,69 +8,71 @@
 import Foundation
 
 protocol TrackerCategoryViewModelProtocol {
-	var onCategoriesChanged: Binding? { get set }
-	var categories: [TrackerCategory] { get }
+    var onCategoriesChanged: Binding? { get set }
+    var categories: [TrackerCategory] { get }
 
-	var onIsPlaceholderHiddenChanged: Binding? { get set }
-	var isPlaceholderHidden: Bool { get }
-	func didChoose(category: TrackerCategory)
+    var onIsPlaceholderHiddenChanged: Binding? { get set }
+    var isPlaceholderHidden: Bool { get }
+    func didChoose(category: TrackerCategory)
 }
 
 final class TrackerCategoryViewModel {
-	weak var delegate: TrackerCategoryViewControllerDelegate?
+    weak var delegate: TrackerCategoryViewControllerDelegate?
 
-	var onCategoriesChanged: Binding?
-	var categories: [TrackerCategory] = [] {
-		didSet {
-			self.onCategoriesChanged?()
-			self.shouldHidePlaceholder()
-		}
-	}
+    var onCategoriesChanged: Binding?
+    var categories: [TrackerCategory] = [] {
+        didSet {
+            onCategoriesChanged?()
+            shouldHidePlaceholder()
+        }
+    }
 
-	var onIsPlaceholderHiddenChanged: Binding?
-	var isPlaceholderHidden: Bool = true {
-		didSet {
-			self.onIsPlaceholderHiddenChanged?()
-		}
-	}
+    var onIsPlaceholderHiddenChanged: Binding?
+    var isPlaceholderHidden: Bool = true {
+        didSet {
+            onIsPlaceholderHiddenChanged?()
+        }
+    }
 
-	private let pinnedCategoryId: UUID?
+    private let pinnedCategoryId: UUID?
 
-	private var trackersCategoryService: TrackersCategoryServiceProtocol
+    private var trackersCategoryService: TrackersCategoryServiceProtocol
 
-	init(trackersCategoryService: TrackersCategoryServiceProtocol, pinnedCategoryId: UUID? = nil) {
-		self.trackersCategoryService = trackersCategoryService
-		self.pinnedCategoryId = pinnedCategoryId
-		self.trackersCategoryService.trackersCategoryDataProviderDelegate = self
+    init(trackersCategoryService: TrackersCategoryServiceProtocol, pinnedCategoryId: UUID? = nil) {
+        self.trackersCategoryService = trackersCategoryService
+        self.pinnedCategoryId = pinnedCategoryId
+        self.trackersCategoryService.trackersCategoryDataProviderDelegate = self
 
-		DispatchQueue.main.async { [weak self] in
-			guard let self = self else { return }
-			self.categories = self.getCategoriesFromStore()
-		}
-	}
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.categories = self.getCategoriesFromStore()
+        }
+    }
 }
 
 // MARK: - TrackerCategoryViewModelProtocol
+
 extension TrackerCategoryViewModel: TrackerCategoryViewModelProtocol {
-	func didChoose(category: TrackerCategory) {
-		self.delegate?.didRecieveCategory(category)
-	}
+    func didChoose(category: TrackerCategory) {
+        delegate?.didRecieveCategory(category)
+    }
 }
 
 // MARK: - TrackersCategoryDataProviderDelegate
+
 extension TrackerCategoryViewModel: TrackersCategoryDataProviderDelegate {
-	func storeDidUpdate() {
-		self.categories = self.getCategoriesFromStore()
-	}
+    func storeDidUpdate() {
+        categories = getCategoriesFromStore()
+    }
 }
 
 private extension TrackerCategoryViewModel {
-	func shouldHidePlaceholder() {
-		self.isPlaceholderHidden = self.categories.isEmpty == false
-	}
+    func shouldHidePlaceholder() {
+        isPlaceholderHidden = categories.isEmpty == false
+    }
 
-	func getCategoriesFromStore() -> [TrackerCategory] {
-		let categories = self.trackersCategoryService.categories
-		return categories.filter { $0.id != self.pinnedCategoryId }
-	}
+    func getCategoriesFromStore() -> [TrackerCategory] {
+        let categories = trackersCategoryService.categories
+        return categories.filter { $0.id != self.pinnedCategoryId }
+    }
 }

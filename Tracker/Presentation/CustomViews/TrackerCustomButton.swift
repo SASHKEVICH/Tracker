@@ -8,24 +8,24 @@
 import UIKit
 
 final class TrackerCustomButton: UIButton {
-	enum State {
-		case cancel
-		case normal
-		case disabled
-		case filter
-		case onboarding
-	}
+    enum State {
+        case cancel
+        case normal
+        case disabled
+        case filter
+        case onboarding
+    }
 
-	var buttonState: TrackerCustomButton.State {
-		didSet {
-			self.setNeededButtonState()
-		}
-	}
+    var buttonState: TrackerCustomButton.State {
+        didSet {
+            setNeededButtonState()
+        }
+    }
 
     private var title: String
 
-	init(state: TrackerCustomButton.State, title: String) {
-        self.buttonState = state
+    init(state: TrackerCustomButton.State, title: String) {
+        buttonState = state
         self.title = title
         super.init(frame: .zero)
     }
@@ -35,83 +35,85 @@ final class TrackerCustomButton: UIButton {
         layer.cornerRadius = 16
         layer.masksToBounds = true
 
-		self.setNeededButtonState()
+        setNeededButtonState()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
 private extension TrackerCustomButton {
     func setNeededButtonState() {
-		switch self.buttonState {
+        switch buttonState {
         case .cancel:
-			self.setCancelState()
+            setCancelState()
         case .normal:
-			self.setNormalState()
+            setNormalState()
         case .disabled:
-			self.setDisabledState()
-		case .filter:
-			self.setFilterState()
-		case .onboarding:
-			self.setOnboardingState()
+            setDisabledState()
+        case .filter:
+            setFilterState()
+        case .onboarding:
+            setOnboardingState()
         }
     }
 
     func setCancelState() {
-        self.isEnabled = true
+        isEnabled = true
 
         let border = CAShapeLayer()
-        border.frame = self.bounds
+        border.frame = bounds
 
-		let color = UIColor.Static.red
-		border.strokeColor = color.cgColor
+        let color = UIColor.Static.red
+        border.strokeColor = color.cgColor
         border.lineWidth = 1
         border.fillColor = nil
-        border.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: layer.cornerRadius).cgPath
-        self.layer.addSublayer(border)
+        border.path = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
+        layer.addSublayer(border)
 
-		let font = UIFont.Medium.big
-		self.setAttributedButtonTitle(with: color, font: font)
+        let font = UIFont.Medium.big
+        setAttributedButtonTitle(with: color, font: font)
     }
 
     func setNormalState() {
-        self.isEnabled = true
-		self.layer.backgroundColor = UIColor.Dynamic.blackDay.cgColor
+        isEnabled = true
+        layer.backgroundColor = UIColor.Dynamic.blackDay.cgColor
 
-		let font = UIFont.Medium.big
-		self.setAttributedButtonTitle(with: .Dynamic.whiteDay, font: font)
+        let font = UIFont.Medium.big
+        setAttributedButtonTitle(with: .Dynamic.whiteDay, font: font)
     }
 
     func setDisabledState() {
-        self.isEnabled = false
-		self.layer.backgroundColor = UIColor.Static.gray.cgColor
+        isEnabled = false
+        layer.backgroundColor = UIColor.Static.gray.cgColor
 
-		let font = UIFont.Medium.big
-		self.setAttributedButtonTitle(with: .white, font: font)
+        let font = UIFont.Medium.big
+        setAttributedButtonTitle(with: .white, font: font)
     }
 
-	func setFilterState() {
-		self.layer.backgroundColor = UIColor.Static.blue.cgColor
+    func setFilterState() {
+        layer.backgroundColor = UIColor.Static.blue.cgColor
 
-		let font = UIFont.Regular.medium
-		self.setAttributedButtonTitle(with: .white, font: font)
-	}
+        let font = UIFont.Regular.medium
+        setAttributedButtonTitle(with: .white, font: font)
+    }
 
-	func setOnboardingState() {
-		self.isEnabled = true
-		self.layer.backgroundColor = UIColor.Static.black.cgColor
+    func setOnboardingState() {
+        isEnabled = true
+        layer.backgroundColor = UIColor.Static.black.cgColor
 
-		let font = UIFont.Medium.big
-		self.setAttributedButtonTitle(with: .white, font: font)
-	}
+        let font = UIFont.Medium.big
+        setAttributedButtonTitle(with: .white, font: font)
+    }
 
-	func setAttributedButtonTitle(with color: UIColor, font: UIFont) {
-		let attributedTitle = NSAttributedString(
-			string: title,
-			attributes: [NSAttributedString.Key.font: font,
-						 NSAttributedString.Key.foregroundColor: color])
-		self.setAttributedTitle(attributedTitle, for: .normal)
-	}
+    func setAttributedButtonTitle(with color: UIColor, font: UIFont) {
+        let attributedTitle = NSAttributedString(
+            string: title,
+            attributes: [NSAttributedString.Key.font: font,
+                         NSAttributedString.Key.foregroundColor: color]
+        )
+        setAttributedTitle(attributedTitle, for: .normal)
+    }
 }

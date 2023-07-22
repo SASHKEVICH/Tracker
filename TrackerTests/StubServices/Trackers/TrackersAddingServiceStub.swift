@@ -5,33 +5,34 @@
 //  Created by Александр Бекренев on 17.07.2023.
 //
 
-import UIKit
 import Tracker
+import UIKit
 
 final class TrackersAddingServiceStub {}
 
 // MARK: - TrackersAddingServiceProtocol
+
 extension TrackersAddingServiceStub: TrackersAddingServiceProtocol {
-	func addTracker(
-		title: String,
-		schedule: Set<WeekDay>,
-		type: Tracker.TrackerType,
-		color: UIColor,
-		emoji: String,
-		categoryId: UUID
-	) {}
+    func addTracker(
+        title _: String,
+        schedule _: Set<WeekDay>,
+        type _: Tracker.TrackerType,
+        color _: UIColor,
+        emoji _: String,
+        categoryId _: UUID
+    ) {}
 
-	func delete(tracker: Tracker) {}
+    func delete(tracker _: Tracker) {}
 
-	func saveEdited(
-		trackerId: UUID,
-		title: String,
-		schedule: Set<WeekDay>,
-		type: Tracker.TrackerType,
-		color: UIColor,
-		emoji: String,
-		newCategoryId: UUID,
-		previousCategoryId: UUID,
-		isPinned: Bool
-	) {}
+    func saveEdited(
+        trackerId _: UUID,
+        title _: String,
+        schedule _: Set<WeekDay>,
+        type _: Tracker.TrackerType,
+        color _: UIColor,
+        emoji _: String,
+        newCategoryId _: UUID,
+        previousCategoryId _: UUID,
+        isPinned _: Bool
+    ) {}
 }

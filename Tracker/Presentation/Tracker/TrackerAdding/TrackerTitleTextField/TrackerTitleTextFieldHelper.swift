@@ -22,4 +22,5 @@ final class TrackerTitleTextFieldHelper: NSObject {
 }
 
 // MARK: TrackerTitleTextFieldHelperProtocol
+
 extension TrackerTitleTextFieldHelper: TrackerTitleTextFieldHelperProtocol {}

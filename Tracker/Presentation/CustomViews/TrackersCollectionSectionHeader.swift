@@ -12,22 +12,22 @@ final class TrackersCollectionSectionHeader: UICollectionReusableView {
 
     var headerText: String? {
         didSet {
-			self.headerLabel.text = self.headerText
-			self.headerLabel.sizeToFit()
+            headerLabel.text = headerText
+            headerLabel.sizeToFit()
         }
     }
 
-	private let headerLabel: UILabel = {
-		let label = UILabel()
-		label.translatesAutoresizingMaskIntoConstraints = false
-		label.font = .Bold.small
-		return label
-	}()
+    private let headerLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .Bold.small
+        return label
+    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-		self.addSubviews()
-		self.addConstraints()
+        addSubviews()
+        addConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -36,15 +36,15 @@ final class TrackersCollectionSectionHeader: UICollectionReusableView {
 }
 
 private extension TrackersCollectionSectionHeader {
-	func addSubviews() {
-		self.addSubview(self.headerLabel)
-	}
+    func addSubviews() {
+        addSubview(headerLabel)
+    }
 
-	func addConstraints() {
-		NSLayoutConstraint.activate([
-			headerLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-			headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
-			headerLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
-		])
-	}
+    func addConstraints() {
+        NSLayoutConstraint.activate([
+            headerLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
+            headerLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+        ])
+    }
 }

@@ -8,8 +8,8 @@
 import UIKit
 
 protocol TrackerEmojisCollectionViewDelegate: AnyObject {
-	var selectedEmoji: String? { get }
-	func didSelect(emoji: String)
+    var selectedEmoji: String? { get }
+    func didSelect(emoji: String)
 }
 
 protocol EmojisCollectionViewHelperProtocol: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
@@ -23,27 +23,28 @@ final class EmojisCollectionViewHelper: NSObject, EmojisCollectionViewHelperProt
     private let emojis: [String] = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
         "😇", "😡", "🥶", "🤔", "🙌", "🍔",
-        "🥦", "🏓", "🥇", "🎸", "🌴", "😪"
+        "🥦", "🏓", "🥇", "🎸", "🌴", "😪",
     ]
 }
 
 // MARK: UICollectionViewDelegateFlowLayout
+
 extension EmojisCollectionViewHelper {
     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? EmojisCollectionViewCell,
-			  let emoji = cell.emoji
+              let emoji = cell.emoji
         else { return }
 
-		self.delegate?.didSelect(emoji: emoji)
+        delegate?.didSelect(emoji: emoji)
     }
 
     func collectionView(
         _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
+        layout _: UICollectionViewLayout,
+        sizeForItemAt _: IndexPath
     ) -> CGSize {
         let leftInset = configuration.collectionViewInsets.left
         let rightInset = configuration.collectionViewInsets.right
@@ -57,45 +58,46 @@ extension EmojisCollectionViewHelper {
     }
 
     func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        minimumInteritemSpacingForSectionAt section: Int
+        _: UICollectionView,
+        layout _: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt _: Int
     ) -> CGFloat {
-		self.configuration.horizontalCellSpacing
+        configuration.horizontalCellSpacing
     }
 
     func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        minimumLineSpacingForSectionAt section: Int
+        _: UICollectionView,
+        layout _: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt _: Int
     ) -> CGFloat {
-		self.configuration.verticalCellSpacing
+        configuration.verticalCellSpacing
     }
 
     func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        insetForSectionAt section: Int
+        _: UICollectionView,
+        layout _: UICollectionViewLayout,
+        insetForSectionAt _: Int
     ) -> UIEdgeInsets {
-		self.configuration.collectionViewInsets
+        configuration.collectionViewInsets
     }
 
     func collectionView(
         _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
+        layout _: UICollectionViewLayout,
+        referenceSizeForHeaderInSection _: Int
     ) -> CGSize {
-		CGSize(width: collectionView.frame.width, height: 50)
+        CGSize(width: collectionView.frame.width, height: 50)
     }
 }
 
 // MARK: UICollectionViewDataSource
+
 extension EmojisCollectionViewHelper {
     func collectionView(
-        _ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int
+        _: UICollectionView,
+        numberOfItemsInSection _: Int
     ) -> Int {
-		self.emojis.count
+        emojis.count
     }
 
     func collectionView(
@@ -104,16 +106,17 @@ extension EmojisCollectionViewHelper {
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: EmojisCollectionViewCell.reuseIdentifier,
-            for: indexPath) as? EmojisCollectionViewCell
+            for: indexPath
+        ) as? EmojisCollectionViewCell
         else {
             assertionFailure("cannot dequeue emojis cell")
             return UICollectionViewCell()
         }
-		let emoji = self.emojis[indexPath.row]
-		cell.emoji = emoji
+        let emoji = emojis[indexPath.row]
+        cell.emoji = emoji
 
-		guard let selectedEmoji = self.delegate?.selectedEmoji, selectedEmoji == emoji else { return cell }
-		collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
+        guard let selectedEmoji = delegate?.selectedEmoji, selectedEmoji == emoji else { return cell }
+        collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
         return cell
     }
 
@@ -125,7 +128,8 @@ extension EmojisCollectionViewHelper {
         guard let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
             withReuseIdentifier: TrackersCollectionSectionHeader.reuseIdentifier,
-            for: indexPath) as? TrackersCollectionSectionHeader
+            for: indexPath
+        ) as? TrackersCollectionSectionHeader
         else {
             assertionFailure("Cannot dequeue header view")
             return UICollectionReusableView()
