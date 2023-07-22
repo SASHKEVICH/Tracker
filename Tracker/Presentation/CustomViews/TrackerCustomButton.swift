@@ -18,14 +18,14 @@ final class TrackerCustomButton: UIButton {
 
     var buttonState: TrackerCustomButton.State {
         didSet {
-            setNeededButtonState()
+            self.setNeededButtonState()
         }
     }
 
     private var title: String
 
     init(state: TrackerCustomButton.State, title: String) {
-        buttonState = state
+        self.buttonState = state
         self.title = title
         super.init(frame: .zero)
     }
@@ -35,7 +35,7 @@ final class TrackerCustomButton: UIButton {
         layer.cornerRadius = 16
         layer.masksToBounds = true
 
-        setNeededButtonState()
+        self.setNeededButtonState()
     }
 
     @available(*, unavailable)
@@ -46,66 +46,66 @@ final class TrackerCustomButton: UIButton {
 
 private extension TrackerCustomButton {
     func setNeededButtonState() {
-        switch buttonState {
+        switch self.buttonState {
         case .cancel:
-            setCancelState()
+            self.setCancelState()
         case .normal:
-            setNormalState()
+            self.setNormalState()
         case .disabled:
-            setDisabledState()
+            self.setDisabledState()
         case .filter:
-            setFilterState()
+            self.setFilterState()
         case .onboarding:
-            setOnboardingState()
+            self.setOnboardingState()
         }
     }
 
     func setCancelState() {
-        isEnabled = true
+        self.isEnabled = true
 
         let border = CAShapeLayer()
-        border.frame = bounds
+        border.frame = self.bounds
 
         let color = UIColor.Static.red
         border.strokeColor = color.cgColor
         border.lineWidth = 1
         border.fillColor = nil
-        border.path = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
-        layer.addSublayer(border)
+        border.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: layer.cornerRadius).cgPath
+        self.layer.addSublayer(border)
 
         let font = UIFont.Medium.big
-        setAttributedButtonTitle(with: color, font: font)
+        self.setAttributedButtonTitle(with: color, font: font)
     }
 
     func setNormalState() {
-        isEnabled = true
-        layer.backgroundColor = UIColor.Dynamic.blackDay.cgColor
+        self.isEnabled = true
+        self.layer.backgroundColor = UIColor.Dynamic.blackDay.cgColor
 
         let font = UIFont.Medium.big
-        setAttributedButtonTitle(with: .Dynamic.whiteDay, font: font)
+        self.setAttributedButtonTitle(with: .Dynamic.whiteDay, font: font)
     }
 
     func setDisabledState() {
-        isEnabled = false
-        layer.backgroundColor = UIColor.Static.gray.cgColor
+        self.isEnabled = false
+        self.layer.backgroundColor = UIColor.Static.gray.cgColor
 
         let font = UIFont.Medium.big
-        setAttributedButtonTitle(with: .white, font: font)
+        self.setAttributedButtonTitle(with: .white, font: font)
     }
 
     func setFilterState() {
-        layer.backgroundColor = UIColor.Static.blue.cgColor
+        self.layer.backgroundColor = UIColor.Static.blue.cgColor
 
         let font = UIFont.Regular.medium
-        setAttributedButtonTitle(with: .white, font: font)
+        self.setAttributedButtonTitle(with: .white, font: font)
     }
 
     func setOnboardingState() {
-        isEnabled = true
-        layer.backgroundColor = UIColor.Static.black.cgColor
+        self.isEnabled = true
+        self.layer.backgroundColor = UIColor.Static.black.cgColor
 
         let font = UIFont.Medium.big
-        setAttributedButtonTitle(with: .white, font: font)
+        self.setAttributedButtonTitle(with: .white, font: font)
     }
 
     func setAttributedButtonTitle(with color: UIColor, font: UIFont) {
@@ -114,6 +114,6 @@ private extension TrackerCustomButton {
             attributes: [NSAttributedString.Key.font: font,
                          NSAttributedString.Key.foregroundColor: color]
         )
-        setAttributedTitle(attributedTitle, for: .normal)
+        self.setAttributedTitle(attributedTitle, for: .normal)
     }
 }

@@ -35,34 +35,34 @@ struct TrackersDataAdder {
         self.trackersDataStore = trackersDataStore
         self.pinnedCategoryId = pinnedCategoryId
         self.trackersFactory = trackersFactory
-        context = trackersDataStore.managedObjectContext
+        self.context = trackersDataStore.managedObjectContext
     }
 }
 
 extension TrackersDataAdder: TrackersDataAdderProtocol {
     func add(tracker: Tracker, for categoryId: UUID) throws {
-        let trackersCoreData = trackersFactory.makeTrackerCoreData(from: tracker, context: context)
+        let trackersCoreData = self.trackersFactory.makeTrackerCoreData(from: tracker, context: self.context)
 
-        guard let categoryCoreData = trackersCategoryDataStore.category(with: categoryId.uuidString) else {
+        guard let categoryCoreData = self.trackersCategoryDataStore.category(with: categoryId.uuidString) else {
             throw TrackersDataAdderError.cannotFindCategory
         }
 
-        try trackersDataStore.add(tracker: trackersCoreData, in: categoryCoreData)
+        try self.trackersDataStore.add(tracker: trackersCoreData, in: categoryCoreData)
     }
 
     func delete(tracker: Tracker) {
-        trackersDataStore.delete(tracker: tracker)
+        self.trackersDataStore.delete(tracker: tracker)
     }
 
     func saveEdited(tracker: Tracker, newCategoryId: UUID) {
-        guard let newCategoryCoreData = trackersCategoryDataStore.category(with: newCategoryId.uuidString) else { return }
-        guard let oldTrackerCoreData = trackersDataStore.tracker(with: tracker.id.uuidString) else { return }
+        guard let newCategoryCoreData = self.trackersCategoryDataStore.category(with: newCategoryId.uuidString) else { return }
+        guard let oldTrackerCoreData = self.trackersDataStore.tracker(with: tracker.id.uuidString) else { return }
 
-        let newTrackerCoreData = trackersFactory.makeTrackerCoreData(from: tracker, context: trackersDataStore.managedObjectContext)
+        let newTrackerCoreData = self.trackersFactory.makeTrackerCoreData(from: tracker, context: self.trackersDataStore.managedObjectContext)
         newTrackerCoreData.records = oldTrackerCoreData.records
 
-        try? trackersDataStore.add(tracker: newTrackerCoreData, in: newCategoryCoreData)
+        try? self.trackersDataStore.add(tracker: newTrackerCoreData, in: newCategoryCoreData)
 
-        trackersDataStore.delete(trackerCoreData: oldTrackerCoreData)
+        self.trackersDataStore.delete(trackerCoreData: oldTrackerCoreData)
     }
 }

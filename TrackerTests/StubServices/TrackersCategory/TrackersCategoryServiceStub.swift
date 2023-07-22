@@ -21,7 +21,7 @@ final class TrackersCategoryServiceStub {
 
     init(state: State) {
         self.state = state
-        trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: TrackersFactory())
+        self.trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: TrackersFactory())
     }
 }
 
@@ -29,16 +29,16 @@ final class TrackersCategoryServiceStub {
 
 extension TrackersCategoryServiceStub: TrackersCategoryServiceProtocol {
     var numberOfSections: Int {
-        state == .empty ? 0 : 1
+        self.state == .empty ? 0 : 1
     }
 
     var categories: [TrackerCategory] {
-        let category = trackersCategoryFactory.makeCategory(title: "Test", isPinning: false)
-        return state == .empty ? [] : [category]
+        let category = self.trackersCategoryFactory.makeCategory(title: "Test", isPinning: false)
+        return self.state == .empty ? [] : [category]
     }
 
     func numberOfItemsInSection(_: Int) -> Int {
-        state == .empty ? 0 : 1
+        self.state == .empty ? 0 : 1
     }
 
     func category(for _: Tracker) -> TrackerCategory? {

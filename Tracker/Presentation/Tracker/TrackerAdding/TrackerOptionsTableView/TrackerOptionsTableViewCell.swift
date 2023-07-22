@@ -81,17 +81,17 @@ final class TrackerOptionsTableViewCell: UITableViewCell {
 
 extension TrackerOptionsTableViewCell {
     func set(cellTitle: String?) {
-        cellTitleLabel.text = cellTitle
+        self.cellTitleLabel.text = cellTitle
     }
 
     func set(additionalInfo: String?) {
         if let additionalInfo = additionalInfo {
-            additionalInfoLabel.text = additionalInfo
-            additionalInfoLabel.isHidden = false
+            self.additionalInfoLabel.text = additionalInfo
+            self.additionalInfoLabel.isHidden = false
         }
 
-        additionalInfoLabel.isHidden = additionalInfo == nil
-        relayoutCellTitleLabel()
+        self.additionalInfoLabel.isHidden = additionalInfo == nil
+        self.relayoutCellTitleLabel()
     }
 }
 
@@ -126,13 +126,13 @@ private extension TrackerOptionsTableViewCell {
 private extension TrackerOptionsTableViewCell {
     func relayoutCellTitleLabel() {
         if additionalInfoLabel.isHidden {
-            titleLableTopConstraint.constant = 26
-            titleLableBottomConstraint.constant = -25
+            self.titleLableTopConstraint.constant = 26
+            self.titleLableBottomConstraint.constant = -25
         } else {
-            titleLableTopConstraint.constant = 15
-            titleLableBottomConstraint.constant = -38
+            self.titleLableTopConstraint.constant = 15
+            self.titleLableBottomConstraint.constant = -38
         }
 
-        setNeedsLayout()
+        self.setNeedsLayout()
     }
 }

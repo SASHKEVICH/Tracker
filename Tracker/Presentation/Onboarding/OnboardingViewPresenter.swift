@@ -23,7 +23,7 @@ final class OnboardingViewPresenter {
 
     init(helper: OnboardingViewControllerHelperProtocol, router: OnboardingRouterProtocol) {
         self.router = router
-        pagesViewControllerHelper = helper
+        self.pagesViewControllerHelper = helper
 
         helper.presenter = self
     }
@@ -33,14 +33,14 @@ final class OnboardingViewPresenter {
 
 extension OnboardingViewPresenter: OnboardingViewPresenterProtocol {
     var pagesCount: Int {
-        pagesViewControllerHelper?.pagesCount ?? 0
+        self.pagesViewControllerHelper?.pagesCount ?? 0
     }
 
     func setCurrentPage(index: Int) {
-        view?.setCurrentPage(index: index)
+        self.view?.setCurrentPage(index: index)
     }
 
     func navigateToMainScreen(animated: Bool) {
-        router.navigateToMainScreen(animated: animated)
+        self.router.navigateToMainScreen(animated: animated)
     }
 }

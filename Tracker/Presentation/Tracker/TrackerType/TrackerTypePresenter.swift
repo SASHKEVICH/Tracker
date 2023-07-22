@@ -24,10 +24,10 @@ final class TrackerTypePresenter {
 
 extension TrackerTypePresenter: TrackerTypePresenterProtocol {
     func navigateToTrackerScreen() {
-        router.navigateToTrackerScreen()
+        self.router.navigateToTrackerScreen()
     }
 
     func navigateToIrregularEventScreen() {
-        router.navigateToIrregularEventScreen()
+        self.router.navigateToIrregularEventScreen()
     }
 }

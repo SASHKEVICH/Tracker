@@ -86,6 +86,6 @@ private extension TrackerScheduleTableViewCell {
 private extension TrackerScheduleTableViewCell {
     @objc
     func didChangeSwitchValue(_ sender: UISwitch) {
-        delegate?.didChangeSwitchValue(self, isOn: sender.isOn)
+        self.delegate?.didChangeSwitchValue(self, isOn: sender.isOn)
     }
 }

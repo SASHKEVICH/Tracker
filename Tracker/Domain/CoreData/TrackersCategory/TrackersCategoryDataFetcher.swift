@@ -24,6 +24,6 @@ struct TrackersCategoryDataFetcher {
 
 extension TrackersCategoryDataFetcher: TrackersCategoryDataFetcherProtocol {
     func category(for tracker: Tracker) -> TrackerCategoryCoreData? {
-        trackersCategoryDataStore.category(for: tracker)
+        self.trackersCategoryDataStore.category(for: tracker)
     }
 }

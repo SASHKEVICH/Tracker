@@ -25,7 +25,7 @@ struct TrackersDataPinner {
     ) {
         self.trackersDataStore = trackersDataStore
         self.trackersCategoryDataStore = trackersCategoryDataStore
-        pinnedCategory = self.trackersCategoryDataStore.category(with: pinnedCategoryId.uuidString)
+        self.pinnedCategory = self.trackersCategoryDataStore.category(with: pinnedCategoryId.uuidString)
     }
 }
 
@@ -33,25 +33,25 @@ struct TrackersDataPinner {
 
 extension TrackersDataPinner: TrackersDataPinnerProtocol {
     func pin(tracker: Tracker) {
-        guard let pinnedCategory = pinnedCategory else { return }
-        guard let trackerCoreData = trackersDataStore.tracker(with: tracker.id.uuidString) else {
+        guard let pinnedCategory = self.pinnedCategory else { return }
+        guard let trackerCoreData = self.trackersDataStore.tracker(with: tracker.id.uuidString) else {
             assertionFailure("Cannot find tracker with id: \(tracker.id.uuidString)")
             return
         }
 
         trackerCoreData.isPinned = tracker.isPinned
 
-        trackersDataStore.pin(tracker: trackerCoreData, pinnedCategory: pinnedCategory)
+        self.trackersDataStore.pin(tracker: trackerCoreData, pinnedCategory: pinnedCategory)
     }
 
     func unpin(tracker: Tracker) {
-        guard let previousCategory = trackersCategoryDataStore.category(with: tracker.previousCategoryId.uuidString) else {
+        guard let previousCategory = self.trackersCategoryDataStore.category(with: tracker.previousCategoryId.uuidString) else {
             return
         }
-        guard let trackerCoreData = trackersDataStore.tracker(with: tracker.id.uuidString) else { return }
+        guard let trackerCoreData = self.trackersDataStore.tracker(with: tracker.id.uuidString) else { return }
 
         trackerCoreData.isPinned = tracker.isPinned
 
-        trackersDataStore.unpin(tracker: trackerCoreData, previousCategory: previousCategory)
+        self.trackersDataStore.unpin(tracker: trackerCoreData, previousCategory: previousCategory)
     }
 }

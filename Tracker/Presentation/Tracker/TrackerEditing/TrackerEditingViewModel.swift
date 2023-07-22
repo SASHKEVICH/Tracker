@@ -27,55 +27,55 @@ final class TrackerEditingViewModel {
 
     var trackerTitle: String? {
         didSet {
-            onTrackerTitleChanged?()
-            checkToEnableConfirmTrackerButton()
+            self.onTrackerTitleChanged?()
+            self.checkToEnableConfirmTrackerButton()
         }
     }
 
     var selectedWeekDays: Set<WeekDay> = [] {
         didSet {
-            onSelectedWeekDaysChanged?()
-            checkToEnableConfirmTrackerButton()
+            self.onSelectedWeekDaysChanged?()
+            self.checkToEnableConfirmTrackerButton()
         }
     }
 
     var selectedCategory: TrackerCategory? {
         didSet {
-            onSelectedCategoryChanged?()
-            checkToEnableConfirmTrackerButton()
+            self.onSelectedCategoryChanged?()
+            self.checkToEnableConfirmTrackerButton()
         }
     }
 
     var selectedEmoji: String? {
         didSet {
-            onSelectedEmojiChanged?()
-            checkToEnableConfirmTrackerButton()
+            self.onSelectedEmojiChanged?()
+            self.checkToEnableConfirmTrackerButton()
         }
     }
 
     var selectedColor: UIColor? {
         didSet {
-            onSelectedColorChanged?()
-            checkToEnableConfirmTrackerButton()
+            self.onSelectedColorChanged?()
+            self.checkToEnableConfirmTrackerButton()
         }
     }
 
     var isConfirmButtonDisabled: Bool = true {
         didSet {
-            onIsConfirmButtonDisabledChanged?()
+            self.onIsConfirmButtonDisabledChanged?()
         }
     }
 
     var isErrorHidden: Bool = true {
         didSet {
-            onIsErrorHiddenChanged?()
-            checkToEnableConfirmTrackerButton()
+            self.onIsErrorHiddenChanged?()
+            self.checkToEnableConfirmTrackerButton()
         }
     }
 
     var completedCount: String? {
         didSet {
-            onCompletedCountChanged?()
+            self.onCompletedCountChanged?()
         }
     }
 
@@ -97,15 +97,15 @@ final class TrackerEditingViewModel {
     ) {
         self.trackersAddingService = trackersAddingService
         self.trackersRecordService = trackersRecordService
-        trackersCompletetingService = trackersCompletingService
+        self.trackersCompletetingService = trackersCompletingService
         self.trackersCategoryService = trackersCategoryService
         self.tracker = tracker
 
         if self.tracker.type == .irregularEvent {
-            selectedWeekDays = Set(WeekDay.allCases)
+            self.selectedWeekDays = Set(WeekDay.allCases)
         }
 
-        loadInfo()
+        self.loadInfo()
     }
 }
 
@@ -115,7 +115,7 @@ extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
     var optionsTitles: [String] {
         let localizable = R.string.localizable
         let categoryTitle = localizable.trackerAddingOptionTitleCategory()
-        switch tracker.type {
+        switch self.tracker.type {
         case .tracker:
             let scheduleTitle = localizable.trackerAddingOptionTitleSchedule()
             return [categoryTitle, scheduleTitle]
@@ -129,61 +129,61 @@ extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
     }
 
     func didChangeTracker(title: String) {
-        isErrorHidden = title.count < 38
+        self.isErrorHidden = title.count < 38
     }
 
     func didConfirmTracker() {
-        guard let title = trackerTitle,
-              let color = selectedColor,
-              let emoji = selectedEmoji,
-              let category = selectedCategory
+        guard let title = self.trackerTitle,
+              let color = self.selectedColor,
+              let emoji = self.selectedEmoji,
+              let category = self.selectedCategory
         else { return }
 
-        let schedule = tracker.type == .irregularEvent ? Set(WeekDay.allCases) : selectedWeekDays
+        let schedule = self.tracker.type == .irregularEvent ? Set(WeekDay.allCases) : self.selectedWeekDays
 
-        trackersAddingService.saveEdited(
-            trackerId: tracker.id,
+        self.trackersAddingService.saveEdited(
+            trackerId: self.tracker.id,
             title: title,
             schedule: schedule,
-            type: tracker.type,
+            type: self.tracker.type,
             color: color,
             emoji: emoji,
             newCategoryId: category.id,
-            previousCategoryId: tracker.previousCategoryId,
-            isPinned: tracker.isPinned
+            previousCategoryId: self.tracker.previousCategoryId,
+            isPinned: self.tracker.isPinned
         )
-        saveCompletedTimesCount()
+        self.saveCompletedTimesCount()
     }
 
     func didSelect(color: UIColor) {
-        selectedColor = color
+        self.selectedColor = color
     }
 
     func didSelect(emoji: String) {
-        selectedEmoji = emoji
+        self.selectedEmoji = emoji
     }
 
     func didSelect(category: TrackerCategory) {
-        selectedCategory = category
+        self.selectedCategory = category
     }
 
     func didSelect(weekDays: Set<WeekDay>) {
-        selectedWeekDays = weekDays
+        self.selectedWeekDays = weekDays
     }
 
     func didSelect(title: String) {
-        trackerTitle = title
+        self.trackerTitle = title
     }
 
     func decreaseCompletedCount() {
-        guard newCompletedTimes > 0 else { return }
-        newCompletedTimes -= 1
-        completedCount = R.string.localizable.stringKey(days: newCompletedTimes)
+        guard self.newCompletedTimes > 0 else { return }
+        self.newCompletedTimes -= 1
+        self.completedCount = R.string.localizable.stringKey(days: newCompletedTimes)
     }
 
     func increaseCompletedCount() {
-        newCompletedTimes += 1
-        completedCount = R.string.localizable.stringKey(days: newCompletedTimes)
+        self.newCompletedTimes += 1
+        self.completedCount = R.string.localizable.stringKey(days: newCompletedTimes)
     }
 }
 
@@ -191,7 +191,7 @@ extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
 
 extension TrackerEditingViewModel: TrackerScheduleViewControllerDelegate {
     func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
-        selectedWeekDays = weekDays
+        self.selectedWeekDays = weekDays
     }
 }
 
@@ -199,48 +199,48 @@ extension TrackerEditingViewModel: TrackerScheduleViewControllerDelegate {
 
 extension TrackerEditingViewModel: TrackerCategoryViewControllerDelegate {
     func didRecieveCategory(_ category: TrackerCategory) {
-        selectedCategory = category
+        self.selectedCategory = category
     }
 }
 
 private extension TrackerEditingViewModel {
     func loadInfo() {
-        trackerTitle = tracker.title
-        selectedWeekDays = Set(tracker.schedule)
-        selectedEmoji = tracker.emoji
-        selectedColor = tracker.color
-        selectedCategory = trackersCategoryService.category(for: tracker)
-        fetchCompletedCount()
+        self.trackerTitle = self.tracker.title
+        self.selectedWeekDays = Set(self.tracker.schedule)
+        self.selectedEmoji = self.tracker.emoji
+        self.selectedColor = self.tracker.color
+        self.selectedCategory = self.trackersCategoryService.category(for: self.tracker)
+        self.fetchCompletedCount()
     }
 
     func checkToEnableConfirmTrackerButton() {
-        guard let trackerTitle = trackerTitle,
-              let _ = selectedColor,
-              let _ = selectedEmoji,
-              let _ = selectedCategory
+        guard let trackerTitle = self.trackerTitle,
+              let _ = self.selectedColor,
+              let _ = self.selectedEmoji,
+              let _ = self.selectedCategory
         else { return }
 
-        let enablingCondition = !trackerTitle.isEmpty && isErrorHidden && !selectedWeekDays.isEmpty
-        isConfirmButtonDisabled = enablingCondition == false
+        let enablingCondition = !trackerTitle.isEmpty && self.isErrorHidden && !self.selectedWeekDays.isEmpty
+        self.isConfirmButtonDisabled = enablingCondition == false
     }
 
     func fetchCompletedCount() {
-        let completedCount = trackersRecordService.completedTimesCount(trackerId: tracker.id)
+        let completedCount = self.trackersRecordService.completedTimesCount(trackerId: self.tracker.id)
         self.completedCount = R.string.localizable.stringKey(days: completedCount)
     }
 
     func saveCompletedTimesCount() {
-        guard newCompletedTimes != 0 else { return }
+        guard self.newCompletedTimes != 0 else { return }
 
-        let id = tracker.id
-        let storedTimesCount = trackersRecordService.completedTimesCount(trackerId: id)
+        let id = self.tracker.id
+        let storedTimesCount = self.trackersRecordService.completedTimesCount(trackerId: id)
 
-        if storedTimesCount < newCompletedTimes {
-            let amount = newCompletedTimes - storedTimesCount
-            trackersCompletetingService.addRecords(for: tracker, amount: amount)
-        } else if storedTimesCount > newCompletedTimes {
-            let amount = storedTimesCount - newCompletedTimes
-            trackersCompletetingService.removeRecords(for: tracker, amount: amount)
+        if storedTimesCount < self.newCompletedTimes {
+            let amount = self.newCompletedTimes - storedTimesCount
+            self.trackersCompletetingService.addRecords(for: self.tracker, amount: amount)
+        } else if storedTimesCount > self.newCompletedTimes {
+            let amount = storedTimesCount - self.newCompletedTimes
+            self.trackersCompletetingService.removeRecords(for: self.tracker, amount: amount)
         }
     }
 }

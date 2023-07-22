@@ -29,7 +29,7 @@ final class TrackersPinningService {
 
 extension TrackersPinningService: TrackersPinningServiceProtocol {
     func pin(tracker: Tracker) {
-        let pinnedTracker = trackersFactory.makeTracker(
+        let pinnedTracker = self.trackersFactory.makeTracker(
             id: tracker.id,
             type: tracker.type,
             title: tracker.title,
@@ -39,11 +39,11 @@ extension TrackersPinningService: TrackersPinningServiceProtocol {
             isPinned: true,
             schedule: tracker.schedule
         )
-        trackersDataPinner.pin(tracker: pinnedTracker)
+        self.trackersDataPinner.pin(tracker: pinnedTracker)
     }
 
     func unpin(tracker: Tracker) {
-        let unpinnedTracker = trackersFactory.makeTracker(
+        let unpinnedTracker = self.trackersFactory.makeTracker(
             id: tracker.id,
             type: tracker.type,
             title: tracker.title,
@@ -53,6 +53,6 @@ extension TrackersPinningService: TrackersPinningServiceProtocol {
             isPinned: false,
             schedule: tracker.schedule
         )
-        trackersDataPinner.unpin(tracker: unpinnedTracker)
+        self.trackersDataPinner.unpin(tracker: unpinnedTracker)
     }
 }

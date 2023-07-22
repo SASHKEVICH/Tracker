@@ -38,7 +38,7 @@ extension EmojisCollectionViewHelper {
               let emoji = cell.emoji
         else { return }
 
-        delegate?.didSelect(emoji: emoji)
+        self.delegate?.didSelect(emoji: emoji)
     }
 
     func collectionView(
@@ -62,7 +62,7 @@ extension EmojisCollectionViewHelper {
         layout _: UICollectionViewLayout,
         minimumInteritemSpacingForSectionAt _: Int
     ) -> CGFloat {
-        configuration.horizontalCellSpacing
+        self.configuration.horizontalCellSpacing
     }
 
     func collectionView(
@@ -70,7 +70,7 @@ extension EmojisCollectionViewHelper {
         layout _: UICollectionViewLayout,
         minimumLineSpacingForSectionAt _: Int
     ) -> CGFloat {
-        configuration.verticalCellSpacing
+        self.configuration.verticalCellSpacing
     }
 
     func collectionView(
@@ -78,7 +78,7 @@ extension EmojisCollectionViewHelper {
         layout _: UICollectionViewLayout,
         insetForSectionAt _: Int
     ) -> UIEdgeInsets {
-        configuration.collectionViewInsets
+        self.configuration.collectionViewInsets
     }
 
     func collectionView(
@@ -97,7 +97,7 @@ extension EmojisCollectionViewHelper {
         _: UICollectionView,
         numberOfItemsInSection _: Int
     ) -> Int {
-        emojis.count
+        self.emojis.count
     }
 
     func collectionView(
@@ -112,10 +112,10 @@ extension EmojisCollectionViewHelper {
             assertionFailure("cannot dequeue emojis cell")
             return UICollectionViewCell()
         }
-        let emoji = emojis[indexPath.row]
+        let emoji = self.emojis[indexPath.row]
         cell.emoji = emoji
 
-        guard let selectedEmoji = delegate?.selectedEmoji, selectedEmoji == emoji else { return cell }
+        guard let selectedEmoji = self.delegate?.selectedEmoji, selectedEmoji == emoji else { return cell }
         collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
         return cell
     }

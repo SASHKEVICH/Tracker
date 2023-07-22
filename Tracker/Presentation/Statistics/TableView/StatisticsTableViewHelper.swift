@@ -35,7 +35,7 @@ extension StatisticsTableViewHelper: StatisticsTableViewHelperProtocol {
         _: UITableView,
         numberOfRowsInSection _: Int
     ) -> Int {
-        guard let delegate = delegate else {
+        guard let delegate = self.delegate else {
             assertionFailure("Delegate is nil")
             return 0
         }
@@ -53,7 +53,7 @@ extension StatisticsTableViewHelper: StatisticsTableViewHelperProtocol {
         ) as? StatisticsTableViewCell
         else { return UITableViewCell() }
 
-        guard let statistics = delegate?.statistics[indexPath.row] else { return UITableViewCell() }
+        guard let statistics = self.delegate?.statistics[indexPath.row] else { return UITableViewCell() }
         cell.count = "\(statistics.count)"
         cell.title = statistics.title
         return cell

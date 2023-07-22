@@ -62,11 +62,11 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
             isPinned: false,
             schedule: Array(schedule)
         )
-        try? trackersDataAdder.add(tracker: newTracker, for: categoryId)
+        try? self.trackersDataAdder.add(tracker: newTracker, for: categoryId)
     }
 
     func delete(tracker: Tracker) {
-        trackersDataAdder.delete(tracker: tracker)
+        self.trackersDataAdder.delete(tracker: tracker)
     }
 
     func saveEdited(
@@ -80,7 +80,7 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
         previousCategoryId: UUID,
         isPinned: Bool
     ) {
-        let editedTracker = trackersFactory.makeTracker(
+        let editedTracker = self.trackersFactory.makeTracker(
             id: trackerId,
             type: type,
             title: title,
@@ -90,6 +90,6 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
             isPinned: isPinned,
             schedule: Array(schedule)
         )
-        trackersDataAdder.saveEdited(tracker: editedTracker, newCategoryId: newCategoryId)
+        self.trackersDataAdder.saveEdited(tracker: editedTracker, newCategoryId: newCategoryId)
     }
 }

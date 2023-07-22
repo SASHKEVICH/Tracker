@@ -17,9 +17,9 @@ final class StatisticsViewControllerSetupper {
 
 extension StatisticsViewControllerSetupper {
     func getViewController() -> UINavigationController {
-        let viewModel = StatisticsViewModel(trackersCompletingService: trackersCompletingService)
+        let viewModel = StatisticsViewModel(trackersCompletingService: self.trackersCompletingService)
 
-        trackersCompletingService.delegate = viewModel
+        self.trackersCompletingService.delegate = viewModel
 
         let tableViewHelper = StatisticsTableViewHelper()
         let statisticsViewController = StatisticsViewController(

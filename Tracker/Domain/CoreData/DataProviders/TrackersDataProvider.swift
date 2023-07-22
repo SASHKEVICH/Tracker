@@ -44,7 +44,7 @@ protocol TrackersDataProviderProtocol {
 final class TrackersDataProvider: NSObject {
     weak var delegate: TrackersDataProviderDelegate? {
         didSet {
-            blockOperationFactory.delegate = delegate
+            self.blockOperationFactory.delegate = self.delegate
         }
     }
 
@@ -97,20 +97,20 @@ final class TrackersDataProvider: NSObject {
 
 extension TrackersDataProvider: TrackersDataProviderProtocol {
     var numberOfSections: Int {
-        fetchedResultsController.sections?.count ?? 0
+        self.fetchedResultsController.sections?.count ?? 0
     }
 
     var trackers: [TrackerCoreData] {
-        fetchedResultsController.fetchedObjects ?? []
+        self.fetchedResultsController.fetchedObjects ?? []
     }
 
     func numberOfItemsInSection(_ section: Int) -> Int {
-        fetchedResultsController.sections?[section].numberOfObjects ?? 0
+        self.fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
 
     func fetchTrackersForToday() {
-        guard let currentWeekDay = currentWeekDay else { return }
-        fetchTrackers(currentWeekDay: currentWeekDay)
+        guard let currentWeekDay = self.currentWeekDay else { return }
+        self.fetchTrackers(currentWeekDay: currentWeekDay)
     }
 
     func fetchTrackers(currentWeekDay: WeekDay) {
@@ -118,7 +118,7 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
             format: "%K CONTAINS[cd] %@",
             #keyPath(TrackerCoreData.weekDays), currentWeekDay.englishStringRepresentation
         )
-        performFetch(with: predicate)
+        self.performFetch(with: predicate)
     }
 
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay) {
@@ -127,7 +127,7 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
             #keyPath(TrackerCoreData.title), titleSearchString,
             #keyPath(TrackerCoreData.weekDays), currentWeekDay.englishStringRepresentation
         )
-        performFetch(with: predicate)
+        self.performFetch(with: predicate)
     }
 
     func fetchCompletedTrackers(for date: Date) {
@@ -139,7 +139,7 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
             #keyPath(TrackerCoreData.weekDays), weekDay.englishStringRepresentation,
             #keyPath(TrackerCoreData.records), date as NSDate
         )
-        performFetch(with: predicate)
+        self.performFetch(with: predicate)
     }
 
     func fetchIncompletedTrackers(for date: Date) {
@@ -151,20 +151,20 @@ extension TrackersDataProvider: TrackersDataProviderProtocol {
             #keyPath(TrackerCoreData.weekDays), weekDay.englishStringRepresentation,
             #keyPath(TrackerCoreData.records), date as NSDate
         )
-        performFetch(with: predicate)
+        self.performFetch(with: predicate)
     }
 
     func tracker(at indexPath: IndexPath) -> TrackerCoreData? {
-        fetchedResultsController.object(at: indexPath)
+        self.fetchedResultsController.object(at: indexPath)
     }
 
     func categoryTitle(at indexPath: IndexPath) -> String? {
-        let trackerCoreData = fetchedResultsController.object(at: indexPath)
+        let trackerCoreData = self.fetchedResultsController.object(at: indexPath)
         return trackerCoreData.category.title
     }
 
     func eraseOperations() {
-        blockOperations.removeAll(keepingCapacity: false)
+        self.blockOperations.removeAll(keepingCapacity: false)
     }
 }
 
@@ -178,8 +178,8 @@ extension TrackersDataProvider: NSFetchedResultsControllerDelegate {
         for type: NSFetchedResultsChangeType,
         newIndexPath: IndexPath?
     ) {
-        if let operation = blockOperationFactory.makeObjectOperation(at: indexPath, to: newIndexPath, for: type) {
-            blockOperations.append(operation)
+        if let operation = self.blockOperationFactory.makeObjectOperation(at: indexPath, to: newIndexPath, for: type) {
+            self.blockOperations.append(operation)
         }
     }
 
@@ -189,20 +189,20 @@ extension TrackersDataProvider: NSFetchedResultsControllerDelegate {
         atSectionIndex sectionIndex: Int,
         for type: NSFetchedResultsChangeType
     ) {
-        if let operation = blockOperationFactory.makeSectionOperation(sectionIndex: sectionIndex, for: type) {
-            blockOperations.append(operation)
+        if let operation = self.blockOperationFactory.makeSectionOperation(sectionIndex: sectionIndex, for: type) {
+            self.blockOperations.append(operation)
         }
     }
 
     func controllerDidChangeContent(_: NSFetchedResultsController<NSFetchRequestResult>) {
-        delegate?.didChangeContent(operations: blockOperations)
+        self.delegate?.didChangeContent(operations: self.blockOperations)
     }
 }
 
 private extension TrackersDataProvider {
     func performFetch(with predicate: NSPredicate) {
-        fetchedResultsController.fetchRequest.predicate = predicate
-        try? fetchedResultsController.performFetch()
-        delegate?.fetchDidPerformed()
+        self.fetchedResultsController.fetchRequest.predicate = predicate
+        try? self.fetchedResultsController.performFetch()
+        self.delegate?.fetchDidPerformed()
     }
 }

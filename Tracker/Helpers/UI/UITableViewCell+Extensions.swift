@@ -22,49 +22,49 @@ extension UITableViewCell {
         entityCount: Int?,
         tableViewWidth: CGFloat
     ) -> UITableViewCell {
-        separatorInset = defaultSeparatorInsets
+        self.separatorInset = self.defaultSeparatorInsets
 
         if entityCount == 1 {
-            return setupSingleCellInTableView(tableViewWidth: tableViewWidth)
+            return self.setupSingleCellInTableView(tableViewWidth: tableViewWidth)
         }
 
         if cellIndexPath.row == 0 {
-            return setupFirstCellInTableView()
+            return self.setupFirstCellInTableView()
         }
 
         if cellIndexPath == lastCellIndexPath {
-            return setupLastCellWithoutBottomSeparator(tableViewWidth: tableViewWidth)
+            return self.setupLastCellWithoutBottomSeparator(tableViewWidth: tableViewWidth)
         }
 
         return self
     }
 
     func cleanUp() {
-        layer.cornerRadius = 0
-        layer.maskedCorners = []
-        selectedBackgroundView?.layer.cornerRadius = 0
-        selectedBackgroundView?.layer.maskedCorners = []
-        separatorInset = .zero
+        self.layer.cornerRadius = 0
+        self.layer.maskedCorners = []
+        self.selectedBackgroundView?.layer.cornerRadius = 0
+        self.selectedBackgroundView?.layer.maskedCorners = []
+        self.separatorInset = .zero
     }
 }
 
 private extension UITableViewCell {
     func setupFirstCellInTableView() -> UITableViewCell {
-        layer.masksToBounds = true
-        layer.cornerRadius = 16
-        selectedBackgroundView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        self.layer.masksToBounds = true
+        self.layer.cornerRadius = 16
+        self.selectedBackgroundView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return self
     }
 
     func setupLastCellWithoutBottomSeparator(
         tableViewWidth: CGFloat
     ) -> UITableViewCell {
-        layer.masksToBounds = true
-        layer.cornerRadius = 16
-        selectedBackgroundView?.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        separatorInset = UIEdgeInsets(
+        self.layer.masksToBounds = true
+        self.layer.cornerRadius = 16
+        self.selectedBackgroundView?.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        self.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        self.separatorInset = UIEdgeInsets(
             top: defaultSeparatorInsets.top,
             left: tableViewWidth + 1,
             bottom: defaultSeparatorInsets.bottom,
@@ -76,9 +76,9 @@ private extension UITableViewCell {
     func setupSingleCellInTableView(
         tableViewWidth: CGFloat
     ) -> UITableViewCell {
-        layer.masksToBounds = true
-        layer.cornerRadius = 16
-        separatorInset = UIEdgeInsets(
+        self.layer.masksToBounds = true
+        self.layer.cornerRadius = 16
+        self.separatorInset = UIEdgeInsets(
             top: defaultSeparatorInsets.top,
             left: tableViewWidth + 1,
             bottom: defaultSeparatorInsets.bottom,

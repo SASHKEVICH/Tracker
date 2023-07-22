@@ -38,23 +38,23 @@ final class TrackersCompletingService {
 
 extension TrackersCompletingService: TrackersCompletingServiceProtocol {
     func completeTracker(trackerId: UUID, date: Date) {
-        trackersDataCompleter.completeTracker(with: trackerId.uuidString, date: date)
-        delegate?.didChangeCompletedTrackers()
+        self.trackersDataCompleter.completeTracker(with: trackerId.uuidString, date: date)
+        self.delegate?.didChangeCompletedTrackers()
     }
 
     func incompleteTracker(trackerId: UUID, date: Date) {
-        trackersDataCompleter.incompleteTracker(with: trackerId.uuidString, date: date)
-        delegate?.didChangeCompletedTrackers()
+        self.trackersDataCompleter.incompleteTracker(with: trackerId.uuidString, date: date)
+        self.delegate?.didChangeCompletedTrackers()
     }
 
     func addRecords(for tracker: Tracker, amount: Int) {
-        trackersDataCompleter.addRecords(for: tracker.id.uuidString, amount: amount)
-        delegate?.didChangeCompletedTrackers()
+        self.trackersDataCompleter.addRecords(for: tracker.id.uuidString, amount: amount)
+        self.delegate?.didChangeCompletedTrackers()
     }
 
     func removeRecords(for tracker: Tracker, amount: Int) {
-        trackersDataCompleter.removeRecords(for: tracker.id.uuidString, amount: amount)
-        delegate?.didChangeCompletedTrackers()
+        self.trackersDataCompleter.removeRecords(for: tracker.id.uuidString, amount: amount)
+        self.delegate?.didChangeCompletedTrackers()
     }
 }
 
@@ -62,6 +62,6 @@ extension TrackersCompletingService: TrackersCompletingServiceProtocol {
 
 extension TrackersCompletingService: TrackersCompletingServiceStatisticsProtocol {
     var completedTrackersCount: Int {
-        trackersDataCompleter.completedTrackersCount
+        self.trackersDataCompleter.completedTrackersCount
     }
 }

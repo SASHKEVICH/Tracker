@@ -28,7 +28,7 @@ final class TrackersServiceStub {
 
 extension TrackersServiceStub: TrackersServiceFetchingProtocol {
     var trackers: [Tracker] {
-        let tracker = trackersFactory.makeTracker(
+        let tracker = self.trackersFactory.makeTracker(
             type: .irregularEvent,
             title: "Test",
             color: .systemBlue,
@@ -38,11 +38,11 @@ extension TrackersServiceStub: TrackersServiceFetchingProtocol {
             schedule: WeekDay.allCases
         )
 
-        return state == .empty ? [] : [tracker]
+        return self.state == .empty ? [] : [tracker]
     }
 
     func tracker(at _: IndexPath) -> Tracker? {
-        let tracker = trackersFactory.makeTracker(
+        let tracker = self.trackersFactory.makeTracker(
             type: .irregularEvent,
             title: "Test",
             color: .systemBlue,
@@ -52,7 +52,7 @@ extension TrackersServiceStub: TrackersServiceFetchingProtocol {
             schedule: WeekDay.allCases
         )
 
-        return state == .empty ? nil : tracker
+        return self.state == .empty ? nil : tracker
     }
 
     func fetchTrackers(weekDay _: WeekDay) {}
@@ -71,11 +71,11 @@ extension TrackersServiceStub: TrackersServiceFilteringProtocol {
 
 extension TrackersServiceStub: TrackersServiceDataSourceProtocol {
     var numberOfSections: Int {
-        state == .empty ? 0 : 1
+        self.state == .empty ? 0 : 1
     }
 
     func numberOfItemsInSection(_: Int) -> Int {
-        state == .empty ? 0 : 1
+        self.state == .empty ? 0 : 1
     }
 
     func categoryTitle(at _: IndexPath) -> String? {

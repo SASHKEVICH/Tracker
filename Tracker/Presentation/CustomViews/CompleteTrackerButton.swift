@@ -16,13 +16,13 @@ final class CompleteTrackerButton: UIButton {
 
     var buttonState: State = .increase {
         didSet {
-            switch buttonState {
+            switch self.buttonState {
             case .completed:
-                setTrackerDone()
+                self.setTrackerDone()
             case .increase:
-                setTrackerCountIncrease()
+                self.setTrackerCountIncrease()
             case .decrease:
-                setTrackerCountDecrease()
+                self.setTrackerCountDecrease()
             }
         }
     }
@@ -34,7 +34,7 @@ final class CompleteTrackerButton: UIButton {
     }
 
     override func draw(_: CGRect) {
-        setupButton()
+        self.setupButton()
     }
 }
 
@@ -42,32 +42,32 @@ final class CompleteTrackerButton: UIButton {
 
 private extension CompleteTrackerButton {
     func setupButton() {
-        layer.cornerRadius = 17
-        layer.masksToBounds = true
-        backgroundColor = color
+        self.layer.cornerRadius = 17
+        self.layer.masksToBounds = true
+        self.backgroundColor = self.color
 
-        imageView?.contentMode = .center
-        imageView?.tintColor = .Dynamic.whiteDay
+        self.imageView?.contentMode = .center
+        self.imageView?.tintColor = .Dynamic.whiteDay
     }
 
     func setTrackerDone() {
         let image = UIImage.CompleteTrackerButton.completed
-        setImage(image, for: .normal)
-        backgroundColor = color
-        alpha = 0.3
+        self.setImage(image, for: .normal)
+        self.backgroundColor = self.color
+        self.alpha = 0.3
     }
 
     func setTrackerCountIncrease() {
         let image = UIImage.CompleteTrackerButton.increase
-        setImage(image, for: .normal)
-        backgroundColor = color
-        alpha = 1
+        self.setImage(image, for: .normal)
+        self.backgroundColor = self.color
+        self.alpha = 1
     }
 
     func setTrackerCountDecrease() {
         let image = UIImage.CompleteTrackerButton.decrease
-        setImage(image, for: .normal)
-        backgroundColor = color
-        alpha = 1
+        self.setImage(image, for: .normal)
+        self.backgroundColor = self.color
+        self.alpha = 1
     }
 }

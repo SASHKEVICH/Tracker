@@ -10,8 +10,8 @@ import UIKit
 final class ColorsCollectionViewCell: UICollectionViewCell {
     var color: UIColor? {
         didSet {
-            colorView.backgroundColor = color
-            borderView.layer.borderColor = color?.withAlphaComponent(0.4).cgColor
+            self.colorView.backgroundColor = color
+            self.borderView.layer.borderColor = color?.withAlphaComponent(0.4).cgColor
         }
     }
 
@@ -32,9 +32,9 @@ final class ColorsCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubviews()
-        addConstraints()
-        setupSelectionBorder()
+        self.addSubviews()
+        self.addConstraints()
+        self.setupSelectionBorder()
     }
 
     @available(*, unavailable)
@@ -45,7 +45,7 @@ final class ColorsCollectionViewCell: UICollectionViewCell {
 
 private extension ColorsCollectionViewCell {
     func addSubviews() {
-        contentView.addSubview(colorView)
+        self.contentView.addSubview(colorView)
     }
 
     func addConstraints() {
@@ -59,6 +59,6 @@ private extension ColorsCollectionViewCell {
     }
 
     func setupSelectionBorder() {
-        selectedBackgroundView = borderView
+        selectedBackgroundView = self.borderView
     }
 }

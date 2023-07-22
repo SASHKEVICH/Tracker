@@ -39,12 +39,12 @@ final class OnboardingViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        dataSource = presenter?.pagesViewControllerHelper
-        delegate = presenter?.pagesViewControllerHelper
+        self.dataSource = self.presenter?.pagesViewControllerHelper
+        self.delegate = self.presenter?.pagesViewControllerHelper
 
-        setViewControllers()
-        addSubviews()
-        addConstraints()
+        self.setViewControllers()
+        self.addSubviews()
+        self.addConstraints()
     }
 }
 
@@ -52,7 +52,7 @@ final class OnboardingViewController: UIPageViewController {
 
 extension OnboardingViewController: OnboardingViewControllerProtocol {
     func setCurrentPage(index: Int) {
-        pageControl.currentPage = index
+        self.pageControl.currentPage = index
     }
 }
 
@@ -61,19 +61,19 @@ extension OnboardingViewController: OnboardingViewControllerProtocol {
 extension OnboardingViewController {
     @objc
     private func didTapOnboardingButton() {
-        presenter?.navigateToMainScreen(animated: true)
+        self.presenter?.navigateToMainScreen(animated: true)
     }
 }
 
 private extension OnboardingViewController {
     func setViewControllers() {
         guard let viewController = presenter?.pagesViewControllerHelper?.firstViewController else { return }
-        setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
+        self.setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
     }
 
     func addSubviews() {
-        view.addSubview(confirmOnboardingButton)
-        view.addSubview(pageControl)
+        self.view.addSubview(confirmOnboardingButton)
+        self.view.addSubview(pageControl)
     }
 
     func addConstraints() {

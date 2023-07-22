@@ -56,12 +56,12 @@ final class TrackerNewCategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .Dynamic.whiteDay
+        self.view.backgroundColor = .Dynamic.whiteDay
 
-        addSubviews()
-        addConstraints()
-        addGestureRecognizers()
-        bind()
+        self.addSubviews()
+        self.addConstraints()
+        self.addGestureRecognizers()
+        self.bind()
     }
 }
 
@@ -69,7 +69,7 @@ final class TrackerNewCategoryViewController: UIViewController {
 
 extension TrackerNewCategoryViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_: UITextField) -> Bool {
-        dismissKeyboard()
+        self.dismissKeyboard()
         return true
     }
 }
@@ -103,14 +103,14 @@ private extension TrackerNewCategoryViewController {
     }
 
     func bind() {
-        viewModel.onIsAddNewCategoryButtonDisabledChanged = { [weak self] in
+        self.viewModel.onIsAddNewCategoryButtonDisabledChanged = { [weak self] in
             guard let self = self else { return }
             self.addNewCategoryButton.buttonState = self.viewModel.isAddNewCategoryButtonDisabled ? .disabled : .normal
         }
     }
 
     func addGestureRecognizers() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         view.addGestureRecognizer(tap)
     }
 }
@@ -120,16 +120,16 @@ private extension TrackerNewCategoryViewController {
 private extension TrackerNewCategoryViewController {
     @objc
     func didTapAddNewCategoryButton() {
-        guard let title = newCategoryTitleTextField.text else { return }
+        guard let title = self.newCategoryTitleTextField.text else { return }
         viewModel.save(categoryTitle: title)
         delegate?.dismissNewCategoryViewController()
     }
 
     @objc
     func dismissKeyboard() {
-        emptyTap?()
+        self.emptyTap?()
 
-        guard let title = newCategoryTitleTextField.text else { return }
+        guard let title = self.newCategoryTitleTextField.text else { return }
         viewModel.didRecieve(categoryTitle: title)
     }
 }

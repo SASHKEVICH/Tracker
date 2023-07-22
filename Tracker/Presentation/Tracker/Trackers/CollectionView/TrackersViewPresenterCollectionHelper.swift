@@ -28,9 +28,9 @@ extension TrackersViewPresenterCollectionHelper {
         layout _: UICollectionViewLayout,
         sizeForItemAt _: IndexPath
     ) -> CGSize {
-        let leftInset = collectionViewConstants.collectionViewInsets.left
-        let rightInset = collectionViewConstants.collectionViewInsets.right
-        let horizontalCellSpacing = collectionViewConstants.horizontalCellSpacing
+        let leftInset = self.collectionViewConstants.collectionViewInsets.left
+        let rightInset = self.collectionViewConstants.collectionViewInsets.right
+        let horizontalCellSpacing = self.collectionViewConstants.horizontalCellSpacing
         return CGSize(width: (collectionView.bounds.width - (leftInset + rightInset + horizontalCellSpacing)) / 2, height: 148)
     }
 
@@ -39,7 +39,7 @@ extension TrackersViewPresenterCollectionHelper {
         layout _: UICollectionViewLayout,
         minimumInteritemSpacingForSectionAt _: Int
     ) -> CGFloat {
-        collectionViewConstants.horizontalCellSpacing
+        self.collectionViewConstants.horizontalCellSpacing
     }
 
     func collectionView(
@@ -47,7 +47,7 @@ extension TrackersViewPresenterCollectionHelper {
         layout _: UICollectionViewLayout,
         minimumLineSpacingForSectionAt _: Int
     ) -> CGFloat {
-        collectionViewConstants.verticalCellSpacing
+        self.collectionViewConstants.verticalCellSpacing
     }
 
     func collectionView(
@@ -55,7 +55,7 @@ extension TrackersViewPresenterCollectionHelper {
         layout _: UICollectionViewLayout,
         insetForSectionAt _: Int
     ) -> UIEdgeInsets {
-        collectionViewConstants.collectionViewInsets
+        self.collectionViewConstants.collectionViewInsets
     }
 
     func collectionView(
@@ -79,7 +79,7 @@ extension TrackersViewPresenterCollectionHelper {
             return nil
         }
 
-        guard let contextActions = prepareContextActions(for: cell) else { return nil }
+        guard let contextActions = self.prepareContextActions(for: cell) else { return nil }
         return UIContextMenuConfiguration(actionProvider: { _ in
             UIMenu(children: contextActions)
         })
@@ -102,7 +102,7 @@ extension TrackersViewPresenterCollectionHelper {
     }
 
     func numberOfSections(in _: UICollectionView) -> Int {
-        guard let presenter = presenter else {
+        guard let presenter = self.presenter else {
             assertionFailure("Presenter is nil")
             return 0
         }
@@ -124,7 +124,7 @@ extension TrackersViewPresenterCollectionHelper {
             withReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier,
             for: indexPath
         ) as? TrackersCollectionViewCell,
-            let presenter = presenter,
+            let presenter = self.presenter,
             let tracker = presenter.tracker(at: indexPath)
         else {
             assertionFailure("Cannot dequeue cell or presenter is nil")
@@ -141,7 +141,7 @@ extension TrackersViewPresenterCollectionHelper {
         cell.isCompleted = isTrackerCompletedForCurrentDay != nil
         cell.isPinned = tracker.isPinned
 
-        cell.dayCount = completedTimesCount(trackerId: tracker.id)
+        cell.dayCount = self.completedTimesCount(trackerId: tracker.id)
         cell.delegate = self
 
         return cell
@@ -162,7 +162,7 @@ extension TrackersViewPresenterCollectionHelper {
             return UICollectionReusableView()
         }
 
-        view.headerText = presenter?.categoryTitle(at: indexPath)
+        view.headerText = self.presenter?.categoryTitle(at: indexPath)
         return view
     }
 }
@@ -172,7 +172,7 @@ extension TrackersViewPresenterCollectionHelper {
 extension TrackersViewPresenterCollectionHelper: TrackersViewPresenterCollectionHelperCellDelegate {
     func didTapCompleteCellButton(_ cell: TrackersCollectionViewCell) {
         guard let tracker = cell.tracker else { return }
-        guard let presenter = presenter else { return }
+        guard let presenter = self.presenter else { return }
 
         if cell.isCompleted {
             guard let _ = try? presenter.incomplete(tracker: tracker) else { return }
@@ -180,13 +180,13 @@ extension TrackersViewPresenterCollectionHelper: TrackersViewPresenterCollection
             guard let _ = try? presenter.complete(tracker: tracker) else { return }
         }
 
-        cell.dayCount = completedTimesCount(trackerId: tracker.id)
+        cell.dayCount = self.completedTimesCount(trackerId: tracker.id)
     }
 }
 
 private extension TrackersViewPresenterCollectionHelper {
     func completedTimesCount(trackerId: UUID) -> String {
-        guard let presenter = presenter else {
+        guard let presenter = self.presenter else {
             assertionFailure("presenter is nil")
             return ""
         }
@@ -212,10 +212,10 @@ private extension TrackersViewPresenterCollectionHelper {
         ]
 
         if cell.isPinned {
-            let unpinAction = getPinningAction(shouldPin: false, cell: cell, tracker: tracker)
+            let unpinAction = self.getPinningAction(shouldPin: false, cell: cell, tracker: tracker)
             actions.insert(unpinAction, at: 0)
         } else {
-            let pinAction = getPinningAction(shouldPin: true, cell: cell, tracker: tracker)
+            let pinAction = self.getPinningAction(shouldPin: true, cell: cell, tracker: tracker)
             actions.insert(pinAction, at: 0)
         }
 

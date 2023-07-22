@@ -34,10 +34,10 @@ public final class TrackerFilterViewModel {
 
     var onCategoriesChanged: Binding?
     var categories: [TrackerCategory] {
-        let allTrackers = prepareFilter(for: .all(chosenDate))
-        let todayTrackers = prepareFilter(for: .today)
-        let completedTrackers = prepareFilter(for: .completed(chosenDate))
-        let incompletedTrackers = prepareFilter(for: .incompleted(chosenDate))
+        let allTrackers = self.prepareFilter(for: .all(self.chosenDate))
+        let todayTrackers = self.prepareFilter(for: .today)
+        let completedTrackers = self.prepareFilter(for: .completed(self.chosenDate))
+        let incompletedTrackers = self.prepareFilter(for: .incompleted(self.chosenDate))
 
         return [allTrackers, todayTrackers, completedTrackers, incompletedTrackers]
     }
@@ -64,13 +64,13 @@ public final class TrackerFilterViewModel {
 
 extension TrackerFilterViewModel: TrackerCategoryViewModelProtocol {
     func didChoose(category: TrackerCategory) {
-        guard let mode = resolveFiltrationMode(for: category.title) else { return }
+        guard let mode = self.resolveFiltrationMode(for: category.title) else { return }
         if mode == .today {
-            delegate?.setCurrentDate()
+            self.delegate?.setCurrentDate()
         }
 
-        delegate?.didSelectFilter(category: category)
-        trackersService.performFiltering(mode: mode)
+        self.delegate?.didSelectFilter(category: category)
+        self.trackersService.performFiltering(mode: mode)
     }
 }
 
@@ -78,26 +78,26 @@ private extension TrackerFilterViewModel {
     func prepareFilter(for mode: FilterMode) -> TrackerCategory {
         switch mode {
         case .all:
-            return trackersCategoryFactory.makeCategory(id: StaticUUID.FilterCategories.all, title: mode.localized, isPinning: false)
+            return self.trackersCategoryFactory.makeCategory(id: StaticUUID.FilterCategories.all, title: mode.localized, isPinning: false)
         case .today:
-            return trackersCategoryFactory.makeCategory(id: StaticUUID.FilterCategories.today, title: mode.localized, isPinning: false)
+            return self.trackersCategoryFactory.makeCategory(id: StaticUUID.FilterCategories.today, title: mode.localized, isPinning: false)
         case .completed:
-            return trackersCategoryFactory.makeCategory(id: StaticUUID.FilterCategories.completed, title: mode.localized, isPinning: false)
+            return self.trackersCategoryFactory.makeCategory(id: StaticUUID.FilterCategories.completed, title: mode.localized, isPinning: false)
         case .incompleted:
-            return trackersCategoryFactory.makeCategory(id: StaticUUID.FilterCategories.incompleted, title: mode.localized, isPinning: false)
+            return self.trackersCategoryFactory.makeCategory(id: StaticUUID.FilterCategories.incompleted, title: mode.localized, isPinning: false)
         }
     }
 
     func resolveFiltrationMode(for title: String) -> FilterMode? {
         switch title {
-        case FilterMode.all(chosenDate).localized:
-            return .all(chosenDate)
+        case FilterMode.all(self.chosenDate).localized:
+            return .all(self.chosenDate)
         case FilterMode.today.localized:
             return .today
-        case FilterMode.completed(chosenDate).localized:
-            return .completed(chosenDate)
-        case FilterMode.incompleted(chosenDate).localized:
-            return .incompleted(chosenDate)
+        case FilterMode.completed(self.chosenDate).localized:
+            return .completed(self.chosenDate)
+        case FilterMode.incompleted(self.chosenDate).localized:
+            return .incompleted(self.chosenDate)
         default:
             return nil
         }

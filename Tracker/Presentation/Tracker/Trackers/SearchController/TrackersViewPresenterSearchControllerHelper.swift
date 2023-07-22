@@ -17,10 +17,10 @@ final class TrackersViewPresenterSearchControllerHelper: NSObject, TrackersViewP
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         guard let text = searchBar.text, !text.isEmpty else { return }
-        presenter?.requestFilteredTrackers(for: text)
+        self.presenter?.requestFilteredTrackers(for: text)
     }
 
     func searchBarCancelButtonClicked(_: UISearchBar) {
-        presenter?.requestShowAllCategoriesForCurrentDay()
+        self.presenter?.requestShowAllCategoriesForCurrentDay()
     }
 }

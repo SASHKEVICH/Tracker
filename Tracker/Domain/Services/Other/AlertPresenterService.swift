@@ -28,31 +28,31 @@ final class AlertPresenterService {
 
 extension AlertPresenterService: AlertPresenterSerivceProtocol {
     func requestChosenFutureDateAlert() {
-        let title = localizable.alertChosenFutureDateTitle()
-        let message = localizable.alertChosenFutureDateMessage()
-        let actionTitle = localizable.alertChosenFutureDateActionOk()
+        let title = self.localizable.alertChosenFutureDateTitle()
+        let message = self.localizable.alertChosenFutureDateMessage()
+        let actionTitle = self.localizable.alertChosenFutureDateActionOk()
 
         let actionModel = AlertActionModel(title: actionTitle, style: .default, completion: nil)
         let model = AlertModel(title: title, message: message, actions: [actionModel])
-        requestAlert(with: model, prefferedStyle: .alert)
+        self.requestAlert(with: model, prefferedStyle: .alert)
     }
 
     func requestDeleteTrackerAlert(completion: @escaping (UIAlertAction) -> Void) {
-        let deleteActionTitle = localizable.alertDeleteTrackerActionDelete()
+        let deleteActionTitle = self.localizable.alertDeleteTrackerActionDelete()
         let deleteActionModel = AlertActionModel(title: deleteActionTitle, style: .destructive, completion: completion)
 
-        let cancelActionTitle = localizable.alertDeleteTrackerActionCancel()
+        let cancelActionTitle = self.localizable.alertDeleteTrackerActionCancel()
         let cancelActionModel = AlertActionModel(title: cancelActionTitle, style: .cancel, completion: nil)
 
-        let message = localizable.alertDeleteTrackerMessage()
+        let message = self.localizable.alertDeleteTrackerMessage()
         let model = AlertModel(title: nil, message: message, actions: [deleteActionModel, cancelActionModel])
-        requestAlert(with: model, prefferedStyle: .actionSheet)
+        self.requestAlert(with: model, prefferedStyle: .actionSheet)
     }
 }
 
 private extension AlertPresenterService {
     func requestAlert(with alertModel: AlertModel, prefferedStyle: UIAlertController.Style) {
-        guard let delegate = delegate else { return }
+        guard let delegate = self.delegate else { return }
         let alertController = UIAlertController(
             title: alertModel.title,
             message: alertModel.message,

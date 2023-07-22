@@ -18,7 +18,7 @@ struct TrackersRecordDataStore {
 
 extension TrackersRecordDataStore {
     var managedObjectContext: NSManagedObjectContext {
-        context
+        self.context
     }
 
     func complete(tracker: TrackerCoreData, date: Date) throws {
@@ -28,13 +28,13 @@ extension TrackersRecordDataStore {
         record.date = date
 
         tracker.addToRecords(record)
-        try context.save()
+        try self.context.save()
     }
 
     func incomplete(tracker: TrackerCoreData, record: TrackerRecordCoreData) throws {
-        context.delete(record)
+        self.context.delete(record)
         tracker.removeFromRecords(record)
-        try context.save()
+        try self.context.save()
     }
 
     func addRecords(for trackerId: String, amount: Int) {
@@ -45,15 +45,15 @@ extension TrackersRecordDataStore {
         )
         request.predicate = predicate
 
-        guard let tracker = try? context.fetch(request).first else { return }
+        guard let tracker = try? self.context.fetch(request).first else { return }
         for _ in 0 ..< amount {
-            let record = TrackerRecordCoreData(context: context)
+            let record = TrackerRecordCoreData(context: self.context)
             record.id = trackerId
             record.date = Date(timeIntervalSince1970: 2)
             tracker.addToRecords(record)
         }
 
-        try? context.save()
+        try? self.context.save()
     }
 
     func removeRecords(for trackerId: String, amount: Int) {
@@ -64,18 +64,18 @@ extension TrackersRecordDataStore {
         )
         request.predicate = predicate
 
-        guard let records = try? context.fetch(request) else { return }
+        guard let records = try? self.context.fetch(request) else { return }
         for i in 0 ..< amount {
-            context.delete(records[i])
+            self.context.delete(records[i])
         }
 
-        try? context.save()
+        try? self.context.save()
     }
 
     func completedTrackersCount() -> Int? {
         let request = TrackerRecordCoreData.fetchRequest()
         do {
-            let object = try context.fetch(request)
+            let object = try self.context.fetch(request)
             return object.count
         } catch {
             return nil
@@ -91,7 +91,7 @@ extension TrackersRecordDataStore {
         request.predicate = predicate
 
         do {
-            let object = try context.fetch(request)
+            let object = try self.context.fetch(request)
             return object.count
         } catch {
             return nil

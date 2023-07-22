@@ -12,7 +12,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 
     var dayCount: String = "" {
         didSet {
-            dayCountLabel.text = dayCount
+            self.dayCountLabel.text = dayCount
         }
     }
 
@@ -29,13 +29,13 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 
     var isPinned: Bool = false {
         didSet {
-            pinnedImageView.isHidden = !isPinned
+            self.pinnedImageView.isHidden = !self.isPinned
         }
     }
 
     var isCompleted: Bool = false {
         didSet {
-            completeTrackerButton.buttonState = isCompleted ? .completed : .increase
+            completeTrackerButton.buttonState = self.isCompleted ? .completed : .increase
         }
     }
 
@@ -97,8 +97,8 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
 
     override init(frame _: CGRect) {
         super.init(frame: .zero)
-        addSubviews()
-        addConstraints()
+        self.addSubviews()
+        self.addConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -106,8 +106,8 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     }
 
     override func prepareForReuse() {
-        dayCount = ""
-        completeTrackerButton.buttonState = .increase
+        self.dayCount = ""
+        self.completeTrackerButton.buttonState = .increase
     }
 }
 
@@ -177,6 +177,6 @@ private extension TrackersCollectionViewCell {
 private extension TrackersCollectionViewCell {
     @objc
     func didTapCompleteTrackerButton() {
-        delegate?.didTapCompleteCellButton(self)
+        self.delegate?.didTapCompleteCellButton(self)
     }
 }

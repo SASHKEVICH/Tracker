@@ -29,24 +29,24 @@ final class TrackersPinnedCategoryService {
 
 extension TrackersPinnedCategoryService: TrackersPinnedCategoryServiceProtocol {
     var pinnedCategoryId: UUID? {
-        guard let string = userDefaults.string(forKey: key),
+        guard let string = self.userDefaults.string(forKey: self.key),
               let id = UUID(uuidString: string)
         else { return nil }
         return id
     }
 
     func checkPinnedCategory() {
-        if let _ = pinnedCategoryId {
-            checkPinnedCategoryTitleAccordingToMainLanguage()
+        if let _ = self.pinnedCategoryId {
+            self.checkPinnedCategoryTitleAccordingToMainLanguage()
         } else {
-            createPinnedCategory()
+            self.createPinnedCategory()
         }
     }
 }
 
 private extension TrackersPinnedCategoryService {
     func storePinnedCategory(with id: UUID) {
-        userDefaults.set(id.uuidString, forKey: key)
+        self.userDefaults.set(id.uuidString, forKey: self.key)
     }
 
     func createPinnedCategory() {
@@ -54,25 +54,25 @@ private extension TrackersPinnedCategoryService {
         let category = trackersCategoryFactory.makeCategory(title: title, isPinning: true)
         let categoryCoreData = trackersCategoryFactory.makeCategoryCoreData(
             from: category,
-            context: trackersCategoryDataStore.managedObjectContext
+            context: self.trackersCategoryDataStore.managedObjectContext
         )
 
-        guard let _ = try? trackersCategoryDataStore.add(category: categoryCoreData) else {
+        guard let _ = try? self.trackersCategoryDataStore.add(category: categoryCoreData) else {
             assertionFailure("Cannot create pinned category")
             return
         }
 
-        storePinnedCategory(with: category.id)
+        self.storePinnedCategory(with: category.id)
     }
 
     func checkPinnedCategoryTitleAccordingToMainLanguage() {
-        guard let id = pinnedCategoryId,
-              let category = trackersCategoryDataStore.category(with: id.uuidString)
+        guard let id = self.pinnedCategoryId,
+              let category = self.trackersCategoryDataStore.category(with: id.uuidString)
         else { return }
 
         let actualLanguageTitle = R.string.localizable.trackerCategoryPinnedCategoryTitle()
         if category.title != actualLanguageTitle {
-            trackersCategoryDataStore.rename(category: category, newTitle: actualLanguageTitle)
+            self.trackersCategoryDataStore.rename(category: category, newTitle: actualLanguageTitle)
         }
     }
 }

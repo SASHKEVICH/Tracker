@@ -23,7 +23,7 @@ final class TrackerCategoryRouter {
 
 extension TrackerCategoryRouter: TrackerCategoryRouterProtocol {
     func navigateToNewCategoryScreen(from viewController: TrackerCategoryViewController) {
-        let viewModel = TrackerNewCategoryViewModel(trackersCategoryAddingService: trackersCategoryAddingService)
+        let viewModel = TrackerNewCategoryViewModel(trackersCategoryAddingService: self.trackersCategoryAddingService)
         let vc = TrackerNewCategoryViewController(viewModel: viewModel)
 
         vc.emptyTap = { [weak vc] in

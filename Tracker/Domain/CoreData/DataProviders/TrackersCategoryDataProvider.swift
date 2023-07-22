@@ -50,11 +50,11 @@ final class TrackersCategoryDataProvider: NSObject {
 
 extension TrackersCategoryDataProvider: TrackersCategoryDataProviderProtocol {
     var categories: [TrackerCategoryCoreData] {
-        fetchedResultsController.fetchedObjects ?? []
+        self.fetchedResultsController.fetchedObjects ?? []
     }
 
     func numberOfItemsInSection(_ section: Int) -> Int {
-        fetchedResultsController.sections?[section].numberOfObjects ?? 0
+        self.fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
 }
 
@@ -62,6 +62,6 @@ extension TrackersCategoryDataProvider: TrackersCategoryDataProviderProtocol {
 
 extension TrackersCategoryDataProvider: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_: NSFetchedResultsController<NSFetchRequestResult>) {
-        delegate?.storeDidUpdate()
+        self.delegate?.storeDidUpdate()
     }
 }

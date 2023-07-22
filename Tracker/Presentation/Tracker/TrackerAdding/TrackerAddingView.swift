@@ -32,20 +32,20 @@ final class TrackerAddingView: UIView {
 
     var viewTitle: String? {
         didSet {
-            titleLabel.text = viewTitle
-            titleLabel.sizeToFit()
+            self.titleLabel.text = self.viewTitle
+            self.titleLabel.sizeToFit()
         }
     }
 
     var trackerTitle: String? {
         didSet {
-            trackerTitleTextField.text = trackerTitle
+            self.trackerTitleTextField.text = self.trackerTitle
         }
     }
 
     var completedTimesCount: String? {
         didSet {
-            completedTimesCountLabel.text = completedTimesCount
+            self.completedTimesCountLabel.text = self.completedTimesCount
         }
     }
 
@@ -253,7 +253,7 @@ final class TrackerAddingView: UIView {
         self.flow = flow
 
         super.init(frame: .zero)
-        configure()
+        self.configure()
     }
 
     @available(*, unavailable)
@@ -264,13 +264,13 @@ final class TrackerAddingView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         guard contentView.frame.width != 0 else { return }
-        addConstraintsToButtons()
+        self.addConstraintsToButtons()
 
-        tableViewHeightConstraint.constant = trackerOptionsTableView.contentSize.height
-        emojisCollectionViewHeightConstraint.constant = emojisCollectionView.contentSize.height
-        colorsCollectionViewHeightConstraint.constant = colorsCollectionView.contentSize.height
+        self.tableViewHeightConstraint.constant = self.trackerOptionsTableView.contentSize.height
+        self.emojisCollectionViewHeightConstraint.constant = self.emojisCollectionView.contentSize.height
+        self.colorsCollectionViewHeightConstraint.constant = self.colorsCollectionView.contentSize.height
 
-        setNeedsLayout()
+        self.setNeedsLayout()
     }
 }
 
@@ -278,12 +278,12 @@ final class TrackerAddingView: UIView {
 
 extension TrackerAddingView: TrackerAddingViewProtocol {
     func shouldHideErrorLabelWithAnimation(_ shouldHide: Bool) {
-        guard errorLabel.isHidden != shouldHide else { return }
+        guard self.errorLabel.isHidden != shouldHide else { return }
 
         if shouldHide {
-            tableViewTopConstraint.constant = 24
+            self.tableViewTopConstraint.constant = 24
         } else {
-            tableViewTopConstraint.constant = 54
+            self.tableViewTopConstraint.constant = 54
         }
 
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
@@ -294,42 +294,42 @@ extension TrackerAddingView: TrackerAddingViewProtocol {
     }
 
     func reloadCollections() {
-        reloadData()
+        self.reloadData()
     }
 
     func reloadOptionsTable() {
-        trackerOptionsTableView.reloadData()
+        self.trackerOptionsTableView.reloadData()
     }
 
     func shouldEnableConfirmButton(_ shouldDisable: Bool) {
-        confirmTrackerButton.buttonState = shouldDisable ? .disabled : .normal
+        self.confirmTrackerButton.buttonState = shouldDisable ? .disabled : .normal
     }
 }
 
 private extension TrackerAddingView {
     func configure() {
-        addSubviews()
-        addConstraints()
-        addGestureRecognizers()
+        self.addSubviews()
+        self.addConstraints()
+        self.addGestureRecognizers()
     }
 
     func addSubviews() {
-        addSubview(scrollView)
-        scrollView.addSubview(contentView)
+        self.addSubview(scrollView)
+        self.scrollView.addSubview(contentView)
 
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(trackerTitleTextField)
-        contentView.addSubview(errorLabel)
-        contentView.addSubview(trackerOptionsTableView)
-        contentView.addSubview(emojisCollectionView)
-        contentView.addSubview(colorsCollectionView)
-        contentView.addSubview(confirmTrackerButton)
-        contentView.addSubview(cancelTrackerButton)
+        self.contentView.addSubview(titleLabel)
+        self.contentView.addSubview(trackerTitleTextField)
+        self.contentView.addSubview(errorLabel)
+        self.contentView.addSubview(trackerOptionsTableView)
+        self.contentView.addSubview(emojisCollectionView)
+        self.contentView.addSubview(colorsCollectionView)
+        self.contentView.addSubview(confirmTrackerButton)
+        self.contentView.addSubview(cancelTrackerButton)
 
-        if flow == .edit {
-            contentView.addSubview(decreaseCompletedTimesButton)
-            contentView.addSubview(completedTimesCountLabel)
-            contentView.addSubview(increaseCompletedTimesButton)
+        if self.flow == .edit {
+            self.contentView.addSubview(self.decreaseCompletedTimesButton)
+            self.contentView.addSubview(self.completedTimesCountLabel)
+            self.contentView.addSubview(self.increaseCompletedTimesButton)
         }
     }
 
@@ -386,7 +386,7 @@ private extension TrackerAddingView {
             colorsCollectionViewHeightConstraint,
         ])
 
-        if flow == .edit {
+        if self.flow == .edit {
             NSLayoutConstraint.activate([
                 decreaseCompletedTimesButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 26),
                 decreaseCompletedTimesButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 80),
@@ -441,16 +441,16 @@ private extension TrackerAddingView {
     }
 
     func addGestureRecognizers() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         tap.cancelsTouchesInView = false
         tap.numberOfTapsRequired = 1
-        addGestureRecognizer(tap)
+        self.addGestureRecognizer(tap)
     }
 
     func reloadData() {
-        trackerOptionsTableView.reloadData()
-        emojisCollectionView.reloadData()
-        colorsCollectionView.reloadData()
+        self.trackerOptionsTableView.reloadData()
+        self.emojisCollectionView.reloadData()
+        self.colorsCollectionView.reloadData()
     }
 }
 
@@ -459,34 +459,34 @@ private extension TrackerAddingView {
 private extension TrackerAddingView {
     @objc
     func didTapCancelTrackerButton() {
-        didTapCancel?()
+        self.didTapCancel?()
     }
 
     @objc
     func didTapConfirmTrackerButton() {
-        didTapConfirm?()
+        self.didTapConfirm?()
     }
 
     @objc
     func didChangeTrackerTitleTextField(_ textField: UITextField) {
         guard let title = textField.text else { return }
-        didChangeTrackerTitle?(title)
+        self.didChangeTrackerTitle?(title)
     }
 
     @objc
     func dismissKeyboard() {
-        emptyTap?()
-        guard let title = trackerTitleTextField.text else { return }
-        didSelectTrackerTitle?(title)
+        self.emptyTap?()
+        guard let title = self.trackerTitleTextField.text else { return }
+        self.didSelectTrackerTitle?(title)
     }
 
     @objc
     func didTapIncreaseCompletedCount() {
-        increaseCompletedCount?()
+        self.increaseCompletedCount?()
     }
 
     @objc
     func didTapDecreaseCompletedCount() {
-        decreaseCompletedCount?()
+        self.decreaseCompletedCount?()
     }
 }

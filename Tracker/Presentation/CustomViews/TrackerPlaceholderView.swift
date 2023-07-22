@@ -33,13 +33,13 @@ final class TrackerPlaceholderView: UIView {
 
     private var image: UIImage? {
         didSet {
-            imageView.image = image
+            self.imageView.image = self.image
         }
     }
 
     private var text: String? {
         didSet {
-            textLabel.text = text
+            self.textLabel.text = self.text
         }
     }
 
@@ -47,10 +47,10 @@ final class TrackerPlaceholderView: UIView {
 
     init() {
         super.init(frame: .zero)
-        addSubviews()
-        addConstraints()
+        self.addSubviews()
+        self.addConstraints()
 
-        backgroundColor = .Dynamic.whiteDay
+        self.backgroundColor = .Dynamic.whiteDay
     }
 
     required init?(coder: NSCoder) {
@@ -64,24 +64,24 @@ extension TrackerPlaceholderView {
         switch state {
         case .emptyTrackersForDay:
             let text = localizable.placeholderViewEmptyForDayTextLabelText()
-            set(image: .Placeholder.emptyForDay, text: text, newState: state)
+            self.set(image: .Placeholder.emptyForDay, text: text, newState: state)
         case .emptyTrackersSearch:
             let text = localizable.placeholderViewEmptySearchTextLabelText()
-            set(image: .Placeholder.emptySearch, text: text, newState: state)
+            self.set(image: .Placeholder.emptySearch, text: text, newState: state)
         case .emptyCategories:
             let text = localizable.placeholderViewEmptyCategoriesTextLabelText()
-            set(image: .Placeholder.emptyForDay, text: text, newState: state)
+            self.set(image: .Placeholder.emptyForDay, text: text, newState: state)
         case .emptyStatistics:
             let text = localizable.placeholderViewEmptyStatisticsTextLabelText()
-            set(image: .Placeholder.emptyStatistics, text: text, newState: state)
+            self.set(image: .Placeholder.emptyStatistics, text: text, newState: state)
         }
     }
 
     func set(image: UIImage?, text: String?, newState: State) {
-        guard state != newState else { return }
+        guard self.state != newState else { return }
 
         UIView.transition(
-            with: imageView,
+            with: self.imageView,
             duration: 0.3,
             options: .transitionCrossDissolve,
             animations: { [weak self] in
@@ -90,7 +90,7 @@ extension TrackerPlaceholderView {
         )
 
         UIView.transition(
-            with: textLabel,
+            with: self.textLabel,
             duration: 0.3,
             options: .transitionCrossDissolve,
             animations: { [weak self] in
@@ -98,29 +98,29 @@ extension TrackerPlaceholderView {
             }
         )
 
-        state = newState
+        self.state = newState
     }
 }
 
 private extension TrackerPlaceholderView {
     func addSubviews() {
-        addSubview(imageView)
-        addSubview(textLabel)
+        self.addSubview(imageView)
+        self.addSubview(textLabel)
     }
 
     func addConstraints() {
         NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: 80),
-            imageView.heightAnchor.constraint(equalToConstant: 80),
-            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            self.imageView.widthAnchor.constraint(equalToConstant: 80),
+            self.imageView.heightAnchor.constraint(equalToConstant: 80),
+            self.imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            self.imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
         ])
 
         NSLayoutConstraint.activate([
-            textLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
-            textLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            textLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            textLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            self.textLabel.topAnchor.constraint(equalTo: self.imageView.bottomAnchor, constant: 8),
+            self.textLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            self.textLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            self.textLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
         ])
     }
 }

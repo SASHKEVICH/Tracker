@@ -11,9 +11,9 @@ final class CellSelectBackgroundView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = .Static.lightGray
-        layer.cornerRadius = 16
-        layer.masksToBounds = true
+        self.backgroundColor = .Static.lightGray
+        self.layer.cornerRadius = 16
+        self.layer.masksToBounds = true
     }
 
     @available(*, unavailable)

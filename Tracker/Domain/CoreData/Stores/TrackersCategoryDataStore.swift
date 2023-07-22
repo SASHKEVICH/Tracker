@@ -18,7 +18,7 @@ struct TrackersCategoryDataStore {
 
 extension TrackersCategoryDataStore {
     var managedObjectContext: NSManagedObjectContext {
-        context
+        self.context
     }
 
     func category(for tracker: Tracker) -> TrackerCategoryCoreData? {
@@ -27,11 +27,11 @@ extension TrackersCategoryDataStore {
         trackerRequest.predicate = trackerPredicate
         trackerRequest.fetchLimit = 1
 
-        guard let object = try? context.fetch(trackerRequest),
+        guard let object = try? self.context.fetch(trackerRequest),
               let trackerCoreData = object.first
         else { return nil }
 
-        return category(with: trackerCoreData.category.id)
+        return self.category(with: trackerCoreData.category.id)
     }
 
     func category(with id: String) -> TrackerCategoryCoreData? {
@@ -60,7 +60,7 @@ extension TrackersCategoryDataStore {
     }
 
     func add(category _: TrackerCategoryCoreData) throws {
-        try? context.save()
+        try? self.context.save()
     }
 
     func delete(_ record: NSManagedObject) throws {

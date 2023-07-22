@@ -23,7 +23,7 @@ final class OnboardingRouter {
 
 extension OnboardingRouter: OnboardingRouterProtocol {
     func navigateToMainScreen(animated _: Bool) {
-        guard let window = window else { return }
+        guard let window = self.window else { return }
         let tabBarController = TabBarViewController()
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()

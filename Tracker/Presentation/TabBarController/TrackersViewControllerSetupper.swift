@@ -21,12 +21,12 @@ final class TrackersViewControllerSetupper {
     private let pinnedCategoryId: UUID
 
     func getViewController() -> UINavigationController? {
-        guard let presenter = preparePresenter() else { return nil }
+        guard let presenter = self.preparePresenter() else { return nil }
 
-        trackersViewController.presenter = presenter
-        presenter.view = trackersViewController
+        self.trackersViewController.presenter = presenter
+        presenter.view = self.trackersViewController
 
-        let controller = prepareNavigationController()
+        let controller = self.prepareNavigationController()
         return controller
     }
 
@@ -57,28 +57,28 @@ final class TrackersViewControllerSetupper {
 
 private extension TrackersViewControllerSetupper {
     func preparePresenter() -> TrackersViewPresenter? {
-        guard let router = prepareRouter(
-            trackersCategoryService: trackersCategoryService,
-            trackersCategoryAddingService: trackersCategoryAddingService,
+        guard let router = self.prepareRouter(
+            trackersCategoryService: self.trackersCategoryService,
+            trackersCategoryAddingService: self.trackersCategoryAddingService,
             trackersService: self.trackersService,
-            trackersAddingService: trackersAddingService,
+            trackersAddingService: self.trackersAddingService,
             trackersRecordService: self.trackersRecordService,
-            trackersCompletingService: trackersCompletingService,
-            pinnedCategoryId: pinnedCategoryId
+            trackersCompletingService: self.trackersCompletingService,
+            pinnedCategoryId: self.pinnedCategoryId
         ) else { return nil }
 
         var alertPresenterService = self.alertPresenterService
-        alertPresenterService.delegate = trackersViewController
+        alertPresenterService.delegate = self.trackersViewController
 
         let presenter = TrackersViewPresenter(
             trackersService: self.trackersService,
-            trackersAddingService: trackersAddingService,
-            trackersCompletingService: trackersCompletingService,
+            trackersAddingService: self.trackersAddingService,
+            trackersCompletingService: self.trackersCompletingService,
             trackersRecordService: self.trackersRecordService,
-            trackersPinningService: trackersPinningService,
+            trackersPinningService: self.trackersPinningService,
             router: router,
             alertPresenterService: alertPresenterService,
-            analyticsService: analyticsService
+            analyticsService: self.analyticsService
         )
 
         var trackersService = self.trackersService
@@ -92,8 +92,8 @@ private extension TrackersViewControllerSetupper {
 
     func prepareNavigationController() -> UINavigationController {
         let title = R.string.localizable.tabbarTracker()
-        trackersViewController.tabBarItem = UITabBarItem(title: title, image: .TabBar.trackers, selectedImage: nil)
-        let navigationController = UINavigationController(rootViewController: trackersViewController)
+        self.trackersViewController.tabBarItem = UITabBarItem(title: title, image: .TabBar.trackers, selectedImage: nil)
+        let navigationController = UINavigationController(rootViewController: self.trackersViewController)
         navigationController.navigationBar.prefersLargeTitles = true
         return navigationController
     }
@@ -111,7 +111,7 @@ private extension TrackersViewControllerSetupper {
     ) -> TrackersViewRouter? {
         guard let trackersService = trackersService as? TrackersServiceFilteringProtocol else { return nil }
         let router = TrackersViewRouter(
-            viewController: trackersViewController,
+            viewController: self.trackersViewController,
             trackersCategoryService: trackersCategoryService,
             trackersCategoryAddingService: trackersCategoryAddingService,
             trackersService: trackersService,

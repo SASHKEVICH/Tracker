@@ -38,7 +38,7 @@ enum Device {
     case iphone14proMax
 
     static var model: Device {
-        guard let deviceCode = getDeviceCode() else {
+        guard let deviceCode = self.getDeviceCode() else {
             assertionFailure("Unknown device code")
             return .iphoneX
         }

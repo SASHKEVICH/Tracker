@@ -37,13 +37,13 @@ final class TrackerCustomTextField: UITextField {
 
 private extension TrackerCustomTextField {
     func setupTextField() {
-        textColor = .Dynamic.blackDay
-        backgroundColor = .Dynamic.backgroundDay
+        self.textColor = .Dynamic.blackDay
+        self.backgroundColor = .Dynamic.backgroundDay
 
-        layer.cornerRadius = 16
-        layer.masksToBounds = true
+        self.layer.cornerRadius = 16
+        self.layer.masksToBounds = true
 
-        font = .Regular.medium
+        self.font = .Regular.medium
 
         if let placeholder = placeholder {
             attributedPlaceholder = NSAttributedString(

@@ -19,7 +19,7 @@ final class TrackersCategoryService {
     var numberOfSections: Int = 1
     weak var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate? {
         didSet {
-            trackersCategoryDataProvider.delegate = trackersCategoryDataProviderDelegate
+            self.trackersCategoryDataProvider.delegate = self.trackersCategoryDataProviderDelegate
         }
     }
 
@@ -42,17 +42,17 @@ final class TrackersCategoryService {
 
 extension TrackersCategoryService: TrackersCategoryServiceProtocol {
     var categories: [TrackerCategory] {
-        let categories = trackersCategoryDataProvider.categories
+        let categories = self.trackersCategoryDataProvider.categories
             .compactMap { trackersCategoryFactory.makeCategory(categoryCoreData: $0) }
         return categories
     }
 
     func numberOfItemsInSection(_ section: Int) -> Int {
-        trackersCategoryDataProvider.numberOfItemsInSection(section)
+        self.trackersCategoryDataProvider.numberOfItemsInSection(section)
     }
 
     func category(for tracker: Tracker) -> TrackerCategory? {
-        guard let categoryCoreData = trackersCategoryDataFetcher.category(for: tracker) else { return nil }
-        return trackersCategoryFactory.makeCategory(categoryCoreData: categoryCoreData)
+        guard let categoryCoreData = self.trackersCategoryDataFetcher.category(for: tracker) else { return nil }
+        return self.trackersCategoryFactory.makeCategory(categoryCoreData: categoryCoreData)
     }
 }

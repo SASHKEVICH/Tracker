@@ -22,7 +22,7 @@ struct TrackersCategoryDataAdder {
     ) {
         self.trackersCategoryDataStore = trackersCategoryDataStore
         self.trackersCategoryFactory = trackersCategoryFactory
-        context = trackersCategoryDataStore.managedObjectContext
+        self.context = trackersCategoryDataStore.managedObjectContext
     }
 }
 
@@ -30,7 +30,7 @@ struct TrackersCategoryDataAdder {
 
 extension TrackersCategoryDataAdder: TrackersCategoryDataAdderProtocol {
     func add(category: TrackerCategory) throws {
-        let categoryCoreData = trackersCategoryFactory.makeCategoryCoreData(from: category, context: context)
+        let categoryCoreData = self.trackersCategoryFactory.makeCategoryCoreData(from: category, context: self.context)
         try trackersCategoryDataStore.add(category: categoryCoreData)
     }
 }

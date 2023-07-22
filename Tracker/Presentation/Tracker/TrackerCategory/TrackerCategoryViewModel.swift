@@ -22,15 +22,15 @@ final class TrackerCategoryViewModel {
     var onCategoriesChanged: Binding?
     var categories: [TrackerCategory] = [] {
         didSet {
-            onCategoriesChanged?()
-            shouldHidePlaceholder()
+            self.onCategoriesChanged?()
+            self.shouldHidePlaceholder()
         }
     }
 
     var onIsPlaceholderHiddenChanged: Binding?
     var isPlaceholderHidden: Bool = true {
         didSet {
-            onIsPlaceholderHiddenChanged?()
+            self.onIsPlaceholderHiddenChanged?()
         }
     }
 
@@ -54,7 +54,7 @@ final class TrackerCategoryViewModel {
 
 extension TrackerCategoryViewModel: TrackerCategoryViewModelProtocol {
     func didChoose(category: TrackerCategory) {
-        delegate?.didRecieveCategory(category)
+        self.delegate?.didRecieveCategory(category)
     }
 }
 
@@ -62,17 +62,17 @@ extension TrackerCategoryViewModel: TrackerCategoryViewModelProtocol {
 
 extension TrackerCategoryViewModel: TrackersCategoryDataProviderDelegate {
     func storeDidUpdate() {
-        categories = getCategoriesFromStore()
+        self.categories = self.getCategoriesFromStore()
     }
 }
 
 private extension TrackerCategoryViewModel {
     func shouldHidePlaceholder() {
-        isPlaceholderHidden = categories.isEmpty == false
+        self.isPlaceholderHidden = self.categories.isEmpty == false
     }
 
     func getCategoriesFromStore() -> [TrackerCategory] {
-        let categories = trackersCategoryService.categories
+        let categories = self.trackersCategoryService.categories
         return categories.filter { $0.id != self.pinnedCategoryId }
     }
 }

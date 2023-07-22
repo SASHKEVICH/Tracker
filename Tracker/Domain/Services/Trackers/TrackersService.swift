@@ -33,7 +33,7 @@ typealias TrackersServiceProtocol = TrackersServiceFetchingProtocol & TrackersSe
 final class TrackersService {
     weak var trackersDataProviderDelegate: TrackersDataProviderDelegate? {
         didSet {
-            trackersDataProvider.delegate = trackersDataProviderDelegate
+            self.trackersDataProvider.delegate = self.trackersDataProviderDelegate
         }
     }
 
@@ -50,22 +50,22 @@ final class TrackersService {
 
 extension TrackersService: TrackersServiceFetchingProtocol {
     func tracker(at indexPath: IndexPath) -> Tracker? {
-        guard let trackerCoreData = trackersDataProvider.tracker(at: indexPath) else { return nil }
-        return trackersFactory.makeTracker(from: trackerCoreData)
+        guard let trackerCoreData = self.trackersDataProvider.tracker(at: indexPath) else { return nil }
+        return self.trackersFactory.makeTracker(from: trackerCoreData)
     }
 
     func requestDataProviderErrorAlert() { print("data provider error") }
 
     func fetchTrackers(weekDay: WeekDay) {
-        trackersDataProvider.fetchTrackers(currentWeekDay: weekDay)
+        self.trackersDataProvider.fetchTrackers(currentWeekDay: weekDay)
     }
 
     func fetchTrackers(titleSearchString title: String, currentWeekDay weekDay: WeekDay) {
-        trackersDataProvider.fetchTrackers(titleSearchString: title, currentWeekDay: weekDay)
+        self.trackersDataProvider.fetchTrackers(titleSearchString: title, currentWeekDay: weekDay)
     }
 
     func eraseOperations() {
-        trackersDataProvider.eraseOperations()
+        self.trackersDataProvider.eraseOperations()
     }
 }
 
@@ -73,15 +73,15 @@ extension TrackersService: TrackersServiceFetchingProtocol {
 
 extension TrackersService: TrackersServiceDataSourceProtocol {
     var numberOfSections: Int {
-        trackersDataProvider.numberOfSections
+        self.trackersDataProvider.numberOfSections
     }
 
     func numberOfItemsInSection(_ section: Int) -> Int {
-        trackersDataProvider.numberOfItemsInSection(section)
+        self.trackersDataProvider.numberOfItemsInSection(section)
     }
 
     func categoryTitle(at indexPath: IndexPath) -> String? {
-        trackersDataProvider.categoryTitle(at: indexPath)
+        self.trackersDataProvider.categoryTitle(at: indexPath)
     }
 }
 
@@ -92,13 +92,13 @@ extension TrackersService: TrackersServiceFilteringProtocol {
         switch mode {
         case let .all(currentDate):
             guard let weekDay = currentDate.weekDay else { return }
-            fetchTrackers(weekDay: weekDay)
+            self.fetchTrackers(weekDay: weekDay)
         case .today:
-            trackersDataProvider.fetchTrackersForToday()
+            self.trackersDataProvider.fetchTrackersForToday()
         case let .completed(currentDate):
-            trackersDataProvider.fetchCompletedTrackers(for: currentDate)
+            self.trackersDataProvider.fetchCompletedTrackers(for: currentDate)
         case let .incompleted(currentDate):
-            trackersDataProvider.fetchIncompletedTrackers(for: currentDate)
+            self.trackersDataProvider.fetchIncompletedTrackers(for: currentDate)
         }
     }
 }

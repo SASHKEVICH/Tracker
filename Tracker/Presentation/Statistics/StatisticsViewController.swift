@@ -90,9 +90,9 @@ private extension StatisticsViewController {
         ])
 
         NSLayoutConstraint.activate([
-            self.statisticsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            self.statisticsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            self.statisticsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            self.statisticsTableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.statisticsTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.statisticsTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             self.statisticsTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }

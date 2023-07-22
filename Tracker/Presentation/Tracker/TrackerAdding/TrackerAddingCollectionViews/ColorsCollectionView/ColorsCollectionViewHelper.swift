@@ -41,7 +41,7 @@ extension ColorsCollectionViewHelper {
               let color = cell.color
         else { return }
 
-        delegate?.didSelect(color: color)
+        self.delegate?.didSelect(color: color)
     }
 
     func collectionView(
@@ -65,7 +65,7 @@ extension ColorsCollectionViewHelper {
         layout _: UICollectionViewLayout,
         minimumInteritemSpacingForSectionAt _: Int
     ) -> CGFloat {
-        configuration.horizontalCellSpacing
+        self.configuration.horizontalCellSpacing
     }
 
     func collectionView(
@@ -73,7 +73,7 @@ extension ColorsCollectionViewHelper {
         layout _: UICollectionViewLayout,
         minimumLineSpacingForSectionAt _: Int
     ) -> CGFloat {
-        configuration.verticalCellSpacing
+        self.configuration.verticalCellSpacing
     }
 
     func collectionView(
@@ -81,7 +81,7 @@ extension ColorsCollectionViewHelper {
         layout _: UICollectionViewLayout,
         insetForSectionAt _: Int
     ) -> UIEdgeInsets {
-        configuration.collectionViewInsets
+        self.configuration.collectionViewInsets
     }
 
     func collectionView(
@@ -100,7 +100,7 @@ extension ColorsCollectionViewHelper {
         _: UICollectionView,
         numberOfItemsInSection _: Int
     ) -> Int {
-        colors.count
+        self.colors.count
     }
 
     func collectionView(
@@ -115,10 +115,10 @@ extension ColorsCollectionViewHelper {
             assertionFailure("cannot dequeue colors cell")
             return UICollectionViewCell()
         }
-        let color = colors[indexPath.row]
+        let color = self.colors[indexPath.row]
         cell.color = color
 
-        if isSelectedColorEqual(color: color, delegate?.selectedColor) {
+        if isSelectedColorEqual(color: color, self.delegate?.selectedColor) {
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
         }
 
@@ -146,7 +146,7 @@ extension ColorsCollectionViewHelper {
 
 private extension ColorsCollectionViewHelper {
     func isSelectedColorEqual(color: UIColor, _: UIColor?) -> Bool {
-        guard let selectedColor = delegate?.selectedColor else { return false }
+        guard let selectedColor = self.delegate?.selectedColor else { return false }
         let selectedColorHex = UIColorMarshalling.serilizeToHex(color: selectedColor)
         let colorHex = UIColorMarshalling.serilizeToHex(color: color)
         return selectedColorHex == colorHex

@@ -18,24 +18,24 @@ struct TrackersDataStore {
 
 extension TrackersDataStore {
     var managedObjectContext: NSManagedObjectContext {
-        context
+        self.context
     }
 
     func tracker(with id: String) -> TrackerCoreData? {
         let request = TrackerCoreData.fetchRequest()
         request.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerCoreData.id), id)
-        return try? context.fetch(request).first
+        return try? self.context.fetch(request).first
     }
 
     func add(tracker: TrackerCoreData, in category: TrackerCategoryCoreData) throws {
         tracker.category = category
         category.addToTrackers(tracker)
-        try context.save()
+        try self.context.save()
     }
 
     func delete(tracker: Tracker) {
         guard let trackerCoreData = self.tracker(with: tracker.id.uuidString) else { return }
-        delete(trackerCoreData: trackerCoreData)
+        self.delete(trackerCoreData: trackerCoreData)
     }
 
     func delete(trackerCoreData: TrackerCoreData) {
@@ -43,13 +43,13 @@ extension TrackersDataStore {
         categoryRequest.predicate = NSPredicate(
             format: "%K == %@", #keyPath(TrackerCategoryCoreData.id), trackerCoreData.category.id
         )
-        guard let category = try? context.fetch(categoryRequest).first else { return }
+        guard let category = try? self.context.fetch(categoryRequest).first else { return }
 
         category.removeFromTrackers(trackerCoreData)
 
         do {
-            context.delete(trackerCoreData)
-            try context.save()
+            self.context.delete(trackerCoreData)
+            try self.context.save()
         } catch {
             print(error)
         }
@@ -62,8 +62,8 @@ extension TrackersDataStore {
         pinnedCategory.addToTrackers(trackerWithRecords)
 
         do {
-            delete(trackerCoreData: tracker)
-            try context.save()
+            self.delete(trackerCoreData: tracker)
+            try self.context.save()
         } catch {
             assertionFailure(error.localizedDescription)
             return
@@ -77,8 +77,8 @@ extension TrackersDataStore {
         previousCategory.addToTrackers(trackerWithRecords)
 
         do {
-            delete(trackerCoreData: tracker)
-            try context.save()
+            self.delete(trackerCoreData: tracker)
+            try self.context.save()
         } catch {
             assertionFailure(error.localizedDescription)
             return
@@ -88,7 +88,7 @@ extension TrackersDataStore {
 
 private extension TrackersDataStore {
     func trackerWithRecords(convert tracker: TrackerCoreData) -> TrackerCoreData {
-        let trackerWithRecords = TrackerCoreData(context: context)
+        let trackerWithRecords = TrackerCoreData(context: self.context)
         trackerWithRecords.id = tracker.id
         trackerWithRecords.title = tracker.title
         trackerWithRecords.records = tracker.records

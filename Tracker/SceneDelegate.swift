@@ -14,7 +14,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: scene)
+        self.window = UIWindow(windowScene: scene)
 
         let isAppAlreadyLaunchedOnce = firstLaunchService.isAppAlreadyLaunchedOnce
         if !isAppAlreadyLaunchedOnce {
@@ -26,17 +26,17 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             onboardingViewController.presenter = onboardingPresenter
             onboardingPresenter.view = onboardingViewController
 
-            setRootViewController(onboardingViewController)
+            self.setRootViewController(onboardingViewController)
         } else {
             let tabBarViewController = TabBarViewController()
-            setRootViewController(tabBarViewController)
+            self.setRootViewController(tabBarViewController)
         }
     }
 }
 
 private extension SceneDelegate {
     func setRootViewController(_ vc: UIViewController) {
-        window?.rootViewController = vc
-        window?.makeKeyAndVisible()
+        self.window?.rootViewController = vc
+        self.window?.makeKeyAndVisible()
     }
 }

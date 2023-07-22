@@ -66,13 +66,13 @@ final class TrackerCategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupViewController()
+        self.setupViewController()
 
-        helper.delegate = self
+        self.helper.delegate = self
 
-        addSubviews()
-        addConstraints()
-        bind()
+        self.addSubviews()
+        self.addConstraints()
+        self.bind()
     }
 
     init(
@@ -101,15 +101,15 @@ final class TrackerCategoryViewController: UIViewController {
 
 extension TrackerCategoryViewController: TrackerCategoryTableViewHelperDelegate {
     var categories: [TrackerCategory] {
-        viewModel.categories
+        self.viewModel.categories
     }
 
     var chosenCategory: TrackerCategory? {
-        selectedCategory
+        self.selectedCategory
     }
 
     func didSelect(category: TrackerCategory) {
-        viewModel.didChoose(category: category)
+        self.viewModel.didChoose(category: category)
     }
 }
 
@@ -117,18 +117,18 @@ extension TrackerCategoryViewController: TrackerCategoryTableViewHelperDelegate 
 
 extension TrackerCategoryViewController: TrackerNewCategoryViewControllerDelegate {
     func dismissNewCategoryViewController() {
-        dismiss(animated: true)
+        self.dismiss(animated: true)
     }
 }
 
 private extension TrackerCategoryViewController {
     func addSubviews() {
-        view.addSubview(titleLabel)
-        view.addSubview(categoriesTableView)
-        view.insertSubview(placeholderView, aboveSubview: categoriesTableView)
+        self.view.addSubview(titleLabel)
+        self.view.addSubview(categoriesTableView)
+        self.view.insertSubview(placeholderView, aboveSubview: categoriesTableView)
 
-        if flow == .normal {
-            view.addSubview(addNewCategoryButton)
+        if self.flow == .normal {
+            self.view.addSubview(addNewCategoryButton)
         }
     }
 
@@ -152,7 +152,7 @@ private extension TrackerCategoryViewController {
             placeholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
 
-        if flow == .normal {
+        if self.flow == .normal {
             NSLayoutConstraint.activate([
                 addNewCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
                 addNewCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -163,11 +163,11 @@ private extension TrackerCategoryViewController {
     }
 
     func bind() {
-        viewModel.onCategoriesChanged = { [weak self] in
+        self.viewModel.onCategoriesChanged = { [weak self] in
             self?.categoriesTableView.reloadData()
         }
 
-        viewModel.onIsPlaceholderHiddenChanged = { [weak self] in
+        self.viewModel.onIsPlaceholderHiddenChanged = { [weak self] in
             guard let self = self else { return }
             self.placeholderView(shouldHide: self.viewModel.isPlaceholderHidden)
         }
@@ -179,37 +179,37 @@ private extension TrackerCategoryViewController {
 private extension TrackerCategoryViewController {
     @objc
     func didTapAddNewCategoryButton() {
-        router?.navigateToNewCategoryScreen(from: self)
+        self.router?.navigateToNewCategoryScreen(from: self)
     }
 }
 
 private extension TrackerCategoryViewController {
     func placeholderView(shouldHide: Bool) {
-        placeholderView.isHidden = shouldHide
+        self.placeholderView.isHidden = shouldHide
     }
 }
 
 private extension TrackerCategoryViewController {
     func setupViewController() {
-        view.backgroundColor = .Dynamic.whiteDay
+        self.view.backgroundColor = .Dynamic.whiteDay
 
-        switch flow {
+        switch self.flow {
         case .filter:
-            setupForFilterFlow()
+            self.setupForFilterFlow()
         case .normal:
-            setupForNormalFlow()
+            self.setupForNormalFlow()
         }
     }
 
     func setupForFilterFlow() {
         let title = R.string.localizable.trackerCategoryFlowFilterViewControllerTitle()
-        titleLabel.text = title
-        titleLabel.sizeToFit()
+        self.titleLabel.text = title
+        self.titleLabel.sizeToFit()
     }
 
     func setupForNormalFlow() {
         let title = R.string.localizable.trackerCategoryFlowNormalViewControllerTitle()
-        titleLabel.text = title
-        titleLabel.sizeToFit()
+        self.titleLabel.text = title
+        self.titleLabel.sizeToFit()
     }
 }

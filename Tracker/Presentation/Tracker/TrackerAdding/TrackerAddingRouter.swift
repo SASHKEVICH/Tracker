@@ -45,13 +45,13 @@ extension TrackerAddingRouter: TrackerAddingRouterProtocol {
 
     func navigateToCategoryScreen(selectedCategory: TrackerCategory?, from viewController: UIViewController) {
         let viewModel = TrackerCategoryViewModel(
-            trackersCategoryService: trackersCategoryService,
-            pinnedCategoryId: pinnedCategoryId
+            trackersCategoryService: self.trackersCategoryService,
+            pinnedCategoryId: self.pinnedCategoryId
         )
         viewModel.delegate = viewController as? TrackerCategoryViewControllerDelegate
 
         let helper = TrackerCategoryTableViewHelper()
-        let router = TrackerCategoryRouter(trackersCategoryAddingService: trackersCategoryAddingService)
+        let router = TrackerCategoryRouter(trackersCategoryAddingService: self.trackersCategoryAddingService)
 
         let vc = TrackerCategoryViewController(
             viewModel: viewModel,

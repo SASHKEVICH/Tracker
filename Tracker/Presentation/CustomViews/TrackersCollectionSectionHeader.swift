@@ -12,8 +12,8 @@ final class TrackersCollectionSectionHeader: UICollectionReusableView {
 
     var headerText: String? {
         didSet {
-            headerLabel.text = headerText
-            headerLabel.sizeToFit()
+            self.headerLabel.text = self.headerText
+            self.headerLabel.sizeToFit()
         }
     }
 
@@ -26,8 +26,8 @@ final class TrackersCollectionSectionHeader: UICollectionReusableView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubviews()
-        addConstraints()
+        self.addSubviews()
+        self.addConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -37,7 +37,7 @@ final class TrackersCollectionSectionHeader: UICollectionReusableView {
 
 private extension TrackersCollectionSectionHeader {
     func addSubviews() {
-        addSubview(headerLabel)
+        self.addSubview(self.headerLabel)
     }
 
     func addConstraints() {

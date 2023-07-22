@@ -92,23 +92,23 @@ final class TrackersViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .Dynamic.whiteDay
+        self.view.backgroundColor = .Dynamic.whiteDay
 
-        addSubviews()
-        addConstraints()
-        setupNavigationItem()
+        self.addSubviews()
+        self.addConstraints()
+        self.setupNavigationItem()
 
-        presenter?.viewDidLoad()
+        self.presenter?.viewDidLoad()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        presenter?.analyticsService.didOpenMainScreen()
+        self.presenter?.analyticsService.didOpenMainScreen()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        presenter?.analyticsService.didCloseMainScreen()
+        self.presenter?.analyticsService.didCloseMainScreen()
     }
 }
 
@@ -116,18 +116,18 @@ final class TrackersViewController: UIViewController {
 
 extension TrackersViewController: TrackersViewControllerProtocol {
     func showPlaceholderViewForCurrentDay() {
-        collectionPlaceholderView.set(state: .emptyTrackersForDay)
-        shouldHidePlaceholderView(false)
+        self.collectionPlaceholderView.set(state: .emptyTrackersForDay)
+        self.shouldHidePlaceholderView(false)
     }
 
     func showPlaceholderViewForEmptySearch() {
-        collectionPlaceholderView.set(state: .emptyTrackersSearch)
-        shouldHidePlaceholderView(false)
+        self.collectionPlaceholderView.set(state: .emptyTrackersSearch)
+        self.shouldHidePlaceholderView(false)
     }
 
     func shouldHidePlaceholderView(_ shouldHide: Bool) {
         UIView.transition(
-            with: collectionPlaceholderView,
+            with: self.collectionPlaceholderView,
             duration: 0.3,
             options: .transitionCrossDissolve
         ) { [weak self] in
@@ -140,35 +140,35 @@ extension TrackersViewController: TrackersViewControllerProtocol {
 
 extension TrackersViewController: TrackersViewControllerFetchingProtocol {
     func insertSections(at: IndexSet) {
-        trackersCollectionView.insertSections(at)
+        self.trackersCollectionView.insertSections(at)
     }
 
     func deleteSections(at: IndexSet) {
-        trackersCollectionView.deleteSections(at)
+        self.trackersCollectionView.deleteSections(at)
     }
 
     func reloadSections(at: IndexSet) {
-        trackersCollectionView.reloadSections(at)
+        self.trackersCollectionView.reloadSections(at)
     }
 
     func insertItems(at: TrackersCollectionCellIndices) {
-        trackersCollectionView.insertItems(at: at)
+        self.trackersCollectionView.insertItems(at: at)
     }
 
     func deleteItems(at: TrackersCollectionCellIndices) {
-        trackersCollectionView.deleteItems(at: at)
+        self.trackersCollectionView.deleteItems(at: at)
     }
 
     func moveItems(at: IndexPath, to: IndexPath) {
-        trackersCollectionView.moveItem(at: at, to: to)
+        self.trackersCollectionView.moveItem(at: at, to: to)
     }
 
     func reloadItems(at: TrackersCollectionCellIndices) {
-        trackersCollectionView.reloadItems(at: at)
+        self.trackersCollectionView.reloadItems(at: at)
     }
 
     func didChangeContentAnimated(operations: [BlockOperation]) {
-        trackersCollectionView.performBatchUpdates({
+        self.trackersCollectionView.performBatchUpdates({
             operations.forEach { $0.start() }
         }, completion: { [weak self] _ in
             self?.presenter?.eraseOperations()
@@ -176,7 +176,7 @@ extension TrackersViewController: TrackersViewControllerFetchingProtocol {
     }
 
     func didRecieveTrackers() {
-        trackersCollectionView.reloadData()
+        self.trackersCollectionView.reloadData()
     }
 }
 
@@ -184,11 +184,11 @@ extension TrackersViewController: TrackersViewControllerFetchingProtocol {
 
 extension TrackersViewController: TrackerFilterViewControllerDelegate {
     func setCurrentDate() {
-        datePicker.date = Date()
+        self.datePicker.date = Date()
     }
 
     func didSelectFilter(category: TrackerCategory) {
-        selectedFilter = category
+        self.selectedFilter = category
     }
 }
 
@@ -196,15 +196,15 @@ extension TrackersViewController: TrackerFilterViewControllerDelegate {
 
 extension TrackersViewController: AlertPresenterServiceDelegate {
     func didRecieve(alert: UIAlertController) {
-        present(alert, animated: true)
+        self.present(alert, animated: true)
     }
 }
 
 private extension TrackersViewController {
     func addSubviews() {
-        view.addSubview(trackersCollectionView)
-        view.addSubview(filterButton)
-        view.insertSubview(collectionPlaceholderView, aboveSubview: filterButton)
+        self.view.addSubview(self.trackersCollectionView)
+        self.view.addSubview(self.filterButton)
+        self.view.insertSubview(self.collectionPlaceholderView, aboveSubview: self.filterButton)
     }
 
     func addConstraints() {
@@ -235,27 +235,27 @@ private extension TrackersViewController {
 
 private extension TrackersViewController {
     func setupNavigationItem() {
-        navigationItem.largeTitleDisplayMode = .always
-        navigationItem.title = R.string.localizable.trackersNavigationItemTitle()
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
+        self.navigationItem.largeTitleDisplayMode = .always
+        self.navigationItem.title = R.string.localizable.trackersNavigationItemTitle()
+        self.navigationItem.searchController = self.searchController
+        self.definesPresentationContext = true
 
-        setupLeftBarButtonItem()
-        setupRightBarButtonItem()
+        self.setupLeftBarButtonItem()
+        self.setupRightBarButtonItem()
     }
 
     func setupLeftBarButtonItem() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage.MainScreen.addTracker,
             style: .plain,
             target: self,
-            action: #selector(didTapAddTracker)
+            action: #selector(self.didTapAddTracker)
         )
-        navigationItem.leftBarButtonItem?.tintColor = .Dynamic.blackDay
+        self.navigationItem.leftBarButtonItem?.tintColor = .Dynamic.blackDay
     }
 
     func setupRightBarButtonItem() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.datePicker)
     }
 }
 
@@ -264,17 +264,17 @@ private extension TrackersViewController {
 private extension TrackersViewController {
     @objc
     func didTapAddTracker() {
-        presenter?.analyticsService.didTapAddTracker()
-        presenter?.navigateToTrackerTypeScreen()
+        self.presenter?.analyticsService.didTapAddTracker()
+        self.presenter?.navigateToTrackerTypeScreen()
     }
 
     @objc
     func didCurrentDateValueChanged(_ datePicker: UIDatePicker) {
-        presenter?.requestTrackers(for: datePicker.date)
+        self.presenter?.requestTrackers(for: datePicker.date)
     }
 
     @objc
     func didTapFilterButton() {
-        presenter?.navigateToFilterScreen(chosenDate: datePicker.date, selectedFilter: selectedFilter)
+        self.presenter?.navigateToFilterScreen(chosenDate: self.datePicker.date, selectedFilter: self.selectedFilter)
     }
 }

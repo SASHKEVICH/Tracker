@@ -57,8 +57,8 @@ final class TrackerScheduleViewController: UIViewController, TrackerScheduleView
 
         view.backgroundColor = .Dynamic.whiteDay
 
-        addSubviews()
-        addConstraints()
+        self.addSubviews()
+        self.addConstraints()
     }
 }
 
@@ -99,7 +99,7 @@ private extension TrackerScheduleViewController {
 private extension TrackerScheduleViewController {
     @objc
     func didTapAddScheduleButton() {
-        guard let selectedWeekDays = presenter?.selectedWeekDays else { return }
-        delegate?.didRecieveSelectedWeekDays(selectedWeekDays)
+        guard let selectedWeekDays = self.presenter?.selectedWeekDays else { return }
+        self.delegate?.didRecieveSelectedWeekDays(selectedWeekDays)
     }
 }

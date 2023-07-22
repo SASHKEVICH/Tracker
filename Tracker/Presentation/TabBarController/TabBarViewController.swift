@@ -11,7 +11,7 @@ final class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let serviceSetupper = prepareServiceSetupper(),
+        guard let serviceSetupper = self.prepareServiceSetupper(),
               let pinnedCategoryId = serviceSetupper.pinnedCategoryId
         else { return }
 
@@ -39,9 +39,9 @@ final class TabBarViewController: UITabBarController {
 
         let statisticsViewController = statisticsSetupper.getViewController()
 
-        viewControllers = [trackersViewController, statisticsViewController]
+        self.viewControllers = [trackersViewController, statisticsViewController]
 
-        setupTabBar()
+        self.setupTabBar()
     }
 }
 
@@ -49,7 +49,7 @@ private extension TabBarViewController {
     func setupTabBar() {
         let appearance = UITabBarAppearance()
         appearance.backgroundColor = .Dynamic.whiteDay
-        tabBar.standardAppearance = appearance
+        self.tabBar.standardAppearance = appearance
     }
 
     func prepareServiceSetupper() -> ServiceSetupperProtocol? {

@@ -26,8 +26,8 @@ final class EmojisCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        addSubviews()
-        addConstraints()
+        self.addSubviews()
+        self.addConstraints()
     }
 
     override func draw(_ rect: CGRect) {

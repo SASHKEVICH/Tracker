@@ -116,27 +116,27 @@ final class TrackersViewPresenter {
 
 extension TrackersViewPresenter: TrackersViewPresenterProtocol {
     func eraseOperations() {
-        trackersService.eraseOperations()
+        self.trackersService.eraseOperations()
     }
 
     func requestTrackers(for date: Date) {
         guard let weekDay = date.weekDay else { return }
-        currentDate = date
+        self.currentDate = date
 
-        trackersService.fetchTrackers(weekDay: weekDay)
-        fetchCompletedTrackersForCurrentDate()
+        self.trackersService.fetchTrackers(weekDay: weekDay)
+        self.fetchCompletedTrackersForCurrentDate()
     }
 
     func viewDidLoad() {
-        fetchCompletedTrackersForCurrentDate()
+        self.fetchCompletedTrackersForCurrentDate()
     }
 
     func navigateToTrackerTypeScreen() {
-        router.navigateToTrackerTypeScreen()
+        self.router.navigateToTrackerTypeScreen()
     }
 
     func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?) {
-        router.navigateToFilterScreen(chosenDate: chosenDate, selectedFilter: selectedFilter)
+        self.router.navigateToFilterScreen(chosenDate: chosenDate, selectedFilter: selectedFilter)
     }
 }
 
@@ -145,15 +145,15 @@ extension TrackersViewPresenter: TrackersViewPresenterProtocol {
 extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
     func requestFilteredTrackers(for searchText: String?) {
         guard let titleSearchString = searchText, let weekDay = currentDate.weekDay else { return }
-        state = .search
+        self.state = .search
 
-        trackersService.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: weekDay)
-        fetchCompletedTrackersForCurrentDate()
+        self.trackersService.fetchTrackers(titleSearchString: titleSearchString, currentWeekDay: weekDay)
+        self.fetchCompletedTrackersForCurrentDate()
     }
 
     func requestShowAllCategoriesForCurrentDay() {
-        state = .normal
-        requestTrackers(for: currentDate)
+        self.state = .normal
+        self.requestTrackers(for: self.currentDate)
     }
 }
 
@@ -161,53 +161,53 @@ extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
 
 extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     var numberOfSections: Int {
-        trackersService.numberOfSections
+        self.trackersService.numberOfSections
     }
 
     func numberOfItemsInSection(_ section: Int) -> Int {
-        trackersService.numberOfItemsInSection(section)
+        self.trackersService.numberOfItemsInSection(section)
     }
 
     func tracker(at indexPath: IndexPath) -> Tracker? {
-        trackersService.tracker(at: indexPath)
+        self.trackersService.tracker(at: indexPath)
     }
 
     func categoryTitle(at indexPath: IndexPath) -> String? {
-        trackersService.categoryTitle(at: indexPath)
+        self.trackersService.categoryTitle(at: indexPath)
     }
 
     func completedTimesCount(trackerId: UUID) -> Int {
-        trackersRecordService.completedTimesCount(trackerId: trackerId)
+        self.trackersRecordService.completedTimesCount(trackerId: trackerId)
     }
 
     func didRecievedEmptyTrackers() {
-        switch state {
+        switch self.state {
         case .normal:
-            view?.showPlaceholderViewForCurrentDay()
+            self.view?.showPlaceholderViewForCurrentDay()
         case .search:
-            view?.showPlaceholderViewForEmptySearch()
+            self.view?.showPlaceholderViewForEmptySearch()
         }
     }
 
     func didRecievedNonEmptyTrackers() {
-        view?.shouldHidePlaceholderView(true)
+        self.view?.shouldHidePlaceholderView(true)
     }
 
     func didTapPinTracker(shouldPin: Bool, _ tracker: Tracker) {
         if shouldPin {
-            trackersPinningService.pin(tracker: tracker)
+            self.trackersPinningService.pin(tracker: tracker)
         } else {
-            trackersPinningService.unpin(tracker: tracker)
+            self.trackersPinningService.unpin(tracker: tracker)
         }
     }
 
     func didTapEditTracker(_ tracker: Tracker) {
-        analyticsService.didEditTracker()
-        router.navigateToEditTrackerScreen(tracker: tracker)
+        self.analyticsService.didEditTracker()
+        self.router.navigateToEditTrackerScreen(tracker: tracker)
     }
 
     func didTapDeleteTracker(_ tracker: Tracker) {
-        alertPresenterService.requestDeleteTrackerAlert { [weak self] _ in
+        self.alertPresenterService.requestDeleteTrackerAlert { [weak self] _ in
             guard let self = self else { return }
             self.analyticsService.didDeleteTracker()
             self.trackersAddingService.delete(tracker: tracker)
@@ -215,19 +215,19 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
     }
 
     func requestChosenFutureDateAlert() {
-        alertPresenterService.requestChosenFutureDateAlert()
+        self.alertPresenterService.requestChosenFutureDateAlert()
     }
 
     func complete(tracker: Tracker) throws {
-        try checkCurrentDate()
-        analyticsService.didTapTracker()
-        trackersCompletingService.completeTracker(trackerId: tracker.id, date: currentDate)
+        try self.checkCurrentDate()
+        self.analyticsService.didTapTracker()
+        self.trackersCompletingService.completeTracker(trackerId: tracker.id, date: currentDate)
     }
 
     func incomplete(tracker: Tracker) throws {
-        try checkCurrentDate()
-        analyticsService.didTapTracker()
-        trackersCompletingService.incompleteTracker(trackerId: tracker.id, date: currentDate)
+        try self.checkCurrentDate()
+        self.analyticsService.didTapTracker()
+        self.trackersCompletingService.incompleteTracker(trackerId: tracker.id, date: currentDate)
     }
 }
 
@@ -235,45 +235,45 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 
 extension TrackersViewPresenter: TrackersDataProviderDelegate {
     func insertSections(at: IndexSet) {
-        view?.insertSections(at: at)
-        fetchCompletedTrackersForCurrentDate()
+        self.view?.insertSections(at: at)
+        self.fetchCompletedTrackersForCurrentDate()
     }
 
     func deleteSections(at: IndexSet) {
-        view?.deleteSections(at: at)
-        fetchCompletedTrackersForCurrentDate()
+        self.view?.deleteSections(at: at)
+        self.fetchCompletedTrackersForCurrentDate()
     }
 
     func reloadSections(at: IndexSet) {
-        view?.reloadSections(at: at)
+        self.view?.reloadSections(at: at)
     }
 
     func insertItems(at: TrackersCollectionCellIndices) {
-        view?.insertItems(at: at)
-        fetchCompletedTrackersForCurrentDate()
+        self.view?.insertItems(at: at)
+        self.fetchCompletedTrackersForCurrentDate()
     }
 
     func deleteItems(at: TrackersCollectionCellIndices) {
-        view?.deleteItems(at: at)
-        fetchCompletedTrackersForCurrentDate()
+        self.view?.deleteItems(at: at)
+        self.fetchCompletedTrackersForCurrentDate()
     }
 
     func moveItems(at: IndexPath, to: IndexPath) {
-        view?.moveItems(at: at, to: to)
-        fetchCompletedTrackersForCurrentDate()
+        self.view?.moveItems(at: at, to: to)
+        self.fetchCompletedTrackersForCurrentDate()
     }
 
     func reloadItems(at: TrackersCollectionCellIndices) {
-        view?.reloadItems(at: at)
-        fetchCompletedTrackersForCurrentDate()
+        self.view?.reloadItems(at: at)
+        self.fetchCompletedTrackersForCurrentDate()
     }
 
     func didChangeContent(operations: [BlockOperation]) {
-        view?.didChangeContentAnimated(operations: operations)
+        self.view?.didChangeContentAnimated(operations: operations)
     }
 
     func fetchDidPerformed() {
-        updateTrackers()
+        self.updateTrackers()
     }
 }
 
@@ -281,24 +281,24 @@ extension TrackersViewPresenter: TrackersDataProviderDelegate {
 
 extension TrackersViewPresenter: TrackersRecordServiceDelegate {
     func didRecieveCompletedTrackers(_ records: [TrackerRecord]) {
-        completedTrackersRecords = Set(records)
+        self.completedTrackersRecords = Set(records)
     }
 }
 
 private extension TrackersViewPresenter {
     var isCurrentDateLaterThanToday: Bool {
-        currentDate > Date()
+        self.currentDate > Date()
     }
 
     func checkCurrentDate() throws {
-        if isCurrentDateLaterThanToday {
-            requestChosenFutureDateAlert()
+        if self.isCurrentDateLaterThanToday {
+            self.requestChosenFutureDateAlert()
             throw TrackersViewPresenterError.currentDateLaterThanToday
         }
     }
 
     func fetchCompletedTrackersForCurrentDate() {
-        trackersRecordService.fetchCompletedRecords(for: currentDate)
+        self.trackersRecordService.fetchCompletedRecords(for: self.currentDate)
     }
 
     func updateTrackers() {

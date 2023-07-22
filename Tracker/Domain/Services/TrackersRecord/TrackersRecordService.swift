@@ -31,16 +31,16 @@ final class TrackersRecordService {
 
 extension TrackersRecordService: TrackersRecordServiceProtocol {
     func fetchCompletedRecords(for date: Date) {
-        let trackerRecordsCoreData = trackersRecordDataFetcher.fetchCompletedRecords(date: date)
+        let trackerRecordsCoreData = self.trackersRecordDataFetcher.fetchCompletedRecords(date: date)
         let trackerRecords = trackerRecordsCoreData.compactMap { trackerRecordCoreData -> TrackerRecord? in
             guard let id = UUID(uuidString: trackerRecordCoreData.id) else { return nil }
             return TrackerRecord(trackerId: id, date: trackerRecordCoreData.date)
         }
 
-        delegate?.didRecieveCompletedTrackers(trackerRecords)
+        self.delegate?.didRecieveCompletedTrackers(trackerRecords)
     }
 
     func completedTimesCount(trackerId: UUID) -> Int {
-        trackersRecordDataFetcher.completedTimesCount(trackerId: trackerId.uuidString)
+        self.trackersRecordDataFetcher.completedTimesCount(trackerId: trackerId.uuidString)
     }
 }

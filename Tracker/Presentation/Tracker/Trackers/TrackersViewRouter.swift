@@ -51,16 +51,16 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
         let vc = TrackerTypeViewController()
         let router = TrackerTypeRouter(
             viewController: vc,
-            trackersAddingService: trackersAddingService,
-            trackersCategoryService: trackersCategoryService,
-            trackersCategoryAddingService: trackersCategoryAddingService,
-            pinnedCategoryId: pinnedCategoryId
+            trackersAddingService: self.trackersAddingService,
+            trackersCategoryService: self.trackersCategoryService,
+            trackersCategoryAddingService: self.trackersCategoryAddingService,
+            pinnedCategoryId: self.pinnedCategoryId
         )
         let presenter = TrackerTypePresenter(router: router)
 
         vc.presenter = presenter
 
-        viewController?.present(vc, animated: true)
+        self.viewController?.present(vc, animated: true)
     }
 
     func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?) {
@@ -70,9 +70,9 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
         let viewModel = TrackerFilterViewModel(
             chosenDate: chosenDate,
             trackersCategoryFactory: categoryFactory,
-            trackersService: trackersService
+            trackersService: self.trackersService
         )
-        viewModel.delegate = viewController as? TrackerFilterViewControllerDelegate
+        viewModel.delegate = self.viewController as? TrackerFilterViewControllerDelegate
 
         let helper = TrackerCategoryTableViewHelper()
         let vc = TrackerCategoryViewController(
@@ -83,14 +83,14 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
             selectedCategory: selectedFilter
         )
 
-        viewController?.present(vc, animated: true)
+        self.viewController?.present(vc, animated: true)
     }
 
     func navigateToEditTrackerScreen(tracker: Tracker) {
         let router = TrackerAddingRouter(
-            trackersCategoryService: trackersCategoryService,
-            trackersCategoryAddingService: trackersCategoryAddingService,
-            pinnedCategoryId: pinnedCategoryId
+            trackersCategoryService: self.trackersCategoryService,
+            trackersCategoryAddingService: self.trackersCategoryAddingService,
+            pinnedCategoryId: self.pinnedCategoryId
         )
 
         let optionsHelper = TrackerOptionsTableViewHelper()
@@ -99,9 +99,9 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
         let emojisHelper = EmojisCollectionViewHelper()
 
         let viewModel = TrackerEditingViewModel(
-            trackersAddingService: trackersAddingService,
-            trackersRecordService: trackersRecordService,
-            trackersCompletingService: trackersCompletingService,
+            trackersAddingService: self.trackersAddingService,
+            trackersRecordService: self.trackersRecordService,
+            trackersCompletingService: self.trackersCompletingService,
             trackersCategoryService: trackersCategoryService,
             tracker: tracker
         )
@@ -124,6 +124,6 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
             vc?.view.endEditing(true)
         }
 
-        viewController?.present(vc, animated: true)
+        self.viewController?.present(vc, animated: true)
     }
 }

@@ -40,26 +40,26 @@ final class ServiceSetupper {
         trackersCategoryDataStore: TrackersCategoryDataStore,
         trackersRecordDataStore: TrackersRecordDataStore
     ) {
-        trackersService = ServiceSetupper.prepareTrackersService(
+        self.trackersService = ServiceSetupper.prepareTrackersService(
             trackersFactory: trackersFactory,
             trackersDataStore: trackersDataStore
         )
 
-        trackersCompletingService = ServiceSetupper.prepareTrackersCompletingService(
+        self.trackersCompletingService = ServiceSetupper.prepareTrackersCompletingService(
             trackersRecordDataStore: trackersRecordDataStore,
             trackersDataStore: trackersDataStore
         )
 
-        trackersRecordService = ServiceSetupper.prepareTrackersRecordService(
+        self.trackersRecordService = ServiceSetupper.prepareTrackersRecordService(
             trackersRecordDataStore: trackersRecordDataStore
         )
 
-        trackersCategoryService = ServiceSetupper.prepareTrackersCategoryService(
+        self.trackersCategoryService = ServiceSetupper.prepareTrackersCategoryService(
             trackersCategoryFactory: trackersCategoryFactory,
             trackersCategoryDataStore: trackersCategoryDataStore
         )
 
-        trackersCategoryAddingService = ServiceSetupper.prepareTrackersCategoryAddingService(
+        self.trackersCategoryAddingService = ServiceSetupper.prepareTrackersCategoryAddingService(
             trackersCategoryFactory: trackersCategoryFactory,
             trackersCategoryDataStore: trackersCategoryDataStore
         )
@@ -69,27 +69,27 @@ final class ServiceSetupper {
             trackersCategoryDataStore: trackersCategoryDataStore
         )
 
-        guard let pinnedCategoryId = pinnedCategoryId else {
+        guard let pinnedCategoryId = self.pinnedCategoryId else {
             assertionFailure("Cannot load pinned category id")
             return nil
         }
 
-        trackersPinningService = ServiceSetupper.prepareTrackersPinningService(
+        self.trackersPinningService = ServiceSetupper.prepareTrackersPinningService(
             pinnedCategoryId: pinnedCategoryId,
             trackersFactory: trackersFactory,
             trackersDataStore: trackersDataStore,
             trackersCategoryDataStore: trackersCategoryDataStore
         )
 
-        trackersAddingService = ServiceSetupper.prepareTrackersAddingService(
+        self.trackersAddingService = ServiceSetupper.prepareTrackersAddingService(
             trackersFactory: trackersFactory,
             trackersDataStore: trackersDataStore,
             trackersCategoryDataStore: trackersCategoryDataStore,
             pinnedCategoryId: pinnedCategoryId
         )
 
-        analyticsService = AnalyticsService()
-        alertPresenterService = AlertPresenterService()
+        self.analyticsService = AnalyticsService()
+        self.alertPresenterService = AlertPresenterService()
     }
 }
 

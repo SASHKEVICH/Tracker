@@ -33,16 +33,16 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
         guard let cell = tableView.cellForRow(at: indexPath) as? TrackerCategoryTableViewCell else { return }
         guard let cells = tableView.visibleCells as? [TrackerCategoryTableViewCell] else { return }
 
-        if cell != lastSelectedCell {
+        if cell != self.lastSelectedCell {
             cell.isCellSelected = true
-            lastSelectedCell = cell
+            self.lastSelectedCell = cell
 
             let filteredCells = cells.filter { $0 != cell }
             filteredCells.forEach { $0.isCellSelected = false }
         }
 
-        guard let selectedCategory = delegate?.categories[indexPath.row] else { return }
-        delegate?.didSelect(category: selectedCategory)
+        guard let selectedCategory = self.delegate?.categories[indexPath.row] else { return }
+        self.delegate?.didSelect(category: selectedCategory)
     }
 
     // MARK: - UITableViewDataSource
@@ -51,7 +51,7 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
         _: UITableView,
         numberOfRowsInSection _: Int
     ) -> Int {
-        delegate?.categories.count ?? .zero
+        self.delegate?.categories.count ?? .zero
     }
 
     func tableView(
@@ -63,14 +63,14 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
             for: indexPath
         ) as? TrackerCategoryTableViewCell else { return UITableViewCell() }
 
-        guard let category = delegate?.categories[indexPath.row] else { return UITableViewCell() }
+        guard let category = self.delegate?.categories[indexPath.row] else { return UITableViewCell() }
         cell.categoryTitle = category.title
 
-        if let lastSelectedCell = lastSelectedCell, lastSelectedCell == cell {
+        if let lastSelectedCell = self.lastSelectedCell, lastSelectedCell == cell {
             cell.isCellSelected = true
         }
 
-        if let selectedCategory = delegate?.chosenCategory, selectedCategory == category {
+        if let selectedCategory = self.delegate?.chosenCategory, selectedCategory == category {
             cell.isCellSelected = true
         }
 

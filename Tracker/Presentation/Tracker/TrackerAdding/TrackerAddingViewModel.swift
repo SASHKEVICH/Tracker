@@ -24,49 +24,49 @@ final class TrackerAddingViewModel {
 
     var trackerTitle: String? {
         didSet {
-            onTrackerTitleChanged?()
-            checkToEnableConfirmTrackerButton()
+            self.onTrackerTitleChanged?()
+            self.checkToEnableConfirmTrackerButton()
         }
     }
 
     var selectedWeekDays: Set<WeekDay> = [] {
         didSet {
-            onSelectedWeekDaysChanged?()
-            checkToEnableConfirmTrackerButton()
+            self.onSelectedWeekDaysChanged?()
+            self.checkToEnableConfirmTrackerButton()
         }
     }
 
     var selectedCategory: TrackerCategory? {
         didSet {
-            onSelectedCategoryChanged?()
-            checkToEnableConfirmTrackerButton()
+            self.onSelectedCategoryChanged?()
+            self.checkToEnableConfirmTrackerButton()
         }
     }
 
     var selectedEmoji: String? {
         didSet {
-            onSelectedEmojiChanged?()
-            checkToEnableConfirmTrackerButton()
+            self.onSelectedEmojiChanged?()
+            self.checkToEnableConfirmTrackerButton()
         }
     }
 
     var selectedColor: UIColor? {
         didSet {
-            onSelectedColorChanged?()
-            checkToEnableConfirmTrackerButton()
+            self.onSelectedColorChanged?()
+            self.checkToEnableConfirmTrackerButton()
         }
     }
 
     var isConfirmButtonDisabled: Bool = true {
         didSet {
-            onIsConfirmButtonDisabledChanged?()
+            self.onIsConfirmButtonDisabledChanged?()
         }
     }
 
     var isErrorHidden: Bool = true {
         didSet {
-            onIsErrorHiddenChanged?()
-            checkToEnableConfirmTrackerButton()
+            self.onIsErrorHiddenChanged?()
+            self.checkToEnableConfirmTrackerButton()
         }
     }
 
@@ -81,11 +81,11 @@ final class TrackerAddingViewModel {
     ) {
         self.trackersAddingService = trackersAddingService
         self.trackerType = trackerType
-        optionsTitles = optionTitles
+        self.optionsTitles = optionTitles
         self.viewControllerTitle = viewControllerTitle
 
         if self.trackerType == .irregularEvent {
-            selectedWeekDays = Set(WeekDay.allCases)
+            self.selectedWeekDays = Set(WeekDay.allCases)
         }
     }
 }
@@ -94,22 +94,22 @@ final class TrackerAddingViewModel {
 
 extension TrackerAddingViewModel: TrackerAddingViewModelProtocol {
     func didChangeTracker(title: String) {
-        isErrorHidden = title.count < 38
+        self.isErrorHidden = title.count < 38
     }
 
     func didConfirmTracker() {
-        guard let title = trackerTitle,
-              let color = selectedColor,
-              let emoji = selectedEmoji,
-              let category = selectedCategory
+        guard let title = self.trackerTitle,
+              let color = self.selectedColor,
+              let emoji = self.selectedEmoji,
+              let category = self.selectedCategory
         else { return }
 
-        let schedule = trackerType == .irregularEvent ? Set(WeekDay.allCases) : selectedWeekDays
+        let schedule = self.trackerType == .irregularEvent ? Set(WeekDay.allCases) : self.selectedWeekDays
 
-        trackersAddingService.addTracker(
+        self.trackersAddingService.addTracker(
             title: title,
             schedule: schedule,
-            type: trackerType,
+            type: self.trackerType,
             color: color,
             emoji: emoji,
             categoryId: category.id
@@ -117,23 +117,23 @@ extension TrackerAddingViewModel: TrackerAddingViewModelProtocol {
     }
 
     func didSelect(color: UIColor) {
-        selectedColor = color
+        self.selectedColor = color
     }
 
     func didSelect(emoji: String) {
-        selectedEmoji = emoji
+        self.selectedEmoji = emoji
     }
 
     func didSelect(category: TrackerCategory) {
-        selectedCategory = category
+        self.selectedCategory = category
     }
 
     func didSelect(weekDays: Set<WeekDay>) {
-        selectedWeekDays = weekDays
+        self.selectedWeekDays = weekDays
     }
 
     func didSelect(title: String) {
-        trackerTitle = title
+        self.trackerTitle = title
     }
 }
 
@@ -141,7 +141,7 @@ extension TrackerAddingViewModel: TrackerAddingViewModelProtocol {
 
 extension TrackerAddingViewModel: TrackerScheduleViewControllerDelegate {
     func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
-        selectedWeekDays = weekDays
+        self.selectedWeekDays = weekDays
     }
 }
 
@@ -149,19 +149,19 @@ extension TrackerAddingViewModel: TrackerScheduleViewControllerDelegate {
 
 extension TrackerAddingViewModel: TrackerCategoryViewControllerDelegate {
     func didRecieveCategory(_ category: TrackerCategory) {
-        selectedCategory = category
+        self.selectedCategory = category
     }
 }
 
 private extension TrackerAddingViewModel {
     func checkToEnableConfirmTrackerButton() {
-        guard let trackerTitle = trackerTitle,
-              let _ = selectedColor,
-              let _ = selectedEmoji,
-              let _ = selectedCategory
+        guard let trackerTitle = self.trackerTitle,
+              let _ = self.selectedColor,
+              let _ = self.selectedEmoji,
+              let _ = self.selectedCategory
         else { return }
 
-        let enablingCondition = !trackerTitle.isEmpty && isErrorHidden && !selectedWeekDays.isEmpty
-        isConfirmButtonDisabled = enablingCondition == false
+        let enablingCondition = !trackerTitle.isEmpty && self.isErrorHidden && !self.selectedWeekDays.isEmpty
+        self.isConfirmButtonDisabled = enablingCondition == false
     }
 }

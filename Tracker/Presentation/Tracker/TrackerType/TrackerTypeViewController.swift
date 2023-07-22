@@ -51,10 +51,10 @@ final class TrackerTypeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .Dynamic.whiteDay
+        self.view.backgroundColor = .Dynamic.whiteDay
 
-        addSubviews()
-        addConstraints()
+        self.addSubviews()
+        self.addConstraints()
     }
 }
 
@@ -66,11 +66,11 @@ extension TrackerTypeViewController: TrackerTypeViewControllerProtocol {}
 
 private extension TrackerTypeViewController {
     func addSubviews() {
-        view.addSubview(titleLabel)
-        view.addSubview(stackView)
+        self.view.addSubview(self.titleLabel)
+        self.view.addSubview(self.stackView)
 
-        stackView.addArrangedSubview(addTrackerButton)
-        stackView.addArrangedSubview(addIrregularEventButton)
+        self.stackView.addArrangedSubview(self.addTrackerButton)
+        self.stackView.addArrangedSubview(self.addIrregularEventButton)
     }
 
     func addConstraints() {
@@ -100,11 +100,11 @@ private extension TrackerTypeViewController {
 private extension TrackerTypeViewController {
     @objc
     func didTapAddTrackerButton() {
-        presenter?.navigateToTrackerScreen()
+        self.presenter?.navigateToTrackerScreen()
     }
 
     @objc
     func didTapAddIrregularEventButton() {
-        presenter?.navigateToIrregularEventScreen()
+        self.presenter?.navigateToIrregularEventScreen()
     }
 }

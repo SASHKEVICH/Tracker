@@ -39,11 +39,11 @@ final class TrackerTypeRouter {
 
 extension TrackerTypeRouter: TrackerTypeRouterProtocol {
     func navigateToTrackerScreen() {
-        presentAddingViewController(trackerType: .tracker)
+        self.presentAddingViewController(trackerType: .tracker)
     }
 
     func navigateToIrregularEventScreen() {
-        presentAddingViewController(trackerType: .irregularEvent)
+        self.presentAddingViewController(trackerType: .irregularEvent)
     }
 }
 
@@ -63,16 +63,16 @@ private extension TrackerTypeRouter {
         )
 
         let router = TrackerAddingRouter(
-            trackersCategoryService: trackersCategoryService,
-            trackersCategoryAddingService: trackersCategoryAddingService,
-            pinnedCategoryId: pinnedCategoryId
+            trackersCategoryService: self.trackersCategoryService,
+            trackersCategoryAddingService: self.trackersCategoryAddingService,
+            pinnedCategoryId: self.pinnedCategoryId
         )
 
-        let optionsTitle = prepareOptionsTitles(for: trackerType)
-        let viewControllerTitle = prepareAddingViewControllerTitle(for: trackerType)
+        let optionsTitle = self.prepareOptionsTitles(for: trackerType)
+        let viewControllerTitle = self.prepareAddingViewControllerTitle(for: trackerType)
 
         let viewModel = TrackerAddingViewModel(
-            trackersAddingService: trackersAddingService,
+            trackersAddingService: self.trackersAddingService,
             trackerType: trackerType,
             optionTitles: optionsTitle,
             viewControllerTitle: viewControllerTitle
@@ -88,7 +88,7 @@ private extension TrackerTypeRouter {
             vc?.view.endEditing(true)
         }
 
-        viewController?.present(vc, animated: true)
+        self.viewController?.present(vc, animated: true)
     }
 }
 

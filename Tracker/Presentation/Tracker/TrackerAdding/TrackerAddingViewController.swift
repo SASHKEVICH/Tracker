@@ -25,11 +25,11 @@ final class TrackerAddingViewController: UIViewController {
     ) {
         self.viewModel = viewModel
         self.router = router
-        addingView = view
+        self.addingView = view
         super.init(nibName: nil, bundle: nil)
 
-        configureView()
-        bind()
+        self.configureView()
+        self.bind()
     }
 
     @available(*, unavailable)
@@ -38,14 +38,14 @@ final class TrackerAddingViewController: UIViewController {
     }
 
     override func loadView() {
-        guard let view = addingView as? UIView else { return }
+        guard let view = self.addingView as? UIView else { return }
         self.view = view
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        addingView.shouldEnableConfirmButton(viewModel.isConfirmButtonDisabled)
+        self.addingView.shouldEnableConfirmButton(self.viewModel.isConfirmButtonDisabled)
     }
 }
 
@@ -53,7 +53,7 @@ final class TrackerAddingViewController: UIViewController {
 
 extension TrackerAddingViewController: TrackerCategoryViewControllerDelegate {
     func didRecieveCategory(_ category: TrackerCategory) {
-        viewModel.didSelect(category: category)
+        self.viewModel.didSelect(category: category)
     }
 }
 
@@ -61,8 +61,8 @@ extension TrackerAddingViewController: TrackerCategoryViewControllerDelegate {
 
 extension TrackerAddingViewController: TrackerScheduleViewControllerDelegate {
     func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
-        viewModel.didSelect(weekDays: weekDays)
-        dismiss(animated: true)
+        self.viewModel.didSelect(weekDays: weekDays)
+        self.dismiss(animated: true)
     }
 }
 
@@ -70,25 +70,25 @@ extension TrackerAddingViewController: TrackerScheduleViewControllerDelegate {
 
 extension TrackerAddingViewController: TrackerOptionsTableViewDelegate {
     var optionsTitles: [String] {
-        viewModel.optionsTitles
+        self.viewModel.optionsTitles
     }
 
     var selectedWeekDays: [WeekDay] {
-        Array(viewModel.selectedWeekDays)
+        Array(self.viewModel.selectedWeekDays)
     }
 
     var selectedCategory: TrackerCategory? {
-        viewModel.selectedCategory
+        self.viewModel.selectedCategory
     }
 
     func didTapScheduleCell() {
-        let weekDays = viewModel.selectedWeekDays
-        router.navigateToScheduleScreen(selectedWeekDays: weekDays, from: self)
+        let weekDays = self.viewModel.selectedWeekDays
+        self.router.navigateToScheduleScreen(selectedWeekDays: weekDays, from: self)
     }
 
     func didTapCategoryCell() {
-        let category = viewModel.selectedCategory
-        router.navigateToCategoryScreen(selectedCategory: category, from: self)
+        let category = self.viewModel.selectedCategory
+        self.router.navigateToCategoryScreen(selectedCategory: category, from: self)
     }
 }
 
@@ -96,11 +96,11 @@ extension TrackerAddingViewController: TrackerOptionsTableViewDelegate {
 
 extension TrackerAddingViewController: TrackerEmojisCollectionViewDelegate {
     var selectedEmoji: String? {
-        viewModel.selectedEmoji
+        self.viewModel.selectedEmoji
     }
 
     func didSelect(emoji: String) {
-        viewModel.didSelect(emoji: emoji)
+        self.viewModel.didSelect(emoji: emoji)
     }
 }
 
@@ -108,50 +108,50 @@ extension TrackerAddingViewController: TrackerEmojisCollectionViewDelegate {
 
 extension TrackerAddingViewController: TrackerColorCollectionViewDelegate {
     var selectedColor: UIColor? {
-        viewModel.selectedColor
+        self.viewModel.selectedColor
     }
 
     func didSelect(color: UIColor) {
-        viewModel.didSelect(color: color)
+        self.viewModel.didSelect(color: color)
     }
 }
 
 private extension TrackerAddingViewController {
     func configureView() {
-        view.backgroundColor = .Dynamic.whiteDay
-        isModalInPresentation = true
+        self.view.backgroundColor = .Dynamic.whiteDay
+        self.isModalInPresentation = true
 
-        addingView.viewTitle = self.viewModel.viewControllerTitle
-        addingView.trackerTitle = self.viewModel.trackerTitle
+        self.addingView.viewTitle = self.viewModel.viewControllerTitle
+        self.addingView.trackerTitle = self.viewModel.trackerTitle
 
-        addingView.didTapCancel = { [weak self] in
+        self.addingView.didTapCancel = { [weak self] in
             self?.router.navigateToMainScreen()
         }
 
-        addingView.didTapConfirm = { [weak self] in
+        self.addingView.didTapConfirm = { [weak self] in
             guard let self = self else { return }
             self.router.navigateToMainScreen()
             self.viewModel.didConfirmTracker()
         }
 
-        addingView.didChangeTrackerTitle = { [weak self] title in
+        self.addingView.didChangeTrackerTitle = { [weak self] title in
             guard let self = self else { return }
             self.viewModel.didChangeTracker(title: title)
         }
 
-        addingView.didSelectTrackerTitle = { [weak self] title in
+        self.addingView.didSelectTrackerTitle = { [weak self] title in
             guard let self = self else { return }
             self.viewModel.didSelect(title: title)
         }
 
-        guard let viewModel = viewModel as? TrackerEditingViewModelProtocol else { return }
-        addingView.completedTimesCount = viewModel.completedCount
+        guard let viewModel = self.viewModel as? TrackerEditingViewModelProtocol else { return }
+        self.addingView.completedTimesCount = viewModel.completedCount
 
-        addingView.increaseCompletedCount = { [weak viewModel] in
+        self.addingView.increaseCompletedCount = { [weak viewModel] in
             viewModel?.increaseCompletedCount()
         }
 
-        addingView.decreaseCompletedCount = { [weak viewModel] in
+        self.addingView.decreaseCompletedCount = { [weak viewModel] in
             viewModel?.decreaseCompletedCount()
         }
     }
@@ -175,7 +175,7 @@ private extension TrackerAddingViewController {
             self.addingView.shouldHideErrorLabelWithAnimation(self.viewModel.isErrorHidden)
         }
 
-        guard var viewModel = viewModel as? TrackerEditingViewModelProtocol else { return }
+        guard var viewModel = self.viewModel as? TrackerEditingViewModelProtocol else { return }
         viewModel.onCompletedCountChanged = { [weak self, weak viewModel] in
             self?.addingView.completedTimesCount = viewModel?.completedCount
         }

@@ -18,7 +18,7 @@ final class TrackerNewCategoryViewModel {
     var onIsAddNewCategoryButtonDisabledChanged: Binding?
     var isAddNewCategoryButtonDisabled: Bool = true {
         didSet {
-            onIsAddNewCategoryButtonDisabledChanged?()
+            self.onIsAddNewCategoryButtonDisabledChanged?()
         }
     }
 
@@ -34,13 +34,13 @@ extension TrackerNewCategoryViewModel: TrackerNewCategoryViewModelProtocol {
         let title = categoryTitle.trimmingCharacters(in: .whitespacesAndNewlines)
 
         if title.isEmpty {
-            isAddNewCategoryButtonDisabled = true
+            self.isAddNewCategoryButtonDisabled = true
         } else {
-            isAddNewCategoryButtonDisabled = false
+            self.isAddNewCategoryButtonDisabled = false
         }
     }
 
     func save(categoryTitle: String) {
-        trackersCategoryAddingService.addCategory(title: categoryTitle)
+        self.trackersCategoryAddingService.addCategory(title: categoryTitle)
     }
 }
