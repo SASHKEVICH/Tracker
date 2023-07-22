@@ -29,7 +29,6 @@ final class StatisticsViewController: UIViewController {
     }()
 
     private var viewModel: StatisticsViewModelProtocol
-
     private let tableViewHelper: StatisticsTableViewHelperProtocol
 
     init(viewModel: StatisticsViewModelProtocol, tableViewHelper: StatisticsTableViewHelperProtocol) {
@@ -78,7 +77,7 @@ private extension StatisticsViewController {
 
     func addSubviews() {
         self.view.addSubview(self.statisticsTableView)
-        self.view.insertSubview(self.placeholderView, aboveSubview: self.gstatisticsTableView)
+        self.view.insertSubview(self.placeholderView, aboveSubview: self.statisticsTableView)
     }
 
     func addConstraints() {
