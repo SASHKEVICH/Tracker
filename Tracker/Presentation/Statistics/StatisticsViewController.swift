@@ -46,18 +46,18 @@ final class StatisticsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .Dynamic.whiteDay
-        setupNavigationItem()
-        addSubviews()
-        addConstraints()
-        bind()
+        self.view.backgroundColor = .Dynamic.whiteDay
+        self.setupNavigationItem()
+        self.addSubviews()
+        self.addConstraints()
+        self.bind()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        statisticsTableView.reloadData()
-        viewModel.fetchCompletedTrackers()
+        self.statisticsTableView.reloadData()
+        self.viewModel.fetchCompletedTrackers()
     }
 }
 
@@ -65,7 +65,7 @@ final class StatisticsViewController: UIViewController {
 
 extension StatisticsViewController: StatisticsTableViewHelperDelegate {
     var statistics: [Statistics] {
-        Array(viewModel.statistics)
+        Array(self.viewModel.statistics)
     }
 }
 
