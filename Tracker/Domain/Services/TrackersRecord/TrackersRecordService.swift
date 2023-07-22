@@ -43,4 +43,6 @@ extension TrackersRecordService: TrackersRecordServiceProtocol {
     func completedTimesCount(trackerId: UUID) -> Int {
         self.trackersRecordDataFetcher.completedTimesCount(trackerId: trackerId.uuidString)
     }
+
+    func foo() {}
 }
