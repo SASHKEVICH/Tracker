@@ -8,6 +8,6 @@
 import Foundation
 
 struct Statistics: Hashable {
-	let title: String
-	let count: Int
+    let title: String
+    let count: Int
 }

@@ -9,20 +9,22 @@ import Foundation
 import Tracker
 
 final class TrackersCompletingServiceStub {
-	weak var delegate: TrackersCompletingServiceStatisticsDelegate?
+    weak var delegate: TrackersCompletingServiceStatisticsDelegate?
 }
 
 // MARK: - TrackersCompletingServiceProtocol
+
 extension TrackersCompletingServiceStub: TrackersCompletingServiceProtocol {
-	func completeTracker(trackerId id: UUID, date: Date) {}
-	func incompleteTracker(trackerId id: UUID, date: Date) {}
-	func addRecords(for tracker: Tracker, amount: Int) {}
-	func removeRecords(for tracker: Tracker, amount: Int) {}
+    func completeTracker(trackerId _: UUID, date _: Date) {}
+    func incompleteTracker(trackerId _: UUID, date _: Date) {}
+    func addRecords(for _: Tracker, amount _: Int) {}
+    func removeRecords(for _: Tracker, amount _: Int) {}
 }
 
 // MARK: - TrackersCompletingServiceStatisticsProtocol
+
 extension TrackersCompletingServiceStub: TrackersCompletingServiceStatisticsProtocol {
-	var completedTrackersCount: Int {
-		5
-	}
+    var completedTrackersCount: Int {
+        5
+    }
 }

@@ -11,7 +11,8 @@ import Tracker
 final class TrackersPinningServiceStub {}
 
 // MARK: - TrackersPinningServiceProtocol
+
 extension TrackersPinningServiceStub: TrackersPinningServiceProtocol {
-	func pin(tracker: Tracker) {}
-	func unpin(tracker: Tracker) {}
+    func pin(tracker _: Tracker) {}
+    func unpin(tracker _: Tracker) {}
 }

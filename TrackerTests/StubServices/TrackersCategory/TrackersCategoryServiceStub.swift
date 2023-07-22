@@ -9,38 +9,39 @@ import Foundation
 import Tracker
 
 final class TrackersCategoryServiceStub {
-	enum State {
-		case empty
-		case notEmpty
-	}
+    enum State {
+        case empty
+        case notEmpty
+    }
 
-	weak var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate?
+    weak var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate?
 
-	private let state: State
-	private let trackersCategoryFactory: TrackersCategoryFactory
+    private let state: State
+    private let trackersCategoryFactory: TrackersCategoryFactory
 
-	init(state: State) {
-		self.state = state
-		self.trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: TrackersFactory())
-	}
+    init(state: State) {
+        self.state = state
+        self.trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: TrackersFactory())
+    }
 }
 
 // MARK: - TrackersCategoryServiceProtocol
+
 extension TrackersCategoryServiceStub: TrackersCategoryServiceProtocol {
-	var numberOfSections: Int {
-		self.state == .empty ? 0 : 1
-	}
+    var numberOfSections: Int {
+        self.state == .empty ? 0 : 1
+    }
 
-	var categories: [TrackerCategory] {
-		let category = self.trackersCategoryFactory.makeCategory(title: "Test", isPinning: false)
-		return self.state == .empty ? [] : [category]
-	}
+    var categories: [TrackerCategory] {
+        let category = self.trackersCategoryFactory.makeCategory(title: "Test", isPinning: false)
+        return self.state == .empty ? [] : [category]
+    }
 
-	func numberOfItemsInSection(_ section: Int) -> Int {
-		self.state == .empty ? 0 : 1
-	}
+    func numberOfItemsInSection(_: Int) -> Int {
+        self.state == .empty ? 0 : 1
+    }
 
-	func category(for tracker: Tracker) -> TrackerCategory? {
-		nil
-	}
+    func category(for _: Tracker) -> TrackerCategory? {
+        nil
+    }
 }

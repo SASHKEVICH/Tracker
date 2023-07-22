@@ -14,7 +14,7 @@ final class TrackerTitleTextFieldHelper: NSObject {
         textField.resignFirstResponder()
         return true
     }
-    
+
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         textField.text = ""
         return true
@@ -22,4 +22,5 @@ final class TrackerTitleTextFieldHelper: NSObject {
 }
 
 // MARK: TrackerTitleTextFieldHelperProtocol
+
 extension TrackerTitleTextFieldHelper: TrackerTitleTextFieldHelperProtocol {}

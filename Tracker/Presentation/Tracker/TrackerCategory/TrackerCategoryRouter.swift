@@ -8,28 +8,29 @@
 import UIKit
 
 protocol TrackerCategoryRouterProtocol {
-	func navigateToNewCategoryScreen(from viewController: TrackerCategoryViewController)
+    func navigateToNewCategoryScreen(from viewController: TrackerCategoryViewController)
 }
 
 final class TrackerCategoryRouter {
-	private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
+    private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
 
-	init(trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol) {
-		self.trackersCategoryAddingService = trackersCategoryAddingService
-	}
+    init(trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol) {
+        self.trackersCategoryAddingService = trackersCategoryAddingService
+    }
 }
 
 // MARK: - TrackerCategoryRouterProtocol
+
 extension TrackerCategoryRouter: TrackerCategoryRouterProtocol {
-	func navigateToNewCategoryScreen(from viewController: TrackerCategoryViewController) {
-		let viewModel = TrackerNewCategoryViewModel(trackersCategoryAddingService: self.trackersCategoryAddingService)
-		let vc = TrackerNewCategoryViewController(viewModel: viewModel)
+    func navigateToNewCategoryScreen(from viewController: TrackerCategoryViewController) {
+        let viewModel = TrackerNewCategoryViewModel(trackersCategoryAddingService: self.trackersCategoryAddingService)
+        let vc = TrackerNewCategoryViewController(viewModel: viewModel)
 
-		vc.emptyTap = { [weak vc] in
-			vc?.view.endEditing(true)
-		}
-		vc.delegate = viewController
+        vc.emptyTap = { [weak vc] in
+            vc?.view.endEditing(true)
+        }
+        vc.delegate = viewController
 
-		viewController.present(vc, animated: true)
-	}
+        viewController.present(vc, animated: true)
+    }
 }
