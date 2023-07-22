@@ -71,39 +71,39 @@ extension StatisticsViewController: StatisticsTableViewHelperDelegate {
 
 private extension StatisticsViewController {
     func setupNavigationItem() {
-        navigationItem.largeTitleDisplayMode = .always
-        navigationItem.title = R.string.localizable.statisticsNavigationItemTitle()
-        definesPresentationContext = true
+        self.navigationItem.largeTitleDisplayMode = .always
+        self.navigationItem.title = R.string.localizable.statisticsNavigationItemTitle()
+        self.definesPresentationContext = true
     }
 
     func addSubviews() {
-        view.addSubview(statisticsTableView)
-        view.insertSubview(placeholderView, aboveSubview: statisticsTableView)
+        self.view.addSubview(self.statisticsTableView)
+        self.view.insertSubview(self.placeholderView, aboveSubview: self.gstatisticsTableView)
     }
 
     func addConstraints() {
         NSLayoutConstraint.activate([
-            placeholderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            placeholderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            placeholderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            placeholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            self.placeholderView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.placeholderView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.placeholderView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.placeholderView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
 
         NSLayoutConstraint.activate([
-            statisticsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            statisticsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            statisticsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            statisticsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            self.statisticsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            self.statisticsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            self.statisticsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            self.statisticsTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
 
     func bind() {
-        viewModel.onIsPlaceholderHiddenChanged = { [weak self] in
+        self.viewModel.onIsPlaceholderHiddenChanged = { [weak self] in
             guard let self = self else { return }
             self.placeholderView.isHidden = self.viewModel.isPlaceholderHidden
         }
 
-        viewModel.onStatisticsChanged = { [weak self] in
+        self.viewModel.onStatisticsChanged = { [weak self] in
             self?.statisticsTableView.reloadData()
         }
     }

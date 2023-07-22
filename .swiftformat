@@ -1,3 +1,6 @@
 --exclude Pods
 
 --indent 4
+
+--disable \
+	redundantSelf
