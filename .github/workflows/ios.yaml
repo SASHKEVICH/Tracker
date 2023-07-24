@@ -15,13 +15,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Build
-        run: |
-          xcodebuild build \
-          -project ./Tracker.xcodeproj \
-          -scheme Tracker \
-          -allowProvisioningUpdates \
-          -quiet \
-          -derivedDataPath /tmp/ddata \
-          -sdk iphoneos16.4
+      
+      - name: Show SDKs
+        run: xcodebuild -showsdks 
+      #
+      # - name: Build
+      #   run: |
+      #     xcodebuild build \
+      #     -project ./Tracker.xcodeproj \
+      #     -scheme Tracker \
+      #     -allowProvisioningUpdates \
+      #     -quiet \
+      #     -derivedDataPath /tmp/ddata \
+      #     -sdk iphoneos16.4
