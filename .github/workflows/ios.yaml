@@ -24,14 +24,23 @@ jobs:
       - name: Show SDKs
         run: xcodebuild -showsdks 
 
-      - name: Build
-        run: |
-          xcodebuild clean build analyze \
-          -project ./Tracker.xcodeproj \
-          -scheme Tracker \
-          -allowProvisioningUpdates \
-          -verbose \
-          -sdk iphonesimulator \
-          -destination 'platform=iOS Simulator,name=iPhone 11' \
-          -configuration Debug
+      - name: Show the currently detailed version of Xcode for CLI
+        run: xcode-select -p
+      - name: Show Build Settings
+        run: xcodebuild -project Tracker.xcodeproj -scheme Tracker -showBuildSettings
+      - name: Show Build SDK
+        run: xcodebuild -project Tracker.xcodeproj -scheme Tracker -showsdks
+      - name: Show Available Destinations
+        run: xcodebuild -project Tracker.xcodeproj -scheme Tracker -showdestinations
+
+      # - name: Build
+      #   run: |
+      #     xcodebuild clean build \
+      #     -project ./Tracker.xcodeproj \
+      #     -scheme Tracker \
+      #     -allowProvisioningUpdates \
+      #     -verbose \
+      #     -sdk iphonesimulator \
+      #     -destination 'platform=iOS Simulator,name=iPhone 11' \
+      #     -configuration Debug
 
