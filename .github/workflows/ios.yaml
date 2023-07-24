@@ -31,4 +31,5 @@ jobs:
           -scheme Tracker \
           -allowProvisioningUpdates \
           -verbose \
-          -sdk iphoneos16.2
+          -sdk iphoneos16.2 \
+          -configuration Debug
