@@ -10,7 +10,9 @@ on:
 jobs:
   build:
     name: Build 
-    runs-on: macos-latest
+    env: 
+      macosVersion: 12
+    runs-on: macos-{{ env.macosVersion }}
 
     steps:
       - name: Checkout
@@ -18,13 +20,13 @@ jobs:
       
       - name: Show SDKs
         run: xcodebuild -showsdks 
-      #
-      # - name: Build
-      #   run: |
-      #     xcodebuild build \
-      #     -project ./Tracker.xcodeproj \
-      #     -scheme Tracker \
-      #     -allowProvisioningUpdates \
-      #     -quiet \
-      #     -derivedDataPath /tmp/ddata \
-      #     -sdk iphoneos16.4
+
+      - name: Build
+        run: |
+          xcodebuild build \
+          -project ./Tracker.xcodeproj \
+          -scheme Tracker \
+          -allowProvisioningUpdates \
+          -quiet \
+          -derivedDataPath /tmp/ddata \
+          -sdk iphoneos16.2
