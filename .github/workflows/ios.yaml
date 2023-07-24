@@ -23,16 +23,14 @@ jobs:
       
       - name: Show SDKs
         run: xcodebuild -showsdks 
-
-      - name: Show the currently detailed version of Xcode for CLI
-        run: xcode-select -p
-      - name: Show Build Settings
-        run: xcodebuild -project Tracker.xcodeproj -scheme Tracker -showBuildSettings
-      - name: Show Build SDK
-        run: xcodebuild -project Tracker.xcodeproj -scheme Tracker -showsdks
-      - name: Show Available Destinations
-        run: xcodebuild -project Tracker.xcodeproj -scheme Tracker -showdestinations
-
+      
+      - name: Build
+        uses: sersoft-gmbh/xcodebuild-action@v2
+        with:
+          project: Tracker.xcodeproj
+          scheme: Tracker
+          destination: platform=iOS Simulator
+          action: test
       # - name: Build
       #   run: |
       #     xcodebuild clean build \
