@@ -12,7 +12,7 @@ jobs:
     name: Build 
     env: 
       macosVersion: 12
-    runs-on: macos-{{ env.macosVersion }}
+    runs-on: macos-${{ env.macosVersion }}
 
     steps:
       - name: Checkout
