@@ -10,9 +10,12 @@ on:
 jobs:
   build:
     name: Build 
-    env: 
-      macosVersion: 12
-    runs-on: macos-${{ env.macosVersion }}
+    strategy:
+      fail-fast: false
+      matrix:
+        macos:
+          - 12
+    runs-on: macos-${{ matrix.macos }}
 
     steps:
       - name: Checkout
