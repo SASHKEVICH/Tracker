@@ -30,6 +30,5 @@ jobs:
           -project ./Tracker.xcodeproj \
           -scheme Tracker \
           -allowProvisioningUpdates \
-          -quiet \
-          -derivedDataPath /tmp/ddata \
+          -verbose \
           -sdk iphoneos16.2
