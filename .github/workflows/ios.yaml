@@ -26,10 +26,12 @@ jobs:
 
       - name: Build
         run: |
-          xcodebuild build \
+          xcodebuild clean build analyze \
           -project ./Tracker.xcodeproj \
           -scheme Tracker \
           -allowProvisioningUpdates \
           -verbose \
-          -sdk iphoneos16.2 \
+          -sdk iphonesimulator \
+          -destination 'platform=iOS Simulator,name=iPhone 11' \
           -configuration Debug
+
