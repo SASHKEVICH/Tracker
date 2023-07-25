@@ -33,6 +33,8 @@ jobs:
       - name: Show list
         run: xcodebuild -list
 
+      - name: Fastlane build
+        run: fastlane beta
       # - name: Build
       #   uses: sersoft-gmbh/xcodebuild-action@v2
       #   with:
