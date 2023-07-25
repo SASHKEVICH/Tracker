@@ -30,16 +30,11 @@ jobs:
       - name: Check xcodebuild version
         run: xcodebuild -version
 
-      - name: Show list
-        run: xcodebuild -list
+      - name: Update Fastlane 
+        run: gem install fastlane
+      
+      - name: Show fastlane env
+        run: fastlane env
 
-      - name: Fastlane build
-        run: fastlane beta
-      # - name: Build
-      #   uses: sersoft-gmbh/xcodebuild-action@v2
-      #   with:
-      #     project: Tracker.xcodeproj
-      #     scheme: Tracker
-      #     destination: platform=iOS Simulator
-      #     action: build
- 
+      - name: Fastlane Build
+        run: fastlane beta 
