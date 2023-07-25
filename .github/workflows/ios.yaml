@@ -35,10 +35,8 @@ jobs:
         with:
           ruby-version: '3.0'
           bundler-cache: true
-          working-directory: 'ios'
       
       - name: fastlane build
         uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'beta'
-          subdirectory: 'ios'
