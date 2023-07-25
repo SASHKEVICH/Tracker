@@ -30,11 +30,15 @@ jobs:
       - name: Check xcodebuild version
         run: xcodebuild -version
 
-      - name: Update Fastlane 
-        run: gem install fastlane
+      - name: Checkout ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+          working-directory: 'ios'
       
-      - name: Show fastlane env
-        run: fastlane env
-
-      - name: Fastlane Build
-        run: fastlane beta 
+      - name: fastlane build
+        uses: maierj/fastlane-action@v3.0.0
+        with:
+        lane: 'beta'
+        subdirectory: 'ios'
