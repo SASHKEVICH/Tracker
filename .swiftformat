@@ -2,6 +2,7 @@
 
 --indent 4
 --lineaftermarks false
+--swiftversion 5
 
 --enable \
 	andOperator, \
@@ -19,11 +20,10 @@
 	duplicateImports, \
 	elseOnSameLine, \
 	emptyBraces, \
-	extensionAccessControl 
+	extensionAccessControl
 
 --disable \
 	redundantSelf, \
 	conditionalAssignment, \
 	consecutiveSpaces, \
 	preferKeyPath
-
