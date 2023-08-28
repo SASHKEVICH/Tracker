@@ -34,9 +34,8 @@ extension EmojisCollectionViewHelper {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? EmojisCollectionViewCell,
-              let emoji = cell.emoji
-        else { return }
+        let cell: EmojisCollectionViewCell = collectionView.cellForItem(indexPath: indexPath)
+        guard let emoji = cell.emoji else { return }
 
         self.delegate?.didSelect(emoji: emoji)
     }
@@ -104,14 +103,7 @@ extension EmojisCollectionViewHelper {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: EmojisCollectionViewCell.reuseIdentifier,
-            for: indexPath
-        ) as? EmojisCollectionViewCell
-        else {
-            assertionFailure("cannot dequeue emojis cell")
-            return UICollectionViewCell()
-        }
+        let cell: EmojisCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         let emoji = self.emojis[indexPath.row]
         cell.emoji = emoji
 
@@ -125,15 +117,7 @@ extension EmojisCollectionViewHelper {
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        guard let view = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: TrackersCollectionSectionHeader.reuseIdentifier,
-            for: indexPath
-        ) as? TrackersCollectionSectionHeader
-        else {
-            assertionFailure("Cannot dequeue header view")
-            return UICollectionReusableView()
-        }
+        let view: TrackersCollectionSectionHeader = collectionView.dequeueReusableSupplementaryView(indexPath: indexPath)
         view.headerText = "Emoji"
         return view
     }

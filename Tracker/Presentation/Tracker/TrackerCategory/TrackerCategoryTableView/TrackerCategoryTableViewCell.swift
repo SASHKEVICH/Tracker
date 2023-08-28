@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TrackerCategoryTableViewCell: UITableViewCell {
+final class TrackerCategoryTableViewCell: UITableViewCell, ReuseIdentifying {
     var categoryTitle: String? {
         didSet {
             categoryTitleLable.text = categoryTitle

@@ -34,10 +34,7 @@ final class TrackerScheduleViewController: UIViewController, TrackerScheduleView
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self.presenter?.scheduleTableViewHelper
         tableView.dataSource = self.presenter?.scheduleTableViewHelper
-        tableView.register(
-            TrackerScheduleTableViewCell.self,
-            forCellReuseIdentifier: TrackerScheduleTableViewCell.reuseIdentifier
-        )
+        tableView.register(TrackerScheduleTableViewCell.self)
         tableView.separatorColor = .Static.gray
         return tableView
     }()

@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TrackerScheduleTableViewCell: UITableViewCell {
+final class TrackerScheduleTableViewCell: UITableViewCell, ReuseIdentifying {
     weak var delegate: TrackerScheduleTableViewHelperDelegateProtocol?
     var weekDay: WeekDay?
 

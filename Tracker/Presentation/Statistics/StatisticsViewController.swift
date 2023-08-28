@@ -11,7 +11,7 @@ final class StatisticsViewController: UIViewController {
     private lazy var statisticsTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(StatisticsTableViewCell.self, forCellReuseIdentifier: StatisticsTableViewCell.reuseIdentifier)
+        tableView.register(StatisticsTableViewCell.self)
         tableView.dataSource = self.tableViewHelper
         tableView.delegate = self.tableViewHelper
         tableView.backgroundColor = .Dynamic.whiteDay

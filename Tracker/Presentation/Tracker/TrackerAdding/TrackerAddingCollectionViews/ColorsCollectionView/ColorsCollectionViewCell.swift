@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ColorsCollectionViewCell: UICollectionViewCell {
+final class ColorsCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     var color: UIColor? {
         didSet {
             self.colorView.backgroundColor = color

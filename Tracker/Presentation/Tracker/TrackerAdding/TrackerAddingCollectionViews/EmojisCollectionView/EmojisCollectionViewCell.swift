@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class EmojisCollectionViewCell: UICollectionViewCell {
+final class EmojisCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     var emoji: String? {
         didSet {
             emojiLabel.text = emoji
