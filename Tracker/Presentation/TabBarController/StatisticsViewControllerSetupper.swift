@@ -16,7 +16,7 @@ final class StatisticsViewControllerSetupper {
 }
 
 extension StatisticsViewControllerSetupper {
-    func getViewController() -> UINavigationController {
+    func getViewController() -> StatisticsViewController {
         let viewModel = StatisticsViewModel(trackersCompletingService: self.trackersCompletingService)
 
         self.trackersCompletingService.delegate = viewModel
@@ -29,15 +29,6 @@ extension StatisticsViewControllerSetupper {
 
         tableViewHelper.delegate = statisticsViewController
 
-        let navigationController = UINavigationController(rootViewController: statisticsViewController)
-        navigationController.navigationBar.prefersLargeTitles = true
-
-        let title = R.string.localizable.tabbarStatistics()
-        statisticsViewController.tabBarItem = UITabBarItem(
-            title: title,
-            image: .TabBar.statistics,
-            selectedImage: nil
-        )
-        return navigationController
+        return statisticsViewController
     }
 }

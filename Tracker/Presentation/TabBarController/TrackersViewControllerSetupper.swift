@@ -9,6 +9,7 @@ import UIKit
 
 final class TrackersViewControllerSetupper {
     private let trackersViewController = TrackersViewController()
+
     private let trackersCategoryService: TrackersCategoryServiceProtocol
     private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
     private let trackersService: TrackersServiceProtocol
@@ -19,16 +20,6 @@ final class TrackersViewControllerSetupper {
     private let alertPresenterService: AlertPresenterService
     private let analyticsService: AnalyticsServiceProtocol
     private let pinnedCategoryId: UUID
-
-    func getViewController() -> UINavigationController? {
-        guard let presenter = self.preparePresenter() else { return nil }
-
-        self.trackersViewController.presenter = presenter
-        presenter.view = self.trackersViewController
-
-        let controller = self.prepareNavigationController()
-        return controller
-    }
 
     init(
         trackersCategoryService: TrackersCategoryServiceProtocol,
@@ -52,6 +43,15 @@ final class TrackersViewControllerSetupper {
         self.alertPresenterService = alertPresenterService
         self.analyticsService = analyticsService
         self.pinnedCategoryId = pinnedCategoryId
+    }
+
+    func getViewController() -> TrackersViewController? {
+        guard let presenter = self.preparePresenter() else { return nil }
+
+        self.trackersViewController.presenter = presenter
+        presenter.view = self.trackersViewController
+
+        return self.trackersViewController
     }
 }
 
@@ -88,14 +88,6 @@ private extension TrackersViewControllerSetupper {
         trackersRecordService.delegate = presenter
 
         return presenter
-    }
-
-    func prepareNavigationController() -> UINavigationController {
-        let title = R.string.localizable.tabbarTracker()
-        self.trackersViewController.tabBarItem = UITabBarItem(title: title, image: .TabBar.trackers, selectedImage: nil)
-        let navigationController = UINavigationController(rootViewController: self.trackersViewController)
-        navigationController.navigationBar.prefersLargeTitles = true
-        return navigationController
     }
 }
 

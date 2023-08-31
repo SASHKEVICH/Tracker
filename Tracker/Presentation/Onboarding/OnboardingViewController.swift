@@ -15,6 +15,10 @@ protocol OnboardingViewControllerProtocol: AnyObject {
 // MARK: - OnboardingViewController
 
 final class OnboardingViewController: UIPageViewController {
+    enum Event {
+        case finish
+    }
+
     var presenter: OnboardingViewPresenterProtocol?
 
     private lazy var pageControl: UIPageControl = {
@@ -58,10 +62,10 @@ extension OnboardingViewController: OnboardingViewControllerProtocol {
 
 // MARK: - Actions
 
-extension OnboardingViewController {
+private extension OnboardingViewController {
     @objc
-    private func didTapOnboardingButton() {
-        self.presenter?.navigateToMainScreen(animated: true)
+    func didTapOnboardingButton() {
+        self.presenter?.navigateToMainScreen(event: .finish)
     }
 }
 

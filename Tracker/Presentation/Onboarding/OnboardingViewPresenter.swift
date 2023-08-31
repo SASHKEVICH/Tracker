@@ -12,19 +12,17 @@ protocol OnboardingViewPresenterProtocol: AnyObject {
     var pagesViewControllerHelper: OnboardingViewControllerHelperProtocol? { get }
     var pagesCount: Int { get }
     func setCurrentPage(index: Int)
-    func navigateToMainScreen(animated: Bool)
+    func navigateToMainScreen(event: OnboardingViewController.Event)
 }
 
 final class OnboardingViewPresenter {
     weak var view: OnboardingViewControllerProtocol?
     var pagesViewControllerHelper: OnboardingViewControllerHelperProtocol?
 
-    private let router: OnboardingRouterProtocol
+    var onNavigateToTabBar: ((OnboardingViewController.Event) -> Void)?
 
-    init(helper: OnboardingViewControllerHelperProtocol, router: OnboardingRouterProtocol) {
-        self.router = router
+    init(helper: OnboardingViewControllerHelperProtocol) {
         self.pagesViewControllerHelper = helper
-
         helper.presenter = self
     }
 }
@@ -40,7 +38,7 @@ extension OnboardingViewPresenter: OnboardingViewPresenterProtocol {
         self.view?.setCurrentPage(index: index)
     }
 
-    func navigateToMainScreen(animated: Bool) {
-        self.router.navigateToMainScreen(animated: animated)
+    func navigateToMainScreen(event: OnboardingViewController.Event) {
+        self.onNavigateToTabBar?(event)
     }
 }
