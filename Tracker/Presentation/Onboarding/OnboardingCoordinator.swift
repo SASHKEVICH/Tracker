@@ -5,9 +5,9 @@ protocol OnboardingCoordinatorProtocol: Coordinator {
 }
 
 final class OnboardingCoordinator: OnboardingCoordinatorProtocol {
-    weak var finishDelegate: CoordinatorFinishDelegate?
+    let navigationController: UINavigationController
 
-    var navigationController: UINavigationController
+    weak var finishDelegate: CoordinatorFinishDelegate?
     var childCoordinators: [Coordinator] = []
     var type: CoordinatorType { .onboarding }
 

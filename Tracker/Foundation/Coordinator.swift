@@ -2,8 +2,8 @@ import UIKit
 
 protocol Coordinator: AnyObject {
     var finishDelegate: CoordinatorFinishDelegate? { get set }
-    var navigationController: UINavigationController { get set }
     var childCoordinators: [Coordinator] { get set }
+    var navigationController: UINavigationController { get }
     var type: CoordinatorType { get }
     func start()
     func finish()
@@ -11,8 +11,8 @@ protocol Coordinator: AnyObject {
 
 extension Coordinator {
     func finish() {
-        childCoordinators.removeAll()
-        finishDelegate?.coordinatorFinishDelegate(childCoordinator: self, didFinish: true)
+        self.childCoordinators.removeAll()
+        self.finishDelegate?.coordinatorFinishDelegate(childCoordinator: self, didFinish: true)
     }
 }
 

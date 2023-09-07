@@ -71,26 +71,29 @@ private extension OnboardingViewController {
 
 private extension OnboardingViewController {
     func setViewControllers() {
-        guard let viewController = presenter?.pagesViewControllerHelper?.firstViewController else { return }
+        guard let viewController = self.presenter?.pagesViewControllerHelper?.firstViewController else { return }
         self.setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
     }
 
     func addSubviews() {
-        self.view.addSubview(confirmOnboardingButton)
-        self.view.addSubview(pageControl)
+        self.view.addSubview(self.confirmOnboardingButton)
+        self.view.addSubview(self.pageControl)
     }
 
     func addConstraints() {
         NSLayoutConstraint.activate([
-            confirmOnboardingButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            confirmOnboardingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            confirmOnboardingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
-            confirmOnboardingButton.heightAnchor.constraint(equalToConstant: 60),
+            self.confirmOnboardingButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+            self.confirmOnboardingButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+            self.confirmOnboardingButton.bottomAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -50
+            ),
+            self.confirmOnboardingButton.heightAnchor.constraint(equalToConstant: 60),
         ])
 
         NSLayoutConstraint.activate([
-            pageControl.bottomAnchor.constraint(equalTo: confirmOnboardingButton.topAnchor, constant: -24),
-            pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            self.pageControl.bottomAnchor.constraint(equalTo: self.confirmOnboardingButton.topAnchor, constant: -24),
+            self.pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
         ])
     }
 }

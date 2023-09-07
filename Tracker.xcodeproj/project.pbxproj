@@ -319,7 +319,6 @@
 				9671FA972A5EEA460066EB41 /* YandexMetricaConfiguration.swift */,
 				960127A72A9CD8F10012B43D /* Coordinator.swift */,
 				960127AA2A9CDA750012B43D /* AppCoordinator.swift */,
-				960127AE2A9CE2610012B43D /* TabBarPage.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -773,7 +772,6 @@
 				96E63F4629D732F700AA0970 /* UIColor+Extensions.swift */,
 				960127A12A9CA95F0012B43D /* CellReusingUtils.swift */,
 				9654A97129EE605400B4A718 /* Constants */,
-				960127B02A9CE5510012B43D /* TabBarCoordinator.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -781,6 +779,8 @@
 		96E63F4B29D735B100AA0970 /* TabBarController */ = {
 			isa = PBXGroup;
 			children = (
+				960127AE2A9CE2610012B43D /* TabBarPage.swift */,
+				960127B02A9CE5510012B43D /* TabBarCoordinator.swift */,
 				96E63F4C29D735D500AA0970 /* TabBarViewController.swift */,
 				96251E032A61119000E13596 /* StatisticsViewControllerSetupper.swift */,
 				96251E062A61120900E13596 /* TrackersViewControllerSetupper.swift */,

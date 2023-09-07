@@ -23,6 +23,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorProtocol {
     init(_ navigationController: UINavigationController, serviceSetupper: ServiceSetupperProtocol) {
         self.navigationController = navigationController
         self.serviceSetupper = serviceSetupper
+
         self.tabBarController = UITabBarController()
     }
 

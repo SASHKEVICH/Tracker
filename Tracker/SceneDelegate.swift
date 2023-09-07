@@ -10,35 +10,22 @@ import UIKit
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
-    private let firstLaunchService: FirstLaunchServiceProtocol = FirstLaunchService()
-
     func scene(_ scene: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         self.window = UIWindow(windowScene: scene)
-
-//        let isAppAlreadyLaunchedOnce = firstLaunchService.isAppAlreadyLaunchedOnce
-//        if !isAppAlreadyLaunchedOnce {
-//            let onboardingHelper = OnboardingViewControllerHelper()
-//            let onboardingRouter = OnboardingRouter(window: window)
-//            let onboardingPresenter = OnboardingViewPresenter(helper: onboardingHelper, router: onboardingRouter)
-//            let onboardingViewController = OnboardingViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
-//
-//            onboardingViewController.presenter = onboardingPresenter
-//            onboardingPresenter.view = onboardingViewController
-//
-//            self.setRootViewController(onboardingViewController)
-//        } else {
-//            let tabBarViewController = TabBarViewController()
-//            self.setRootViewController(tabBarViewController)
-//        }
 
         let navigationController = UINavigationController()
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
 
         guard let serviceSetupper = self.prepareServiceSetupper() else { return }
+        let firstLaunchService = FirstLaunchService()
 
-        let appCoordinator = AppCoordinator(navigationController, serviceSetupper: serviceSetupper)
+        let appCoordinator = AppCoordinator(
+            navigationController,
+            firstLaunchService: firstLaunchService,
+            serviceSetupper: serviceSetupper
+        )
         appCoordinator.start()
     }
 }
