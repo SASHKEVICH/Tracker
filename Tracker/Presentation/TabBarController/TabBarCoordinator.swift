@@ -8,13 +8,10 @@ protocol TabBarCoordinatorProtocol: Coordinator {
 }
 
 final class TabBarCoordinator: NSObject, TabBarCoordinatorProtocol {
-    weak var finishDelegate: CoordinatorFinishDelegate?
-
     var tabBarController: UITabBarController
     var navigationController: UINavigationController
 
     var childCoordinators: [Coordinator] = []
-    var type: CoordinatorType { .tab }
 
     var currentPage: TabBarPage? { TabBarPage(index: self.tabBarController.selectedIndex) }
 

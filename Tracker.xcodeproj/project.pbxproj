@@ -109,6 +109,7 @@
 		96A606D92A3C4D34007C5262 /* OnboardingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606D82A3C4D34007C5262 /* OnboardingConstants.swift */; };
 		96A606DB2A3C8D9F007C5262 /* TrackersCategoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606DA2A3C8D9F007C5262 /* TrackersCategoryService.swift */; };
 		96A606DE2A3C8FBC007C5262 /* FirstLaunchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */; };
+		96AC3A6E2AAA22AF0077651D /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AC3A6D2AAA22AF0077651D /* Router.swift */; };
 		96BAA8A62A02B1D000513D83 /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BAA8A52A02B1D000513D83 /* UIColorMarshalling.swift */; };
 		96C7E76529E65ED200BA7F67 /* AlertPresenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C7E76429E65ED200BA7F67 /* AlertPresenterService.swift */; };
 		96C7E76829E65F3500BA7F67 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C7E76729E65F3500BA7F67 /* AlertModel.swift */; };
@@ -257,6 +258,7 @@
 		96A606D82A3C4D34007C5262 /* OnboardingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConstants.swift; sourceTree = "<group>"; };
 		96A606DA2A3C8D9F007C5262 /* TrackersCategoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCategoryService.swift; sourceTree = "<group>"; };
 		96A606DD2A3C8FBC007C5262 /* FirstLaunchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstLaunchService.swift; sourceTree = "<group>"; };
+		96AC3A6D2AAA22AF0077651D /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		96BAA8A52A02B1D000513D83 /* UIColorMarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
 		96C7E76429E65ED200BA7F67 /* AlertPresenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterService.swift; sourceTree = "<group>"; };
 		96C7E76729E65F3500BA7F67 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
@@ -317,7 +319,6 @@
 				96C7E76929E7039500BA7F67 /* Array+SafeSubscript.swift */,
 				96E067812A00252D000AC4C8 /* String+WeekDay.swift */,
 				9671FA972A5EEA460066EB41 /* YandexMetricaConfiguration.swift */,
-				960127A72A9CD8F10012B43D /* Coordinator.swift */,
 				960127AA2A9CDA750012B43D /* AppCoordinator.swift */,
 			);
 			path = Foundation;
@@ -375,6 +376,7 @@
 		9629563529CD846900A587C5 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				96AC3A6B2AAA22930077651D /* Library */,
 				9601279F2A9CA8D60012B43D /* Foundation */,
 				96816CE22A5D723A003795A4 /* Resources */,
 				96F7038229FD1A0C00BBFF5C /* Domain */,
@@ -693,6 +695,23 @@
 				96251DFE2A60504800E13596 /* TrackersPinningService.swift */,
 			);
 			path = Trackers;
+			sourceTree = "<group>";
+		};
+		96AC3A6B2AAA22930077651D /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				96AC3A6C2AAA22A00077651D /* Coordinator */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		96AC3A6C2AAA22A00077651D /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				960127A72A9CD8F10012B43D /* Coordinator.swift */,
+				96AC3A6D2AAA22AF0077651D /* Router.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		96C7E76629E65F2C00BA7F67 /* AlertModel */ = {
@@ -1126,6 +1145,7 @@
 				968C17672A5BC23400769FC3 /* TrackersViewRouter.swift in Sources */,
 				960127A22A9CA95F0012B43D /* CellReusingUtils.swift in Sources */,
 				96F703A329FEA4C100BBFF5C /* PersistentContainerCreater.swift in Sources */,
+				96AC3A6E2AAA22AF0077651D /* Router.swift in Sources */,
 				96C7E76E29E802D800BA7F67 /* TrackerTypeViewController.swift in Sources */,
 				96C7E76829E65F3500BA7F67 /* AlertModel.swift in Sources */,
 				967D63562A64E83B00C5ADD9 /* StatisticsViewModel.swift in Sources */,
