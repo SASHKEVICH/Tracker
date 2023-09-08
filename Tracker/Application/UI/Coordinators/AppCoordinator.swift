@@ -22,6 +22,14 @@ final class AppCoordinator: BaseCoordinator {
     }
 
     func showOnboardingFlow() {
+        let onboardingCoordinator = self.coordinatorFactory.makeOnboardingCoordinator(router: self.router)
+        onboardingCoordinator.finishFlow = { [weak self, weak onboardingCoordinator] in
+            self?.removeDependency(onboardingCoordinator)
+            self?.showMainFlow()
+        }
+
+        self.addDependency(onboardingCoordinator)
+        onboardingCoordinator.start()
     }
 
     func showMainFlow() {

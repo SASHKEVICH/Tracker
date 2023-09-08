@@ -28,6 +28,7 @@ final class TrackerCustomButton: UIButton {
         self.buttonState = state
         self.title = title
         super.init(frame: .zero)
+        self.translatesAutoresizingMaskIntoConstraints = false
     }
 
     override func draw(_ rect: CGRect) {

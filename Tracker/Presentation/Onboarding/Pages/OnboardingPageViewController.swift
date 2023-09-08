@@ -1,71 +1,82 @@
-//
-//  OnboardingPageViewController.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 24.05.2023.
-//
-
 import UIKit
 
-final class OnboardingPageViewController: UIViewController {
-    var image: UIImage? {
-        didSet {
-            imageView.image = image
-        }
+final class OnboardingPageViewController: UIPageViewController {
+    var firstViewController: UIViewController? { self.pages.first }
+    var pagesCount: Int { self.pages.count }
+
+    var onCurrentPageChanged: Action<Int>?
+
+    private var pages: [UIViewController] = []
+
+    init() {
+        super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
     }
 
-    var onboardingText: String? {
-        didSet {
-            onboardingLabel.text = onboardingText
-        }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
-
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
-
-    private let onboardingLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.font = .Bold.medium
-        label.textColor = .Static.black
-        return label
-    }()
-
-    private let constantConfiguration = OnboardingConstants.configuration
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.addSubviews()
-        self.addConstraints()
+        self.delegate = self
+        self.dataSource = self
+    }
+
+    func set(pages: [UIViewController]) {
+        self.pages = pages
+
+        if let controller = pages.first {
+            self.setViewControllers([controller], direction: .forward, animated: true)
+        }
     }
 }
 
-private extension OnboardingPageViewController {
-    func addSubviews() {
-        self.view.addSubview(imageView)
-        self.view.addSubview(onboardingLabel)
+// MARK: - UIPageViewControllerDelegate
+extension OnboardingPageViewController: UIPageViewControllerDelegate {
+    func pageViewController(
+        _ pageViewController: UIPageViewController,
+        didFinishAnimating _: Bool,
+        previousViewControllers _: [UIViewController],
+        transitionCompleted _: Bool
+    ) {
+        if let currentViewController = pageViewController.viewControllers?.first,
+           let currentIndex = pages.firstIndex(of: currentViewController)
+        {
+            self.onCurrentPageChanged?(currentIndex)
+        }
+    }
+}
+
+// MARK: - UIPageViewControllerDataSource
+extension OnboardingPageViewController: UIPageViewControllerDataSource {
+    func pageViewController(
+        _: UIPageViewController,
+        viewControllerBefore viewController: UIViewController
+    ) -> UIViewController? {
+        guard let controllerIndex = self.pages.firstIndex(of: viewController) else { return nil }
+
+        let previousIndex = controllerIndex - 1
+
+        if previousIndex >= 0 {
+            return self.pages[previousIndex]
+        } else {
+            return self.pages.last
+        }
     }
 
-    func addConstraints() {
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: view.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        ])
+    func pageViewController(
+        _: UIPageViewController,
+        viewControllerAfter viewController: UIViewController
+    ) -> UIViewController? {
+        guard let controllerIndex = pages.firstIndex(of: viewController) else { return nil }
 
-        NSLayoutConstraint.activate([
-            onboardingLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: constantConfiguration.topConstantConstraint),
-            onboardingLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -constantConfiguration.bottomConstantConstraint),
-            onboardingLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            onboardingLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-        ])
+        let nextIndex = controllerIndex + 1
+
+        if nextIndex < self.pages.count {
+            return self.pages[nextIndex]
+        } else {
+            return self.pages.first
+        }
     }
 }

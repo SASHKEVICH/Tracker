@@ -29,20 +29,42 @@ extension DI: AppFactory {
 }
 
 protocol ScreenFactoryProtocol {
-    func makeOnboardingScreen()
+    func makeOnboardingScreen() -> OnboardingViewController<OnboardingView>
+    func makeOnboardingPage(index: OnboardingPage.Index) -> OnboardingPage
 }
 
 final class ScreenFactory: ScreenFactoryProtocol {
     private weak var di: DI?
     fileprivate init() {}
 
-    func makeOnboardingScreen() {
+    func makeOnboardingScreen() -> OnboardingViewController<OnboardingView> {
+        OnboardingViewController<OnboardingView>()
+    }
 
+    func makeOnboardingPage(index: OnboardingPage.Index) -> OnboardingPage {
+        let inputData = self.resolveOnboardingPageWith(index: index)
+        return OnboardingPage(inputData: inputData)
+    }
+
+    private func resolveOnboardingPageWith(index: OnboardingPage.Index) -> OnboardingPage.InputData {
+        switch index {
+        case .first:
+            return OnboardingPage.InputData(
+                image: .Onboarding.first,
+                onboardingText: R.string.localizable.onboardingPageLabelFirst()
+            )
+        case .second:
+            return OnboardingPage.InputData(
+                image: .Onboarding.second,
+                onboardingText: R.string.localizable.onboardingPageLabelSecond()
+            )
+        }
     }
 }
 
 protocol CoordinatorFactoryProtocol {
     func makeAppCoordinator(router: Routerable) -> AppCoordinator
+    func makeOnboardingCoordinator(router: Routerable) -> OnboardingCoordinator
 }
 
 final class CoordinatorFactory: CoordinatorFactoryProtocol {
@@ -54,5 +76,9 @@ final class CoordinatorFactory: CoordinatorFactoryProtocol {
 
     func makeAppCoordinator(router: Routerable) -> AppCoordinator {
         AppCoordinator(coordinatorFactory: self, router: router)
+    }
+
+    func makeOnboardingCoordinator(router: Routerable) -> OnboardingCoordinator {
+        OnboardingCoordinator(router: router, screenFactory: self.screenFactory)
     }
 }
