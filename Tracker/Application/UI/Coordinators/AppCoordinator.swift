@@ -1,22 +1,24 @@
 import UIKit
 
-protocol AppCoordinatorProtocol: Coordinator {
-    func showOnboardingFlow()
-    func showMainFlow()
-}
-
-final class AppCoordinator: AppCoordinatorProtocol {
-    var childCoordinators: [Coordinator] = []
-
+final class AppCoordinator: BaseCoordinator {
     private let coordinatorFactory: CoordinatorFactoryProtocol
     private let router: Routerable
+
+    private var isFirstLaunch = true
 
     init(coordinatorFactory: CoordinatorFactoryProtocol, router: Routerable) {
         self.coordinatorFactory = coordinatorFactory
         self.router = router
     }
 
-    func start() {
+    override func start() {
+        if self.isFirstLaunch {
+            self.showOnboardingFlow()
+            self.isFirstLaunch = false
+            return
+        }
+
+        self.showMainFlow()
     }
 
     func showOnboardingFlow() {

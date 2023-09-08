@@ -11,14 +11,12 @@ final class DI {
 }
 
 protocol AppFactory {
-    func makeKeyWindowWithCoordinator() -> (UIWindow, Coordinator)
+    func makeKeyWindowWithCoordinator(window: UIWindow) -> Coordinator
 }
 
 // MARK: - AppFactory
 extension DI: AppFactory {
-    func makeKeyWindowWithCoordinator() -> (UIWindow, Coordinator) {
-        let window = UIWindow()
-
+    func makeKeyWindowWithCoordinator(window: UIWindow) -> Coordinator {
         let rootVC = UINavigationController()
         rootVC.navigationBar.prefersLargeTitles = true
 
@@ -26,7 +24,7 @@ extension DI: AppFactory {
         let coordinator = self.coordinatorFactory.makeAppCoordinator(router: router)
 
         window.rootViewController = rootVC
-        return (window, coordinator)
+        return coordinator
     }
 }
 
