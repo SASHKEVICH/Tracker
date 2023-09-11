@@ -1,5 +1,5 @@
 # Tracker
-Habit tracker app. Yandex.Practicum study app.
+Habit tracker app.
 
 # Stack
 1. UIKit
