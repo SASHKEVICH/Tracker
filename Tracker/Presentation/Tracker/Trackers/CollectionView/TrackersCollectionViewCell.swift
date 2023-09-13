@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TrackersCollectionViewCell: UICollectionViewCell {
+final class TrackersCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     weak var delegate: TrackersViewPresenterCollectionHelperCellDelegate?
 
     var dayCount: String = "" {

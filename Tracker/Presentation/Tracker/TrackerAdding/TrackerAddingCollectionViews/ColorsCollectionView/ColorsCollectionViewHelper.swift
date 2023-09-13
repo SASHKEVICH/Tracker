@@ -107,14 +107,8 @@ extension ColorsCollectionViewHelper {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ColorsCollectionViewCell.reuseIdentifier,
-            for: indexPath
-        ) as? ColorsCollectionViewCell
-        else {
-            assertionFailure("cannot dequeue colors cell")
-            return UICollectionViewCell()
-        }
+        let cell: ColorsCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+
         let color = self.colors[indexPath.row]
         cell.color = color
 
@@ -130,15 +124,7 @@ extension ColorsCollectionViewHelper {
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        guard let view = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: TrackersCollectionSectionHeader.reuseIdentifier,
-            for: indexPath
-        ) as? TrackersCollectionSectionHeader
-        else {
-            assertionFailure("Cannot dequeue header view")
-            return UICollectionReusableView()
-        }
+        let view: TrackersCollectionSectionHeader = collectionView.dequeueReusableSupplementaryView(indexPath: indexPath)
         view.headerText = R.string.localizable.trackerAddingColorCollectionViewHeaderTitle()
         return view
     }

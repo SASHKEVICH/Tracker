@@ -7,8 +7,10 @@
 
 import UIKit
 
-final class TrackersCollectionSectionHeader: UICollectionReusableView {
-    static let reuseIdentifier = String(describing: TrackersCollectionSectionHeader.self)
+final class TrackersCollectionSectionHeader: UICollectionReusableView, ReusableCollecectionViewIdentifying {
+    static var kind: String {
+        UICollectionView.elementKindSectionHeader
+    }
 
     var headerText: String? {
         didSet {

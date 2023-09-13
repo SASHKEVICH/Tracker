@@ -47,13 +47,9 @@ extension StatisticsTableViewHelper: StatisticsTableViewHelperProtocol {
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: StatisticsTableViewCell.reuseIdentifier,
-            for: indexPath
-        ) as? StatisticsTableViewCell
-        else { return UITableViewCell() }
-
         guard let statistics = self.delegate?.statistics[indexPath.row] else { return UITableViewCell() }
+
+        let cell: StatisticsTableViewCell = tableView.dequeueReusableCell(indexPath: indexPath)
         cell.count = "\(statistics.count)"
         cell.title = statistics.title
         return cell

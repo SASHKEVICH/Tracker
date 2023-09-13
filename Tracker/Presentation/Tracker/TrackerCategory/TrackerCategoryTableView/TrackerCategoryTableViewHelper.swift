@@ -29,9 +29,8 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
         didSelectRowAt indexPath: IndexPath
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
-
-        guard let cell = tableView.cellForRow(at: indexPath) as? TrackerCategoryTableViewCell else { return }
         guard let cells = tableView.visibleCells as? [TrackerCategoryTableViewCell] else { return }
+        let cell: TrackerCategoryTableViewCell = tableView.dequeueReusableCell(indexPath: indexPath)
 
         if cell != self.lastSelectedCell {
             cell.isCellSelected = true
@@ -58,12 +57,9 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: TrackerCategoryTableViewCell.reuseIdentifier,
-            for: indexPath
-        ) as? TrackerCategoryTableViewCell else { return UITableViewCell() }
-
         guard let category = self.delegate?.categories[indexPath.row] else { return UITableViewCell() }
+
+        let cell: TrackerCategoryTableViewCell = tableView.dequeueReusableCell(indexPath: indexPath)
         cell.categoryTitle = category.title
 
         if let lastSelectedCell = self.lastSelectedCell, lastSelectedCell == cell {

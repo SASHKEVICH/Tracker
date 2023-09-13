@@ -42,10 +42,7 @@ final class TrackerCategoryViewController: UIViewController {
     private lazy var categoriesTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(
-            TrackerCategoryTableViewCell.self,
-            forCellReuseIdentifier: TrackerCategoryTableViewCell.reuseIdentifier
-        )
+        tableView.register(TrackerCategoryTableViewCell.self)
         tableView.dataSource = self.helper
         tableView.delegate = self.helper
         tableView.rowHeight = 75

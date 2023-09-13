@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TrackerOptionsTableViewCell: UITableViewCell {
+final class TrackerOptionsTableViewCell: UITableViewCell, ReuseIdentifying {
     enum CellType {
         case schedule
         case category

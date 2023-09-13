@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class StatisticsTableViewCell: UITableViewCell {
+final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
     var count: String? {
         didSet {
             self.countLabel.text = self.count

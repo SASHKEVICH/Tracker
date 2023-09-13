@@ -82,7 +82,6 @@ final class TrackerAddingView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .Bold.big
         label.textColor = .Dynamic.blackDay
-        label.text = "5 дней"
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -132,10 +131,7 @@ final class TrackerAddingView: UIView {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self.optionsTableViewHelper
         tableView.delegate = self.optionsTableViewHelper
-        tableView.register(
-            TrackerOptionsTableViewCell.self,
-            forCellReuseIdentifier: TrackerOptionsTableViewCell.reuseIdentifier
-        )
+        tableView.register(TrackerOptionsTableViewCell.self)
         tableView.separatorColor = .Static.gray
         return tableView
     }()
@@ -145,15 +141,8 @@ final class TrackerAddingView: UIView {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.dataSource = self.emojisHelper
         collectionView.delegate = self.emojisHelper
-        collectionView.register(
-            EmojisCollectionViewCell.self,
-            forCellWithReuseIdentifier: EmojisCollectionViewCell.reuseIdentifier
-        )
-        collectionView.register(
-            TrackersCollectionSectionHeader.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TrackersCollectionSectionHeader.reuseIdentifier
-        )
+        collectionView.register(EmojisCollectionViewCell.self)
+        collectionView.register(TrackersCollectionSectionHeader.self)
         return collectionView
     }()
 
@@ -162,15 +151,8 @@ final class TrackerAddingView: UIView {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.dataSource = self.colorsHelper
         collectionView.delegate = self.colorsHelper
-        collectionView.register(
-            ColorsCollectionViewCell.self,
-            forCellWithReuseIdentifier: ColorsCollectionViewCell.reuseIdentifier
-        )
-        collectionView.register(
-            TrackersCollectionSectionHeader.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TrackersCollectionSectionHeader.reuseIdentifier
-        )
+        collectionView.register(ColorsCollectionViewCell.self)
+        collectionView.register(TrackersCollectionSectionHeader.self)
         return collectionView
     }()
 

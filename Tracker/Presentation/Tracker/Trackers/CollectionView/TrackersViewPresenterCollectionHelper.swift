@@ -74,10 +74,7 @@ extension TrackersViewPresenterCollectionHelper {
         guard indexPaths.count > 0 else { return nil }
 
         let indexPath = indexPaths[0]
-
-        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackersCollectionViewCell else {
-            return nil
-        }
+        let cell: TrackersCollectionViewCell = collectionView.cellForItem(indexPath: indexPath)
 
         guard let contextActions = self.prepareContextActions(for: cell) else { return nil }
         return UIContextMenuConfiguration(actionProvider: { _ in
@@ -120,17 +117,11 @@ extension TrackersViewPresenterCollectionHelper {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier,
-            for: indexPath
-        ) as? TrackersCollectionViewCell,
-            let presenter = self.presenter,
-            let tracker = presenter.tracker(at: indexPath)
-        else {
-            assertionFailure("Cannot dequeue cell or presenter is nil")
+        guard let presenter = self.presenter, let tracker = presenter.tracker(at: indexPath) else {
             return UICollectionViewCell()
         }
 
+        let cell: TrackersCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         cell.tracker = tracker
 
         let currentDate = presenter.currentDate
@@ -152,15 +143,7 @@ extension TrackersViewPresenterCollectionHelper {
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        guard let view = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: TrackersCollectionSectionHeader.reuseIdentifier,
-            for: indexPath
-        ) as? TrackersCollectionSectionHeader
-        else {
-            assertionFailure("Cannot dequeue header view")
-            return UICollectionReusableView()
-        }
+        let view: TrackersCollectionSectionHeader = collectionView.dequeueReusableSupplementaryView(indexPath: indexPath)
 
         view.headerText = self.presenter?.categoryTitle(at: indexPath)
         return view

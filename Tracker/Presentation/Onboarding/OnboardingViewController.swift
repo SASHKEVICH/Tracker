@@ -1,92 +1,68 @@
-//
-//  OnboardingViewController.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 24.05.2023.
-//
-
 import UIKit
 
-protocol OnboardingViewControllerProtocol: AnyObject {
-    var presenter: OnboardingViewPresenterProtocol? { get set }
-    func setCurrentPage(index: Int)
-}
-
 // MARK: - OnboardingViewController
+final class OnboardingViewController<View: OnboardingView>: BaseViewController<View> {
+    var onEndOnboarding: VoidAction?
+    var pages: [UIViewController]?
 
-final class OnboardingViewController: UIPageViewController {
-    var presenter: OnboardingViewPresenterProtocol?
-
-    private lazy var pageControl: UIPageControl = {
-        let pageControl = UIPageControl()
-        pageControl.translatesAutoresizingMaskIntoConstraints = false
-        pageControl.numberOfPages = self.presenter?.pagesCount ?? 0
-        pageControl.currentPage = 0
-
-        pageControl.currentPageIndicatorTintColor = .Static.black
-        pageControl.pageIndicatorTintColor = .Static.black.withAlphaComponent(0.3)
-        return pageControl
-    }()
-
-    private lazy var confirmOnboardingButton: TrackerCustomButton = {
-        let buttonTitle = R.string.localizable.onboardingButtonTitle()
-        let button = TrackerCustomButton(state: .onboarding, title: buttonTitle)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(self.didTapOnboardingButton), for: .touchUpInside)
-        return button
-    }()
+    private let pageViewController = OnboardingPageViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.dataSource = self.presenter?.pagesViewControllerHelper
-        self.delegate = self.presenter?.pagesViewControllerHelper
-
-        self.setViewControllers()
-        self.addSubviews()
-        self.addConstraints()
-    }
-}
-
-// MARK: - OnboardingViewControllerProtocol
-
-extension OnboardingViewController: OnboardingViewControllerProtocol {
-    func setCurrentPage(index: Int) {
-        self.pageControl.currentPage = index
-    }
-}
-
-// MARK: - Actions
-
-extension OnboardingViewController {
-    @objc
-    private func didTapOnboardingButton() {
-        self.presenter?.navigateToMainScreen(animated: true)
+        self.setup()
     }
 }
 
 private extension OnboardingViewController {
-    func setViewControllers() {
-        guard let viewController = presenter?.pagesViewControllerHelper?.firstViewController else { return }
-        self.setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
+    func makeOnboardingViewInputData(pageIndex: Int) -> OnboardingView.InputData {
+        OnboardingView.InputData(pagesCount: self.pageViewController.pagesCount, currentPage: pageIndex)
+    }
+}
+
+private extension OnboardingViewController {
+    func setup() {
+        self.setupPageViewController()
+        self.setupView()
+        self.addChildren()
+        self.setActions()
     }
 
-    func addSubviews() {
-        self.view.addSubview(confirmOnboardingButton)
-        self.view.addSubview(pageControl)
+    func setupPageViewController() {
+        if let viewController = self.pageViewController.firstViewController {
+            self.pageViewController.setViewControllers(
+                [viewController],
+                direction: .forward,
+                animated: true,
+                completion: nil
+            )
+        }
+
+        if let pages {
+            self.pageViewController.set(pages: pages)
+        }
     }
 
-    func addConstraints() {
-        NSLayoutConstraint.activate([
-            confirmOnboardingButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            confirmOnboardingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            confirmOnboardingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
-            confirmOnboardingButton.heightAnchor.constraint(equalToConstant: 60),
-        ])
+    func setupView() {
+        self.rootView.update(with: self.makeOnboardingViewInputData(pageIndex: 0))
+    }
 
-        NSLayoutConstraint.activate([
-            pageControl.bottomAnchor.constraint(equalTo: confirmOnboardingButton.topAnchor, constant: -24),
-            pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        ])
+    func addChildren() {
+        self.addChild(self.pageViewController)
+        self.rootView.insertSubview(self.pageViewController.view, at: 0)
+        self.pageViewController.view.frame = self.rootView.frame
+    }
+
+    func setActions() {
+        self.pageViewController.onCurrentPageChanged = { [weak self] index in
+            guard let self else { return }
+            let inputData = self.makeOnboardingViewInputData(pageIndex: index)
+            self.rootView.update(with: inputData)
+        }
+
+        self.rootView.action = { [weak self] action in
+            if action == .onboardingButtonTapped {
+                self?.onEndOnboarding?()
+            }
+        }
     }
 }
