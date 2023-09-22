@@ -1,6 +1,13 @@
 # Tracker
 Designed to help a watching completion of your habbits and irregular events
 
+## Installation
+To run the app you need to open your terminal and pass in it:
+```shell
+make gen
+```
+Then open Tracker.xcodeproj file.
+
 ## Technology stack
 1. UIKit
 2. CoreData
