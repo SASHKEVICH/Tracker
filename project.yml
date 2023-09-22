@@ -55,8 +55,8 @@ targets:
         MARKETING_VERSION: $(TRACKER_MARKETING_VERSION)
         CURRENT_PROJECT_VERSION: $(TRACKER_MARKETING_SUB_VERSION)
         TARGETED_DEVICE_FAMILY: 1
-        PRODUCT_BUNDLE_IDENTIFIER: ru.yandex.practicum.tracker
         DEVELOPMENT_TEAM: 8F9BJF9KQ5
+        PRODUCT_BUNDLE_IDENTIFIER: ru.yandex.practicum.tracker.bekrenev
         ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: YES
     preBuildScripts:
       - script: |
