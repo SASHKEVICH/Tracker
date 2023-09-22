@@ -54,7 +54,7 @@ private extension ColorsCollectionViewCell {
             colorView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
             colorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             colorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            colorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
+            colorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding)
         ])
     }
 

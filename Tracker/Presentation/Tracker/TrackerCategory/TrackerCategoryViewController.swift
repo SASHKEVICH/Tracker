@@ -135,29 +135,32 @@ private extension TrackerCategoryViewController {
     func addConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 
         NSLayoutConstraint.activate([
             categoriesTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             categoriesTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             categoriesTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            categoriesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -91),
+            categoriesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -91)
         ])
 
         NSLayoutConstraint.activate([
             placeholderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             placeholderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             placeholderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            placeholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            placeholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
 
         if self.flow == .normal {
             NSLayoutConstraint.activate([
                 addNewCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
                 addNewCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                addNewCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-                addNewCategoryButton.heightAnchor.constraint(equalToConstant: 60),
+                addNewCategoryButton.bottomAnchor.constraint(
+                    equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                    constant: -16
+                ),
+                addNewCategoryButton.heightAnchor.constraint(equalToConstant: 60)
             ])
         }
     }

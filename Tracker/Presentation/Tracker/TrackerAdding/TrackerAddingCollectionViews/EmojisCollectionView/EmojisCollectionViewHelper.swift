@@ -23,7 +23,7 @@ final class EmojisCollectionViewHelper: NSObject, EmojisCollectionViewHelperProt
     private let emojis: [String] = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
         "😇", "😡", "🥶", "🤔", "🙌", "🍔",
-        "🥦", "🏓", "🥇", "🎸", "🌴", "😪",
+        "🥦", "🏓", "🥇", "🎸", "🌴", "😪"
     ]
 }
 

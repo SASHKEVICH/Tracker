@@ -175,7 +175,7 @@ private extension TrackerAddingViewController {
             self.addingView.shouldHideErrorLabelWithAnimation(self.viewModel.isErrorHidden)
         }
 
-        guard var viewModel = self.viewModel as? TrackerEditingViewModelProtocol else { return }
+        guard let viewModel = self.viewModel as? TrackerEditingViewModelProtocol else { return }
         viewModel.onCompletedCountChanged = { [weak self, weak viewModel] in
             self?.addingView.completedTimesCount = viewModel?.completedCount
         }

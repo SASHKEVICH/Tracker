@@ -61,7 +61,7 @@ final class TrackersDataProvider: NSObject {
         let sortDescriptors = [
             NSSortDescriptor(key: #keyPath(TrackerCoreData.category.isPinning), ascending: false),
             NSSortDescriptor(key: #keyPath(TrackerCoreData.category.title), ascending: true),
-            NSSortDescriptor(key: #keyPath(TrackerCoreData.title), ascending: true),
+            NSSortDescriptor(key: #keyPath(TrackerCoreData.title), ascending: true)
         ]
         request.sortDescriptors = sortDescriptors
 

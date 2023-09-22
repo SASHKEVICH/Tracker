@@ -212,21 +212,21 @@ private extension TrackersViewController {
             trackersCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             trackersCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             trackersCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            trackersCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            trackersCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
 
         NSLayoutConstraint.activate([
             collectionPlaceholderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionPlaceholderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionPlaceholderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionPlaceholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionPlaceholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
 
         NSLayoutConstraint.activate([
             filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             filterButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 114),
             filterButton.heightAnchor.constraint(equalToConstant: 50),
-            filterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
 }

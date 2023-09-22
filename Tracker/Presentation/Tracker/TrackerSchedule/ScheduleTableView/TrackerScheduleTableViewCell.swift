@@ -8,7 +8,7 @@
 import UIKit
 
 final class TrackerScheduleTableViewCell: UITableViewCell {
-    weak var delegate: TrackerScheduleTableViewHelperDelegateProtocol?
+    weak var delegate: TrackerScheduleTableViewHelperDelegate?
     var weekDay: WeekDay?
 
     var cellTitle: String? {
@@ -64,7 +64,7 @@ private extension TrackerScheduleTableViewCell {
             cellTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             cellTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -41),
             cellTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 26),
-            cellTitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25),
+            cellTitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -25)
         ])
     }
 
@@ -73,7 +73,7 @@ private extension TrackerScheduleTableViewCell {
 
         NSLayoutConstraint.activate([
             daySwitch.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            daySwitch.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            daySwitch.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
 

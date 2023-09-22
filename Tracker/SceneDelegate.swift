@@ -21,7 +21,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let onboardingHelper = OnboardingViewControllerHelper()
             let onboardingRouter = OnboardingRouter(window: window)
             let onboardingPresenter = OnboardingViewPresenter(helper: onboardingHelper, router: onboardingRouter)
-            let onboardingViewController = OnboardingViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+            let onboardingViewController = OnboardingViewController(
+                transitionStyle: .scroll,
+                navigationOrientation: .horizontal
+            )
 
             onboardingViewController.presenter = onboardingPresenter
             onboardingPresenter.view = onboardingViewController

@@ -65,7 +65,11 @@ private extension AlertPresenterService {
         }
 
         actions.forEach { actionModel in
-            let action = UIAlertAction(title: actionModel.title, style: actionModel.style, handler: actionModel.completion)
+            let action = UIAlertAction(
+                title: actionModel.title,
+                style: actionModel.style,
+                handler: actionModel.completion
+            )
             action.accessibilityIdentifier = action.title
             alertController.addAction(action)
         }

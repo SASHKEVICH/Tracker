@@ -208,7 +208,7 @@ private extension TrackersViewPresenterCollectionHelper {
             },
             UIAction(title: deleteActionTitle, attributes: .destructive) { [weak self] _ in
                 self?.presenter?.didTapDeleteTracker(tracker)
-            },
+            }
         ]
 
         if cell.isPinned {

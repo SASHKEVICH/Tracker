@@ -79,15 +79,15 @@ private extension Device {
         "iPhone14,7": .iphone14,
         "iPhone14,8": .iphone14Plus,
         "iPhone15,2": .iphone14pro,
-        "iPhone15,3": .iphone14proMax,
+        "iPhone15,3": .iphone14proMax
     ]
 
     static func getDeviceCode() -> String? {
         var systemInfo = utsname()
         uname(&systemInfo)
         let modelCode = withUnsafePointer(to: &systemInfo.machine) {
-            $0.withMemoryRebound(to: CChar.self, capacity: 1) {
-                ptr in String(validatingUTF8: ptr)
+            $0.withMemoryRebound(to: CChar.self, capacity: 1) { ptr in
+                String(validatingUTF8: ptr)
             }
         }
         return modelCode

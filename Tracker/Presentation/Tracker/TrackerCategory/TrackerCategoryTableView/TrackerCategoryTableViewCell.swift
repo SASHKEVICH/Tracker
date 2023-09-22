@@ -72,14 +72,14 @@ private extension TrackerCategoryTableViewCell {
             categoryTitleLable.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 25),
             categoryTitleLable.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             categoryTitleLable.trailingAnchor.constraint(equalTo: selectedCellImageView.leadingAnchor),
-            categoryTitleLable.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -26),
+            categoryTitleLable.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -26)
         ])
 
         NSLayoutConstraint.activate([
             selectedCellImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             selectedCellImageView.widthAnchor.constraint(equalToConstant: 24),
             selectedCellImageView.heightAnchor.constraint(equalToConstant: 24),
-            selectedCellImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            selectedCellImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
 }

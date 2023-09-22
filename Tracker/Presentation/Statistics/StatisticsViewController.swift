@@ -11,7 +11,10 @@ final class StatisticsViewController: UIViewController {
     private lazy var statisticsTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(StatisticsTableViewCell.self, forCellReuseIdentifier: StatisticsTableViewCell.reuseIdentifier)
+        tableView.register(
+            StatisticsTableViewCell.self,
+            forCellReuseIdentifier: StatisticsTableViewCell.reuseIdentifier
+        )
         tableView.dataSource = self.tableViewHelper
         tableView.delegate = self.tableViewHelper
         tableView.backgroundColor = .Dynamic.whiteDay
@@ -85,14 +88,14 @@ private extension StatisticsViewController {
             self.placeholderView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             self.placeholderView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.placeholderView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.placeholderView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            self.placeholderView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         ])
 
         NSLayoutConstraint.activate([
             self.statisticsTableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             self.statisticsTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.statisticsTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.statisticsTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            self.statisticsTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 
