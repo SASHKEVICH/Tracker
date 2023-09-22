@@ -84,21 +84,21 @@ private extension TrackerNewCategoryViewController {
     func addConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 
         NSLayoutConstraint.activate([
             newCategoryTitleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             newCategoryTitleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             newCategoryTitleTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            newCategoryTitleTextField.heightAnchor.constraint(equalToConstant: 75),
+            newCategoryTitleTextField.heightAnchor.constraint(equalToConstant: 75)
         ])
 
         NSLayoutConstraint.activate([
             addNewCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addNewCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             addNewCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            addNewCategoryButton.heightAnchor.constraint(equalToConstant: 60),
+            addNewCategoryButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
 

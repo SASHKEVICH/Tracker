@@ -1,0 +1,4 @@
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+TRACKER_MARKETING_VERSION = 1.0.0
+TRACKER_MARKETING_SUB_VERSION = 1

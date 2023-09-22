@@ -58,14 +58,23 @@ private extension OnboardingPageViewController {
             imageView.topAnchor.constraint(equalTo: view.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
 
         NSLayoutConstraint.activate([
-            onboardingLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: constantConfiguration.topConstantConstraint),
-            onboardingLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -constantConfiguration.bottomConstantConstraint),
-            onboardingLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            onboardingLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            onboardingLabel.topAnchor.constraint(
+                equalTo: view.topAnchor,
+                constant: constantConfiguration.topConstantConstraint
+            ),
+            onboardingLabel.bottomAnchor.constraint(
+                equalTo: view.bottomAnchor,
+                constant: -constantConfiguration.bottomConstantConstraint
+            ),
+            onboardingLabel.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: 16
+            ),
+            onboardingLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
     }
 }

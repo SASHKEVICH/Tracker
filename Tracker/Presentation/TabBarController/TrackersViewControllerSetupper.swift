@@ -67,7 +67,7 @@ private extension TrackersViewControllerSetupper {
             pinnedCategoryId: self.pinnedCategoryId
         ) else { return nil }
 
-        var alertPresenterService = self.alertPresenterService
+        let alertPresenterService = self.alertPresenterService
         alertPresenterService.delegate = self.trackersViewController
 
         let presenter = TrackersViewPresenter(

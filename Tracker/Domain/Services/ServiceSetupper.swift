@@ -140,7 +140,9 @@ private extension ServiceSetupper {
         return service
     }
 
-    static func prepareTrackersRecordService(trackersRecordDataStore: TrackersRecordDataStore) -> TrackersRecordService {
+    static func prepareTrackersRecordService(
+        trackersRecordDataStore: TrackersRecordDataStore
+    ) -> TrackersRecordService {
         let fetcher = TrackersRecordDataFetcher(trackersRecordDataStore: trackersRecordDataStore)
         let service = TrackersRecordService(trackersRecordDataFetcher: fetcher)
         return service

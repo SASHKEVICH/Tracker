@@ -44,7 +44,7 @@ private extension TrackersCollectionSectionHeader {
         NSLayoutConstraint.activate([
             headerLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
             headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
-            headerLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+            headerLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
         ])
     }
 }

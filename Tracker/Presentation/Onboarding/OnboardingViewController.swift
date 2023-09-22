@@ -80,13 +80,16 @@ private extension OnboardingViewController {
         NSLayoutConstraint.activate([
             confirmOnboardingButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             confirmOnboardingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            confirmOnboardingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
-            confirmOnboardingButton.heightAnchor.constraint(equalToConstant: 60),
+            confirmOnboardingButton.bottomAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -50
+            ),
+            confirmOnboardingButton.heightAnchor.constraint(equalToConstant: 60)
         ])
 
         NSLayoutConstraint.activate([
             pageControl.bottomAnchor.constraint(equalTo: confirmOnboardingButton.topAnchor, constant: -24),
-            pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
 }

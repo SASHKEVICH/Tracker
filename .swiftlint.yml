@@ -1,0 +1,28 @@
+---
+opt_in_rules:
+  - force_unwrapping
+
+included: 
+  - Tracker
+excluded: 
+  - Binaries
+  - Config
+  - ./Tracker/R.generated.swift
+
+function_parameter_count: 10
+
+force_cast: error 
+force_unwrapping: 
+  severity: error
+force_try:
+  severity: error
+
+line_length: 120
+
+identifier_name:
+  min_length: 2
+  excluded:
+    - id
+    - URL
+  allowed_symbols:
+    - _

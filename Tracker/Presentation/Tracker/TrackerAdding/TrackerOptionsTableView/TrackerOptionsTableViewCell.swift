@@ -106,14 +106,14 @@ private extension TrackerOptionsTableViewCell {
             cellTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             cellTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -56),
             titleLableTopConstraint,
-            titleLableBottomConstraint,
+            titleLableBottomConstraint
         ])
 
         NSLayoutConstraint.activate([
             additionalInfoLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             additionalInfoLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -56),
             additionalInfoLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 39),
-            additionalInfoLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -14),
+            additionalInfoLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -14)
         ])
     }
 

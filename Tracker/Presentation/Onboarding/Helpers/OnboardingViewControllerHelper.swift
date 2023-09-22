@@ -49,8 +49,7 @@ extension OnboardingViewControllerHelper: OnboardingViewControllerHelperProtocol
         transitionCompleted _: Bool
     ) {
         if let currentViewController = pageViewController.viewControllers?.first,
-           let currentIndex = pages.firstIndex(of: currentViewController)
-        {
+           let currentIndex = pages.firstIndex(of: currentViewController) {
             self.presenter?.setCurrentPage(index: currentIndex)
         }
     }

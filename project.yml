@@ -1,0 +1,121 @@
+---
+name: Tracker 
+options:
+  deploymentTarget:
+    iOS: 13.6
+  defaultConfig: Debug
+  developmentLanguage: "ru"
+  enableBaseInternationalization: true
+  indentWidth: 4
+
+configs:
+  Debug: debug
+  Release: release
+
+packages:
+  Rswift:
+    url: https://github.com/mac-cain13/R.swift
+    version: 7.4.0
+  YandexMobileMetrica:
+    url: https://github.com/yandexmobile/metrica-sdk-ios
+    version: 4.5.2
+  swift-snapshot-testing:
+    url: https://github.com/pointfreeco/swift-snapshot-testing
+    version: 1.11.1
+
+settings:
+  base:
+    SWIFT_VERSION: 5.5
+    DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+    MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
+    TARGETED_DEVICE_FAMILY: 1
+    SUPPORTS_MACCATALYST: NO
+  configs:
+    Debug:
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: ["$(inherited)", "DEBUG"]
+      SWIFT_COMPILATION_MODE: incremental
+    Release:
+      SWIFT_COMPILATION_MODE: wholemodule
+
+targets:
+  Tracker:
+    type: application
+    platform: iOS
+    dependencies:
+      - package: Rswift
+        product: RswiftLibrary
+      - package: YandexMobileMetrica
+    sources:
+      - path: ./Tracker
+    configFiles:
+      Release: Config/Tracker.xcconfig
+      Debug: Config/Tracker.xcconfig
+    settings:
+      base:
+        MARKETING_VERSION: $(TRACKER_MARKETING_VERSION)
+        CURRENT_PROJECT_VERSION: $(TRACKER_MARKETING_SUB_VERSION)
+        TARGETED_DEVICE_FAMILY: 1
+        PRODUCT_BUNDLE_IDENTIFIER: ru.yandex.practicum.tracker
+        DEVELOPMENT_TEAM: 8F9BJF9KQ5
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: YES
+    preBuildScripts:
+      - script: |
+          if [[ -f ./Binaries/rswift/rswift ]]; then
+            ./Binaries/rswift/rswift generate "$SRCROOT/R.generated.swift"
+          else 
+            echo "warning: Rswift not installed, download from https://github.com/mac-cain13/R.swift"
+          fi
+        name: Rswift
+    outputFiles:
+      - "$SRCROOT/R.generated.swift"
+    basedOnDependencyAnalysis: false
+    postCompileScripts:
+      - script: |
+          if [[ -f ./Binaries/swiftlint/swiftlint ]]; then
+            make lint
+          else 
+            echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+          fi
+        name: SwiftLint
+  TrackerTests:
+    platform: iOS
+    type: bundle.unit-test
+    sources: 
+      - ./TrackerTests
+    dependencies:
+      - package: swift-snapshot-testing
+    scheme:
+      testTargets:
+        - TrackerTests 
+      gatherCoverageData: true
+
+schemes:
+  Tracker:
+    build:
+      targets:
+        Tracker: all
+    run:
+      config: Debug
+      environmentVariables:
+        OS_ACTIVITY_MODE: disable
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+
+  Tracker Release:
+    build:
+      targets:
+        Tracker: all
+    run:
+      config: Release
+      environmentVariables:
+        OS_ACTIVITY_MODE: disable
+    profile:
+      config: Release
+    analyze:
+      config: Release
+    archive:
+      config: Release

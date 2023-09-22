@@ -76,21 +76,21 @@ private extension TrackerTypeViewController {
     func addConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            stackView.heightAnchor.constraint(equalToConstant: 136),
+            stackView.heightAnchor.constraint(equalToConstant: 136)
         ])
 
         NSLayoutConstraint.activate([
             addTrackerButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             addTrackerButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             addIrregularEventButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            addIrregularEventButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            addIrregularEventButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
         ])
     }
 }

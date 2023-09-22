@@ -26,7 +26,7 @@ final class ColorsCollectionViewHelper: NSObject, ColorsCollectionViewHelperProt
         .Selection.color7, .Selection.color8, .Selection.color9,
         .Selection.color10, .Selection.color11, .Selection.color12,
         .Selection.color13, .Selection.color14, .Selection.color15,
-        .Selection.color16, .Selection.color17, .Selection.color18,
+        .Selection.color16, .Selection.color17, .Selection.color18
     ]
 }
 

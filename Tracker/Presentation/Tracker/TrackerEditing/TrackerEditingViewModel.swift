@@ -215,9 +215,9 @@ private extension TrackerEditingViewModel {
 
     func checkToEnableConfirmTrackerButton() {
         guard let trackerTitle = self.trackerTitle,
-              let _ = self.selectedColor,
-              let _ = self.selectedEmoji,
-              let _ = self.selectedCategory
+              self.selectedColor != nil,
+              self.selectedEmoji != nil,
+              self.selectedCategory != nil
         else { return }
 
         let enablingCondition = !trackerTitle.isEmpty && self.isErrorHidden && !self.selectedWeekDays.isEmpty

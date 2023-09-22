@@ -15,7 +15,10 @@ final class TrackersCategoryAddingService {
     private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
     private let trackersCategoryFactory: TrackersCategoryFactory
 
-    init(trackersCategoryFactory: TrackersCategoryFactory, trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol) {
+    init(
+        trackersCategoryFactory: TrackersCategoryFactory,
+        trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
+    ) {
         self.trackersCategoryFactory = trackersCategoryFactory
         self.trackersCategoryDataAdder = trackersCategoryDataAdder
     }

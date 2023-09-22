@@ -113,14 +113,14 @@ private extension TrackerPlaceholderView {
             self.imageView.widthAnchor.constraint(equalToConstant: 80),
             self.imageView.heightAnchor.constraint(equalToConstant: 80),
             self.imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            self.imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
 
         NSLayoutConstraint.activate([
             self.textLabel.topAnchor.constraint(equalTo: self.imageView.bottomAnchor, constant: 8),
             self.textLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             self.textLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            self.textLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            self.textLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
         ])
     }
 }

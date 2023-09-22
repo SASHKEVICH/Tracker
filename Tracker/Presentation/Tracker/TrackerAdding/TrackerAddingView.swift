@@ -288,9 +288,9 @@ extension TrackerAddingView: TrackerAddingViewProtocol {
 
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
             self?.layoutIfNeeded()
-        }) { [weak self] _ in
+        }, completion: { [weak self] _ in
             self?.errorLabel.isHidden = shouldHide
-        }
+        })
     }
 
     func reloadCollections() {
@@ -345,45 +345,45 @@ private extension TrackerAddingView {
             contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
 
-            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
         ])
 
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
-            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
 
         NSLayoutConstraint.activate([
             trackerTitleTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             trackerTitleTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            trackerTitleTextField.heightAnchor.constraint(equalToConstant: 75),
+            trackerTitleTextField.heightAnchor.constraint(equalToConstant: 75)
         ])
 
         NSLayoutConstraint.activate([
             errorLabel.topAnchor.constraint(equalTo: trackerTitleTextField.bottomAnchor, constant: 8),
             errorLabel.heightAnchor.constraint(equalToConstant: 22),
-            errorLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            errorLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
 
         NSLayoutConstraint.activate([
             trackerOptionsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             trackerOptionsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             tableViewTopConstraint,
-            tableViewHeightConstraint,
+            tableViewHeightConstraint
         ])
 
         NSLayoutConstraint.activate([
             emojisCollectionView.topAnchor.constraint(equalTo: trackerOptionsTableView.bottomAnchor, constant: 32),
             emojisCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             emojisCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            emojisCollectionViewHeightConstraint,
+            emojisCollectionViewHeightConstraint
         ])
 
         NSLayoutConstraint.activate([
             colorsCollectionView.topAnchor.constraint(equalTo: emojisCollectionView.bottomAnchor, constant: 16),
             colorsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             colorsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            colorsCollectionViewHeightConstraint,
+            colorsCollectionViewHeightConstraint
         ])
 
         if self.flow == .edit {
@@ -391,28 +391,36 @@ private extension TrackerAddingView {
                 decreaseCompletedTimesButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 26),
                 decreaseCompletedTimesButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 80),
                 decreaseCompletedTimesButton.widthAnchor.constraint(equalToConstant: 34),
-                decreaseCompletedTimesButton.heightAnchor.constraint(equalToConstant: 34),
+                decreaseCompletedTimesButton.heightAnchor.constraint(equalToConstant: 34)
             ])
 
             NSLayoutConstraint.activate([
-                completedTimesCountLabel.leadingAnchor.constraint(equalTo: decreaseCompletedTimesButton.trailingAnchor, constant: 24),
-                completedTimesCountLabel.trailingAnchor.constraint(equalTo: increaseCompletedTimesButton.leadingAnchor, constant: -24),
-                completedTimesCountLabel.centerYAnchor.constraint(equalTo: decreaseCompletedTimesButton.centerYAnchor),
+                completedTimesCountLabel.leadingAnchor.constraint(
+                    equalTo: decreaseCompletedTimesButton.trailingAnchor,
+                    constant: 24
+                ),
+                completedTimesCountLabel.trailingAnchor.constraint(
+                    equalTo: increaseCompletedTimesButton.leadingAnchor,
+                    constant: -24
+                ),
+                completedTimesCountLabel.centerYAnchor.constraint(
+                    equalTo: decreaseCompletedTimesButton.centerYAnchor
+                )
             ])
 
             NSLayoutConstraint.activate([
                 increaseCompletedTimesButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 26),
                 increaseCompletedTimesButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -80),
                 increaseCompletedTimesButton.widthAnchor.constraint(equalToConstant: 34),
-                increaseCompletedTimesButton.heightAnchor.constraint(equalToConstant: 34),
+                increaseCompletedTimesButton.heightAnchor.constraint(equalToConstant: 34)
             ])
 
             NSLayoutConstraint.activate([
-                trackerTitleTextField.topAnchor.constraint(equalTo: decreaseCompletedTimesButton.bottomAnchor, constant: 40),
+                trackerTitleTextField.topAnchor.constraint(equalTo: decreaseCompletedTimesButton.bottomAnchor, constant: 40)
             ])
         } else {
             NSLayoutConstraint.activate([
-                trackerTitleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
+                trackerTitleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30)
             ])
         }
     }
@@ -423,20 +431,20 @@ private extension TrackerAddingView {
         [confirmTrackerButton, cancelTrackerButton].forEach {
             NSLayoutConstraint.activate([
                 $0.heightAnchor.constraint(equalToConstant: 60),
-                $0.widthAnchor.constraint(equalToConstant: cellWidth),
+                $0.widthAnchor.constraint(equalToConstant: cellWidth)
             ])
         }
 
         NSLayoutConstraint.activate([
             cancelTrackerButton.topAnchor.constraint(equalTo: colorsCollectionView.bottomAnchor, constant: 16),
             cancelTrackerButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            cancelTrackerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            cancelTrackerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
 
         NSLayoutConstraint.activate([
             confirmTrackerButton.topAnchor.constraint(equalTo: colorsCollectionView.bottomAnchor, constant: 16),
             confirmTrackerButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            confirmTrackerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            confirmTrackerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 

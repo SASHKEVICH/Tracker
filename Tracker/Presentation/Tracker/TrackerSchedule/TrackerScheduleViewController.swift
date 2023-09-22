@@ -72,14 +72,14 @@ private extension TrackerScheduleViewController {
     func addConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 
         NSLayoutConstraint.activate([
             scheduleTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             scheduleTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             scheduleTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
-            scheduleTableView.bottomAnchor.constraint(equalTo: addScheduleButton.topAnchor, constant: -47),
+            scheduleTableView.bottomAnchor.constraint(equalTo: addScheduleButton.topAnchor, constant: -47)
         ])
 
         NSLayoutConstraint.activate([
@@ -89,7 +89,7 @@ private extension TrackerScheduleViewController {
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                 constant: -1 * trackerScheduleConfiguration.bottomConstantConstraint
             ),
-            addScheduleButton.heightAnchor.constraint(equalToConstant: 60),
+            addScheduleButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
 }

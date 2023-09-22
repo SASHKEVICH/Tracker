@@ -129,45 +129,45 @@ private extension TrackersCollectionViewCell {
             topContainerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             topContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             topContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            topContainerView.heightAnchor.constraint(equalToConstant: 90),
+            topContainerView.heightAnchor.constraint(equalToConstant: 90)
         ])
 
         NSLayoutConstraint.activate([
             trackerTitleLable.leadingAnchor.constraint(equalTo: topContainerView.leadingAnchor, constant: 12),
             trackerTitleLable.trailingAnchor.constraint(equalTo: topContainerView.trailingAnchor, constant: -12),
             trackerTitleLable.topAnchor.constraint(equalTo: topContainerView.topAnchor, constant: 44),
-            trackerTitleLable.bottomAnchor.constraint(equalTo: topContainerView.bottomAnchor, constant: -12),
+            trackerTitleLable.bottomAnchor.constraint(equalTo: topContainerView.bottomAnchor, constant: -12)
         ])
 
         NSLayoutConstraint.activate([
             dayCountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             dayCountLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
             dayCountLabel.widthAnchor.constraint(equalToConstant: 118),
-            dayCountLabel.heightAnchor.constraint(equalToConstant: 18),
+            dayCountLabel.heightAnchor.constraint(equalToConstant: 18)
         ])
 
         NSLayoutConstraint.activate([
             completeTrackerButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
             completeTrackerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
             completeTrackerButton.widthAnchor.constraint(equalToConstant: 34),
-            completeTrackerButton.heightAnchor.constraint(equalToConstant: 34),
+            completeTrackerButton.heightAnchor.constraint(equalToConstant: 34)
         ])
 
         NSLayoutConstraint.activate([
             emojiBackgroundView.topAnchor.constraint(equalTo: topContainerView.topAnchor, constant: 12),
             emojiBackgroundView.leadingAnchor.constraint(equalTo: topContainerView.leadingAnchor, constant: 12),
             emojiBackgroundView.widthAnchor.constraint(equalToConstant: 24),
-            emojiBackgroundView.heightAnchor.constraint(equalToConstant: 24),
+            emojiBackgroundView.heightAnchor.constraint(equalToConstant: 24)
         ])
 
         NSLayoutConstraint.activate([
             emojiLabel.centerXAnchor.constraint(equalTo: emojiBackgroundView.centerXAnchor),
-            emojiLabel.centerYAnchor.constraint(equalTo: emojiBackgroundView.centerYAnchor),
+            emojiLabel.centerYAnchor.constraint(equalTo: emojiBackgroundView.centerYAnchor)
         ])
 
         NSLayoutConstraint.activate([
             pinnedImageView.topAnchor.constraint(equalTo: topContainerView.topAnchor, constant: 18),
-            pinnedImageView.trailingAnchor.constraint(equalTo: topContainerView.trailingAnchor, constant: -12),
+            pinnedImageView.trailingAnchor.constraint(equalTo: topContainerView.trailingAnchor, constant: -12)
         ])
     }
 }

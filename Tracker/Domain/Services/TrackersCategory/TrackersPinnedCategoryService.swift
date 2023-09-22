@@ -36,7 +36,7 @@ extension TrackersPinnedCategoryService: TrackersPinnedCategoryServiceProtocol {
     }
 
     func checkPinnedCategory() {
-        if let _ = self.pinnedCategoryId {
+        if self.pinnedCategoryId != nil {
             self.checkPinnedCategoryTitleAccordingToMainLanguage()
         } else {
             self.createPinnedCategory()

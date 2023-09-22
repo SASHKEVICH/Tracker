@@ -11,7 +11,7 @@ protocol TrackerScheduleTableViewHelperProtocol: UITableViewDelegate, UITableVie
     var presenter: TrackerSchedulePresenterProtocol? { get set }
 }
 
-protocol TrackerScheduleTableViewHelperDelegateProtocol: AnyObject {
+protocol TrackerScheduleTableViewHelperDelegate: AnyObject {
     func didChangeSwitchValue(_ cell: TrackerScheduleTableViewCell, isOn: Bool)
 }
 
@@ -75,7 +75,7 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
     }
 }
 
-extension TrackerScheduleTableViewHelper: TrackerScheduleTableViewHelperDelegateProtocol {
+extension TrackerScheduleTableViewHelper: TrackerScheduleTableViewHelperDelegate {
     func didChangeSwitchValue(_ cell: TrackerScheduleTableViewCell, isOn: Bool) {
         guard let weekDay = cell.weekDay else { return }
         presenter?.didChangeSwitchValue(weekDay: weekDay, isOn: isOn)
