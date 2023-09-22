@@ -91,4 +91,9 @@ fastlane/test_output
 
 iOSInjectionProject/
 
+*.xcodeproj
+*.xcworkspace
+
+R.generated.swift
+
 TrackerTests/__Snapshots__/TrackerTests/
