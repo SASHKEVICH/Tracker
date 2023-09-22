@@ -3,10 +3,13 @@ opt_in_rules:
   - force_unwrapping
 
 included: 
-  - EHM
+  - Tracker
 excluded: 
   - Binaries
   - Config
+  - ./Tracker/R.generated.swift
+
+function_parameter_count: 10
 
 force_cast: error 
 force_unwrapping: 

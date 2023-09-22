@@ -13,6 +13,9 @@ configs:
   Release: release
 
 packages:
+  Rswift:
+    url: https://github.com/mac-cain13/R.swift
+    version: 7.4.0
   YandexMobileMetrica:
     url: https://github.com/yandexmobile/metrica-sdk-ios
     version: 4.5.2
@@ -39,6 +42,8 @@ targets:
     type: application
     platform: iOS
     dependencies:
+      - package: Rswift
+        product: RswiftLibrary
       - package: YandexMobileMetrica
     sources:
       - path: ./Tracker
@@ -55,13 +60,15 @@ targets:
         ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: YES
     preBuildScripts:
       - script: |
-          export RSWIFT = ./Binaries/rswift/rswift
-          if [[ -f $RSWIFT ]]; then
-            $RSWIFT generate "Tracker/R.generated.swift"
+          if [[ -f ./Binaries/rswift/rswift ]]; then
+            ./Binaries/rswift/rswift generate "$SRCROOT/R.generated.swift"
           else 
             echo "warning: Rswift not installed, download from https://github.com/mac-cain13/R.swift"
           fi
         name: Rswift
+    outputFiles:
+      - "$SRCROOT/R.generated.swift"
+    basedOnDependencyAnalysis: false
     postCompileScripts:
       - script: |
           if [[ -f ./Binaries/swiftlint/swiftlint ]]; then
