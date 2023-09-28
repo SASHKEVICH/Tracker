@@ -1,21 +1,20 @@
 # Tracker
-Designed to help a watching completion of your habbits and irregular events
+Приложение предназначено для отслеживания своих привычек, а также нерегулярных событий
 
-## Installation
-To run the app you need to open your terminal and pass in it:
+## Установка
+Для начала, необходимо сгенерировать `.xcodeproj` файл. Для этого необходимо прописать в териминале команду:
 ```shell
 make gen
 ```
-Then open Tracker.xcodeproj file.
 
-## Technology stack
+## Технологический стек
 1. UIKit
 2. CoreData
 3. SPM
 4. R.swift
 5. swift-snapshot-testing
 
-## Screenshots
+## Скриншоты
 <img width="400" alt="image" src="https://github.com/SASHKEVICH/Tracker/assets/51797416/d67eb230-1a62-4e78-bd53-b350cf309168">
 <img width="400" alt="image" src="https://github.com/SASHKEVICH/Tracker/assets/51797416/def2eb20-deec-43b5-a3ac-fe28710a8a9b">
 <img width="400" alt="image" src="https://github.com/SASHKEVICH/Tracker/assets/51797416/2ee1ed22-9e08-481b-a893-b8934dae62de">
