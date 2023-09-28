@@ -9,10 +9,11 @@ make gen
 
 ## Технологический стек
 1. UIKit
-2. CoreData
-3. SPM
-4. R.swift
-5. swift-snapshot-testing
+2. MVP+R (в некоторых модулях MVVM+R)
+3. CoreData
+4. SPM
+5. R.swift
+6. swift-snapshot-testing
 
 ## Скриншоты
 <img width="400" alt="image" src="https://github.com/SASHKEVICH/Tracker/assets/51797416/d67eb230-1a62-4e78-bd53-b350cf309168">
