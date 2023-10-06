@@ -52,6 +52,9 @@ targets:
       Debug: Config/Tracker.xcconfig
     settings:
       base:
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_UILaunchStoryboardName: ''
+        INFOPLIST_KEY_UIMainStoryboardFile: ''
         MARKETING_VERSION: $(TRACKER_MARKETING_VERSION)
         CURRENT_PROJECT_VERSION: $(TRACKER_MARKETING_SUB_VERSION)
         TARGETED_DEVICE_FAMILY: 1
