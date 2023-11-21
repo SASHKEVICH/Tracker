@@ -49,12 +49,12 @@ extension TrackerTypeRouter: TrackerTypeRouterProtocol {
 
 private extension TrackerTypeRouter {
     func presentAddingViewController(trackerType: Tracker.TrackerType) {
-        let optionsHelper = TrackerOptionsTableViewHelper()
-        let textFieldHelper = TrackerTitleTextFieldHelper()
+        let optionsHelper = OptionsTableViewHelper()
+        let textFieldHelper = TitleTextFieldHelper()
         let colorsHelper = ColorsCollectionViewHelper()
         let emojisHelper = EmojisCollectionViewHelper()
 
-        let view = TrackerAddingView(
+        let view = AddingView(
             optionsTableViewHelper: optionsHelper,
             titleTextFieldHelper: textFieldHelper,
             colorsHelper: colorsHelper,
@@ -62,7 +62,7 @@ private extension TrackerTypeRouter {
             flow: .add
         )
 
-        let router = TrackerAddingRouter(
+        let router = AddingRouter(
             trackersCategoryService: self.trackersCategoryService,
             trackersCategoryAddingService: self.trackersCategoryAddingService,
             pinnedCategoryId: self.pinnedCategoryId
@@ -71,14 +71,14 @@ private extension TrackerTypeRouter {
         let optionsTitle = self.prepareOptionsTitles(for: trackerType)
         let viewControllerTitle = self.prepareAddingViewControllerTitle(for: trackerType)
 
-        let viewModel = TrackerAddingViewModel(
+        let viewModel = AddingViewModel(
             trackersAddingService: self.trackersAddingService,
             trackerType: trackerType,
             optionTitles: optionsTitle,
             viewControllerTitle: viewControllerTitle
         )
 
-        let vc = TrackerAddingViewController(router: router, view: view, viewModel: viewModel)
+        let vc = AddingViewController(router: router, view: view, viewModel: viewModel)
 
         optionsHelper.delegate = vc
         colorsHelper.delegate = vc

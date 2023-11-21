@@ -1,13 +1,6 @@
-//
-//  TrackerOptionsTableViewCell.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 14.04.2023.
-//
-
 import UIKit
 
-final class TrackerOptionsTableViewCell: UITableViewCell {
+final class OptionsTableViewCell: UITableViewCell {
     enum CellType {
         case schedule
         case category
@@ -79,7 +72,7 @@ final class TrackerOptionsTableViewCell: UITableViewCell {
     }
 }
 
-extension TrackerOptionsTableViewCell {
+extension OptionsTableViewCell {
     func set(cellTitle: String?) {
         self.cellTitleLabel.text = cellTitle
     }
@@ -95,7 +88,7 @@ extension TrackerOptionsTableViewCell {
     }
 }
 
-private extension TrackerOptionsTableViewCell {
+private extension OptionsTableViewCell {
     func addSubviews() {
         contentView.addSubview(cellTitleLabel)
         contentView.addSubview(additionalInfoLabel)
@@ -123,7 +116,7 @@ private extension TrackerOptionsTableViewCell {
     }
 }
 
-private extension TrackerOptionsTableViewCell {
+private extension OptionsTableViewCell {
     func relayoutCellTitleLabel() {
         if additionalInfoLabel.isHidden {
             self.titleLableTopConstraint.constant = 26

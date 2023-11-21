@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol TrackerEditingViewModelProtocol: TrackerAddingViewModelProtocol, AnyObject {
+protocol TrackerEditingViewModelProtocol: AddingViewModelProtocol, AnyObject {
     var onCompletedCountChanged: (() -> Void)? { get set }
     var completedCount: String? { get }
     func increaseCompletedCount()

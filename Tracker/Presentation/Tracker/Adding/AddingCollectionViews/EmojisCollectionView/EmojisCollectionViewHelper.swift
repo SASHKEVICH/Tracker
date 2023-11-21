@@ -1,47 +1,37 @@
-//
-//  ColorCollectionViewHelper.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 27.04.2023.
-//
-
 import UIKit
 
-protocol TrackerColorCollectionViewDelegate: AnyObject {
-    var selectedColor: UIColor? { get }
-    func didSelect(color: UIColor)
+protocol EmojisCollectionViewDelegate: AnyObject {
+    var selectedEmoji: String? { get }
+    func didSelect(emoji: String)
 }
 
-protocol ColorsCollectionViewHelperProtocol: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    var delegate: TrackerColorCollectionViewDelegate? { get set }
+protocol EmojisCollectionViewHelperProtocol: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    var delegate: EmojisCollectionViewDelegate? { get set }
 }
 
-final class ColorsCollectionViewHelper: NSObject, ColorsCollectionViewHelperProtocol {
-    weak var delegate: TrackerColorCollectionViewDelegate?
+final class EmojisCollectionViewHelper: NSObject, EmojisCollectionViewHelperProtocol {
+    weak var delegate: EmojisCollectionViewDelegate?
 
     private let configuration = TrackerCollectionViewConstants.addTrackerCollectionsConfiguration
-    private let colors: [UIColor] = [
-        .Selection.color1, .Selection.color2, .Selection.color3,
-        .Selection.color4, .Selection.color5, .Selection.color6,
-        .Selection.color7, .Selection.color8, .Selection.color9,
-        .Selection.color10, .Selection.color11, .Selection.color12,
-        .Selection.color13, .Selection.color14, .Selection.color15,
-        .Selection.color16, .Selection.color17, .Selection.color18
+    private let emojis: [String] = [
+        "🙂", "😻", "🌺", "🐶", "❤️", "😱",
+        "😇", "😡", "🥶", "🤔", "🙌", "🍔",
+        "🥦", "🏓", "🥇", "🎸", "🌴", "😪"
     ]
 }
 
-// MARK: UICollectionViewDelegateFlowLayout
+// MARK: - UICollectionViewDelegateFlowLayout
 
-extension ColorsCollectionViewHelper {
+extension EmojisCollectionViewHelper {
     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? ColorsCollectionViewCell,
-              let color = cell.color
+        guard let cell = collectionView.cellForItem(at: indexPath) as? EmojisCollectionViewCell,
+              let emoji = cell.emoji
         else { return }
 
-        self.delegate?.didSelect(color: color)
+        self.delegate?.didSelect(emoji: emoji)
     }
 
     func collectionView(
@@ -93,14 +83,14 @@ extension ColorsCollectionViewHelper {
     }
 }
 
-// MARK: UICollectionViewDataSource
+// MARK: - UICollectionViewDataSource
 
-extension ColorsCollectionViewHelper {
+extension EmojisCollectionViewHelper {
     func collectionView(
         _: UICollectionView,
         numberOfItemsInSection _: Int
     ) -> Int {
-        self.colors.count
+        self.emojis.count
     }
 
     func collectionView(
@@ -108,20 +98,18 @@ extension ColorsCollectionViewHelper {
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ColorsCollectionViewCell.reuseIdentifier,
+            withReuseIdentifier: EmojisCollectionViewCell.reuseIdentifier,
             for: indexPath
-        ) as? ColorsCollectionViewCell
+        ) as? EmojisCollectionViewCell
         else {
-            assertionFailure("cannot dequeue colors cell")
+            assertionFailure("cannot dequeue emojis cell")
             return UICollectionViewCell()
         }
-        let color = self.colors[indexPath.row]
-        cell.color = color
+        let emoji = self.emojis[indexPath.row]
+        cell.emoji = emoji
 
-        if isSelectedColorEqual(color: color, self.delegate?.selectedColor) {
-            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
-        }
-
+        guard let selectedEmoji = self.delegate?.selectedEmoji, selectedEmoji == emoji else { return cell }
+        collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .bottom)
         return cell
     }
 
@@ -139,16 +127,7 @@ extension ColorsCollectionViewHelper {
             assertionFailure("Cannot dequeue header view")
             return UICollectionReusableView()
         }
-        view.headerText = R.string.localizable.trackerAddingColorCollectionViewHeaderTitle()
+        view.headerText = "Emoji"
         return view
-    }
-}
-
-private extension ColorsCollectionViewHelper {
-    func isSelectedColorEqual(color: UIColor, _: UIColor?) -> Bool {
-        guard let selectedColor = self.delegate?.selectedColor else { return false }
-        let selectedColorHex = UIColorMarshalling.serilizeToHex(color: selectedColor)
-        let colorHex = UIColorMarshalling.serilizeToHex(color: color)
-        return selectedColorHex == colorHex
     }
 }

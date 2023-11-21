@@ -1,13 +1,6 @@
-//
-//  TrackerOptionsTableViewHelper.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 15.04.2023.
-//
-
 import UIKit
 
-protocol TrackerOptionsTableViewDelegate: AnyObject {
+protocol OptionsTableViewDelegate: AnyObject {
     var optionsTitles: [String] { get }
     var selectedWeekDays: [WeekDay] { get }
     var selectedCategory: TrackerCategory? { get }
@@ -15,14 +8,14 @@ protocol TrackerOptionsTableViewDelegate: AnyObject {
     func didTapCategoryCell()
 }
 
-protocol TrackerOptionsTableViewHelperProtocol: UITableViewDataSource, UITableViewDelegate {
-    var delegate: TrackerOptionsTableViewDelegate? { get set }
+protocol OptionsTableViewHelperProtocol: UITableViewDataSource, UITableViewDelegate {
+    var delegate: OptionsTableViewDelegate? { get set }
 }
 
-final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelperProtocol {
-    weak var delegate: TrackerOptionsTableViewDelegate?
+final class OptionsTableViewHelper: NSObject, OptionsTableViewHelperProtocol {
+    weak var delegate: OptionsTableViewDelegate?
 
-    // MARK: UITableViewDelegate
+    // MARK: - UITableViewDelegate
 
     func tableView(
         _: UITableView,
@@ -36,7 +29,7 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         didSelectRowAt indexPath: IndexPath
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let cell = tableView.cellForRow(at: indexPath) as? TrackerOptionsTableViewCell else { return }
+        guard let cell = tableView.cellForRow(at: indexPath) as? OptionsTableViewCell else { return }
 
         if cell.type == .schedule {
             self.delegate?.didTapScheduleCell()
@@ -45,7 +38,7 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         }
     }
 
-    // MARK: UITableViewDataSource
+    // MARK: - UITableViewDataSource
 
     func tableView(
         _: UITableView,
@@ -63,9 +56,9 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: TrackerOptionsTableViewCell.reuseIdentifier,
+            withIdentifier: OptionsTableViewCell.reuseIdentifier,
             for: indexPath
-        ) as? TrackerOptionsTableViewCell
+        ) as? OptionsTableViewCell
         else { return UITableViewCell() }
 
         guard let optionsTitles = self.delegate?.optionsTitles else { return UITableViewCell() }
@@ -88,8 +81,8 @@ final class TrackerOptionsTableViewHelper: NSObject, TrackerOptionsTableViewHelp
 
 // MARK: - Configuring additional info for cell
 
-private extension TrackerOptionsTableViewHelper {
-    func configureAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
+private extension OptionsTableViewHelper {
+    func configureAdditionalInfo(for cell: OptionsTableViewCell) {
         if cell.type == .schedule {
             self.configureSchduleAdditionalInfo(for: cell)
         } else if cell.type == .category {
@@ -97,7 +90,7 @@ private extension TrackerOptionsTableViewHelper {
         }
     }
 
-    func configureSchduleAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
+    func configureSchduleAdditionalInfo(for cell: OptionsTableViewCell) {
         guard let selectedWeekDays = self.delegate?.selectedWeekDays, !selectedWeekDays.isEmpty else {
             cell.set(additionalInfo: nil)
             return
@@ -117,7 +110,7 @@ private extension TrackerOptionsTableViewHelper {
         cell.set(additionalInfo: String(additionalInfo.prefix(additionalInfo.count - 2)))
     }
 
-    func configureCategoryAdditionalInfo(for cell: TrackerOptionsTableViewCell) {
+    func configureCategoryAdditionalInfo(for cell: OptionsTableViewCell) {
         guard let selectedCategory = self.delegate?.selectedCategory else {
             cell.set(additionalInfo: nil)
             return

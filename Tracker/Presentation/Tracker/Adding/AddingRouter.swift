@@ -1,19 +1,12 @@
-//
-//  TrackerAddingRouter.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 10.07.2023.
-//
-
 import UIKit
 
-protocol TrackerAddingRouterProtocol {
+protocol AddingRouterProtocol {
     func navigateToScheduleScreen(selectedWeekDays: Set<WeekDay>, from viewController: UIViewController)
     func navigateToCategoryScreen(selectedCategory: TrackerCategory?, from viewController: UIViewController)
     func navigateToMainScreen()
 }
 
-final class TrackerAddingRouter {
+final class AddingRouter {
     private let trackersCategoryService: TrackersCategoryServiceProtocol
     private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
     private let pinnedCategoryId: UUID?
@@ -29,7 +22,9 @@ final class TrackerAddingRouter {
     }
 }
 
-extension TrackerAddingRouter: TrackerAddingRouterProtocol {
+// MARK: - AddingRouterProtocol
+
+extension AddingRouter: AddingRouterProtocol {
     func navigateToScheduleScreen(selectedWeekDays: Set<WeekDay>, from viewController: UIViewController) {
         let vc = TrackerScheduleViewController()
         vc.delegate = viewController as? TrackerScheduleViewControllerDelegate

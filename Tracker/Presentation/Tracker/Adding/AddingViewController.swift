@@ -1,27 +1,20 @@
-//
-//  TrackerAddingViewController.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 14.04.2023.
-//
-
 import UIKit
 
-protocol TrackerAddingViewControllerProtocol: AnyObject {
+protocol AddingViewControllerProtocol: AnyObject {
     var emptyTap: (() -> Void)? { get set }
 }
 
-final class TrackerAddingViewController: UIViewController {
+final class AddingViewController: UIViewController, AddingViewControllerProtocol {
     var emptyTap: (() -> Void)?
 
-    private let router: TrackerAddingRouterProtocol
-    private var addingView: TrackerAddingViewProtocol
-    private var viewModel: TrackerAddingViewModelProtocol
+    private let router: AddingRouterProtocol
+    private var addingView: AddingViewProtocol
+    private var viewModel: AddingViewModelProtocol
 
     init(
-        router: TrackerAddingRouterProtocol,
-        view: TrackerAddingViewProtocol,
-        viewModel: TrackerAddingViewModelProtocol
+        router: AddingRouterProtocol,
+        view: AddingViewProtocol,
+        viewModel: AddingViewModelProtocol
     ) {
         self.viewModel = viewModel
         self.router = router
@@ -51,7 +44,7 @@ final class TrackerAddingViewController: UIViewController {
 
 // MARK: - TrackerCategoryViewControllerDelegate
 
-extension TrackerAddingViewController: TrackerCategoryViewControllerDelegate {
+extension AddingViewController: TrackerCategoryViewControllerDelegate {
     func didRecieveCategory(_ category: TrackerCategory) {
         self.viewModel.didSelect(category: category)
     }
@@ -59,16 +52,16 @@ extension TrackerAddingViewController: TrackerCategoryViewControllerDelegate {
 
 // MARK: - TrackerScheduleViewControllerDelegate
 
-extension TrackerAddingViewController: TrackerScheduleViewControllerDelegate {
+extension AddingViewController: TrackerScheduleViewControllerDelegate {
     func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
         self.viewModel.didSelect(weekDays: weekDays)
         self.dismiss(animated: true)
     }
 }
 
-// MARK: - TrackerOptionsTableViewDelegate
+// MARK: - OptionsTableViewDelegate
 
-extension TrackerAddingViewController: TrackerOptionsTableViewDelegate {
+extension AddingViewController: OptionsTableViewDelegate {
     var optionsTitles: [String] {
         self.viewModel.optionsTitles
     }
@@ -92,9 +85,9 @@ extension TrackerAddingViewController: TrackerOptionsTableViewDelegate {
     }
 }
 
-// MARK: - TrackerEmojisCollectionViewDelegate
+// MARK: - EmojisCollectionViewDelegate
 
-extension TrackerAddingViewController: TrackerEmojisCollectionViewDelegate {
+extension AddingViewController: EmojisCollectionViewDelegate {
     var selectedEmoji: String? {
         self.viewModel.selectedEmoji
     }
@@ -106,7 +99,7 @@ extension TrackerAddingViewController: TrackerEmojisCollectionViewDelegate {
 
 // MARK: - TrackerColorCollectionViewDelegate
 
-extension TrackerAddingViewController: TrackerColorCollectionViewDelegate {
+extension AddingViewController: ColorCollectionViewDelegate {
     var selectedColor: UIColor? {
         self.viewModel.selectedColor
     }
@@ -116,7 +109,7 @@ extension TrackerAddingViewController: TrackerColorCollectionViewDelegate {
     }
 }
 
-private extension TrackerAddingViewController {
+private extension AddingViewController {
     func configureView() {
         self.view.backgroundColor = .Dynamic.whiteDay
         self.isModalInPresentation = true

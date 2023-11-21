@@ -1,10 +1,3 @@
-//
-//  EmojiCollectionViewCell.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 26.04.2023.
-//
-
 import UIKit
 
 final class EmojisCollectionViewCell: UICollectionViewCell {
@@ -54,6 +47,6 @@ private extension EmojisCollectionViewCell {
     }
 
     func setupBackgroundView() {
-        selectedBackgroundView = selectBackgroundView
+        self.selectedBackgroundView = selectBackgroundView
     }
 }

@@ -1,15 +1,8 @@
-//
-//  TrackerAddingViewModel.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 16.07.2023.
-//
-
 import UIKit
 
 typealias Binding = () -> Void
 
-final class TrackerAddingViewModel {
+final class AddingViewModel {
     var onIsConfirmButtonDisabledChanged: Binding?
     var onIsErrorHiddenChanged: Binding?
     var onOptionsTitlesChanged: Binding?
@@ -90,9 +83,9 @@ final class TrackerAddingViewModel {
     }
 }
 
-// MARK: - TrackerAddingViewModelProtocol
+// MARK: - AddingViewModelProtocol
 
-extension TrackerAddingViewModel: TrackerAddingViewModelProtocol {
+extension AddingViewModel: AddingViewModelProtocol {
     func didChangeTracker(title: String) {
         self.isErrorHidden = title.count < 38
     }
@@ -139,7 +132,7 @@ extension TrackerAddingViewModel: TrackerAddingViewModelProtocol {
 
 // MARK: - TrackerScheduleViewControllerDelegate
 
-extension TrackerAddingViewModel: TrackerScheduleViewControllerDelegate {
+extension AddingViewModel: TrackerScheduleViewControllerDelegate {
     func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
         self.selectedWeekDays = weekDays
     }
@@ -147,13 +140,13 @@ extension TrackerAddingViewModel: TrackerScheduleViewControllerDelegate {
 
 // MARK: - TrackerCategoryViewControllerDelegate
 
-extension TrackerAddingViewModel: TrackerCategoryViewControllerDelegate {
+extension AddingViewModel: TrackerCategoryViewControllerDelegate {
     func didRecieveCategory(_ category: TrackerCategory) {
         self.selectedCategory = category
     }
 }
 
-private extension TrackerAddingViewModel {
+private extension AddingViewModel {
     func checkToEnableConfirmTrackerButton() {
         guard let trackerTitle = self.trackerTitle,
               self.selectedColor != nil,

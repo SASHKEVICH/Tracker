@@ -1,10 +1,3 @@
-//
-//  ColorCollectionViewCell.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 26.04.2023.
-//
-
 import UIKit
 
 final class ColorsCollectionViewCell: UICollectionViewCell {
@@ -59,6 +52,6 @@ private extension ColorsCollectionViewCell {
     }
 
     func setupSelectionBorder() {
-        selectedBackgroundView = self.borderView
+        self.selectedBackgroundView = self.borderView
     }
 }

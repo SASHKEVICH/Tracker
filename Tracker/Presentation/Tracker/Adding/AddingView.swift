@@ -1,13 +1,6 @@
-//
-//  TrackerAddingView.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 16.07.2023.
-//
-
 import UIKit
 
-protocol TrackerAddingViewProtocol {
+protocol AddingViewProtocol {
     var viewTitle: String? { get set }
     var trackerTitle: String? { get set }
     var completedTimesCount: String? { get set }
@@ -24,7 +17,7 @@ protocol TrackerAddingViewProtocol {
     func shouldEnableConfirmButton(_ shouldEnable: Bool)
 }
 
-final class TrackerAddingView: UIView {
+final class AddingView: UIView {
     enum Flow {
         case add
         case edit
@@ -133,8 +126,8 @@ final class TrackerAddingView: UIView {
         tableView.dataSource = self.optionsTableViewHelper
         tableView.delegate = self.optionsTableViewHelper
         tableView.register(
-            TrackerOptionsTableViewCell.self,
-            forCellReuseIdentifier: TrackerOptionsTableViewCell.reuseIdentifier
+            OptionsTableViewCell.self,
+            forCellReuseIdentifier: OptionsTableViewCell.reuseIdentifier
         )
         tableView.separatorColor = .Static.gray
         return tableView
@@ -233,15 +226,15 @@ final class TrackerAddingView: UIView {
         constant: 100
     )
 
-    private let optionsTableViewHelper: TrackerOptionsTableViewHelperProtocol
-    private let titleTextFieldHelper: TrackerTitleTextFieldHelperProtocol
+    private let optionsTableViewHelper: OptionsTableViewHelperProtocol
+    private let titleTextFieldHelper: TitleTextFieldHelperProtocol
     private let colorsHelper: ColorsCollectionViewHelperProtocol
     private let emojisHelper: EmojisCollectionViewHelperProtocol
     private let flow: Flow
 
     init(
-        optionsTableViewHelper: TrackerOptionsTableViewHelperProtocol,
-        titleTextFieldHelper: TrackerTitleTextFieldHelperProtocol,
+        optionsTableViewHelper: OptionsTableViewHelperProtocol,
+        titleTextFieldHelper: TitleTextFieldHelperProtocol,
         colorsHelper: ColorsCollectionViewHelperProtocol,
         emojisHelper: EmojisCollectionViewHelperProtocol,
         flow: Flow
@@ -274,9 +267,9 @@ final class TrackerAddingView: UIView {
     }
 }
 
-// MARK: - TrackerAddingViewProtocol
+// MARK: - AddingViewProtocol
 
-extension TrackerAddingView: TrackerAddingViewProtocol {
+extension AddingView: AddingViewProtocol {
     func shouldHideErrorLabelWithAnimation(_ shouldHide: Bool) {
         guard self.errorLabel.isHidden != shouldHide else { return }
 
@@ -306,7 +299,7 @@ extension TrackerAddingView: TrackerAddingViewProtocol {
     }
 }
 
-private extension TrackerAddingView {
+private extension AddingView {
     func configure() {
         self.addSubviews()
         self.addConstraints()
@@ -464,7 +457,7 @@ private extension TrackerAddingView {
 
 // MARK: - Actions
 
-private extension TrackerAddingView {
+private extension AddingView {
     @objc
     func didTapCancelTrackerButton() {
         self.didTapCancel?()

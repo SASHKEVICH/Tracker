@@ -87,14 +87,14 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
     }
 
     func navigateToEditTrackerScreen(tracker: Tracker) {
-        let router = TrackerAddingRouter(
+        let router = AddingRouter(
             trackersCategoryService: self.trackersCategoryService,
             trackersCategoryAddingService: self.trackersCategoryAddingService,
             pinnedCategoryId: self.pinnedCategoryId
         )
 
-        let optionsHelper = TrackerOptionsTableViewHelper()
-        let textFieldHelper = TrackerTitleTextFieldHelper()
+        let optionsHelper = OptionsTableViewHelper()
+        let textFieldHelper = TitleTextFieldHelper()
         let colorsHelper = ColorsCollectionViewHelper()
         let emojisHelper = EmojisCollectionViewHelper()
 
@@ -106,7 +106,7 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
             tracker: tracker
         )
 
-        let view = TrackerAddingView(
+        let view = AddingView(
             optionsTableViewHelper: optionsHelper,
             titleTextFieldHelper: textFieldHelper,
             colorsHelper: colorsHelper,
@@ -114,7 +114,7 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
             flow: .edit
         )
 
-        let vc = TrackerAddingViewController(router: router, view: view, viewModel: viewModel)
+        let vc = AddingViewController(router: router, view: view, viewModel: viewModel)
 
         optionsHelper.delegate = vc
         colorsHelper.delegate = vc

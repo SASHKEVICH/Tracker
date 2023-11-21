@@ -1,13 +1,6 @@
-//
-//  TrackerAddingViewModelProtocol.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 16.07.2023.
-//
-
 import UIKit
 
-protocol TrackerAddingViewModelProtocol {
+protocol AddingViewModelProtocol {
     var onOptionsTitlesChanged: Binding? { get set }
     var optionsTitles: [String] { get }
 
