@@ -8,7 +8,7 @@
 import UIKit
 
 final class TrackersViewControllerSetupper {
-    private let trackersViewController = TrackersViewController()
+    private let trackersViewController = MainViewController()
     private let trackersCategoryService: TrackersCategoryServiceProtocol
     private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
     private let trackersService: TrackersServiceProtocol
@@ -56,7 +56,7 @@ final class TrackersViewControllerSetupper {
 }
 
 private extension TrackersViewControllerSetupper {
-    func preparePresenter() -> TrackersViewPresenter? {
+    func preparePresenter() -> MainViewPresenter? {
         guard let router = self.prepareRouter(
             trackersCategoryService: self.trackersCategoryService,
             trackersCategoryAddingService: self.trackersCategoryAddingService,
@@ -70,7 +70,7 @@ private extension TrackersViewControllerSetupper {
         let alertPresenterService = self.alertPresenterService
         alertPresenterService.delegate = self.trackersViewController
 
-        let presenter = TrackersViewPresenter(
+        let presenter = MainViewPresenter(
             trackersService: self.trackersService,
             trackersAddingService: self.trackersAddingService,
             trackersCompletingService: self.trackersCompletingService,
@@ -108,9 +108,9 @@ private extension TrackersViewControllerSetupper {
         trackersRecordService: TrackersRecordServiceProtocol,
         trackersCompletingService: TrackersCompletingServiceProtocol,
         pinnedCategoryId: UUID
-    ) -> TrackersViewRouter? {
+    ) -> MainViewRouter? {
         guard let trackersService = trackersService as? TrackersServiceFilteringProtocol else { return nil }
-        let router = TrackersViewRouter(
+        let router = MainViewRouter(
             viewController: self.trackersViewController,
             trackersCategoryService: trackersCategoryService,
             trackersCategoryAddingService: trackersCategoryAddingService,

@@ -1,20 +1,13 @@
-//
-//  TrackersViewController.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 24.03.2023.
-//
-
 import UIKit
 
-protocol TrackersViewControllerProtocol: AnyObject, AlertPresenterServiceDelegate {
-    var presenter: TrackersViewPresenterFullProtocol? { get set }
+protocol MainViewControllerProtocol: AnyObject, AlertPresenterServiceDelegate {
+    var presenter: MainViewPresenterFullProtocol? { get set }
     func showPlaceholderViewForCurrentDay()
     func showPlaceholderViewForEmptySearch()
     func shouldHidePlaceholderView(_ isHide: Bool)
 }
 
-protocol TrackersViewControllerFetchingProtocol {
+protocol MainViewControllerFetchingProtocol {
     func didRecieveTrackers()
     func insertItems(at: [IndexPath])
     func deleteItems(at: [IndexPath])
@@ -27,10 +20,10 @@ protocol TrackersViewControllerFetchingProtocol {
     func reloadSections(at: IndexSet)
 }
 
-typealias TrackersViewControllerFullProtocol = TrackersViewControllerProtocol & TrackersViewControllerFetchingProtocol
+typealias MainViewControllerFullProtocol = MainViewControllerProtocol & MainViewControllerFetchingProtocol
 
-final class TrackersViewController: UIViewController {
-    var presenter: TrackersViewPresenterFullProtocol?
+final class MainViewController: UIViewController {
+    var presenter: MainViewPresenterFullProtocol?
 
     private lazy var trackersCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -42,8 +35,8 @@ final class TrackersViewController: UIViewController {
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 90, right: 0)
         collectionView.backgroundColor = .Dynamic.whiteDay
         collectionView.register(
-            TrackersCollectionViewCell.self,
-            forCellWithReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier
+            MainViewCollectionViewCell.self,
+            forCellWithReuseIdentifier: MainViewCollectionViewCell.reuseIdentifier
         )
         collectionView.register(
             TrackersCollectionSectionHeader.self,
@@ -112,9 +105,9 @@ final class TrackersViewController: UIViewController {
     }
 }
 
-// MARK: - TrackersViewControllerProtocol
+// MARK: - MainViewControllerProtocol
 
-extension TrackersViewController: TrackersViewControllerProtocol {
+extension MainViewController: MainViewControllerProtocol {
     func showPlaceholderViewForCurrentDay() {
         self.collectionPlaceholderView.set(state: .emptyTrackersForDay)
         self.shouldHidePlaceholderView(false)
@@ -136,9 +129,9 @@ extension TrackersViewController: TrackersViewControllerProtocol {
     }
 }
 
-// MARK: - TrackersViewControllerFetchingProtocol
+// MARK: - MainViewControllerFetchingProtocol
 
-extension TrackersViewController: TrackersViewControllerFetchingProtocol {
+extension MainViewController: MainViewControllerFetchingProtocol {
     func insertSections(at: IndexSet) {
         self.trackersCollectionView.insertSections(at)
     }
@@ -180,9 +173,9 @@ extension TrackersViewController: TrackersViewControllerFetchingProtocol {
     }
 }
 
-// MARK: - TrackerFilterViewControllerDelegate
+// MARK: - FilterViewControllerDelegate
 
-extension TrackersViewController: FilterViewControllerDelegate {
+extension MainViewController: FilterViewControllerDelegate {
     func setCurrentDate() {
         self.datePicker.date = Date()
     }
@@ -194,13 +187,13 @@ extension TrackersViewController: FilterViewControllerDelegate {
 
 // MARK: - Alert Presenter Delegate
 
-extension TrackersViewController: AlertPresenterServiceDelegate {
+extension MainViewController: AlertPresenterServiceDelegate {
     func didRecieve(alert: UIAlertController) {
         self.present(alert, animated: true)
     }
 }
 
-private extension TrackersViewController {
+private extension MainViewController {
     func addSubviews() {
         self.view.addSubview(self.trackersCollectionView)
         self.view.addSubview(self.filterButton)
@@ -233,7 +226,7 @@ private extension TrackersViewController {
 
 // MARK: - Setup Navigation Item
 
-private extension TrackersViewController {
+private extension MainViewController {
     func setupNavigationItem() {
         self.navigationItem.largeTitleDisplayMode = .always
         self.navigationItem.title = R.string.localizable.trackersNavigationItemTitle()
@@ -261,7 +254,7 @@ private extension TrackersViewController {
 
 // MARK: - Actions
 
-private extension TrackersViewController {
+private extension MainViewController {
     @objc
     func didTapAddTracker() {
         self.presenter?.analyticsService.didTapAddTracker()

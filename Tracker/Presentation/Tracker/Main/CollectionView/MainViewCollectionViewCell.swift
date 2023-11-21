@@ -1,14 +1,7 @@
-//
-//  TrackersCollectionViewCell.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 02.04.2023.
-//
-
 import UIKit
 
-final class TrackersCollectionViewCell: UICollectionViewCell {
-    weak var delegate: TrackersViewPresenterCollectionHelperCellDelegate?
+final class MainViewCollectionViewCell: UICollectionViewCell {
+    weak var delegate: MainViewCollectionHelperCellDelegate?
 
     var dayCount: String = "" {
         didSet {
@@ -111,7 +104,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     }
 }
 
-private extension TrackersCollectionViewCell {
+private extension MainViewCollectionViewCell {
     func addSubviews() {
         contentView.addSubview(topContainerView)
 
@@ -174,7 +167,7 @@ private extension TrackersCollectionViewCell {
 
 // MARK: - Callbacks
 
-private extension TrackersCollectionViewCell {
+private extension MainViewCollectionViewCell {
     @objc
     func didTapCompleteTrackerButton() {
         self.delegate?.didTapCompleteCellButton(self)

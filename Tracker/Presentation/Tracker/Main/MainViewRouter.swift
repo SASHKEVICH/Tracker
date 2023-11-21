@@ -1,19 +1,12 @@
-//
-//  TrackersViewRouter.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 10.07.2023.
-//
-
 import UIKit
 
-protocol TrackersViewRouterProtocol {
+protocol MainViewRouterProtocol {
     func navigateToTrackerTypeScreen()
     func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?)
     func navigateToEditTrackerScreen(tracker: Tracker)
 }
 
-final class TrackersViewRouter {
+final class MainViewRouter {
     private weak var viewController: UIViewController?
     private let trackersCategoryService: TrackersCategoryServiceProtocol
     private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
@@ -44,9 +37,9 @@ final class TrackersViewRouter {
     }
 }
 
-// MARK: - TrackersViewRouterProtocol
+// MARK: - MainViewRouterProtocol
 
-extension TrackersViewRouter: TrackersViewRouterProtocol {
+extension MainViewRouter: MainViewRouterProtocol {
     func navigateToTrackerTypeScreen() {
         let vc = TrackerTypeViewController()
         let router = TrackerTypeRouter(

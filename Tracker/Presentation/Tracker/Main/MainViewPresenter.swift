@@ -1,13 +1,6 @@
-//
-//  TrackersViewPresenter.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 02.04.2023.
-//
-
 import Foundation
 
-protocol TrackersViewPresetnerCollectionViewProtocol: AnyObject {
+protocol MainViewPresetnerCollectionViewProtocol: AnyObject {
     var completedTrackersRecords: Set<TrackerRecord> { get }
     var currentDate: Date { get }
 
@@ -28,15 +21,15 @@ protocol TrackersViewPresetnerCollectionViewProtocol: AnyObject {
     func incomplete(tracker: Tracker) throws
 }
 
-protocol TrackersViewPresetnerSearchControllerProtocol: AnyObject {
+protocol MainViewPresetnerSearchControllerProtocol: AnyObject {
     func requestFilteredTrackers(for searchText: String?)
     func requestShowAllCategoriesForCurrentDay()
 }
 
-protocol TrackersViewPresenterProtocol: AnyObject {
-    var view: TrackersViewControllerFullProtocol? { get set }
-    var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol { get }
-    var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol { get }
+protocol MainViewPresenterProtocol: AnyObject {
+    var view: MainViewControllerFullProtocol? { get set }
+    var collectionHelper: MainViewCollectionHelperProtocol { get }
+    var searchControllerHelper: MainViewSearchControllerHelperProtocol { get }
     var analyticsService: AnalyticsServiceProtocol { get }
     var currentDate: Date { get }
     func requestTrackers(for date: Date)
@@ -46,37 +39,34 @@ protocol TrackersViewPresenterProtocol: AnyObject {
     func eraseOperations()
 }
 
-typealias TrackersViewPresenterFullProtocol =
-    TrackersViewPresenterProtocol
-        & TrackersViewPresetnerCollectionViewProtocol
-        & TrackersViewPresetnerSearchControllerProtocol
+typealias MainViewPresenterFullProtocol = MainViewPresenterProtocol
+                                          & MainViewPresetnerCollectionViewProtocol
+                                          & MainViewPresetnerSearchControllerProtocol
 
-// MARK: - TrackersViewPresenter
-
-final class TrackersViewPresenter {
-    enum TrackersViewPresenterError: Error {
+final class MainViewPresenter {
+    enum MainViewPresenterError: Error {
         case currentDateLaterThanToday
     }
 
-    private enum TrackersViewPresenterState {
+    private enum MainViewPresenterState {
         case search
         case normal
     }
 
     let analyticsService: AnalyticsServiceProtocol
 
-    weak var view: TrackersViewControllerFullProtocol?
+    weak var view: MainViewControllerFullProtocol?
     var completedTrackersRecords: Set<TrackerRecord> = []
     var currentDate: Date = .init()
 
-    lazy var collectionHelper: TrackersViewPresenterCollectionViewHelperProtocol = {
-        let collectionHelper = TrackersViewPresenterCollectionHelper()
+    lazy var collectionHelper: MainViewCollectionHelperProtocol = {
+        let collectionHelper = MainViewCollectionHelper()
         collectionHelper.presenter = self
         return collectionHelper
     }()
 
-    lazy var searchControllerHelper: TrackersViewPresenterSearchControllerHelperProtocol = {
-        let searchControllerHelper = TrackersViewPresenterSearchControllerHelper()
+    lazy var searchControllerHelper: MainViewSearchControllerHelperProtocol = {
+        let searchControllerHelper = MainViewSearchControllerHelper()
         searchControllerHelper.presenter = self
         return searchControllerHelper
     }()
@@ -86,10 +76,10 @@ final class TrackersViewPresenter {
     private let trackersCompletingService: TrackersCompletingServiceProtocol
     private let trackersRecordService: TrackersRecordServiceProtocol
     private let trackersPinningService: TrackersPinningServiceProtocol
-    private let router: TrackersViewRouterProtocol
+    private let router: MainViewRouterProtocol
     private let alertPresenterService: AlertPresenterSerivceProtocol
 
-    private var state: TrackersViewPresenterState = .normal
+    private var state: MainViewPresenterState = .normal
 
     init(
         trackersService: TrackersServiceProtocol,
@@ -97,7 +87,7 @@ final class TrackersViewPresenter {
         trackersCompletingService: TrackersCompletingServiceProtocol,
         trackersRecordService: TrackersRecordServiceProtocol,
         trackersPinningService: TrackersPinningServiceProtocol,
-        router: TrackersViewRouterProtocol,
+        router: MainViewRouterProtocol,
         alertPresenterService: AlertPresenterSerivceProtocol,
         analyticsService: AnalyticsServiceProtocol
     ) {
@@ -112,9 +102,9 @@ final class TrackersViewPresenter {
     }
 }
 
-// MARK: - TrackersViewPresenterProtocol
+// MARK: - MainViewPresenterProtocol
 
-extension TrackersViewPresenter: TrackersViewPresenterProtocol {
+extension MainViewPresenter: MainViewPresenterProtocol {
     func eraseOperations() {
         self.trackersService.eraseOperations()
     }
@@ -140,9 +130,9 @@ extension TrackersViewPresenter: TrackersViewPresenterProtocol {
     }
 }
 
-// MARK: - TrackersViewPresetnerSearchControllerProtocol
+// MARK: - MainViewPresetnerSearchControllerProtocol
 
-extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
+extension MainViewPresenter: MainViewPresetnerSearchControllerProtocol {
     func requestFilteredTrackers(for searchText: String?) {
         guard let titleSearchString = searchText, let weekDay = currentDate.weekDay else { return }
         self.state = .search
@@ -157,9 +147,9 @@ extension TrackersViewPresenter: TrackersViewPresetnerSearchControllerProtocol {
     }
 }
 
-// MARK: - TrackersViewPresetnerCollectionViewProtocol
+// MARK: - MainViewPresetnerCollectionViewProtocol
 
-extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
+extension MainViewPresenter: MainViewPresetnerCollectionViewProtocol {
     var numberOfSections: Int {
         self.trackersService.numberOfSections
     }
@@ -233,7 +223,7 @@ extension TrackersViewPresenter: TrackersViewPresetnerCollectionViewProtocol {
 
 // MARK: - TrackersDataProviderDelegate
 
-extension TrackersViewPresenter: TrackersDataProviderDelegate {
+extension MainViewPresenter: TrackersDataProviderDelegate {
     func insertSections(at: IndexSet) {
         self.view?.insertSections(at: at)
         self.fetchCompletedTrackersForCurrentDate()
@@ -279,13 +269,13 @@ extension TrackersViewPresenter: TrackersDataProviderDelegate {
 
 // MARK: - TrackersRecordServiceDelegate
 
-extension TrackersViewPresenter: TrackersRecordServiceDelegate {
+extension MainViewPresenter: TrackersRecordServiceDelegate {
     func didRecieveCompletedTrackers(_ records: [TrackerRecord]) {
         self.completedTrackersRecords = Set(records)
     }
 }
 
-private extension TrackersViewPresenter {
+private extension MainViewPresenter {
     var isCurrentDateLaterThanToday: Bool {
         self.currentDate > Date()
     }
@@ -293,7 +283,7 @@ private extension TrackersViewPresenter {
     func checkCurrentDate() throws {
         if self.isCurrentDateLaterThanToday {
             self.requestChosenFutureDateAlert()
-            throw TrackersViewPresenterError.currentDateLaterThanToday
+            throw MainViewPresenterError.currentDateLaterThanToday
         }
     }
 

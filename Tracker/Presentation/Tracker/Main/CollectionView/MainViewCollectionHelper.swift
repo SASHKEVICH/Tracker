@@ -1,28 +1,21 @@
-//
-//  TrackersViewPresenterCollectionHelper.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 03.04.2023.
-//
-
 import UIKit
 
-protocol TrackersViewPresenterCollectionHelperCellDelegate: AnyObject {
-    func didTapCompleteCellButton(_ cell: TrackersCollectionViewCell)
+protocol MainViewCollectionHelperCellDelegate: AnyObject {
+    func didTapCompleteCellButton(_ cell: MainViewCollectionViewCell)
 }
 
-protocol TrackersViewPresenterCollectionViewHelperProtocol: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    var presenter: TrackersViewPresetnerCollectionViewProtocol? { get set }
+protocol MainViewCollectionHelperProtocol: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    var presenter: MainViewPresetnerCollectionViewProtocol? { get set }
 }
 
-final class TrackersViewPresenterCollectionHelper: NSObject, TrackersViewPresenterCollectionViewHelperProtocol {
-    weak var presenter: TrackersViewPresetnerCollectionViewProtocol?
+final class MainViewCollectionHelper: NSObject, MainViewCollectionHelperProtocol {
+    weak var presenter: MainViewPresetnerCollectionViewProtocol?
     private let collectionViewConstants = TrackerCollectionViewConstants.trackersCollectionConfiguration
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension TrackersViewPresenterCollectionHelper {
+extension MainViewCollectionHelper {
     func collectionView(
         _ collectionView: UICollectionView,
         layout _: UICollectionViewLayout,
@@ -75,7 +68,7 @@ extension TrackersViewPresenterCollectionHelper {
 
         let indexPath = indexPaths[0]
 
-        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackersCollectionViewCell else {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? MainViewCollectionViewCell else {
             return nil
         }
 
@@ -88,7 +81,7 @@ extension TrackersViewPresenterCollectionHelper {
 
 // MARK: - UICollectionViewDataSource
 
-extension TrackersViewPresenterCollectionHelper {
+extension MainViewCollectionHelper {
     func collectionView(
         _: UICollectionView,
         numberOfItemsInSection section: Int
@@ -121,9 +114,9 @@ extension TrackersViewPresenterCollectionHelper {
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TrackersCollectionViewCell.reuseIdentifier,
+            withReuseIdentifier: MainViewCollectionViewCell.reuseIdentifier,
             for: indexPath
-        ) as? TrackersCollectionViewCell,
+        ) as? MainViewCollectionViewCell,
             let presenter = self.presenter,
             let tracker = presenter.tracker(at: indexPath)
         else {
@@ -169,8 +162,8 @@ extension TrackersViewPresenterCollectionHelper {
 
 // MARK: - Complete cell button handler
 
-extension TrackersViewPresenterCollectionHelper: TrackersViewPresenterCollectionHelperCellDelegate {
-    func didTapCompleteCellButton(_ cell: TrackersCollectionViewCell) {
+extension MainViewCollectionHelper: MainViewCollectionHelperCellDelegate {
+    func didTapCompleteCellButton(_ cell: MainViewCollectionViewCell) {
         guard let tracker = cell.tracker else { return }
         guard let presenter = self.presenter else { return }
 
@@ -184,7 +177,7 @@ extension TrackersViewPresenterCollectionHelper: TrackersViewPresenterCollection
     }
 }
 
-private extension TrackersViewPresenterCollectionHelper {
+private extension MainViewCollectionHelper {
     func completedTimesCount(trackerId: UUID) -> String {
         guard let presenter = self.presenter else {
             assertionFailure("presenter is nil")
@@ -196,7 +189,7 @@ private extension TrackersViewPresenterCollectionHelper {
         return dayCount
     }
 
-    func prepareContextActions(for cell: TrackersCollectionViewCell) -> [UIAction]? {
+    func prepareContextActions(for cell: MainViewCollectionViewCell) -> [UIAction]? {
         guard let tracker = cell.tracker else { return nil }
         let localizable = R.string.localizable
         let editActionTitle = localizable.trackersCollectionViewActionEdit()
@@ -222,7 +215,7 @@ private extension TrackersViewPresenterCollectionHelper {
         return actions
     }
 
-    func getPinningAction(shouldPin: Bool, cell: TrackersCollectionViewCell, tracker: Tracker) -> UIAction {
+    func getPinningAction(shouldPin: Bool, cell: MainViewCollectionViewCell, tracker: Tracker) -> UIAction {
         let localizable = R.string.localizable
         let pinActionTitle = shouldPin
             ? localizable.trackersCollectionViewActionPin()
