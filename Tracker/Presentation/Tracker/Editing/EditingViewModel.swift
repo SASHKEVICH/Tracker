@@ -182,7 +182,7 @@ extension EditingViewModel: EditingViewModelProtocol {
 
 // MARK: - TrackerScheduleViewControllerDelegate
 
-extension EditingViewModel: TrackerScheduleViewControllerDelegate {
+extension EditingViewModel: SelectingScheduleViewControllerDelegate {
     func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
         self.selectedWeekDays = weekDays
     }

@@ -1,16 +1,16 @@
 import Foundation
 
-protocol SchedulePresenterProtocol: AnyObject {
-    var view: ScheduleViewControllerProtocol? { get set }
-    var scheduleTableViewHelper: TrackerScheduleTableViewHelperProtocol? { get set }
+protocol SelectingSchedulePresenterProtocol: AnyObject {
+    var view: SelectingScheduleViewControllerProtocol? { get set }
+    var scheduleTableViewHelper: SelectingScheduleTableViewHelperProtocol? { get set }
     var weekDays: [WeekDay] { get }
     var selectedWeekDays: Set<WeekDay> { get }
     func didChangeSwitchValue(weekDay: WeekDay, isOn: Bool)
 }
 
-final class SchedulePresenter {
-    weak var view: ScheduleViewControllerProtocol?
-    var scheduleTableViewHelper: TrackerScheduleTableViewHelperProtocol?
+final class SelectingSchedulePresenter {
+    weak var view: SelectingScheduleViewControllerProtocol?
+    var scheduleTableViewHelper: SelectingScheduleTableViewHelperProtocol?
 
     var weekDays: [WeekDay] = WeekDay.allCases
     var selectedWeekDays: Set<WeekDay> = []
@@ -20,9 +20,9 @@ final class SchedulePresenter {
     }
 }
 
-// MARK: - SchedulePresenterProtocol
+// MARK: - SelectingSchedulePresenterProtocol
 
-extension SchedulePresenter: SchedulePresenterProtocol {
+extension SelectingSchedulePresenter: SelectingSchedulePresenterProtocol {
     func didChangeSwitchValue(weekDay: WeekDay, isOn: Bool) {
         if isOn {
             self.selectedWeekDays.insert(weekDay)
@@ -32,9 +32,9 @@ extension SchedulePresenter: SchedulePresenterProtocol {
     }
 }
 
-private extension SchedulePresenter {
+private extension SelectingSchedulePresenter {
     func setupScheduleTableViewHelper() {
-        let scheduleTableViewHelper = TrackerScheduleTableViewHelper()
+        let scheduleTableViewHelper = SelectingScheduleTableViewHelper()
         scheduleTableViewHelper.presenter = self
         self.scheduleTableViewHelper = scheduleTableViewHelper
     }

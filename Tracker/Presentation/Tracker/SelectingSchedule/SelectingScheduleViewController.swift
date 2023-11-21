@@ -1,24 +1,17 @@
-//
-//  TrackerScheduleViewController.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 15.04.2023.
-//
-
 import UIKit
 
-protocol TrackerScheduleViewControllerDelegate: AnyObject {
+protocol SelectingScheduleViewControllerDelegate: AnyObject {
     func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>)
 }
 
-protocol ScheduleViewControllerProtocol: AnyObject {
-    var presenter: SchedulePresenterProtocol? { get set }
-    var delegate: TrackerScheduleViewControllerDelegate? { get set }
+protocol SelectingScheduleViewControllerProtocol: AnyObject {
+    var presenter: SelectingSchedulePresenterProtocol? { get set }
+    var delegate: SelectingScheduleViewControllerDelegate? { get set }
 }
 
-final class TrackerScheduleViewController: UIViewController, ScheduleViewControllerProtocol {
-    weak var delegate: TrackerScheduleViewControllerDelegate?
-    var presenter: SchedulePresenterProtocol?
+final class SelectingScheduleViewController: UIViewController, SelectingScheduleViewControllerProtocol {
+    weak var delegate: SelectingScheduleViewControllerDelegate?
+    var presenter: SelectingSchedulePresenterProtocol?
 
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -35,8 +28,8 @@ final class TrackerScheduleViewController: UIViewController, ScheduleViewControl
         tableView.delegate = self.presenter?.scheduleTableViewHelper
         tableView.dataSource = self.presenter?.scheduleTableViewHelper
         tableView.register(
-            TrackerScheduleTableViewCell.self,
-            forCellReuseIdentifier: TrackerScheduleTableViewCell.reuseIdentifier
+            SelectingScheduleTableViewCell.self,
+            forCellReuseIdentifier: SelectingScheduleTableViewCell.reuseIdentifier
         )
         tableView.separatorColor = .Static.gray
         return tableView
@@ -62,7 +55,7 @@ final class TrackerScheduleViewController: UIViewController, ScheduleViewControl
     }
 }
 
-private extension TrackerScheduleViewController {
+private extension SelectingScheduleViewController {
     func addSubviews() {
         view.addSubview(titleLabel)
         view.addSubview(scheduleTableView)
@@ -96,7 +89,7 @@ private extension TrackerScheduleViewController {
 
 // MARK: - Actions
 
-private extension TrackerScheduleViewController {
+private extension SelectingScheduleViewController {
     @objc
     func didTapAddScheduleButton() {
         guard let selectedWeekDays = self.presenter?.selectedWeekDays else { return }

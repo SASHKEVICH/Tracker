@@ -1,22 +1,15 @@
-//
-//  TrackerScheduleTableViewHelper.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 18.04.2023.
-//
-
 import UIKit
 
-protocol TrackerScheduleTableViewHelperProtocol: UITableViewDelegate, UITableViewDataSource {
-    var presenter: SchedulePresenterProtocol? { get set }
+protocol SelectingScheduleTableViewHelperProtocol: UITableViewDelegate, UITableViewDataSource {
+    var presenter: SelectingSchedulePresenterProtocol? { get set }
 }
 
-protocol TrackerScheduleTableViewHelperDelegate: AnyObject {
-    func didChangeSwitchValue(_ cell: TrackerScheduleTableViewCell, isOn: Bool)
+protocol SelectingScheduleTableViewHelperDelegate: AnyObject {
+    func didChangeSwitchValue(_ cell: SelectingScheduleTableViewCell, isOn: Bool)
 }
 
-final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHelperProtocol {
-    weak var presenter: SchedulePresenterProtocol?
+final class SelectingScheduleTableViewHelper: NSObject, SelectingScheduleTableViewHelperProtocol {
+    weak var presenter: SelectingSchedulePresenterProtocol?
 
     // MARK: - UITableViewDelegate
 
@@ -48,9 +41,9 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: TrackerScheduleTableViewCell.reuseIdentifier,
+            withIdentifier: SelectingScheduleTableViewCell.reuseIdentifier,
             for: indexPath
-        ) as? TrackerScheduleTableViewCell
+        ) as? SelectingScheduleTableViewCell
         else { return UITableViewCell() }
 
         guard let presenter = presenter else { return UITableViewCell() }
@@ -75,8 +68,8 @@ final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHe
     }
 }
 
-extension TrackerScheduleTableViewHelper: TrackerScheduleTableViewHelperDelegate {
-    func didChangeSwitchValue(_ cell: TrackerScheduleTableViewCell, isOn: Bool) {
+extension SelectingScheduleTableViewHelper: SelectingScheduleTableViewHelperDelegate {
+    func didChangeSwitchValue(_ cell: SelectingScheduleTableViewCell, isOn: Bool) {
         guard let weekDay = cell.weekDay else { return }
         presenter?.didChangeSwitchValue(weekDay: weekDay, isOn: isOn)
     }

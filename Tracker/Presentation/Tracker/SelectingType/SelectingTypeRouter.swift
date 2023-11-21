@@ -1,26 +1,19 @@
-//
-//  TrackerTypeRouter.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 10.07.2023.
-//
-
 import Foundation
 
-protocol TrackerTypeRouterProtocol {
+protocol SelectingTypeRouterProtocol {
     func navigateToTrackerScreen()
     func navigateToIrregularEventScreen()
 }
 
-final class TrackerTypeRouter {
-    private weak var viewController: TrackerTypeViewController?
+final class SelectingTypeRouter {
+    private weak var viewController: SelectingTypeViewController?
     private let trackersAddingService: TrackersAddingServiceProtocol
     private let trackersCategoryService: TrackersCategoryServiceProtocol
     private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
     private let pinnedCategoryId: UUID?
 
     init(
-        viewController: TrackerTypeViewController,
+        viewController: SelectingTypeViewController,
         trackersAddingService: TrackersAddingServiceProtocol,
         trackersCategoryService: TrackersCategoryServiceProtocol,
         trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol,
@@ -35,9 +28,9 @@ final class TrackerTypeRouter {
     }
 }
 
-// MARK: - TrackerTypeRouterProtocol
+// MARK: - SelectingTypeRouterProtocol
 
-extension TrackerTypeRouter: TrackerTypeRouterProtocol {
+extension SelectingTypeRouter: SelectingTypeRouterProtocol {
     func navigateToTrackerScreen() {
         self.presentAddingViewController(trackerType: .tracker)
     }
@@ -47,7 +40,7 @@ extension TrackerTypeRouter: TrackerTypeRouterProtocol {
     }
 }
 
-private extension TrackerTypeRouter {
+private extension SelectingTypeRouter {
     func presentAddingViewController(trackerType: Tracker.TrackerType) {
         let optionsHelper = OptionsTableViewHelper()
         let textFieldHelper = TitleTextFieldHelper()
@@ -92,7 +85,7 @@ private extension TrackerTypeRouter {
     }
 }
 
-private extension TrackerTypeRouter {
+private extension SelectingTypeRouter {
     func prepareOptionsTitles(for type: Tracker.TrackerType) -> [String] {
         let localizable = R.string.localizable
         let categoryTitle = localizable.trackerAddingOptionTitleCategory()

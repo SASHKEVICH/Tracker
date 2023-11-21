@@ -26,10 +26,10 @@ final class AddingRouter {
 
 extension AddingRouter: AddingRouterProtocol {
     func navigateToScheduleScreen(selectedWeekDays: Set<WeekDay>, from viewController: UIViewController) {
-        let vc = TrackerScheduleViewController()
-        vc.delegate = viewController as? TrackerScheduleViewControllerDelegate
+        let vc = SelectingScheduleViewController()
+        vc.delegate = viewController as? SelectingScheduleViewControllerDelegate
 
-        let presenter = SchedulePresenter()
+        let presenter = SelectingSchedulePresenter()
         vc.presenter = presenter
         presenter.view = vc
 

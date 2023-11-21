@@ -1,18 +1,11 @@
-//
-//  TrackerTypeViewController.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 13.04.2023.
-//
-
 import UIKit
 
-protocol TrackerTypeViewControllerProtocol {
-    var presenter: TrackerTypePresenterProtocol? { get set }
+protocol SelectingTypeViewControllerProtocol {
+    var presenter: SelectingTypePresenterProtocol? { get set }
 }
 
-final class TrackerTypeViewController: UIViewController {
-    var presenter: TrackerTypePresenterProtocol?
+final class SelectingTypeViewController: UIViewController {
+    var presenter: SelectingTypePresenterProtocol?
 
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -58,13 +51,13 @@ final class TrackerTypeViewController: UIViewController {
     }
 }
 
-// MARK: - TrackerTypeViewControllerProtocol
+// MARK: - SelectingTypeViewControllerProtocol
 
-extension TrackerTypeViewController: TrackerTypeViewControllerProtocol {}
+extension SelectingTypeViewController: SelectingTypeViewControllerProtocol {}
 
 // MARK: - Setupping layout
 
-private extension TrackerTypeViewController {
+private extension SelectingTypeViewController {
     func addSubviews() {
         self.view.addSubview(self.titleLabel)
         self.view.addSubview(self.stackView)
@@ -97,7 +90,7 @@ private extension TrackerTypeViewController {
 
 // MARK: - Buttons callbacks
 
-private extension TrackerTypeViewController {
+private extension SelectingTypeViewController {
     @objc
     func didTapAddTrackerButton() {
         self.presenter?.navigateToTrackerScreen()

@@ -52,7 +52,7 @@ extension AddingViewController: CategoryViewControllerDelegate {
 
 // MARK: - TrackerScheduleViewControllerDelegate
 
-extension AddingViewController: TrackerScheduleViewControllerDelegate {
+extension AddingViewController: SelectingScheduleViewControllerDelegate {
     func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
         self.viewModel.didSelect(weekDays: weekDays)
         self.dismiss(animated: true)

@@ -41,15 +41,15 @@ final class MainViewRouter {
 
 extension MainViewRouter: MainViewRouterProtocol {
     func navigateToTrackerTypeScreen() {
-        let vc = TrackerTypeViewController()
-        let router = TrackerTypeRouter(
+        let vc = SelectingTypeViewController()
+        let router = SelectingTypeRouter(
             viewController: vc,
             trackersAddingService: self.trackersAddingService,
             trackersCategoryService: self.trackersCategoryService,
             trackersCategoryAddingService: self.trackersCategoryAddingService,
             pinnedCategoryId: self.pinnedCategoryId
         )
-        let presenter = TrackerTypePresenter(router: router)
+        let presenter = SelectingTypePresenter(router: router)
 
         vc.presenter = presenter
 

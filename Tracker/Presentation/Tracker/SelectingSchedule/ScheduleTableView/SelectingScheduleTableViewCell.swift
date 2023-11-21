@@ -1,14 +1,7 @@
-//
-//  TrackerScheduleTableViewCell.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 18.04.2023.
-//
-
 import UIKit
 
-final class TrackerScheduleTableViewCell: UITableViewCell {
-    weak var delegate: TrackerScheduleTableViewHelperDelegate?
+final class SelectingScheduleTableViewCell: UITableViewCell {
+    weak var delegate: SelectingScheduleTableViewHelperDelegate?
     var weekDay: WeekDay?
 
     var cellTitle: String? {
@@ -56,7 +49,7 @@ final class TrackerScheduleTableViewCell: UITableViewCell {
     }
 }
 
-private extension TrackerScheduleTableViewCell {
+private extension SelectingScheduleTableViewCell {
     func setupCellTitleLabel() {
         contentView.addSubview(cellTitleLabel)
 
@@ -83,7 +76,7 @@ private extension TrackerScheduleTableViewCell {
     }
 }
 
-private extension TrackerScheduleTableViewCell {
+private extension SelectingScheduleTableViewCell {
     @objc
     func didChangeSwitchValue(_ sender: UISwitch) {
         self.delegate?.didChangeSwitchValue(self, isOn: sender.isOn)
