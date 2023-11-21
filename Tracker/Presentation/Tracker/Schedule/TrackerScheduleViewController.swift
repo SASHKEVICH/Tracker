@@ -11,14 +11,14 @@ protocol TrackerScheduleViewControllerDelegate: AnyObject {
     func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>)
 }
 
-protocol TrackerScheduleViewControllerProtocol: AnyObject {
-    var presenter: TrackerSchedulePresenterProtocol? { get set }
+protocol ScheduleViewControllerProtocol: AnyObject {
+    var presenter: SchedulePresenterProtocol? { get set }
     var delegate: TrackerScheduleViewControllerDelegate? { get set }
 }
 
-final class TrackerScheduleViewController: UIViewController, TrackerScheduleViewControllerProtocol {
+final class TrackerScheduleViewController: UIViewController, ScheduleViewControllerProtocol {
     weak var delegate: TrackerScheduleViewControllerDelegate?
-    var presenter: TrackerSchedulePresenterProtocol?
+    var presenter: SchedulePresenterProtocol?
 
     private let titleLabel: UILabel = {
         let label = UILabel()

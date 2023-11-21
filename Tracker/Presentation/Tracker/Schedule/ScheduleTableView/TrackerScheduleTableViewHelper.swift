@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TrackerScheduleTableViewHelperProtocol: UITableViewDelegate, UITableViewDataSource {
-    var presenter: TrackerSchedulePresenterProtocol? { get set }
+    var presenter: SchedulePresenterProtocol? { get set }
 }
 
 protocol TrackerScheduleTableViewHelperDelegate: AnyObject {
@@ -16,7 +16,7 @@ protocol TrackerScheduleTableViewHelperDelegate: AnyObject {
 }
 
 final class TrackerScheduleTableViewHelper: NSObject, TrackerScheduleTableViewHelperProtocol {
-    weak var presenter: TrackerSchedulePresenterProtocol?
+    weak var presenter: SchedulePresenterProtocol?
 
     // MARK: - UITableViewDelegate
 

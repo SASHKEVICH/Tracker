@@ -29,7 +29,7 @@ extension AddingRouter: AddingRouterProtocol {
         let vc = TrackerScheduleViewController()
         vc.delegate = viewController as? TrackerScheduleViewControllerDelegate
 
-        let presenter = TrackerSchedulePresenter()
+        let presenter = SchedulePresenter()
         vc.presenter = presenter
         presenter.view = vc
 
