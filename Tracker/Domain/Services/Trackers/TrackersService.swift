@@ -23,7 +23,7 @@ public protocol TrackersServiceFetchingProtocol {
 }
 
 public protocol TrackersServiceFilteringProtocol {
-    func performFiltering(mode: TrackerFilterViewModel.FilterMode)
+    func performFiltering(mode: FilterViewModel.FilterMode)
 }
 
 typealias TrackersServiceProtocol = TrackersServiceFetchingProtocol & TrackersServiceDataSourceProtocol
@@ -88,7 +88,7 @@ extension TrackersService: TrackersServiceDataSourceProtocol {
 // MARK: - TrackersServiceFilteringProtocol
 
 extension TrackersService: TrackersServiceFilteringProtocol {
-    func performFiltering(mode: TrackerFilterViewModel.FilterMode) {
+    func performFiltering(mode: FilterViewModel.FilterMode) {
         switch mode {
         case let .all(currentDate):
             guard let weekDay = currentDate.weekDay else { return }
