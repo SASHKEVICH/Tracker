@@ -98,7 +98,7 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
         let colorsHelper = ColorsCollectionViewHelper()
         let emojisHelper = EmojisCollectionViewHelper()
 
-        let viewModel = TrackerEditingViewModel(
+        let viewModel = EditingViewModel(
             trackersAddingService: self.trackersAddingService,
             trackersRecordService: self.trackersRecordService,
             trackersCompletingService: self.trackersCompletingService,

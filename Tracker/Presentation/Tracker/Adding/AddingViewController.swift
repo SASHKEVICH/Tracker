@@ -137,7 +137,7 @@ private extension AddingViewController {
             self.viewModel.didSelect(title: title)
         }
 
-        guard let viewModel = self.viewModel as? TrackerEditingViewModelProtocol else { return }
+        guard let viewModel = self.viewModel as? EditingViewModelProtocol else { return }
         self.addingView.completedTimesCount = viewModel.completedCount
 
         self.addingView.increaseCompletedCount = { [weak viewModel] in
@@ -168,7 +168,7 @@ private extension AddingViewController {
             self.addingView.shouldHideErrorLabelWithAnimation(self.viewModel.isErrorHidden)
         }
 
-        guard let viewModel = self.viewModel as? TrackerEditingViewModelProtocol else { return }
+        guard let viewModel = self.viewModel as? EditingViewModelProtocol else { return }
         viewModel.onCompletedCountChanged = { [weak self, weak viewModel] in
             self?.addingView.completedTimesCount = viewModel?.completedCount
         }

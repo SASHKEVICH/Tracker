@@ -1,20 +1,13 @@
-//
-//  TrackerEditingViewModel.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 16.07.2023.
-//
-
 import UIKit
 
-protocol TrackerEditingViewModelProtocol: AddingViewModelProtocol, AnyObject {
+protocol EditingViewModelProtocol: AddingViewModelProtocol, AnyObject {
     var onCompletedCountChanged: (() -> Void)? { get set }
     var completedCount: String? { get }
     func increaseCompletedCount()
     func decreaseCompletedCount()
 }
 
-final class TrackerEditingViewModel {
+final class EditingViewModel {
     var onOptionsTitlesChanged: Binding?
     var onTrackerTitleChanged: Binding?
     var onSelectedWeekDaysChanged: Binding?
@@ -109,9 +102,9 @@ final class TrackerEditingViewModel {
     }
 }
 
-// MARK: - TrackerEditingViewModelProtocol
+// MARK: - EditingViewModelProtocol
 
-extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
+extension EditingViewModel: EditingViewModelProtocol {
     var optionsTitles: [String] {
         let localizable = R.string.localizable
         let categoryTitle = localizable.trackerAddingOptionTitleCategory()
@@ -189,7 +182,7 @@ extension TrackerEditingViewModel: TrackerEditingViewModelProtocol {
 
 // MARK: - TrackerScheduleViewControllerDelegate
 
-extension TrackerEditingViewModel: TrackerScheduleViewControllerDelegate {
+extension EditingViewModel: TrackerScheduleViewControllerDelegate {
     func didRecieveSelectedWeekDays(_ weekDays: Set<WeekDay>) {
         self.selectedWeekDays = weekDays
     }
@@ -197,13 +190,13 @@ extension TrackerEditingViewModel: TrackerScheduleViewControllerDelegate {
 
 // MARK: - CategoryViewControllerDelegate
 
-extension TrackerEditingViewModel: CategoryViewControllerDelegate {
+extension EditingViewModel: CategoryViewControllerDelegate {
     func didRecieveCategory(_ category: TrackerCategory) {
         self.selectedCategory = category
     }
 }
 
-private extension TrackerEditingViewModel {
+private extension EditingViewModel {
     func loadInfo() {
         self.trackerTitle = self.tracker.title
         self.selectedWeekDays = Set(self.tracker.schedule)
