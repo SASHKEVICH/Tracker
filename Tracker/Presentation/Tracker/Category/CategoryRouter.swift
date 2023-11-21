@@ -16,8 +16,8 @@ final class CategoryRouter {
 
 extension CategoryRouter: CategoryRouterProtocol {
     func navigateToNewCategoryScreen(from viewController: CategoryViewController) {
-        let viewModel = TrackerNewCategoryViewModel(trackersCategoryAddingService: self.trackersCategoryAddingService)
-        let vc = TrackerNewCategoryViewController(viewModel: viewModel)
+        let viewModel = NewCategoryViewModel(trackersCategoryAddingService: self.trackersCategoryAddingService)
+        let vc = NewCategoryViewController(viewModel: viewModel)
 
         vc.emptyTap = { [weak vc] in
             vc?.view.endEditing(true)

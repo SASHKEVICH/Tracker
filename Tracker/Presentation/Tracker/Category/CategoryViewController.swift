@@ -106,9 +106,9 @@ extension CategoryViewController: CategoryTableViewHelperDelegate {
     }
 }
 
-// MARK: - TrackerNewCategoryViewControllerDelegate
+// MARK: - NewCategoryViewControllerDelegate
 
-extension CategoryViewController: TrackerNewCategoryViewControllerDelegate {
+extension CategoryViewController: NewCategoryViewControllerDelegate {
     func dismissNewCategoryViewController() {
         self.dismiss(animated: true)
     }

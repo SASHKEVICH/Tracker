@@ -1,21 +1,14 @@
-//
-//  TrackerNewCategoryViewController.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 07.07.2023.
-//
-
 import UIKit
 
-protocol TrackerNewCategoryViewControllerDelegate: AnyObject {
+protocol NewCategoryViewControllerDelegate: AnyObject {
     func dismissNewCategoryViewController()
 }
 
-final class TrackerNewCategoryViewController: UIViewController {
-    weak var delegate: TrackerNewCategoryViewControllerDelegate?
+final class NewCategoryViewController: UIViewController {
+    weak var delegate: NewCategoryViewControllerDelegate?
     var emptyTap: (() -> Void)?
 
-    private var viewModel: TrackerNewCategoryViewModelProtocol
+    private var viewModel: NewCategoryViewModelProtocol
 
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -43,7 +36,7 @@ final class TrackerNewCategoryViewController: UIViewController {
         return button
     }()
 
-    init(viewModel: TrackerNewCategoryViewModelProtocol) {
+    init(viewModel: NewCategoryViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -67,14 +60,14 @@ final class TrackerNewCategoryViewController: UIViewController {
 
 // MARK: - UITextFieldDelegate
 
-extension TrackerNewCategoryViewController: UITextFieldDelegate {
+extension NewCategoryViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_: UITextField) -> Bool {
         self.dismissKeyboard()
         return true
     }
 }
 
-private extension TrackerNewCategoryViewController {
+private extension NewCategoryViewController {
     func addSubviews() {
         view.addSubview(titleLabel)
         view.addSubview(newCategoryTitleTextField)
@@ -117,7 +110,7 @@ private extension TrackerNewCategoryViewController {
 
 // MARK: - Actions
 
-private extension TrackerNewCategoryViewController {
+private extension NewCategoryViewController {
     @objc
     func didTapAddNewCategoryButton() {
         guard let title = self.newCategoryTitleTextField.text else { return }
