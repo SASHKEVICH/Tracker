@@ -74,8 +74,8 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
         )
         viewModel.delegate = self.viewController as? TrackerFilterViewControllerDelegate
 
-        let helper = TrackerCategoryTableViewHelper()
-        let vc = TrackerCategoryViewController(
+        let helper = CategoryTableViewHelper()
+        let vc = CategoryViewController(
             viewModel: viewModel,
             helper: helper,
             router: nil,

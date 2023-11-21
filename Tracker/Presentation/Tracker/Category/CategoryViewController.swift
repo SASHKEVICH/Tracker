@@ -1,17 +1,10 @@
-//
-//  TrackerCategoryViewController.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 19.06.2023.
-//
-
 import UIKit
 
-protocol TrackerCategoryViewControllerDelegate: AnyObject {
+protocol CategoryViewControllerDelegate: AnyObject {
     func didRecieveCategory(_ category: TrackerCategory)
 }
 
-final class TrackerCategoryViewController: UIViewController {
+final class CategoryViewController: UIViewController {
     enum Flow {
         case normal
         case filter
@@ -19,9 +12,9 @@ final class TrackerCategoryViewController: UIViewController {
 
     private let flow: Flow
 
-    private let helper: TrackerCategoryTableViewHelperProtocol
-    private let router: TrackerCategoryRouterProtocol?
-    private var viewModel: TrackerCategoryViewModelProtocol
+    private let helper: CategoryTableViewHelperProtocol
+    private let router: CategoryRouterProtocol?
+    private var viewModel: CategoryViewModelProtocol
 
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -43,8 +36,8 @@ final class TrackerCategoryViewController: UIViewController {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(
-            TrackerCategoryTableViewCell.self,
-            forCellReuseIdentifier: TrackerCategoryTableViewCell.reuseIdentifier
+            CategoryTableViewCell.self,
+            forCellReuseIdentifier: CategoryTableViewCell.reuseIdentifier
         )
         tableView.dataSource = self.helper
         tableView.delegate = self.helper
@@ -76,9 +69,9 @@ final class TrackerCategoryViewController: UIViewController {
     }
 
     init(
-        viewModel: TrackerCategoryViewModelProtocol,
-        helper: TrackerCategoryTableViewHelperProtocol,
-        router: TrackerCategoryRouterProtocol?,
+        viewModel: CategoryViewModelProtocol,
+        helper: CategoryTableViewHelperProtocol,
+        router: CategoryRouterProtocol?,
         flow: Flow,
         selectedCategory: TrackerCategory?
     ) {
@@ -99,7 +92,7 @@ final class TrackerCategoryViewController: UIViewController {
 
 // MARK: - TrackerCategoryTableViewHelperFullDelegate
 
-extension TrackerCategoryViewController: TrackerCategoryTableViewHelperDelegate {
+extension CategoryViewController: CategoryTableViewHelperDelegate {
     var categories: [TrackerCategory] {
         self.viewModel.categories
     }
@@ -115,13 +108,13 @@ extension TrackerCategoryViewController: TrackerCategoryTableViewHelperDelegate 
 
 // MARK: - TrackerNewCategoryViewControllerDelegate
 
-extension TrackerCategoryViewController: TrackerNewCategoryViewControllerDelegate {
+extension CategoryViewController: TrackerNewCategoryViewControllerDelegate {
     func dismissNewCategoryViewController() {
         self.dismiss(animated: true)
     }
 }
 
-private extension TrackerCategoryViewController {
+private extension CategoryViewController {
     func addSubviews() {
         self.view.addSubview(titleLabel)
         self.view.addSubview(categoriesTableView)
@@ -179,20 +172,20 @@ private extension TrackerCategoryViewController {
 
 // MARK: - Actions
 
-private extension TrackerCategoryViewController {
+private extension CategoryViewController {
     @objc
     func didTapAddNewCategoryButton() {
         self.router?.navigateToNewCategoryScreen(from: self)
     }
 }
 
-private extension TrackerCategoryViewController {
+private extension CategoryViewController {
     func placeholderView(shouldHide: Bool) {
         self.placeholderView.isHidden = shouldHide
     }
 }
 
-private extension TrackerCategoryViewController {
+private extension CategoryViewController {
     func setupViewController() {
         self.view.backgroundColor = .Dynamic.whiteDay
 

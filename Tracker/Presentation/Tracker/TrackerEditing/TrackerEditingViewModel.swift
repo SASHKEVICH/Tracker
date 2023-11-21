@@ -195,9 +195,9 @@ extension TrackerEditingViewModel: TrackerScheduleViewControllerDelegate {
     }
 }
 
-// MARK: - TrackerCategoryViewControllerDelegate
+// MARK: - CategoryViewControllerDelegate
 
-extension TrackerEditingViewModel: TrackerCategoryViewControllerDelegate {
+extension TrackerEditingViewModel: CategoryViewControllerDelegate {
     func didRecieveCategory(_ category: TrackerCategory) {
         self.selectedCategory = category
     }

@@ -1,17 +1,10 @@
-//
-//  TrackerCategoryRouter.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 09.07.2023.
-//
-
 import UIKit
 
-protocol TrackerCategoryRouterProtocol {
-    func navigateToNewCategoryScreen(from viewController: TrackerCategoryViewController)
+protocol CategoryRouterProtocol {
+    func navigateToNewCategoryScreen(from viewController: CategoryViewController)
 }
 
-final class TrackerCategoryRouter {
+final class CategoryRouter {
     private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
 
     init(trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol) {
@@ -19,10 +12,10 @@ final class TrackerCategoryRouter {
     }
 }
 
-// MARK: - TrackerCategoryRouterProtocol
+// MARK: - CategoryRouterProtocol
 
-extension TrackerCategoryRouter: TrackerCategoryRouterProtocol {
-    func navigateToNewCategoryScreen(from viewController: TrackerCategoryViewController) {
+extension CategoryRouter: CategoryRouterProtocol {
+    func navigateToNewCategoryScreen(from viewController: CategoryViewController) {
         let viewModel = TrackerNewCategoryViewModel(trackersCategoryAddingService: self.trackersCategoryAddingService)
         let vc = TrackerNewCategoryViewController(viewModel: viewModel)
 

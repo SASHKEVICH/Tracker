@@ -60,9 +60,9 @@ public final class TrackerFilterViewModel {
     }
 }
 
-// MARK: - TrackerCategoryViewModelProtocol
+// MARK: - CategoryViewModelProtocol
 
-extension TrackerFilterViewModel: TrackerCategoryViewModelProtocol {
+extension TrackerFilterViewModel: CategoryViewModelProtocol {
     func didChoose(category: TrackerCategory) {
         guard let mode = self.resolveFiltrationMode(for: category.title) else { return }
         if mode == .today {

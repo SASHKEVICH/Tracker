@@ -1,26 +1,19 @@
-//
-//  TrackerCategoryTableViewHelper.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 19.06.2023.
-//
-
 import UIKit
 
-protocol TrackerCategoryTableViewHelperDelegate: AnyObject {
+protocol CategoryTableViewHelperDelegate: AnyObject {
     var categories: [TrackerCategory] { get }
     var chosenCategory: TrackerCategory? { get }
     func didSelect(category: TrackerCategory)
 }
 
-protocol TrackerCategoryTableViewHelperProtocol: UITableViewDelegate, UITableViewDataSource {
-    var delegate: TrackerCategoryTableViewHelperDelegate? { get set }
+protocol CategoryTableViewHelperProtocol: UITableViewDelegate, UITableViewDataSource {
+    var delegate: CategoryTableViewHelperDelegate? { get set }
 }
 
-final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHelperProtocol {
-    weak var delegate: TrackerCategoryTableViewHelperDelegate?
+final class CategoryTableViewHelper: NSObject, CategoryTableViewHelperProtocol {
+    weak var delegate: CategoryTableViewHelperDelegate?
 
-    private var lastSelectedCell: TrackerCategoryTableViewCell?
+    private var lastSelectedCell: CategoryTableViewCell?
 
     // MARK: - UITableViewDelegate
 
@@ -30,8 +23,8 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        guard let cell = tableView.cellForRow(at: indexPath) as? TrackerCategoryTableViewCell else { return }
-        guard let cells = tableView.visibleCells as? [TrackerCategoryTableViewCell] else { return }
+        guard let cell = tableView.cellForRow(at: indexPath) as? CategoryTableViewCell else { return }
+        guard let cells = tableView.visibleCells as? [CategoryTableViewCell] else { return }
 
         if cell != self.lastSelectedCell {
             cell.isCellSelected = true
@@ -59,9 +52,9 @@ final class TrackerCategoryTableViewHelper: NSObject, TrackerCategoryTableViewHe
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: TrackerCategoryTableViewCell.reuseIdentifier,
+            withIdentifier: CategoryTableViewCell.reuseIdentifier,
             for: indexPath
-        ) as? TrackerCategoryTableViewCell else { return UITableViewCell() }
+        ) as? CategoryTableViewCell else { return UITableViewCell() }
 
         guard let category = self.delegate?.categories[indexPath.row] else { return UITableViewCell() }
         cell.categoryTitle = category.title

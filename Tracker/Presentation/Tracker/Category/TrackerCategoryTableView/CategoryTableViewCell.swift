@@ -1,13 +1,6 @@
-//
-//  TrackerCategoryTableViewCell.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 19.06.2023.
-//
-
 import UIKit
 
-final class TrackerCategoryTableViewCell: UITableViewCell {
+final class CategoryTableViewCell: UITableViewCell {
     var categoryTitle: String? {
         didSet {
             categoryTitleLable.text = categoryTitle
@@ -61,7 +54,7 @@ final class TrackerCategoryTableViewCell: UITableViewCell {
     }
 }
 
-private extension TrackerCategoryTableViewCell {
+private extension CategoryTableViewCell {
     func addSubviews() {
         contentView.addSubview(categoryTitleLable)
         contentView.addSubview(selectedCellImageView)

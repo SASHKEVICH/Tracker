@@ -42,9 +42,9 @@ final class AddingViewController: UIViewController, AddingViewControllerProtocol
     }
 }
 
-// MARK: - TrackerCategoryViewControllerDelegate
+// MARK: - CategoryViewControllerDelegate
 
-extension AddingViewController: TrackerCategoryViewControllerDelegate {
+extension AddingViewController: CategoryViewControllerDelegate {
     func didRecieveCategory(_ category: TrackerCategory) {
         self.viewModel.didSelect(category: category)
     }

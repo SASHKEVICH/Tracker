@@ -1,13 +1,6 @@
-//
-//  TrackerCategoryViewModel.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 19.06.2023.
-//
-
 import Foundation
 
-protocol TrackerCategoryViewModelProtocol {
+protocol CategoryViewModelProtocol {
     var onCategoriesChanged: Binding? { get set }
     var categories: [TrackerCategory] { get }
 
@@ -16,8 +9,8 @@ protocol TrackerCategoryViewModelProtocol {
     func didChoose(category: TrackerCategory)
 }
 
-final class TrackerCategoryViewModel {
-    weak var delegate: TrackerCategoryViewControllerDelegate?
+final class CategoryViewModel {
+    weak var delegate: CategoryViewControllerDelegate?
 
     var onCategoriesChanged: Binding?
     var categories: [TrackerCategory] = [] {
@@ -50,9 +43,9 @@ final class TrackerCategoryViewModel {
     }
 }
 
-// MARK: - TrackerCategoryViewModelProtocol
+// MARK: - CategoryViewModelProtocol
 
-extension TrackerCategoryViewModel: TrackerCategoryViewModelProtocol {
+extension CategoryViewModel: CategoryViewModelProtocol {
     func didChoose(category: TrackerCategory) {
         self.delegate?.didRecieveCategory(category)
     }
@@ -60,13 +53,13 @@ extension TrackerCategoryViewModel: TrackerCategoryViewModelProtocol {
 
 // MARK: - TrackersCategoryDataProviderDelegate
 
-extension TrackerCategoryViewModel: TrackersCategoryDataProviderDelegate {
+extension CategoryViewModel: TrackersCategoryDataProviderDelegate {
     func storeDidUpdate() {
         self.categories = self.getCategoriesFromStore()
     }
 }
 
-private extension TrackerCategoryViewModel {
+private extension CategoryViewModel {
     func shouldHidePlaceholder() {
         self.isPlaceholderHidden = self.categories.isEmpty == false
     }
