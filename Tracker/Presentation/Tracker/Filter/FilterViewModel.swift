@@ -1,18 +1,11 @@
-//
-//  TrackerFilterViewModel.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 14.07.2023.
-//
-
 import Foundation
 
-protocol TrackerFilterViewControllerDelegate: AnyObject {
+protocol FilterViewControllerDelegate: AnyObject {
     func setCurrentDate()
     func didSelectFilter(category: TrackerCategory)
 }
 
-public final class TrackerFilterViewModel {
+public final class FilterViewModel {
     public enum FilterMode: Equatable {
         case all(Date)
         case today
@@ -30,7 +23,7 @@ public final class TrackerFilterViewModel {
         }
     }
 
-    weak var delegate: TrackerFilterViewControllerDelegate?
+    weak var delegate: FilterViewControllerDelegate?
 
     var onCategoriesChanged: Binding?
     var categories: [TrackerCategory] {
@@ -62,7 +55,7 @@ public final class TrackerFilterViewModel {
 
 // MARK: - CategoryViewModelProtocol
 
-extension TrackerFilterViewModel: CategoryViewModelProtocol {
+extension FilterViewModel: CategoryViewModelProtocol {
     func didChoose(category: TrackerCategory) {
         guard let mode = self.resolveFiltrationMode(for: category.title) else { return }
         if mode == .today {
@@ -74,7 +67,7 @@ extension TrackerFilterViewModel: CategoryViewModelProtocol {
     }
 }
 
-private extension TrackerFilterViewModel {
+private extension FilterViewModel {
     func prepareFilter(for mode: FilterMode) -> TrackerCategory {
         switch mode {
         case .all:

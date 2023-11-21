@@ -182,7 +182,7 @@ extension TrackersViewController: TrackersViewControllerFetchingProtocol {
 
 // MARK: - TrackerFilterViewControllerDelegate
 
-extension TrackersViewController: TrackerFilterViewControllerDelegate {
+extension TrackersViewController: FilterViewControllerDelegate {
     func setCurrentDate() {
         self.datePicker.date = Date()
     }

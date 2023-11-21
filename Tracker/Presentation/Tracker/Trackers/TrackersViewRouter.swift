@@ -67,12 +67,12 @@ extension TrackersViewRouter: TrackersViewRouterProtocol {
         let trackersFactory = TrackersFactory()
         let categoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
 
-        let viewModel = TrackerFilterViewModel(
+        let viewModel = FilterViewModel(
             chosenDate: chosenDate,
             trackersCategoryFactory: categoryFactory,
             trackersService: self.trackersService
         )
-        viewModel.delegate = self.viewController as? TrackerFilterViewControllerDelegate
+        viewModel.delegate = self.viewController as? FilterViewControllerDelegate
 
         let helper = CategoryTableViewHelper()
         let vc = CategoryViewController(
