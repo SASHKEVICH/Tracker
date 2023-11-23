@@ -16,9 +16,6 @@ packages:
   Rswift:
     url: https://github.com/mac-cain13/R.swift
     version: 7.4.0
-  YandexMobileMetrica:
-    url: https://github.com/yandexmobile/metrica-sdk-ios
-    version: 4.5.2
   swift-snapshot-testing:
     url: https://github.com/pointfreeco/swift-snapshot-testing
     version: 1.11.1
@@ -44,7 +41,6 @@ targets:
     dependencies:
       - package: Rswift
         product: RswiftLibrary
-      - package: YandexMobileMetrica
     sources:
       - path: ./Tracker
     configFiles:
