@@ -13,6 +13,9 @@ configs:
   Release: release
 
 packages:
+  Realm:
+    url: https://github.com/realm/realm-swift.git
+    version: 10.44.0
   Rswift:
     url: https://github.com/mac-cain13/R.swift
     version: 7.4.0
@@ -41,6 +44,8 @@ targets:
     dependencies:
       - package: Rswift
         product: RswiftLibrary
+
+      - package: Realm
     sources:
       - path: ./Tracker
     configFiles:
