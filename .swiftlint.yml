@@ -7,7 +7,7 @@ included:
 excluded: 
   - Binaries
   - Config
-  - ./Tracker/R.generated.swift
+  - ./Tracker/Resources/R.generated.swift
 
 function_parameter_count: 10
 
