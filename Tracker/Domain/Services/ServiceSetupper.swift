@@ -16,7 +16,6 @@ protocol ServiceSetupperProtocol {
     var trackersCategoryAddingService: TrackersCategoryAddingService { get }
     var trackersPinningService: TrackersPinningService { get }
     var alertPresenterService: AlertPresenterService { get }
-    var analyticsService: AnalyticsService { get }
     var pinnedCategoryId: UUID? { get }
 }
 
@@ -29,7 +28,6 @@ final class ServiceSetupper {
     let trackersCategoryAddingService: TrackersCategoryAddingService
     let trackersPinningService: TrackersPinningService
     let alertPresenterService: AlertPresenterService
-    let analyticsService: AnalyticsService
 
     var pinnedCategoryId: UUID?
 
@@ -88,7 +86,6 @@ final class ServiceSetupper {
             pinnedCategoryId: pinnedCategoryId
         )
 
-        self.analyticsService = AnalyticsService()
         self.alertPresenterService = AlertPresenterService()
     }
 }

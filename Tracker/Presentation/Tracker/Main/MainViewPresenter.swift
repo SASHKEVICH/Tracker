@@ -30,7 +30,6 @@ protocol MainViewPresenterProtocol: AnyObject {
     var view: MainViewControllerFullProtocol? { get set }
     var collectionHelper: MainViewCollectionHelperProtocol { get }
     var searchControllerHelper: MainViewSearchControllerHelperProtocol { get }
-    var analyticsService: AnalyticsServiceProtocol { get }
     var currentDate: Date { get }
     func requestTrackers(for date: Date)
     func viewDidLoad()
@@ -52,8 +51,6 @@ final class MainViewPresenter {
         case search
         case normal
     }
-
-    let analyticsService: AnalyticsServiceProtocol
 
     weak var view: MainViewControllerFullProtocol?
     var completedTrackersRecords: Set<Record> = []
@@ -88,8 +85,7 @@ final class MainViewPresenter {
         trackersRecordService: TrackersRecordServiceProtocol,
         trackersPinningService: TrackersPinningServiceProtocol,
         router: MainViewRouterProtocol,
-        alertPresenterService: AlertPresenterSerivceProtocol,
-        analyticsService: AnalyticsServiceProtocol
+        alertPresenterService: AlertPresenterSerivceProtocol
     ) {
         self.trackersService = trackersService
         self.trackersAddingService = trackersAddingService
@@ -98,7 +94,6 @@ final class MainViewPresenter {
         self.trackersPinningService = trackersPinningService
         self.router = router
         self.alertPresenterService = alertPresenterService
-        self.analyticsService = analyticsService
     }
 }
 
@@ -192,14 +187,12 @@ extension MainViewPresenter: MainViewPresetnerCollectionViewProtocol {
     }
 
     func didTapEditTracker(_ tracker: Tracker) {
-        self.analyticsService.didEditTracker()
         self.router.navigateToEditTrackerScreen(tracker: tracker)
     }
 
     func didTapDeleteTracker(_ tracker: Tracker) {
         self.alertPresenterService.requestDeleteTrackerAlert { [weak self] _ in
             guard let self = self else { return }
-            self.analyticsService.didDeleteTracker()
             self.trackersAddingService.delete(tracker: tracker)
         }
     }
@@ -210,13 +203,11 @@ extension MainViewPresenter: MainViewPresetnerCollectionViewProtocol {
 
     func complete(tracker: Tracker) throws {
         try self.checkCurrentDate()
-        self.analyticsService.didTapTracker()
         self.trackersCompletingService.completeTracker(trackerId: tracker.id, date: currentDate)
     }
 
     func incomplete(tracker: Tracker) throws {
         try self.checkCurrentDate()
-        self.analyticsService.didTapTracker()
         self.trackersCompletingService.incompleteTracker(trackerId: tracker.id, date: currentDate)
     }
 }

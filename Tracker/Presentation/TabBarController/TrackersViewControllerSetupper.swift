@@ -17,7 +17,6 @@ final class TrackersViewControllerSetupper {
     private let trackersCompletingService: TrackersCompletingServiceProtocol
     private let trackersPinningService: TrackersPinningServiceProtocol
     private let alertPresenterService: AlertPresenterService
-    private let analyticsService: AnalyticsServiceProtocol
     private let pinnedCategoryId: UUID
 
     func getViewController() -> UINavigationController? {
@@ -39,7 +38,6 @@ final class TrackersViewControllerSetupper {
         trackersCompletingService: TrackersCompletingServiceProtocol,
         trackersPinningService: TrackersPinningServiceProtocol,
         alertPresenterService: AlertPresenterService,
-        analyticsService: AnalyticsServiceProtocol,
         pinnedCategoryId: UUID
     ) {
         self.trackersCategoryService = trackersCategoryService
@@ -50,7 +48,6 @@ final class TrackersViewControllerSetupper {
         self.trackersCompletingService = trackersCompletingService
         self.trackersPinningService = trackersPinningService
         self.alertPresenterService = alertPresenterService
-        self.analyticsService = analyticsService
         self.pinnedCategoryId = pinnedCategoryId
     }
 }
@@ -77,8 +74,7 @@ private extension TrackersViewControllerSetupper {
             trackersRecordService: self.trackersRecordService,
             trackersPinningService: self.trackersPinningService,
             router: router,
-            alertPresenterService: alertPresenterService,
-            analyticsService: self.analyticsService
+            alertPresenterService: alertPresenterService
         )
 
         var trackersService = self.trackersService

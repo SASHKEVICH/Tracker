@@ -93,16 +93,6 @@ final class MainViewController: UIViewController {
 
         self.presenter?.viewDidLoad()
     }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.presenter?.analyticsService.didOpenMainScreen()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.presenter?.analyticsService.didCloseMainScreen()
-    }
 }
 
 // MARK: - MainViewControllerProtocol
@@ -257,7 +247,6 @@ private extension MainViewController {
 private extension MainViewController {
     @objc
     func didTapAddTracker() {
-        self.presenter?.analyticsService.didTapAddTracker()
         self.presenter?.navigateToTrackerTypeScreen()
     }
 

@@ -24,7 +24,6 @@ final class TabBarViewController: UITabBarController {
             trackersCompletingService: serviceSetupper.trackersCompletingService,
             trackersPinningService: serviceSetupper.trackersPinningService,
             alertPresenterService: serviceSetupper.alertPresenterService,
-            analyticsService: serviceSetupper.analyticsService,
             pinnedCategoryId: pinnedCategoryId
         )
 
