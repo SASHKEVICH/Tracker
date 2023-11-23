@@ -2,7 +2,7 @@ import UIKit
 
 protocol MainViewRouterProtocol {
     func navigateToTrackerTypeScreen()
-    func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?)
+    func navigateToFilterScreen(chosenDate: Date, selectedFilter: Category?)
     func navigateToEditTrackerScreen(tracker: Tracker)
 }
 
@@ -56,9 +56,9 @@ extension MainViewRouter: MainViewRouterProtocol {
         self.viewController?.present(vc, animated: true)
     }
 
-    func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?) {
+    func navigateToFilterScreen(chosenDate: Date, selectedFilter: Category?) {
         let trackersFactory = TrackersFactory()
-        let categoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
+        let categoryFactory = TrackersCategoryMapper(trackersFactory: trackersFactory)
 
         let viewModel = FilterViewModel(
             chosenDate: chosenDate,

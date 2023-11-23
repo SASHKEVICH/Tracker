@@ -60,7 +60,7 @@ private extension TabBarViewController {
         else { return nil }
 
         let trackersFactory = TrackersFactory()
-        let trackersCategoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
+        let trackersCategoryFactory = TrackersCategoryMapper(trackersFactory: trackersFactory)
 
         let serviceSetupper = ServiceSetupper(
             trackersFactory: trackersFactory,

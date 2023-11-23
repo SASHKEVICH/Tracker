@@ -35,7 +35,6 @@ extension AnalyticsService: AnalyticsServiceProtocol {
         YMMYandexMetrica.reportEvent("open_main", parameters: params, onFailure: { error in
             print("REPORT ERROR: %@", error.localizedDescription)
         })
-        print(#function)
     }
 
     func didCloseMainScreen() {
@@ -43,7 +42,6 @@ extension AnalyticsService: AnalyticsServiceProtocol {
         YMMYandexMetrica.reportEvent("close_main", parameters: params, onFailure: { error in
             print("REPORT ERROR: %@", error.localizedDescription)
         })
-        print(#function)
     }
 
     func didTapAddTracker() {
@@ -51,7 +49,6 @@ extension AnalyticsService: AnalyticsServiceProtocol {
         YMMYandexMetrica.reportEvent("click_add_tracker", parameters: params, onFailure: { error in
             print("REPORT ERROR: %@", error.localizedDescription)
         })
-        print(#function)
     }
 
     func didTapTracker() {
@@ -59,7 +56,6 @@ extension AnalyticsService: AnalyticsServiceProtocol {
         YMMYandexMetrica.reportEvent("click_tracker", parameters: params, onFailure: { error in
             print("REPORT ERROR: %@", error.localizedDescription)
         })
-        print(#function)
     }
 
     func didTapFilter() {
@@ -67,7 +63,6 @@ extension AnalyticsService: AnalyticsServiceProtocol {
         YMMYandexMetrica.reportEvent("click_filter", parameters: params, onFailure: { error in
             print("REPORT ERROR: %@", error.localizedDescription)
         })
-        print(#function)
     }
 
     func didEditTracker() {
@@ -75,7 +70,6 @@ extension AnalyticsService: AnalyticsServiceProtocol {
         YMMYandexMetrica.reportEvent("click_edit", parameters: params, onFailure: { error in
             print("REPORT ERROR: %@", error.localizedDescription)
         })
-        print(#function)
     }
 
     func didDeleteTracker() {
@@ -83,6 +77,5 @@ extension AnalyticsService: AnalyticsServiceProtocol {
         YMMYandexMetrica.reportEvent("click_delete", parameters: params, onFailure: { error in
             print("REPORT ERROR: %@", error.localizedDescription)
         })
-        print(#function)
     }
 }

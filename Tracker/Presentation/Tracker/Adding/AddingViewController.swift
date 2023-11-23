@@ -45,7 +45,7 @@ final class AddingViewController: UIViewController, AddingViewControllerProtocol
 // MARK: - CategoryViewControllerDelegate
 
 extension AddingViewController: CategoryViewControllerDelegate {
-    func didRecieveCategory(_ category: TrackerCategory) {
+    func didRecieveCategory(_ category: Category) {
         self.viewModel.didSelect(category: category)
     }
 }
@@ -70,7 +70,7 @@ extension AddingViewController: OptionsTableViewDelegate {
         Array(self.viewModel.selectedWeekDays)
     }
 
-    var selectedCategory: TrackerCategory? {
+    var selectedCategory: Category? {
         self.viewModel.selectedCategory
     }
 

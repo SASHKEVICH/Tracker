@@ -1,24 +1,18 @@
-//
-//  TrackersCategoryDataAdder.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 07.07.2023.
-//
 import CoreData
 import Foundation
 
 protocol TrackersCategoryDataAdderProtocol {
-    func add(category: TrackerCategory) throws
+    func add(category: Category) throws
 }
 
 struct TrackersCategoryDataAdder {
     private let context: NSManagedObjectContext
     private let trackersCategoryDataStore: TrackersCategoryDataStore
-    private let trackersCategoryFactory: TrackersCategoryFactory
+    private let trackersCategoryFactory: TrackersCategoryMapper
 
     init(
         trackersCategoryDataStore: TrackersCategoryDataStore,
-        trackersCategoryFactory: TrackersCategoryFactory
+        trackersCategoryFactory: TrackersCategoryMapper
     ) {
         self.trackersCategoryDataStore = trackersCategoryDataStore
         self.trackersCategoryFactory = trackersCategoryFactory
@@ -29,7 +23,7 @@ struct TrackersCategoryDataAdder {
 // MARK: - TrackersCategoryDataAdderProtocol
 
 extension TrackersCategoryDataAdder: TrackersCategoryDataAdderProtocol {
-    func add(category: TrackerCategory) throws {
+    func add(category: Category) throws {
         let categoryCoreData = self.trackersCategoryFactory.makeCategoryCoreData(from: category, context: self.context)
         try trackersCategoryDataStore.add(category: categoryCoreData)
     }

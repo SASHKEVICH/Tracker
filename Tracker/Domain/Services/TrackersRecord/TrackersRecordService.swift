@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol TrackersRecordServiceDelegate: AnyObject {
-    func didRecieveCompletedTrackers(_ records: [TrackerRecord])
+    func didRecieveCompletedTrackers(_ records: [Record])
 }
 
 public protocol TrackersRecordServiceProtocol {
@@ -32,9 +32,9 @@ final class TrackersRecordService {
 extension TrackersRecordService: TrackersRecordServiceProtocol {
     func fetchCompletedRecords(for date: Date) {
         let trackerRecordsCoreData = self.trackersRecordDataFetcher.fetchCompletedRecords(date: date)
-        let trackerRecords = trackerRecordsCoreData.compactMap { trackerRecordCoreData -> TrackerRecord? in
+        let trackerRecords = trackerRecordsCoreData.compactMap { trackerRecordCoreData -> Record? in
             guard let id = UUID(uuidString: trackerRecordCoreData.id) else { return nil }
-            return TrackerRecord(trackerId: id, date: trackerRecordCoreData.date)
+            return Record(trackerId: id, date: trackerRecordCoreData.date)
         }
 
         self.delegate?.didRecieveCompletedTrackers(trackerRecords)

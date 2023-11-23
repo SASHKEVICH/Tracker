@@ -1,7 +1,7 @@
 import UIKit
 
 protocol CategoryViewControllerDelegate: AnyObject {
-    func didRecieveCategory(_ category: TrackerCategory)
+    func didRecieveCategory(_ category: Category)
 }
 
 final class CategoryViewController: UIViewController {
@@ -54,7 +54,7 @@ final class CategoryViewController: UIViewController {
         return button
     }()
 
-    private var selectedCategory: TrackerCategory?
+    private var selectedCategory: Category?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,7 +73,7 @@ final class CategoryViewController: UIViewController {
         helper: CategoryTableViewHelperProtocol,
         router: CategoryRouterProtocol?,
         flow: Flow,
-        selectedCategory: TrackerCategory?
+        selectedCategory: Category?
     ) {
         self.viewModel = viewModel
         self.helper = helper
@@ -93,15 +93,15 @@ final class CategoryViewController: UIViewController {
 // MARK: - TrackerCategoryTableViewHelperFullDelegate
 
 extension CategoryViewController: CategoryTableViewHelperDelegate {
-    var categories: [TrackerCategory] {
+    var categories: [Category] {
         self.viewModel.categories
     }
 
-    var chosenCategory: TrackerCategory? {
+    var chosenCategory: Category? {
         self.selectedCategory
     }
 
-    func didSelect(category: TrackerCategory) {
+    func didSelect(category: Category) {
         self.viewModel.didChoose(category: category)
     }
 }

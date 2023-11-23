@@ -2,7 +2,7 @@ import UIKit
 
 protocol AddingRouterProtocol {
     func navigateToScheduleScreen(selectedWeekDays: Set<WeekDay>, from viewController: UIViewController)
-    func navigateToCategoryScreen(selectedCategory: TrackerCategory?, from viewController: UIViewController)
+    func navigateToCategoryScreen(selectedCategory: Category?, from viewController: UIViewController)
     func navigateToMainScreen()
 }
 
@@ -38,7 +38,7 @@ extension AddingRouter: AddingRouterProtocol {
         viewController.present(vc, animated: true)
     }
 
-    func navigateToCategoryScreen(selectedCategory: TrackerCategory?, from viewController: UIViewController) {
+    func navigateToCategoryScreen(selectedCategory: Category?, from viewController: UIViewController) {
         let viewModel = CategoryViewModel(
             trackersCategoryService: self.trackersCategoryService,
             pinnedCategoryId: self.pinnedCategoryId

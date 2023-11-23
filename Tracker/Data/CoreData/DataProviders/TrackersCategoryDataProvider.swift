@@ -24,7 +24,7 @@ final class TrackersCategoryDataProvider: NSObject {
     private let context: NSManagedObjectContext
 
     private lazy var fetchedResultsController: NSFetchedResultsController = {
-        let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
+        let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: TrackerCategoryCoreData.entityName)
         let sortDescriptors = [NSSortDescriptor(key: #keyPath(TrackerCategoryCoreData.title), ascending: true)]
         request.sortDescriptors = sortDescriptors
         request.predicate = nil

@@ -2,18 +2,18 @@ import Foundation
 
 protocol CategoryViewModelProtocol {
     var onCategoriesChanged: Binding? { get set }
-    var categories: [TrackerCategory] { get }
+    var categories: [Category] { get }
 
     var onIsPlaceholderHiddenChanged: Binding? { get set }
     var isPlaceholderHidden: Bool { get }
-    func didChoose(category: TrackerCategory)
+    func didChoose(category: Category)
 }
 
 final class CategoryViewModel {
     weak var delegate: CategoryViewControllerDelegate?
 
     var onCategoriesChanged: Binding?
-    var categories: [TrackerCategory] = [] {
+    var categories: [Category] = [] {
         didSet {
             self.onCategoriesChanged?()
             self.shouldHidePlaceholder()
@@ -46,7 +46,7 @@ final class CategoryViewModel {
 // MARK: - CategoryViewModelProtocol
 
 extension CategoryViewModel: CategoryViewModelProtocol {
-    func didChoose(category: TrackerCategory) {
+    func didChoose(category: Category) {
         self.delegate?.didRecieveCategory(category)
     }
 }
@@ -64,7 +64,7 @@ private extension CategoryViewModel {
         self.isPlaceholderHidden = self.categories.isEmpty == false
     }
 
-    func getCategoriesFromStore() -> [TrackerCategory] {
+    func getCategoriesFromStore() -> [Category] {
         let categories = self.trackersCategoryService.categories
         return categories.filter { $0.id != self.pinnedCategoryId }
     }

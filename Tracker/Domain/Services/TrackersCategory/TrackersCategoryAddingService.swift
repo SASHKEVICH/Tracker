@@ -13,10 +13,10 @@ public protocol TrackersCategoryAddingServiceProtocol {
 
 final class TrackersCategoryAddingService {
     private let trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
-    private let trackersCategoryFactory: TrackersCategoryFactory
+    private let trackersCategoryFactory: TrackersCategoryMapper
 
     init(
-        trackersCategoryFactory: TrackersCategoryFactory,
+        trackersCategoryFactory: TrackersCategoryMapper,
         trackersCategoryDataAdder: TrackersCategoryDataAdderProtocol
     ) {
         self.trackersCategoryFactory = trackersCategoryFactory

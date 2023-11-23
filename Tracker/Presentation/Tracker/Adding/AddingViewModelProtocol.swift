@@ -11,7 +11,7 @@ protocol AddingViewModelProtocol {
     var selectedWeekDays: Set<WeekDay> { get }
 
     var onSelectedCategoryChanged: Binding? { get set }
-    var selectedCategory: TrackerCategory? { get }
+    var selectedCategory: Category? { get }
 
     var onSelectedEmojiChanged: Binding? { get set }
     var selectedEmoji: String? { get }
@@ -32,7 +32,7 @@ protocol AddingViewModelProtocol {
     func didConfirmTracker()
     func didSelect(color: UIColor)
     func didSelect(emoji: String)
-    func didSelect(category: TrackerCategory)
+    func didSelect(category: Category)
     func didSelect(weekDays: Set<WeekDay>)
     func didSelect(title: String)
 }

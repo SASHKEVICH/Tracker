@@ -32,7 +32,7 @@ final class EditingViewModel {
         }
     }
 
-    var selectedCategory: TrackerCategory? {
+    var selectedCategory: Category? {
         didSet {
             self.onSelectedCategoryChanged?()
             self.checkToEnableConfirmTrackerButton()
@@ -156,7 +156,7 @@ extension EditingViewModel: EditingViewModelProtocol {
         self.selectedEmoji = emoji
     }
 
-    func didSelect(category: TrackerCategory) {
+    func didSelect(category: Category) {
         self.selectedCategory = category
     }
 
@@ -191,7 +191,7 @@ extension EditingViewModel: SelectingScheduleViewControllerDelegate {
 // MARK: - CategoryViewControllerDelegate
 
 extension EditingViewModel: CategoryViewControllerDelegate {
-    func didRecieveCategory(_ category: TrackerCategory) {
+    func didRecieveCategory(_ category: Category) {
         self.selectedCategory = category
     }
 }

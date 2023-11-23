@@ -1,7 +1,7 @@
 import Foundation
 
 protocol MainViewPresetnerCollectionViewProtocol: AnyObject {
-    var completedTrackersRecords: Set<TrackerRecord> { get }
+    var completedTrackersRecords: Set<Record> { get }
     var currentDate: Date { get }
 
     var numberOfSections: Int { get }
@@ -35,7 +35,7 @@ protocol MainViewPresenterProtocol: AnyObject {
     func requestTrackers(for date: Date)
     func viewDidLoad()
     func navigateToTrackerTypeScreen()
-    func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?)
+    func navigateToFilterScreen(chosenDate: Date, selectedFilter: Category?)
     func eraseOperations()
 }
 
@@ -56,7 +56,7 @@ final class MainViewPresenter {
     let analyticsService: AnalyticsServiceProtocol
 
     weak var view: MainViewControllerFullProtocol?
-    var completedTrackersRecords: Set<TrackerRecord> = []
+    var completedTrackersRecords: Set<Record> = []
     var currentDate: Date = .init()
 
     lazy var collectionHelper: MainViewCollectionHelperProtocol = {
@@ -125,7 +125,7 @@ extension MainViewPresenter: MainViewPresenterProtocol {
         self.router.navigateToTrackerTypeScreen()
     }
 
-    func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?) {
+    func navigateToFilterScreen(chosenDate: Date, selectedFilter: Category?) {
         self.router.navigateToFilterScreen(chosenDate: chosenDate, selectedFilter: selectedFilter)
     }
 }
@@ -270,7 +270,7 @@ extension MainViewPresenter: TrackersDataProviderDelegate {
 // MARK: - TrackersRecordServiceDelegate
 
 extension MainViewPresenter: TrackersRecordServiceDelegate {
-    func didRecieveCompletedTrackers(_ records: [TrackerRecord]) {
+    func didRecieveCompletedTrackers(_ records: [Record]) {
         self.completedTrackersRecords = Set(records)
     }
 }

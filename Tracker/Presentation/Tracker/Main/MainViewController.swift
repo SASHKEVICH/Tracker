@@ -81,7 +81,7 @@ final class MainViewController: UIViewController {
         return view
     }()
 
-    private var selectedFilter: TrackerCategory?
+    private var selectedFilter: Category?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -180,7 +180,7 @@ extension MainViewController: FilterViewControllerDelegate {
         self.datePicker.date = Date()
     }
 
-    func didSelectFilter(category: TrackerCategory) {
+    func didSelectFilter(category: Category) {
         self.selectedFilter = category
     }
 }

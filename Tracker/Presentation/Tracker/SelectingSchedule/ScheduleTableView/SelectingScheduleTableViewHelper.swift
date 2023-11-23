@@ -68,6 +68,7 @@ final class SelectingScheduleTableViewHelper: NSObject, SelectingScheduleTableVi
     }
 }
 
+// MARK: - SelectingScheduleTableViewHelperDelegate
 extension SelectingScheduleTableViewHelper: SelectingScheduleTableViewHelperDelegate {
     func didChangeSwitchValue(_ cell: SelectingScheduleTableViewCell, isOn: Bool) {
         guard let weekDay = cell.weekDay else { return }

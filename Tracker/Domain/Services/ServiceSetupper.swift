@@ -35,7 +35,7 @@ final class ServiceSetupper {
 
     init?(
         trackersFactory: TrackersFactory,
-        trackersCategoryFactory: TrackersCategoryFactory,
+        trackersCategoryFactory: TrackersCategoryMapper,
         trackersDataStore: TrackersDataStore,
         trackersCategoryDataStore: TrackersCategoryDataStore,
         trackersRecordDataStore: TrackersRecordDataStore
@@ -165,7 +165,7 @@ private extension ServiceSetupper {
     }
 
     static func prepareTrackersCategoryService(
-        trackersCategoryFactory: TrackersCategoryFactory,
+        trackersCategoryFactory: TrackersCategoryMapper,
         trackersCategoryDataStore: TrackersCategoryDataStore
     ) -> TrackersCategoryService {
         let provider = TrackersCategoryDataProvider(context: trackersCategoryDataStore.managedObjectContext)
@@ -181,7 +181,7 @@ private extension ServiceSetupper {
     }
 
     static func prepareTrackersCategoryAddingService(
-        trackersCategoryFactory: TrackersCategoryFactory,
+        trackersCategoryFactory: TrackersCategoryMapper,
         trackersCategoryDataStore: TrackersCategoryDataStore
     ) -> TrackersCategoryAddingService {
         let adder = TrackersCategoryDataAdder(
@@ -198,7 +198,7 @@ private extension ServiceSetupper {
     }
 
     static func preparePinnedCategoryId(
-        trackersCategoryFactory: TrackersCategoryFactory,
+        trackersCategoryFactory: TrackersCategoryMapper,
         trackersCategoryDataStore: TrackersCategoryDataStore
     ) -> UUID? {
         let pinnedCategoryService = TrackersPinnedCategoryService(

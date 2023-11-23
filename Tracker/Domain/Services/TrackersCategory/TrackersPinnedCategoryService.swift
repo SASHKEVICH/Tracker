@@ -17,9 +17,9 @@ final class TrackersPinnedCategoryService {
     private let key = "pinnedCategoryId"
 
     private let trackersCategoryDataStore: TrackersCategoryDataStore
-    private let trackersCategoryFactory: TrackersCategoryFactory
+    private let trackersCategoryFactory: TrackersCategoryMapper
 
-    init?(trackersCategoryFactory: TrackersCategoryFactory, trackersCategoryDataStore: TrackersCategoryDataStore) {
+    init?(trackersCategoryFactory: TrackersCategoryMapper, trackersCategoryDataStore: TrackersCategoryDataStore) {
         self.trackersCategoryDataStore = trackersCategoryDataStore
         self.trackersCategoryFactory = trackersCategoryFactory
     }

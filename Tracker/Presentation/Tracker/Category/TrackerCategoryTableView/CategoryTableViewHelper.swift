@@ -1,9 +1,9 @@
 import UIKit
 
 protocol CategoryTableViewHelperDelegate: AnyObject {
-    var categories: [TrackerCategory] { get }
-    var chosenCategory: TrackerCategory? { get }
-    func didSelect(category: TrackerCategory)
+    var categories: [Category] { get }
+    var chosenCategory: Category? { get }
+    func didSelect(category: Category)
 }
 
 protocol CategoryTableViewHelperProtocol: UITableViewDelegate, UITableViewDataSource {

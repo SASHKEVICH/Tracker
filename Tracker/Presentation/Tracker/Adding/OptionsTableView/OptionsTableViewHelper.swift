@@ -3,7 +3,7 @@ import UIKit
 protocol OptionsTableViewDelegate: AnyObject {
     var optionsTitles: [String] { get }
     var selectedWeekDays: [WeekDay] { get }
-    var selectedCategory: TrackerCategory? { get }
+    var selectedCategory: Category? { get }
     func didTapScheduleCell()
     func didTapCategoryCell()
 }
