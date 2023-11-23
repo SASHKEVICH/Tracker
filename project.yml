@@ -46,6 +46,7 @@ targets:
         product: RswiftLibrary
 
       - package: Realm
+        product: RealmSwift
     sources:
       - path: ./Tracker
     configFiles:
