@@ -2,21 +2,26 @@ import Foundation
 
 final class CategoriesRepository: CategoriesRepositoryProtocol {
 
-    private let trackersCategoryFactory: TrackersCategoryMapper
-    private let categoriesDataProvider: TrackersCategoryDataProviderProtocol
+    private let localDataSource: CategoriesLocalDataSourceProtocol
+    private let trackersCategoryMapper: TrackersCategoryMapper
 
     init(
-        trackersCategoryFactory: TrackersCategoryMapper,
-        categoriesDataProvider: TrackersCategoryDataProviderProtocol
+        localDataSource: CategoriesLocalDataSourceProtocol,
+        trackersCategoryMapper: TrackersCategoryMapper
     ) {
-        self.trackersCategoryFactory = trackersCategoryFactory
-        self.categoriesDataProvider = categoriesDataProvider
+        self.localDataSource = localDataSource
+        self.trackersCategoryMapper = trackersCategoryMapper
     }
 
-    func getCategories() -> [Category] {
-        let categories = self.categoriesDataProvider.categories
-            .compactMap { trackersCategoryFactory.makeCategory(categoryCoreData: $0) }
-            .compactMap { $0.toDomain() }
-        return categories
+    func getCategories(_ completion: @escaping ([Category]) -> Void) {
+        self.localDataSource.fetchCategories { localCategories in
+            guard let localCategories = localCategories else {
+                completion([])
+                return
+            }
+
+            let categories = Array(localCategories.map { $0.toDomain() })
+            completion(categories)
+        }
     }
 }

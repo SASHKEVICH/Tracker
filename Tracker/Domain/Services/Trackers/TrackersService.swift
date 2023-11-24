@@ -15,7 +15,7 @@ public protocol TrackersServiceDataSourceProtocol {
 
 public protocol TrackersServiceFetchingProtocol {
     var trackersDataProviderDelegate: TrackersDataProviderDelegate? { get set }
-    func tracker(at indexPath: IndexPath) -> Tracker?
+    func tracker(at indexPath: IndexPath) -> OldTrackerEntity?
     func fetchTrackers(weekDay: WeekDay)
     func fetchTrackers(titleSearchString: String, currentWeekDay: WeekDay)
     func requestDataProviderErrorAlert()
@@ -49,7 +49,7 @@ final class TrackersService {
 // MARK: - TrackersServiceFetchingProtocol
 
 extension TrackersService: TrackersServiceFetchingProtocol {
-    func tracker(at indexPath: IndexPath) -> Tracker? {
+    func tracker(at indexPath: IndexPath) -> OldTrackerEntity? {
         guard let trackerCoreData = self.trackersDataProvider.tracker(at: indexPath) else { return nil }
         return self.trackersFactory.makeTracker(from: trackerCoreData)
     }

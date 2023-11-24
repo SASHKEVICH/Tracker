@@ -64,11 +64,11 @@ final class AddingViewModel {
     }
 
     private let trackersAddingService: TrackersAddingServiceProtocol
-    private let trackerType: Tracker.TrackerType
+    private let trackerType: OldTrackerEntity.TrackerType
 
     init(
         trackersAddingService: TrackersAddingServiceProtocol,
-        trackerType: Tracker.TrackerType,
+        trackerType: OldTrackerEntity.TrackerType,
         optionTitles: [String],
         viewControllerTitle: String
     ) {

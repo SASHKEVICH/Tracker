@@ -12,7 +12,7 @@ public protocol TrackersCategoryServiceProtocol {
     var categories: [Category] { get }
     var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate? { get set }
     func numberOfItemsInSection(_ section: Int) -> Int
-    func category(for tracker: Tracker) -> Category?
+    func category(for tracker: OldTrackerEntity) -> Category?
 }
 
 final class TrackersCategoryService {
@@ -52,7 +52,7 @@ extension TrackersCategoryService: TrackersCategoryServiceProtocol {
         self.trackersCategoryDataProvider.numberOfItemsInSection(section)
     }
 
-    func category(for tracker: Tracker) -> Category? {
+    func category(for tracker: OldTrackerEntity) -> Category? {
 //        guard let categoryCoreData = self.trackersCategoryDataFetcher.category(for: tracker) else { return nil }
 //        return self.trackersCategoryFactory.makeCategory(categoryCoreData: categoryCoreData)
         return nil

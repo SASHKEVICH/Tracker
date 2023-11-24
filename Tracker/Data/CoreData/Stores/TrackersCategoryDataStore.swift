@@ -21,7 +21,7 @@ extension TrackersCategoryDataStore {
         self.context
     }
 
-    func category(for tracker: Tracker) -> TrackerCategoryCoreData? {
+    func category(for tracker: OldTrackerEntity) -> TrackerCategoryCoreData? {
         let trackerRequest = TrackerCoreData.fetchRequest()
         let trackerPredicate = NSPredicate(format: "%K MATCHES[cd] %@", #keyPath(TrackerCoreData.id), tracker.id.uuidString)
         trackerRequest.predicate = trackerPredicate

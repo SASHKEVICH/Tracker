@@ -9,7 +9,7 @@ final class MainViewCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    var tracker: Tracker? {
+    var tracker: OldTrackerEntity? {
         didSet {
             guard let tracker = tracker else { return }
             topContainerView.backgroundColor = tracker.color

@@ -33,7 +33,7 @@ extension TrackersDataStore {
         try self.context.save()
     }
 
-    func delete(tracker: Tracker) {
+    func delete(tracker: OldTrackerEntity) {
         guard let trackerCoreData = self.tracker(with: tracker.id.uuidString) else { return }
         self.delete(trackerCoreData: trackerCoreData)
     }

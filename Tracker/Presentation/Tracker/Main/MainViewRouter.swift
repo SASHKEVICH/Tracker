@@ -3,7 +3,7 @@ import UIKit
 protocol MainViewRouterProtocol {
     func navigateToTrackerTypeScreen()
     func navigateToFilterScreen(chosenDate: Date, selectedFilter: Category?)
-    func navigateToEditTrackerScreen(tracker: Tracker)
+    func navigateToEditTrackerScreen(tracker: OldTrackerEntity)
 }
 
 final class MainViewRouter {
@@ -79,7 +79,7 @@ extension MainViewRouter: MainViewRouterProtocol {
         self.viewController?.present(vc, animated: true)
     }
 
-    func navigateToEditTrackerScreen(tracker: Tracker) {
+    func navigateToEditTrackerScreen(tracker: OldTrackerEntity) {
         let router = AddingRouter(
             trackersCategoryService: self.trackersCategoryService,
             trackersCategoryAddingService: self.trackersCategoryAddingService,

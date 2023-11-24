@@ -74,7 +74,7 @@ final class EditingViewModel {
 
     private var newCompletedTimes: Int = 0
 
-    private let tracker: Tracker
+    private let tracker: OldTrackerEntity
 
     private let trackersAddingService: TrackersAddingServiceProtocol
     private let trackersRecordService: TrackersRecordServiceProtocol
@@ -86,7 +86,7 @@ final class EditingViewModel {
         trackersRecordService: TrackersRecordServiceProtocol,
         trackersCompletingService: TrackersCompletingServiceProtocol,
         trackersCategoryService: TrackersCategoryServiceProtocol,
-        tracker: Tracker
+        tracker: OldTrackerEntity
     ) {
         self.trackersAddingService = trackersAddingService
         self.trackersRecordService = trackersRecordService

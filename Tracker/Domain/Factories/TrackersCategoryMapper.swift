@@ -16,7 +16,7 @@ public struct TrackersCategoryMapper {
         Category(id: id, title: title, trackers: [], isPinning: isPinning)
     }
 
-    func makeCategory(categoryCoreData category: TrackerCategoryCoreData) -> CategoryDTO? {
+    func makeCategory(categoryCoreData category: TrackerCategoryCoreData) -> Category? {
         guard let id = UUID(uuidString: category.id) else {
             assertionFailure("Could not parse uuid from string")
             return nil
@@ -24,7 +24,8 @@ public struct TrackersCategoryMapper {
         let trackers = category.trackers
             .compactMap { $0 as? TrackerCoreData }
             .compactMap { trackersFactory.makeTracker(from: $0) }
-        return CategoryDTO(id: id, title: category.title, trackers: trackers, isPinning: category.isPinning)
+//        return Category(id: id, title: category.title, trackers: trackers, isPinning: category.isPinning)
+        return nil
     }
 
     func makeCategoryCoreData(

@@ -215,7 +215,7 @@ private extension MainViewCollectionHelper {
         return actions
     }
 
-    func getPinningAction(shouldPin: Bool, cell: MainViewCollectionViewCell, tracker: Tracker) -> UIAction {
+    func getPinningAction(shouldPin: Bool, cell: MainViewCollectionViewCell, tracker: OldTrackerEntity) -> UIAction {
         let localizable = R.string.localizable
         let pinActionTitle = shouldPin
             ? localizable.trackersCollectionViewActionPin()

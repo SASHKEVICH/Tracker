@@ -20,8 +20,8 @@ public protocol TrackersCompletingServiceProtocol {
     func completeTracker(trackerId id: UUID, date: Date)
     func incompleteTracker(trackerId id: UUID, date: Date)
 
-    func addRecords(for tracker: Tracker, amount: Int)
-    func removeRecords(for tracker: Tracker, amount: Int)
+    func addRecords(for tracker: OldTrackerEntity, amount: Int)
+    func removeRecords(for tracker: OldTrackerEntity, amount: Int)
 }
 
 final class TrackersCompletingService {
@@ -47,12 +47,12 @@ extension TrackersCompletingService: TrackersCompletingServiceProtocol {
         self.delegate?.didChangeCompletedTrackers()
     }
 
-    func addRecords(for tracker: Tracker, amount: Int) {
+    func addRecords(for tracker: OldTrackerEntity, amount: Int) {
         self.trackersDataCompleter.addRecords(for: tracker.id.uuidString, amount: amount)
         self.delegate?.didChangeCompletedTrackers()
     }
 
-    func removeRecords(for tracker: Tracker, amount: Int) {
+    func removeRecords(for tracker: OldTrackerEntity, amount: Int) {
         self.trackersDataCompleter.removeRecords(for: tracker.id.uuidString, amount: amount)
         self.delegate?.didChangeCompletedTrackers()
     }

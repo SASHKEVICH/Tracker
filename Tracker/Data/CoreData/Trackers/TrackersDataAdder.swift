@@ -9,9 +9,9 @@ import CoreData
 import Foundation
 
 protocol TrackersDataAdderProtocol {
-    func add(tracker: Tracker, for categoryId: UUID) throws
-    func delete(tracker: Tracker)
-    func saveEdited(tracker: Tracker, newCategoryId: UUID)
+    func add(tracker: OldTrackerEntity, for categoryId: UUID) throws
+    func delete(tracker: OldTrackerEntity)
+    func saveEdited(tracker: OldTrackerEntity, newCategoryId: UUID)
 }
 
 struct TrackersDataAdder {
@@ -40,7 +40,7 @@ struct TrackersDataAdder {
 }
 
 extension TrackersDataAdder: TrackersDataAdderProtocol {
-    func add(tracker: Tracker, for categoryId: UUID) throws {
+    func add(tracker: OldTrackerEntity, for categoryId: UUID) throws {
         let trackersCoreData = self.trackersFactory.makeTrackerCoreData(from: tracker, context: self.context)
 
         guard let categoryCoreData = self.trackersCategoryDataStore.category(with: categoryId.uuidString) else {
@@ -50,11 +50,11 @@ extension TrackersDataAdder: TrackersDataAdderProtocol {
         try self.trackersDataStore.add(tracker: trackersCoreData, in: categoryCoreData)
     }
 
-    func delete(tracker: Tracker) {
+    func delete(tracker: OldTrackerEntity) {
         self.trackersDataStore.delete(tracker: tracker)
     }
 
-    func saveEdited(tracker: Tracker, newCategoryId: UUID) {
+    func saveEdited(tracker: OldTrackerEntity, newCategoryId: UUID) {
         guard let newCategoryCoreData = self.trackersCategoryDataStore.category(with: newCategoryId.uuidString) else { return }
         guard let oldTrackerCoreData = self.trackersDataStore.tracker(with: tracker.id.uuidString) else { return }
 

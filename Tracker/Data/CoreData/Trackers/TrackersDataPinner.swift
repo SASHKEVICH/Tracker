@@ -9,8 +9,8 @@ import CoreData
 import Foundation
 
 protocol TrackersDataPinnerProtocol {
-    func pin(tracker: Tracker)
-    func unpin(tracker: Tracker)
+    func pin(tracker: OldTrackerEntity)
+    func unpin(tracker: OldTrackerEntity)
 }
 
 struct TrackersDataPinner {
@@ -32,7 +32,7 @@ struct TrackersDataPinner {
 // MARK: - TrackersDataPinnerProtocol
 
 extension TrackersDataPinner: TrackersDataPinnerProtocol {
-    func pin(tracker: Tracker) {
+    func pin(tracker: OldTrackerEntity) {
         guard let pinnedCategory = self.pinnedCategory else { return }
         guard let trackerCoreData = self.trackersDataStore.tracker(with: tracker.id.uuidString) else {
             assertionFailure("Cannot find tracker with id: \(tracker.id.uuidString)")
@@ -44,7 +44,7 @@ extension TrackersDataPinner: TrackersDataPinnerProtocol {
         self.trackersDataStore.pin(tracker: trackerCoreData, pinnedCategory: pinnedCategory)
     }
 
-    func unpin(tracker: Tracker) {
+    func unpin(tracker: OldTrackerEntity) {
         guard let previousCategory = self.trackersCategoryDataStore.category(with: tracker.previousCategoryId.uuidString) else {
             return
         }

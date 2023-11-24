@@ -41,7 +41,7 @@ extension SelectingTypeRouter: SelectingTypeRouterProtocol {
 }
 
 private extension SelectingTypeRouter {
-    func presentAddingViewController(trackerType: Tracker.TrackerType) {
+    func presentAddingViewController(trackerType: OldTrackerEntity.TrackerType) {
         let optionsHelper = OptionsTableViewHelper()
         let textFieldHelper = TitleTextFieldHelper()
         let colorsHelper = ColorsCollectionViewHelper()
@@ -86,7 +86,7 @@ private extension SelectingTypeRouter {
 }
 
 private extension SelectingTypeRouter {
-    func prepareOptionsTitles(for type: Tracker.TrackerType) -> [String] {
+    func prepareOptionsTitles(for type: OldTrackerEntity.TrackerType) -> [String] {
         let localizable = R.string.localizable
         let categoryTitle = localizable.trackerAddingOptionTitleCategory()
         switch type {
@@ -98,7 +98,7 @@ private extension SelectingTypeRouter {
         }
     }
 
-    func prepareAddingViewControllerTitle(for type: Tracker.TrackerType) -> String {
+    func prepareAddingViewControllerTitle(for type: OldTrackerEntity.TrackerType) -> String {
         let localizable = R.string.localizable
         switch type {
         case .tracker:

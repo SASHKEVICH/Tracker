@@ -9,7 +9,7 @@ import CoreData
 import Foundation
 
 protocol TrackersCategoryDataFetcherProtocol {
-    func category(for tracker: Tracker) -> TrackerCategoryCoreData?
+    func category(for tracker: OldTrackerEntity) -> TrackerCategoryCoreData?
 }
 
 struct TrackersCategoryDataFetcher {
@@ -23,7 +23,7 @@ struct TrackersCategoryDataFetcher {
 // MARK: - TrackersCategoryDataFetcherProtocol
 
 extension TrackersCategoryDataFetcher: TrackersCategoryDataFetcherProtocol {
-    func category(for tracker: Tracker) -> TrackerCategoryCoreData? {
+    func category(for tracker: OldTrackerEntity) -> TrackerCategoryCoreData? {
         self.trackersCategoryDataStore.category(for: tracker)
     }
 }

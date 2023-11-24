@@ -10,9 +10,21 @@ final class TrackerObject: Object, Identifiable {
     @Persisted var previousCategoryId: CategoryObject.ID
     @Persisted var type: TrackerTypeObject
     @Persisted var weekDays: List<WeekdayObject>
+
+    func toDomain() -> Tracker {
+        .init(
+            id: self.id,
+            previousCategoryId: self.previousCategoryId,
+            type: Tracker.TrackerType(rawValue: self.type.rawValue) ?? .tracker,
+            title: self.title,
+            color: self.hexColor,
+            emoji: self.emoji,
+            schedule: self.weekDays.compactMap { WeekDay(rawValue: $0.rawValue) }
+        )
+    }
 }
 
-enum WeekdayObject: String, PersistableEnum {
+enum WeekdayObject: Int, PersistableEnum {
     case monday
     case tuesday
     case wednesday

@@ -6,19 +6,19 @@ protocol MainViewPresetnerCollectionViewProtocol: AnyObject {
 
     var numberOfSections: Int { get }
     func numberOfItemsInSection(_ section: Int) -> Int
-    func tracker(at indexPath: IndexPath) -> Tracker?
+    func tracker(at indexPath: IndexPath) -> OldTrackerEntity?
     func completedTimesCount(trackerId: UUID) -> Int
     func categoryTitle(at indexPath: IndexPath) -> String?
 
     func didRecievedEmptyTrackers()
     func didRecievedNonEmptyTrackers()
 
-    func didTapPinTracker(shouldPin: Bool, _ tracker: Tracker)
-    func didTapEditTracker(_ tracker: Tracker)
-    func didTapDeleteTracker(_ tracker: Tracker)
+    func didTapPinTracker(shouldPin: Bool, _ tracker: OldTrackerEntity)
+    func didTapEditTracker(_ tracker: OldTrackerEntity)
+    func didTapDeleteTracker(_ tracker: OldTrackerEntity)
 
-    func complete(tracker: Tracker) throws
-    func incomplete(tracker: Tracker) throws
+    func complete(tracker: OldTrackerEntity) throws
+    func incomplete(tracker: OldTrackerEntity) throws
 }
 
 protocol MainViewPresetnerSearchControllerProtocol: AnyObject {
@@ -153,7 +153,7 @@ extension MainViewPresenter: MainViewPresetnerCollectionViewProtocol {
         self.trackersService.numberOfItemsInSection(section)
     }
 
-    func tracker(at indexPath: IndexPath) -> Tracker? {
+    func tracker(at indexPath: IndexPath) -> OldTrackerEntity? {
         self.trackersService.tracker(at: indexPath)
     }
 
@@ -178,7 +178,7 @@ extension MainViewPresenter: MainViewPresetnerCollectionViewProtocol {
         self.view?.shouldHidePlaceholderView(true)
     }
 
-    func didTapPinTracker(shouldPin: Bool, _ tracker: Tracker) {
+    func didTapPinTracker(shouldPin: Bool, _ tracker: OldTrackerEntity) {
         if shouldPin {
             self.trackersPinningService.pin(tracker: tracker)
         } else {
@@ -186,11 +186,11 @@ extension MainViewPresenter: MainViewPresetnerCollectionViewProtocol {
         }
     }
 
-    func didTapEditTracker(_ tracker: Tracker) {
+    func didTapEditTracker(_ tracker: OldTrackerEntity) {
         self.router.navigateToEditTrackerScreen(tracker: tracker)
     }
 
-    func didTapDeleteTracker(_ tracker: Tracker) {
+    func didTapDeleteTracker(_ tracker: OldTrackerEntity) {
         self.alertPresenterService.requestDeleteTrackerAlert { [weak self] _ in
             guard let self = self else { return }
             self.trackersAddingService.delete(tracker: tracker)
@@ -201,12 +201,12 @@ extension MainViewPresenter: MainViewPresetnerCollectionViewProtocol {
         self.alertPresenterService.requestChosenFutureDateAlert()
     }
 
-    func complete(tracker: Tracker) throws {
+    func complete(tracker: OldTrackerEntity) throws {
         try self.checkCurrentDate()
         self.trackersCompletingService.completeTracker(trackerId: tracker.id, date: currentDate)
     }
 
-    func incomplete(tracker: Tracker) throws {
+    func incomplete(tracker: OldTrackerEntity) throws {
         try self.checkCurrentDate()
         self.trackersCompletingService.incompleteTracker(trackerId: tracker.id, date: currentDate)
     }

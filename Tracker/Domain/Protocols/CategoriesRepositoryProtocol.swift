@@ -1,5 +1,5 @@
 import Foundation
 
 protocol CategoriesRepositoryProtocol {
-    func getCategories() -> [Category]
+    func getCategories(_ completion: @escaping ([Category]) -> Void)
 }

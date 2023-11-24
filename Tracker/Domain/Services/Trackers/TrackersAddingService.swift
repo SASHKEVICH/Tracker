@@ -11,19 +11,19 @@ public protocol TrackersAddingServiceProtocol {
     func addTracker(
         title: String,
         schedule: Set<WeekDay>,
-        type: Tracker.TrackerType,
+        type: OldTrackerEntity.TrackerType,
         color: UIColor,
         emoji: String,
         categoryId: UUID
     )
 
-    func delete(tracker: Tracker)
+    func delete(tracker: OldTrackerEntity)
 
     func saveEdited(
         trackerId: UUID,
         title: String,
         schedule: Set<WeekDay>,
-        type: Tracker.TrackerType,
+        type: OldTrackerEntity.TrackerType,
         color: UIColor,
         emoji: String,
         newCategoryId: UUID,
@@ -48,7 +48,7 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
     func addTracker(
         title: String,
         schedule: Set<WeekDay>,
-        type: Tracker.TrackerType,
+        type: OldTrackerEntity.TrackerType,
         color: UIColor,
         emoji: String,
         categoryId: UUID
@@ -65,7 +65,7 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
         try? self.trackersDataAdder.add(tracker: newTracker, for: categoryId)
     }
 
-    func delete(tracker: Tracker) {
+    func delete(tracker: OldTrackerEntity) {
         self.trackersDataAdder.delete(tracker: tracker)
     }
 
@@ -73,7 +73,7 @@ extension TrackersAddingService: TrackersAddingServiceProtocol {
         trackerId: UUID,
         title: String,
         schedule: Set<WeekDay>,
-        type: Tracker.TrackerType,
+        type: OldTrackerEntity.TrackerType,
         color: UIColor,
         emoji: String,
         newCategoryId: UUID,
