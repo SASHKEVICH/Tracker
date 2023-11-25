@@ -71,9 +71,7 @@ extension MainViewRouter: MainViewRouterProtocol {
         let vc = CategoryViewController(
             viewModel: viewModel,
             helper: helper,
-            router: nil,
-            flow: .filter,
-            selectedCategory: selectedFilter
+            router: nil
         )
 
         self.viewController?.present(vc, animated: true)

@@ -51,9 +51,7 @@ extension AddingRouter: AddingRouterProtocol {
         let vc = CategoryViewController(
             viewModel: viewModel,
             helper: helper,
-            router: router,
-            flow: .normal,
-            selectedCategory: selectedCategory
+            router: router
         )
 
         viewController.present(vc, animated: true)
