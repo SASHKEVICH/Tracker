@@ -9,13 +9,13 @@ import UIKit
 
 final class TrackersViewControllerSetupper {
     private let trackersViewController = MainViewController()
-    private let trackersCategoryService: TrackersCategoryServiceProtocol
     private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
     private let trackersService: TrackersServiceProtocol
     private let trackersAddingService: TrackersAddingServiceProtocol
     private let trackersRecordService: TrackersRecordServiceProtocol
     private let trackersCompletingService: TrackersCompletingServiceProtocol
     private let trackersPinningService: TrackersPinningServiceProtocol
+    private let getCategoriesUseCase: GetCategoriesUseCaseProtocol
     private let alertPresenterService: AlertPresenterService
     private let pinnedCategoryId: UUID
 
@@ -30,23 +30,23 @@ final class TrackersViewControllerSetupper {
     }
 
     init(
-        trackersCategoryService: TrackersCategoryServiceProtocol,
         trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol,
         trackersService: TrackersServiceProtocol,
         trackersAddingService: TrackersAddingServiceProtocol,
         trackersRecordService: TrackersRecordServiceProtocol,
         trackersCompletingService: TrackersCompletingServiceProtocol,
         trackersPinningService: TrackersPinningServiceProtocol,
+        getCategoriesUseCase: GetCategoriesUseCaseProtocol,
         alertPresenterService: AlertPresenterService,
         pinnedCategoryId: UUID
     ) {
-        self.trackersCategoryService = trackersCategoryService
         self.trackersCategoryAddingService = trackersCategoryAddingService
         self.trackersService = trackersService
         self.trackersAddingService = trackersAddingService
         self.trackersRecordService = trackersRecordService
         self.trackersCompletingService = trackersCompletingService
         self.trackersPinningService = trackersPinningService
+        self.getCategoriesUseCase = getCategoriesUseCase
         self.alertPresenterService = alertPresenterService
         self.pinnedCategoryId = pinnedCategoryId
     }
@@ -55,12 +55,12 @@ final class TrackersViewControllerSetupper {
 private extension TrackersViewControllerSetupper {
     func preparePresenter() -> MainViewPresenter? {
         guard let router = self.prepareRouter(
-            trackersCategoryService: self.trackersCategoryService,
             trackersCategoryAddingService: self.trackersCategoryAddingService,
             trackersService: self.trackersService,
             trackersAddingService: self.trackersAddingService,
             trackersRecordService: self.trackersRecordService,
             trackersCompletingService: self.trackersCompletingService,
+            getCategoriesUseCase: self.getCategoriesUseCase,
             pinnedCategoryId: self.pinnedCategoryId
         ) else { return nil }
 
@@ -97,23 +97,23 @@ private extension TrackersViewControllerSetupper {
 
 private extension TrackersViewControllerSetupper {
     func prepareRouter(
-        trackersCategoryService: TrackersCategoryServiceProtocol,
         trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol,
         trackersService: TrackersServiceProtocol,
         trackersAddingService: TrackersAddingServiceProtocol,
         trackersRecordService: TrackersRecordServiceProtocol,
         trackersCompletingService: TrackersCompletingServiceProtocol,
+        getCategoriesUseCase: GetCategoriesUseCaseProtocol,
         pinnedCategoryId: UUID
     ) -> MainViewRouter? {
         guard let trackersService = trackersService as? TrackersServiceFilteringProtocol else { return nil }
         let router = MainViewRouter(
             viewController: self.trackersViewController,
-            trackersCategoryService: trackersCategoryService,
             trackersCategoryAddingService: trackersCategoryAddingService,
             trackersService: trackersService,
             trackersAddingService: trackersAddingService,
             trackersRecordService: trackersRecordService,
             trackersCompletingService: trackersCompletingService,
+            getCategoriesUseCase: getCategoriesUseCase,
             pinnedCategoryId: pinnedCategoryId
         )
         return router

@@ -16,13 +16,13 @@ final class TabBarViewController: UITabBarController {
         else { return }
 
         let trackersSetupper = TrackersViewControllerSetupper(
-            trackersCategoryService: serviceSetupper.trackersCategoryService,
             trackersCategoryAddingService: serviceSetupper.trackersCategoryAddingService,
             trackersService: serviceSetupper.trackersService,
             trackersAddingService: serviceSetupper.trackersAddingService,
             trackersRecordService: serviceSetupper.trackersRecordService,
             trackersCompletingService: serviceSetupper.trackersCompletingService,
             trackersPinningService: serviceSetupper.trackersPinningService,
+            getCategoriesUseCase: serviceSetupper.getCategoriesUseCase,
             alertPresenterService: serviceSetupper.alertPresenterService,
             pinnedCategoryId: pinnedCategoryId
         )

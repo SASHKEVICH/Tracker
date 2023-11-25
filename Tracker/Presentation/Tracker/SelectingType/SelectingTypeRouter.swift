@@ -8,22 +8,22 @@ protocol SelectingTypeRouterProtocol {
 final class SelectingTypeRouter {
     private weak var viewController: SelectingTypeViewController?
     private let trackersAddingService: TrackersAddingServiceProtocol
-    private let trackersCategoryService: TrackersCategoryServiceProtocol
     private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
+    private let getCategoriesUseCase: GetCategoriesUseCaseProtocol
     private let pinnedCategoryId: UUID?
 
     init(
         viewController: SelectingTypeViewController,
         trackersAddingService: TrackersAddingServiceProtocol,
-        trackersCategoryService: TrackersCategoryServiceProtocol,
         trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol,
+        getCategoriesUseCase: GetCategoriesUseCaseProtocol,
         pinnedCategoryId: UUID?
 
     ) {
         self.viewController = viewController
         self.trackersAddingService = trackersAddingService
-        self.trackersCategoryService = trackersCategoryService
         self.trackersCategoryAddingService = trackersCategoryAddingService
+        self.getCategoriesUseCase = getCategoriesUseCase
         self.pinnedCategoryId = pinnedCategoryId
     }
 }
@@ -56,8 +56,8 @@ private extension SelectingTypeRouter {
         )
 
         let router = AddingRouter(
-            trackersCategoryService: self.trackersCategoryService,
             trackersCategoryAddingService: self.trackersCategoryAddingService,
+            getCategoriesUseCase: self.getCategoriesUseCase,
             pinnedCategoryId: self.pinnedCategoryId
         )
 

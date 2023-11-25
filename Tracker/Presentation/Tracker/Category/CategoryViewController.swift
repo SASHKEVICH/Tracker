@@ -93,7 +93,7 @@ final class CategoryViewController: UIViewController {
 // MARK: - TrackerCategoryTableViewHelperFullDelegate
 
 extension CategoryViewController: CategoryTableViewHelperDelegate {
-    var categories: [Category] {
+    var categories: [CategoryViewController.Model] {
         self.viewModel.categories
     }
 
@@ -102,7 +102,7 @@ extension CategoryViewController: CategoryTableViewHelperDelegate {
     }
 
     func didSelect(category: Category) {
-        self.viewModel.didChoose(category: category)
+//        self.viewModel.didChoose(category: category)
     }
 }
 

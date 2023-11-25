@@ -2,18 +2,18 @@ import Foundation
 
 protocol CategoryViewModelProtocol {
     var onCategoriesChanged: Binding? { get set }
-    var categories: [Category] { get }
+    var categories: [CategoryViewController.Model] { get }
 
     var onIsPlaceholderHiddenChanged: Binding? { get set }
     var isPlaceholderHidden: Bool { get }
-    func didChoose(category: Category)
+    func didChoose(category: CategoryViewController.Model)
 }
 
 final class CategoryViewModel {
     weak var delegate: CategoryViewControllerDelegate?
 
     var onCategoriesChanged: Binding?
-    var categories: [Category] = [] {
+    var categories: [CategoryViewController.Model] = [] {
         didSet {
             self.onCategoriesChanged?()
             self.shouldHidePlaceholder()
@@ -27,27 +27,19 @@ final class CategoryViewModel {
         }
     }
 
-    private let pinnedCategoryId: UUID?
+    private let getCategoriesUseCase: GetCategoriesUseCaseProtocol
 
-    private var trackersCategoryService: TrackersCategoryServiceProtocol
-
-    init(trackersCategoryService: TrackersCategoryServiceProtocol, pinnedCategoryId: UUID? = nil) {
-        self.trackersCategoryService = trackersCategoryService
-        self.pinnedCategoryId = pinnedCategoryId
-        self.trackersCategoryService.trackersCategoryDataProviderDelegate = self
-
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.categories = self.getCategoriesFromStore()
-        }
+    init(getCategoriesUseCase: GetCategoriesUseCaseProtocol) {
+        self.getCategoriesUseCase = getCategoriesUseCase
+        self.getCategoriesFromStore()
     }
 }
 
 // MARK: - CategoryViewModelProtocol
 
 extension CategoryViewModel: CategoryViewModelProtocol {
-    func didChoose(category: Category) {
-        self.delegate?.didRecieveCategory(category)
+    func didChoose(category: CategoryViewController.Model) {
+//        self.delegate?.didRecieveCategory(category)
     }
 }
 
@@ -55,7 +47,7 @@ extension CategoryViewModel: CategoryViewModelProtocol {
 
 extension CategoryViewModel: TrackersCategoryDataProviderDelegate {
     func storeDidUpdate() {
-        self.categories = self.getCategoriesFromStore()
+//        self.categories = self.getCategoriesFromStore()
     }
 }
 
@@ -64,8 +56,11 @@ private extension CategoryViewModel {
         self.isPlaceholderHidden = self.categories.isEmpty == false
     }
 
-    func getCategoriesFromStore() -> [Category] {
-        let categories = self.trackersCategoryService.categories
-        return categories.filter { $0.id != self.pinnedCategoryId }
+    func getCategoriesFromStore() {
+        self.getCategoriesUseCase.execute { [weak self] categories in
+            DispatchQueue.main.async { [weak self] in
+                self?.categories = categories.map { CategoryViewController.Model(title: $0.title) }
+            }
+        }
     }
 }

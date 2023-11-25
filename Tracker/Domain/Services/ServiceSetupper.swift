@@ -12,9 +12,9 @@ protocol ServiceSetupperProtocol {
     var trackersAddingService: TrackersAddingService { get }
     var trackersCompletingService: TrackersCompletingService { get }
     var trackersRecordService: TrackersRecordService { get }
-    var trackersCategoryService: TrackersCategoryService { get }
     var trackersCategoryAddingService: TrackersCategoryAddingService { get }
     var trackersPinningService: TrackersPinningService { get }
+    var getCategoriesUseCase: GetCategoriesUseCase { get }
     var alertPresenterService: AlertPresenterService { get }
     var pinnedCategoryId: UUID? { get }
 }
@@ -24,8 +24,8 @@ final class ServiceSetupper {
     let trackersAddingService: TrackersAddingService
     let trackersCompletingService: TrackersCompletingService
     let trackersRecordService: TrackersRecordService
-    let trackersCategoryService: TrackersCategoryService
     let trackersCategoryAddingService: TrackersCategoryAddingService
+    let getCategoriesUseCase: GetCategoriesUseCase
     let trackersPinningService: TrackersPinningService
     let alertPresenterService: AlertPresenterService
 
@@ -52,14 +52,16 @@ final class ServiceSetupper {
             trackersRecordDataStore: trackersRecordDataStore
         )
 
-        self.trackersCategoryService = ServiceSetupper.prepareTrackersCategoryService(
+        self.trackersCategoryAddingService = ServiceSetupper.prepareTrackersCategoryAddingService(
             trackersCategoryFactory: trackersCategoryFactory,
             trackersCategoryDataStore: trackersCategoryDataStore
         )
 
-        self.trackersCategoryAddingService = ServiceSetupper.prepareTrackersCategoryAddingService(
-            trackersCategoryFactory: trackersCategoryFactory,
-            trackersCategoryDataStore: trackersCategoryDataStore
+        self.getCategoriesUseCase = GetCategoriesUseCase(
+            categoriesRepository: CategoriesRepository(
+                localDataSource: CategoriesLocalDataSource(),
+                trackersCategoryMapper: TrackersCategoryMapper(trackersFactory: trackersFactory)
+            )
         )
 
         self.pinnedCategoryId = ServiceSetupper.preparePinnedCategoryId(
@@ -158,22 +160,6 @@ private extension ServiceSetupper {
         )
 
         let service = TrackersPinningService(trackersFactory: trackersFactory, trackersDataPinner: pinner)
-        return service
-    }
-
-    static func prepareTrackersCategoryService(
-        trackersCategoryFactory: TrackersCategoryMapper,
-        trackersCategoryDataStore: TrackersCategoryDataStore
-    ) -> TrackersCategoryService {
-        let provider = TrackersCategoryDataProvider(context: trackersCategoryDataStore.managedObjectContext)
-        let fetcher = TrackersCategoryDataFetcher(trackersCategoryDataStore: trackersCategoryDataStore)
-
-        let service = TrackersCategoryService(
-            trackersCategoryFactory: trackersCategoryFactory,
-            trackersCategoryDataProvider: provider,
-            trackersCategoryDataFetcher: fetcher
-        )
-
         return service
     }
 

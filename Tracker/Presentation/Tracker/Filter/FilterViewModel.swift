@@ -26,14 +26,6 @@ public final class FilterViewModel {
     weak var delegate: FilterViewControllerDelegate?
 
     var onCategoriesChanged: Binding?
-    var categories: [Category] {
-        let allTrackers = self.prepareFilter(for: .all(self.chosenDate))
-        let todayTrackers = self.prepareFilter(for: .today)
-        let completedTrackers = self.prepareFilter(for: .completed(self.chosenDate))
-        let incompletedTrackers = self.prepareFilter(for: .incompleted(self.chosenDate))
-
-        return [allTrackers, todayTrackers, completedTrackers, incompletedTrackers]
-    }
 
     var onIsPlaceholderHiddenChanged: Binding?
     var isPlaceholderHidden: Bool { true }
@@ -56,13 +48,17 @@ public final class FilterViewModel {
 // MARK: - CategoryViewModelProtocol
 
 extension FilterViewModel: CategoryViewModelProtocol {
-    func didChoose(category: Category) {
+    var categories: [CategoryViewController.Model] {
+        []
+    }
+
+    func didChoose(category: CategoryViewController.Model) {
         guard let mode = self.resolveFiltrationMode(for: category.title) else { return }
         if mode == .today {
             self.delegate?.setCurrentDate()
         }
 
-        self.delegate?.didSelectFilter(category: category)
+//        self.delegate?.didSelectFilter(category: category)
         self.trackersService.performFiltering(mode: mode)
     }
 }
