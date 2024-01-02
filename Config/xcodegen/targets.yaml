@@ -1,0 +1,69 @@
+---
+targets:
+  Tracker:
+    type: application
+    platform: iOS
+    dependencies:
+      - package: Rswift
+        product: RswiftLibrary
+
+      - package: Realm
+        product: RealmSwift
+
+    scheme:
+      testTargets:
+        - TrackerTests
+      gatherCoverageData: true
+    sources:
+      - path: Tracker
+    configFiles:
+      Release: Config/Tracker.xcconfig
+      Debug: Config/Tracker.xcconfig
+    settings:
+      base:
+        MARKETING_VERSION: $(TRACKER_MARKETING_VERSION)
+        CURRENT_PROJECT_VERSION: $(TRACKER_MARKETING_SUB_VERSION)
+        TARGETED_DEVICE_FAMILY: 1
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: YES
+    info:
+      path: Tracker/Info.plist
+      properties:
+        UILaunchScreen: ""
+        UIMainStoryboardFile: ""
+        CFBundleVersion: $(TRACKER_MARKETING_VERSION)
+        CFBundleShortVersionString: $(TRACKER_MARKETING_VERSION)
+
+    preBuildScripts:
+      - script: |
+          export PATH=/opt/homebrew/bin:$PATH
+
+          if mint list | grep -q 'R.swift'; then
+            mint run R.swift generate "$SRCROOT/R.generated.swift"
+          else
+            echo "error: R.swift not installed; run 'mint bootstrap' to install"
+            return -1
+          fi
+        name: Rswift
+    outputFiles:
+      - "$SRCROOT/R.generated.swift"
+    basedOnDependencyAnalysis: false
+
+    postCompileScripts:
+      - script: |
+          export PATH=/opt/homebrew/bin:$PATH
+          make lint
+        name: SwiftLint
+
+  TrackerTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - TrackerTests
+    dependencies:
+      - target: Tracker
+      - package: swift-snapshot-testing
+    settings:
+      GENERATE_INFOPLIST_FILE: YES
+      CODE_SING_STYLE: Automatic
+
+

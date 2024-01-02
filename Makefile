@@ -1,6 +1,8 @@
-gen:
-	./Binaries/xcodegen/xcodegen --spec ./project.yml
+.default: xcgen
+
+xcgen:
+	mint run xcodegen --spec project.yml
 
 lint:
-	./Binaries/swiftlint/swiftlint --fix && ./Binaries/swiftlint/swiftlint --config ./.swiftlint.yml
+	mint run swiftlint --config .swiftlint.yml
 
