@@ -18,8 +18,25 @@
 	<string>$(TRACKER_MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(TRACKER_MARKETING_VERSION)</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>UILaunchScreen</key>
-	<string></string>
+	<string>$(SRCROOT)/Sources/Resources/LaunchScreen.storyboard</string>
 	<key>UIMainStoryboardFile</key>
 	<string></string>
 </dict>
