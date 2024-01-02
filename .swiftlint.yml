@@ -2,17 +2,17 @@
 opt_in_rules:
   - force_unwrapping
 
-included: 
-  - Tracker
-excluded: 
+included:
+  - Sources
+excluded:
   - Binaries
   - Config
-  - ./Tracker/Resources/R.generated.swift
+  - ./Sources/Resources/R.generated.swift
 
 function_parameter_count: 10
 
-force_cast: error 
-force_unwrapping: 
+force_cast: error
+force_unwrapping:
   severity: error
 force_try:
   severity: error

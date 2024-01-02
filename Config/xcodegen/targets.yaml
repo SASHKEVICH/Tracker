@@ -15,7 +15,7 @@ targets:
         - TrackerTests
       gatherCoverageData: true
     sources:
-      - path: Tracker
+      - path: Sources
     configFiles:
       Release: Config/Tracker.xcconfig
       Debug: Config/Tracker.xcconfig
@@ -26,7 +26,7 @@ targets:
         TARGETED_DEVICE_FAMILY: 1
         ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: YES
     info:
-      path: Tracker/Info.plist
+      path: Sources/Info.plist
       properties:
         UILaunchScreen: ""
         UIMainStoryboardFile: ""
@@ -38,14 +38,14 @@ targets:
           export PATH=/opt/homebrew/bin:$PATH
 
           if mint list | grep -q 'R.swift'; then
-            mint run R.swift generate "$SRCROOT/R.generated.swift"
+            mint run R.swift generate "$SRCROOT/Resources/R.generated.swift"
           else
             echo "error: R.swift not installed; run 'mint bootstrap' to install"
             return -1
           fi
         name: Rswift
     outputFiles:
-      - "$SRCROOT/R.generated.swift"
+      - "$SRCROOT/Resources/R.generated.swift"
     basedOnDependencyAnalysis: false
 
     postCompileScripts:
