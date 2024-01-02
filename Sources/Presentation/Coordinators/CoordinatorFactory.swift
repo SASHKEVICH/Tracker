@@ -19,7 +19,7 @@ final class CoordinatorFactory {
     func makeAppCoordinator() -> AppCoordinator {
         return AppCoordinator(
             window: self.window,
-            onboardingViewFactory: self.screenFactory,
+            screenFactory: self.screenFactory,
             checkFirstLaunchUseCase: self.appFactory.makeCheckFirstLaunchUseCase()
         )
     }

@@ -10,18 +10,18 @@ final class AppCoordinator: Coordinator {
     private let window: UIWindow
     private let navigationController: UINavigationController
 
-    private let onboardingViewFactory: OnboardingViewFactory
+    private let screenFactory: ScreenFactory
     private let checkFirstLaunchUseCase: CheckFirstLaunchUseCaseProtocol
 
     private var childCoordinators: [AppChildCoordinator: Coordinator] = [:]
 
     init(
         window: UIWindow,
-        onboardingViewFactory: OnboardingViewFactory,
+        screenFactory: ScreenFactory,
         checkFirstLaunchUseCase: CheckFirstLaunchUseCaseProtocol
     ) {
         self.window = window
-        self.onboardingViewFactory = onboardingViewFactory
+        self.screenFactory = screenFactory
         self.checkFirstLaunchUseCase = checkFirstLaunchUseCase
 
         self.navigationController = UINavigationController()
@@ -42,8 +42,8 @@ final class AppCoordinator: Coordinator {
 
 private extension AppCoordinator {
     func showOnboarding() {
-        let view = onboardingViewFactory.makeOnboardingView {
-            print("show main")
+        let view = screenFactory.makeOnboardingView { [weak self] in
+            self?.showMain()
         }
 
         self.navigationController.pushViewController(view, animated: false)
@@ -52,6 +52,11 @@ private extension AppCoordinator {
     }
 
     func showMain() {
-
+        let mainCoordinator = MainCoordinator(
+            navigationController: self.navigationController,
+            screenFactory: self.screenFactory
+        )
+        self.childCoordinators[.main] = mainCoordinator
+        mainCoordinator.start()
     }
 }
