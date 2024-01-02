@@ -1,5 +1,5 @@
 //
-//  OnboardingPageViewController.swift
+//  OnboardingSinglePageViewController.swift
 //  Tracker
 //
 //  Created by Александр Бекренев on 24.05.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class OnboardingPageViewController: UIViewController {
+final class OnboardingSinglePageViewController: UIViewController {
     var image: UIImage? {
         didSet {
             imageView.image = image
@@ -47,7 +47,7 @@ final class OnboardingPageViewController: UIViewController {
     }
 }
 
-private extension OnboardingPageViewController {
+private extension OnboardingSinglePageViewController {
     func addSubviews() {
         self.view.addSubview(imageView)
         self.view.addSubview(onboardingLabel)

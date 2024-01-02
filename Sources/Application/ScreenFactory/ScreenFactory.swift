@@ -24,3 +24,15 @@ extension ScreenFactory: CategoriesViewFactory {
         )
     }
 }
+
+// MARK: - OnboardingViewFactory
+
+extension ScreenFactory: OnboardingViewFactory {
+    func makeOnboardingView(
+        finishCompletion: @escaping () -> Void
+    ) -> OnboardingPageViewController {
+        let viewModel = OnboardingViewModel(finishCompletion: finishCompletion)
+
+        return OnboardingPageViewController(viewModel: viewModel)
+    }
+}

@@ -1,5 +1,5 @@
 //
-//  OnboardingViewController.swift
+//  OnboardingPageViewController.swift
 //  Tracker
 //
 //  Created by Александр Бекренев on 24.05.2023.
@@ -12,10 +12,15 @@ protocol OnboardingViewControllerProtocol: AnyObject {
     func setCurrentPage(index: Int)
 }
 
-// MARK: - OnboardingViewController
+final class OnboardingPageViewController: UIPageViewController {
 
-final class OnboardingViewController: UIPageViewController {
+    // MARK: - Internal properties
+
     var presenter: OnboardingViewPresenterProtocol?
+
+    // MARK: - Private properties
+
+    private let viewModel: OnboardingViewModelProtocol
 
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
@@ -36,6 +41,19 @@ final class OnboardingViewController: UIPageViewController {
         return button
     }()
 
+    // MARK: - Init
+
+    init(viewModel: OnboardingViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Overrides
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -50,7 +68,7 @@ final class OnboardingViewController: UIPageViewController {
 
 // MARK: - OnboardingViewControllerProtocol
 
-extension OnboardingViewController: OnboardingViewControllerProtocol {
+extension OnboardingPageViewController: OnboardingViewControllerProtocol {
     func setCurrentPage(index: Int) {
         self.pageControl.currentPage = index
     }
@@ -58,14 +76,22 @@ extension OnboardingViewController: OnboardingViewControllerProtocol {
 
 // MARK: - Actions
 
-extension OnboardingViewController {
+extension OnboardingPageViewController {
     @objc
     private func didTapOnboardingButton() {
-        self.presenter?.navigateToMainScreen(animated: true)
+        self.viewModel.didTapOnboardingButton()
     }
 }
 
-private extension OnboardingViewController {
+private extension OnboardingPageViewController {
+    enum Constants {
+        static let buttonHorizontalSpacing: CGFloat = 20
+        static let buttonBottomOffset: CGFloat = 50
+        static let buttonHeight: CGFloat = 60
+
+        static let pageControlTopOffset: CGFloat = 24
+    }
+
     func setViewControllers() {
         guard let viewController = presenter?.pagesViewControllerHelper?.firstViewController else { return }
         self.setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
@@ -78,18 +104,27 @@ private extension OnboardingViewController {
 
     func addConstraints() {
         NSLayoutConstraint.activate([
-            confirmOnboardingButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            confirmOnboardingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            confirmOnboardingButton.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -50
+            confirmOnboardingButton.leadingAnchor.constraint(
+                equalTo: self.view.leadingAnchor,
+                constant: Constants.buttonHorizontalSpacing
             ),
-            confirmOnboardingButton.heightAnchor.constraint(equalToConstant: 60)
+            confirmOnboardingButton.trailingAnchor.constraint(
+                equalTo: self.view.trailingAnchor,
+                constant: -Constants.buttonHorizontalSpacing
+            ),
+            confirmOnboardingButton.bottomAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -Constants.buttonBottomOffset
+            ),
+            confirmOnboardingButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight)
         ])
 
         NSLayoutConstraint.activate([
-            pageControl.bottomAnchor.constraint(equalTo: confirmOnboardingButton.topAnchor, constant: -24),
-            pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            pageControl.bottomAnchor.constraint(
+                equalTo: self.confirmOnboardingButton.topAnchor,
+                constant: -Constants.pageControlTopOffset
+            ),
+            pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
     }
 }

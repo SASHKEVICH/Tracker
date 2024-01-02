@@ -17,8 +17,8 @@ final class OnboardingViewControllerHelper: NSObject {
     weak var presenter: OnboardingViewPresenterProtocol?
 
     private let pages: [UIViewController] = {
-        let firstPage = OnboardingPageViewController()
-        let secondPage = OnboardingPageViewController()
+        let firstPage = OnboardingSinglePageViewController()
+        let secondPage = OnboardingSinglePageViewController()
 
         firstPage.image = .Onboarding.first
         secondPage.image = .Onboarding.second

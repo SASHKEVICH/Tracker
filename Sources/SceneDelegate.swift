@@ -11,35 +11,27 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private let firstLaunchService: FirstLaunchServiceProtocol = FirstLaunchService()
+    private var appCoordinator: AppCoordinator?
 
     func scene(_ scene: UIScene, willConnectTo _: UISceneSession, options _: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
-        self.window = UIWindow(windowScene: scene)
 
-        let isAppAlreadyLaunchedOnce = firstLaunchService.isAppAlreadyLaunchedOnce
-        if !isAppAlreadyLaunchedOnce {
-            let onboardingHelper = OnboardingViewControllerHelper()
-            let onboardingRouter = OnboardingRouter(window: window)
-            let onboardingPresenter = OnboardingViewPresenter(helper: onboardingHelper, router: onboardingRouter)
-            let onboardingViewController = OnboardingViewController(
-                transitionStyle: .scroll,
-                navigationOrientation: .horizontal
-            )
+        let window = UIWindow(windowScene: scene)
 
-            onboardingViewController.presenter = onboardingPresenter
-            onboardingPresenter.view = onboardingViewController
+        let appFactory = AppFactory()
+        let screenFactory = ScreenFactory(appFactory: appFactory)
 
-            self.setRootViewController(onboardingViewController)
-        } else {
-            let tabBarViewController = TabBarViewController()
-            self.setRootViewController(tabBarViewController)
-        }
-    }
-}
+        let coordinatorFactory = CoordinatorFactory(
+            window: window,
+            appFactory: appFactory,
+            screenFactory: screenFactory
+        )
 
-private extension SceneDelegate {
-    func setRootViewController(_ vc: UIViewController) {
-        self.window?.rootViewController = vc
-        self.window?.makeKeyAndVisible()
+        let appCoordinator = coordinatorFactory.makeAppCoordinator()
+
+        appCoordinator.start()
+
+        self.appCoordinator = appCoordinator
+        self.window = window
     }
 }
