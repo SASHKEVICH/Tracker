@@ -1,4 +1,6 @@
---exclude Pods
+--exclude \
+	Pods, \
+	Build
 
 --indent 4
 --lineaftermarks false

@@ -81,7 +81,7 @@ final class MainViewController: UIViewController {
         return view
     }()
 
-    private var selectedFilter: TrackerCategory?
+    private var selectedFilter: Category?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,16 +92,6 @@ final class MainViewController: UIViewController {
         self.setupNavigationItem()
 
         self.presenter?.viewDidLoad()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.presenter?.analyticsService.didOpenMainScreen()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.presenter?.analyticsService.didCloseMainScreen()
     }
 }
 
@@ -180,7 +170,7 @@ extension MainViewController: FilterViewControllerDelegate {
         self.datePicker.date = Date()
     }
 
-    func didSelectFilter(category: TrackerCategory) {
+    func didSelectFilter(category: Category) {
         self.selectedFilter = category
     }
 }
@@ -257,7 +247,6 @@ private extension MainViewController {
 private extension MainViewController {
     @objc
     func didTapAddTracker() {
-        self.presenter?.analyticsService.didTapAddTracker()
         self.presenter?.navigateToTrackerTypeScreen()
     }
 

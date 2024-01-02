@@ -12,15 +12,15 @@ public struct TrackersFactory {
     public init() {}
 
     public func makeTracker(
-        type: Tracker.TrackerType,
+        type: OldTrackerEntity.TrackerType,
         title: String,
         color: UIColor,
         emoji: String,
         previousCategoryId: UUID,
         isPinned: Bool,
         schedule: [WeekDay]
-    ) -> Tracker {
-        return Tracker(
+    ) -> OldTrackerEntity {
+        return OldTrackerEntity(
             id: UUID(),
             previousCategoryId: previousCategoryId,
             type: type,
@@ -34,15 +34,15 @@ public struct TrackersFactory {
 
     func makeTracker(
         id: UUID,
-        type: Tracker.TrackerType,
+        type: OldTrackerEntity.TrackerType,
         title: String,
         color: UIColor,
         emoji: String,
         previousCategoryId: UUID,
         isPinned: Bool,
         schedule: [WeekDay]
-    ) -> Tracker {
-        return Tracker(
+    ) -> OldTrackerEntity {
+        return OldTrackerEntity(
             id: id,
             previousCategoryId: previousCategoryId,
             type: type,
@@ -54,17 +54,17 @@ public struct TrackersFactory {
         )
     }
 
-    func makeTracker(from trackerCoreData: TrackerCoreData) -> Tracker? {
+    func makeTracker(from trackerCoreData: TrackerCoreData) -> OldTrackerEntity? {
         guard let id = UUID(uuidString: trackerCoreData.id),
               let previousCategoryId = UUID(uuidString: trackerCoreData.previousCategoryId),
-              let type = Tracker.TrackerType(rawValue: Int(trackerCoreData.type)),
+              let type = OldTrackerEntity.TrackerType(rawValue: Int(trackerCoreData.type)),
               let color = UIColorMarshalling.deserilizeFrom(hex: trackerCoreData.colorHex)
         else { return nil }
 
         let splittedWeekDays = trackerCoreData.weekDays.components(separatedBy: ", ")
         let schedule = splittedWeekDays.compactMap { String($0).weekDay }
 
-        return Tracker(
+        return OldTrackerEntity(
             id: id,
             previousCategoryId: previousCategoryId,
             type: type,
@@ -76,12 +76,12 @@ public struct TrackersFactory {
         )
     }
 
-    func makeTrackerCoreData(from tracker: Tracker, context: NSManagedObjectContext) -> TrackerCoreData {
+    func makeTrackerCoreData(from tracker: OldTrackerEntity, context: NSManagedObjectContext) -> TrackerCoreData {
         let trackerCoreData = TrackerCoreData(context: context)
         return editTrackerCoreData(from: tracker, trackerCoreData: trackerCoreData)
     }
 
-    func editTrackerCoreData(from tracker: Tracker, trackerCoreData: TrackerCoreData) -> TrackerCoreData {
+    func editTrackerCoreData(from tracker: OldTrackerEntity, trackerCoreData: TrackerCoreData) -> TrackerCoreData {
         trackerCoreData.id = tracker.id.uuidString
         trackerCoreData.title = tracker.title
         trackerCoreData.emoji = tracker.emoji

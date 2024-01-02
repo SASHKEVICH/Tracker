@@ -9,10 +9,10 @@ import Foundation
 
 public protocol TrackersCategoryServiceProtocol {
     var numberOfSections: Int { get }
-    var categories: [TrackerCategory] { get }
+    var categories: [Category] { get }
     var trackersCategoryDataProviderDelegate: TrackersCategoryDataProviderDelegate? { get set }
     func numberOfItemsInSection(_ section: Int) -> Int
-    func category(for tracker: Tracker) -> TrackerCategory?
+    func category(for tracker: OldTrackerEntity) -> Category?
 }
 
 final class TrackersCategoryService {
@@ -25,10 +25,10 @@ final class TrackersCategoryService {
 
     private var trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol
     private let trackersCategoryDataFetcher: TrackersCategoryDataFetcherProtocol
-    private let trackersCategoryFactory: TrackersCategoryFactory
+    private let trackersCategoryFactory: TrackersCategoryMapper
 
     init(
-        trackersCategoryFactory: TrackersCategoryFactory,
+        trackersCategoryFactory: TrackersCategoryMapper,
         trackersCategoryDataProvider: TrackersCategoryDataProviderProtocol,
         trackersCategoryDataFetcher: TrackersCategoryDataFetcherProtocol
     ) {
@@ -41,18 +41,20 @@ final class TrackersCategoryService {
 // MARK: - TrackersCategoryServiceProtocol
 
 extension TrackersCategoryService: TrackersCategoryServiceProtocol {
-    var categories: [TrackerCategory] {
-        let categories = self.trackersCategoryDataProvider.categories
-            .compactMap { trackersCategoryFactory.makeCategory(categoryCoreData: $0) }
-        return categories
+    var categories: [Category] {
+//        let categories = self.trackersCategoryDataProvider.categories
+//            .compactMap { trackersCategoryFactory.makeCategory(categoryCoreData: $0) }
+//        return categories
+        return []
     }
 
     func numberOfItemsInSection(_ section: Int) -> Int {
         self.trackersCategoryDataProvider.numberOfItemsInSection(section)
     }
 
-    func category(for tracker: Tracker) -> TrackerCategory? {
-        guard let categoryCoreData = self.trackersCategoryDataFetcher.category(for: tracker) else { return nil }
-        return self.trackersCategoryFactory.makeCategory(categoryCoreData: categoryCoreData)
+    func category(for tracker: OldTrackerEntity) -> Category? {
+//        guard let categoryCoreData = self.trackersCategoryDataFetcher.category(for: tracker) else { return nil }
+//        return self.trackersCategoryFactory.makeCategory(categoryCoreData: categoryCoreData)
+        return nil
     }
 }

@@ -13,12 +13,12 @@ configs:
   Release: release
 
 packages:
+  Realm:
+    url: https://github.com/realm/realm-swift.git
+    version: 10.44.0
   Rswift:
     url: https://github.com/mac-cain13/R.swift
     version: 7.4.0
-  YandexMobileMetrica:
-    url: https://github.com/yandexmobile/metrica-sdk-ios
-    version: 4.5.2
   swift-snapshot-testing:
     url: https://github.com/pointfreeco/swift-snapshot-testing
     version: 1.11.1
@@ -44,7 +44,9 @@ targets:
     dependencies:
       - package: Rswift
         product: RswiftLibrary
-      - package: YandexMobileMetrica
+
+      - package: Realm
+        product: RealmSwift
     sources:
       - path: ./Tracker
     configFiles:

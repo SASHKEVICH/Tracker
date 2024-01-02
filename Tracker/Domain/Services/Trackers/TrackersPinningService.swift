@@ -8,8 +8,8 @@
 import UIKit
 
 public protocol TrackersPinningServiceProtocol {
-    func pin(tracker: Tracker)
-    func unpin(tracker: Tracker)
+    func pin(tracker: OldTrackerEntity)
+    func unpin(tracker: OldTrackerEntity)
 }
 
 final class TrackersPinningService {
@@ -28,7 +28,7 @@ final class TrackersPinningService {
 // MARK: - TrackersPinningServiceProtocol
 
 extension TrackersPinningService: TrackersPinningServiceProtocol {
-    func pin(tracker: Tracker) {
+    func pin(tracker: OldTrackerEntity) {
         let pinnedTracker = self.trackersFactory.makeTracker(
             id: tracker.id,
             type: tracker.type,
@@ -42,7 +42,7 @@ extension TrackersPinningService: TrackersPinningServiceProtocol {
         self.trackersDataPinner.pin(tracker: pinnedTracker)
     }
 
-    func unpin(tracker: Tracker) {
+    func unpin(tracker: OldTrackerEntity) {
         let unpinnedTracker = self.trackersFactory.makeTracker(
             id: tracker.id,
             type: tracker.type,

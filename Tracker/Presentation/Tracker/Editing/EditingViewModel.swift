@@ -32,7 +32,7 @@ final class EditingViewModel {
         }
     }
 
-    var selectedCategory: TrackerCategory? {
+    var selectedCategory: Category? {
         didSet {
             self.onSelectedCategoryChanged?()
             self.checkToEnableConfirmTrackerButton()
@@ -74,24 +74,21 @@ final class EditingViewModel {
 
     private var newCompletedTimes: Int = 0
 
-    private let tracker: Tracker
+    private let tracker: OldTrackerEntity
 
     private let trackersAddingService: TrackersAddingServiceProtocol
     private let trackersRecordService: TrackersRecordServiceProtocol
     private let trackersCompletetingService: TrackersCompletingServiceProtocol
-    private let trackersCategoryService: TrackersCategoryServiceProtocol
 
     init(
         trackersAddingService: TrackersAddingServiceProtocol,
         trackersRecordService: TrackersRecordServiceProtocol,
         trackersCompletingService: TrackersCompletingServiceProtocol,
-        trackersCategoryService: TrackersCategoryServiceProtocol,
-        tracker: Tracker
+        tracker: OldTrackerEntity
     ) {
         self.trackersAddingService = trackersAddingService
         self.trackersRecordService = trackersRecordService
         self.trackersCompletetingService = trackersCompletingService
-        self.trackersCategoryService = trackersCategoryService
         self.tracker = tracker
 
         if self.tracker.type == .irregularEvent {
@@ -156,7 +153,7 @@ extension EditingViewModel: EditingViewModelProtocol {
         self.selectedEmoji = emoji
     }
 
-    func didSelect(category: TrackerCategory) {
+    func didSelect(category: Category) {
         self.selectedCategory = category
     }
 
@@ -191,7 +188,7 @@ extension EditingViewModel: SelectingScheduleViewControllerDelegate {
 // MARK: - CategoryViewControllerDelegate
 
 extension EditingViewModel: CategoryViewControllerDelegate {
-    func didRecieveCategory(_ category: TrackerCategory) {
+    func didRecieveCategory(_ category: Category) {
         self.selectedCategory = category
     }
 }
@@ -202,7 +199,7 @@ private extension EditingViewModel {
         self.selectedWeekDays = Set(self.tracker.schedule)
         self.selectedEmoji = self.tracker.emoji
         self.selectedColor = self.tracker.color
-        self.selectedCategory = self.trackersCategoryService.category(for: self.tracker)
+//        self.selectedCategory = self.trackersCategoryService.category(for: self.tracker)
         self.fetchCompletedCount()
     }
 

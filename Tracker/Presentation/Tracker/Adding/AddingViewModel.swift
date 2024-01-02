@@ -29,7 +29,7 @@ final class AddingViewModel {
         }
     }
 
-    var selectedCategory: TrackerCategory? {
+    var selectedCategory: Category? {
         didSet {
             self.onSelectedCategoryChanged?()
             self.checkToEnableConfirmTrackerButton()
@@ -64,11 +64,11 @@ final class AddingViewModel {
     }
 
     private let trackersAddingService: TrackersAddingServiceProtocol
-    private let trackerType: Tracker.TrackerType
+    private let trackerType: OldTrackerEntity.TrackerType
 
     init(
         trackersAddingService: TrackersAddingServiceProtocol,
-        trackerType: Tracker.TrackerType,
+        trackerType: OldTrackerEntity.TrackerType,
         optionTitles: [String],
         viewControllerTitle: String
     ) {
@@ -117,7 +117,7 @@ extension AddingViewModel: AddingViewModelProtocol {
         self.selectedEmoji = emoji
     }
 
-    func didSelect(category: TrackerCategory) {
+    func didSelect(category: Category) {
         self.selectedCategory = category
     }
 
@@ -141,7 +141,7 @@ extension AddingViewModel: SelectingScheduleViewControllerDelegate {
 // MARK: - CategoryViewControllerDelegate
 
 extension AddingViewModel: CategoryViewControllerDelegate {
-    func didRecieveCategory(_ category: TrackerCategory) {
+    func didRecieveCategory(_ category: Category) {
         self.selectedCategory = category
     }
 }

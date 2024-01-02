@@ -1,9 +1,9 @@
 import UIKit
 
 protocol CategoryTableViewHelperDelegate: AnyObject {
-    var categories: [TrackerCategory] { get }
-    var chosenCategory: TrackerCategory? { get }
-    func didSelect(category: TrackerCategory)
+    var categories: [CategoryViewController.Model] { get }
+    var chosenCategory: Category? { get }
+    func didSelect(category: Category)
 }
 
 protocol CategoryTableViewHelperProtocol: UITableViewDelegate, UITableViewDataSource {
@@ -35,7 +35,7 @@ final class CategoryTableViewHelper: NSObject, CategoryTableViewHelperProtocol {
         }
 
         guard let selectedCategory = self.delegate?.categories[indexPath.row] else { return }
-        self.delegate?.didSelect(category: selectedCategory)
+//        self.delegate?.didSelect(category: selectedCategory)
     }
 
     // MARK: - UITableViewDataSource
@@ -63,9 +63,9 @@ final class CategoryTableViewHelper: NSObject, CategoryTableViewHelperProtocol {
             cell.isCellSelected = true
         }
 
-        if let selectedCategory = self.delegate?.chosenCategory, selectedCategory == category {
-            cell.isCellSelected = true
-        }
+//        if let selectedCategory = self.delegate?.chosenCategory, selectedCategory == category {
+//            cell.isCellSelected = true
+//        }
 
         let configuredCell = cell.configure(
             cellIndexPath: indexPath,

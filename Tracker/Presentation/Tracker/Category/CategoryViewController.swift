@@ -1,7 +1,7 @@
 import UIKit
 
 protocol CategoryViewControllerDelegate: AnyObject {
-    func didRecieveCategory(_ category: TrackerCategory)
+    func didRecieveCategory(_ category: Category)
 }
 
 final class CategoryViewController: UIViewController {
@@ -9,8 +9,6 @@ final class CategoryViewController: UIViewController {
         case normal
         case filter
     }
-
-    private let flow: Flow
 
     private let helper: CategoryTableViewHelperProtocol
     private let router: CategoryRouterProtocol?
@@ -54,7 +52,7 @@ final class CategoryViewController: UIViewController {
         return button
     }()
 
-    private var selectedCategory: TrackerCategory?
+    private var selectedCategory: Category?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,15 +69,11 @@ final class CategoryViewController: UIViewController {
     init(
         viewModel: CategoryViewModelProtocol,
         helper: CategoryTableViewHelperProtocol,
-        router: CategoryRouterProtocol?,
-        flow: Flow,
-        selectedCategory: TrackerCategory?
+        router: CategoryRouterProtocol?
     ) {
         self.viewModel = viewModel
         self.helper = helper
         self.router = router
-        self.flow = flow
-        self.selectedCategory = selectedCategory
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -93,16 +87,16 @@ final class CategoryViewController: UIViewController {
 // MARK: - TrackerCategoryTableViewHelperFullDelegate
 
 extension CategoryViewController: CategoryTableViewHelperDelegate {
-    var categories: [TrackerCategory] {
+    var categories: [CategoryViewController.Model] {
         self.viewModel.categories
     }
 
-    var chosenCategory: TrackerCategory? {
+    var chosenCategory: Category? {
         self.selectedCategory
     }
 
-    func didSelect(category: TrackerCategory) {
-        self.viewModel.didChoose(category: category)
+    func didSelect(category: Category) {
+//        self.viewModel.didChoose(category: category)
     }
 }
 
@@ -120,9 +114,9 @@ private extension CategoryViewController {
         self.view.addSubview(categoriesTableView)
         self.view.insertSubview(placeholderView, aboveSubview: categoriesTableView)
 
-        if self.flow == .normal {
-            self.view.addSubview(addNewCategoryButton)
-        }
+//        if self.flow == .normal {
+//            self.view.addSubview(addNewCategoryButton)
+//        }
     }
 
     func addConstraints() {
@@ -144,18 +138,6 @@ private extension CategoryViewController {
             placeholderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             placeholderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-
-        if self.flow == .normal {
-            NSLayoutConstraint.activate([
-                addNewCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                addNewCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                addNewCategoryButton.bottomAnchor.constraint(
-                    equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                    constant: -16
-                ),
-                addNewCategoryButton.heightAnchor.constraint(equalToConstant: 60)
-            ])
-        }
     }
 
     func bind() {
@@ -188,13 +170,6 @@ private extension CategoryViewController {
 private extension CategoryViewController {
     func setupViewController() {
         self.view.backgroundColor = .Dynamic.whiteDay
-
-        switch self.flow {
-        case .filter:
-            self.setupForFilterFlow()
-        case .normal:
-            self.setupForNormalFlow()
-        }
     }
 
     func setupForFilterFlow() {

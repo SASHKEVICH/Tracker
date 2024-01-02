@@ -1,24 +1,24 @@
 import Foundation
 
 protocol MainViewPresetnerCollectionViewProtocol: AnyObject {
-    var completedTrackersRecords: Set<TrackerRecord> { get }
+    var completedTrackersRecords: Set<Record> { get }
     var currentDate: Date { get }
 
     var numberOfSections: Int { get }
     func numberOfItemsInSection(_ section: Int) -> Int
-    func tracker(at indexPath: IndexPath) -> Tracker?
+    func tracker(at indexPath: IndexPath) -> OldTrackerEntity?
     func completedTimesCount(trackerId: UUID) -> Int
     func categoryTitle(at indexPath: IndexPath) -> String?
 
     func didRecievedEmptyTrackers()
     func didRecievedNonEmptyTrackers()
 
-    func didTapPinTracker(shouldPin: Bool, _ tracker: Tracker)
-    func didTapEditTracker(_ tracker: Tracker)
-    func didTapDeleteTracker(_ tracker: Tracker)
+    func didTapPinTracker(shouldPin: Bool, _ tracker: OldTrackerEntity)
+    func didTapEditTracker(_ tracker: OldTrackerEntity)
+    func didTapDeleteTracker(_ tracker: OldTrackerEntity)
 
-    func complete(tracker: Tracker) throws
-    func incomplete(tracker: Tracker) throws
+    func complete(tracker: OldTrackerEntity) throws
+    func incomplete(tracker: OldTrackerEntity) throws
 }
 
 protocol MainViewPresetnerSearchControllerProtocol: AnyObject {
@@ -30,12 +30,11 @@ protocol MainViewPresenterProtocol: AnyObject {
     var view: MainViewControllerFullProtocol? { get set }
     var collectionHelper: MainViewCollectionHelperProtocol { get }
     var searchControllerHelper: MainViewSearchControllerHelperProtocol { get }
-    var analyticsService: AnalyticsServiceProtocol { get }
     var currentDate: Date { get }
     func requestTrackers(for date: Date)
     func viewDidLoad()
     func navigateToTrackerTypeScreen()
-    func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?)
+    func navigateToFilterScreen(chosenDate: Date, selectedFilter: Category?)
     func eraseOperations()
 }
 
@@ -53,10 +52,8 @@ final class MainViewPresenter {
         case normal
     }
 
-    let analyticsService: AnalyticsServiceProtocol
-
     weak var view: MainViewControllerFullProtocol?
-    var completedTrackersRecords: Set<TrackerRecord> = []
+    var completedTrackersRecords: Set<Record> = []
     var currentDate: Date = .init()
 
     lazy var collectionHelper: MainViewCollectionHelperProtocol = {
@@ -88,8 +85,7 @@ final class MainViewPresenter {
         trackersRecordService: TrackersRecordServiceProtocol,
         trackersPinningService: TrackersPinningServiceProtocol,
         router: MainViewRouterProtocol,
-        alertPresenterService: AlertPresenterSerivceProtocol,
-        analyticsService: AnalyticsServiceProtocol
+        alertPresenterService: AlertPresenterSerivceProtocol
     ) {
         self.trackersService = trackersService
         self.trackersAddingService = trackersAddingService
@@ -98,7 +94,6 @@ final class MainViewPresenter {
         self.trackersPinningService = trackersPinningService
         self.router = router
         self.alertPresenterService = alertPresenterService
-        self.analyticsService = analyticsService
     }
 }
 
@@ -125,7 +120,7 @@ extension MainViewPresenter: MainViewPresenterProtocol {
         self.router.navigateToTrackerTypeScreen()
     }
 
-    func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?) {
+    func navigateToFilterScreen(chosenDate: Date, selectedFilter: Category?) {
         self.router.navigateToFilterScreen(chosenDate: chosenDate, selectedFilter: selectedFilter)
     }
 }
@@ -158,7 +153,7 @@ extension MainViewPresenter: MainViewPresetnerCollectionViewProtocol {
         self.trackersService.numberOfItemsInSection(section)
     }
 
-    func tracker(at indexPath: IndexPath) -> Tracker? {
+    func tracker(at indexPath: IndexPath) -> OldTrackerEntity? {
         self.trackersService.tracker(at: indexPath)
     }
 
@@ -183,7 +178,7 @@ extension MainViewPresenter: MainViewPresetnerCollectionViewProtocol {
         self.view?.shouldHidePlaceholderView(true)
     }
 
-    func didTapPinTracker(shouldPin: Bool, _ tracker: Tracker) {
+    func didTapPinTracker(shouldPin: Bool, _ tracker: OldTrackerEntity) {
         if shouldPin {
             self.trackersPinningService.pin(tracker: tracker)
         } else {
@@ -191,15 +186,13 @@ extension MainViewPresenter: MainViewPresetnerCollectionViewProtocol {
         }
     }
 
-    func didTapEditTracker(_ tracker: Tracker) {
-        self.analyticsService.didEditTracker()
+    func didTapEditTracker(_ tracker: OldTrackerEntity) {
         self.router.navigateToEditTrackerScreen(tracker: tracker)
     }
 
-    func didTapDeleteTracker(_ tracker: Tracker) {
+    func didTapDeleteTracker(_ tracker: OldTrackerEntity) {
         self.alertPresenterService.requestDeleteTrackerAlert { [weak self] _ in
             guard let self = self else { return }
-            self.analyticsService.didDeleteTracker()
             self.trackersAddingService.delete(tracker: tracker)
         }
     }
@@ -208,15 +201,13 @@ extension MainViewPresenter: MainViewPresetnerCollectionViewProtocol {
         self.alertPresenterService.requestChosenFutureDateAlert()
     }
 
-    func complete(tracker: Tracker) throws {
+    func complete(tracker: OldTrackerEntity) throws {
         try self.checkCurrentDate()
-        self.analyticsService.didTapTracker()
         self.trackersCompletingService.completeTracker(trackerId: tracker.id, date: currentDate)
     }
 
-    func incomplete(tracker: Tracker) throws {
+    func incomplete(tracker: OldTrackerEntity) throws {
         try self.checkCurrentDate()
-        self.analyticsService.didTapTracker()
         self.trackersCompletingService.incompleteTracker(trackerId: tracker.id, date: currentDate)
     }
 }
@@ -270,7 +261,7 @@ extension MainViewPresenter: TrackersDataProviderDelegate {
 // MARK: - TrackersRecordServiceDelegate
 
 extension MainViewPresenter: TrackersRecordServiceDelegate {
-    func didRecieveCompletedTrackers(_ records: [TrackerRecord]) {
+    func didRecieveCompletedTrackers(_ records: [Record]) {
         self.completedTrackersRecords = Set(records)
     }
 }

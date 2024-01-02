@@ -2,22 +2,23 @@ import UIKit
 
 protocol AddingRouterProtocol {
     func navigateToScheduleScreen(selectedWeekDays: Set<WeekDay>, from viewController: UIViewController)
-    func navigateToCategoryScreen(selectedCategory: TrackerCategory?, from viewController: UIViewController)
+    func navigateToCategoryScreen(selectedCategory: Category?, from viewController: UIViewController)
     func navigateToMainScreen()
 }
 
 final class AddingRouter {
-    private let trackersCategoryService: TrackersCategoryServiceProtocol
+
     private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
+    private let getCategoriesUseCase: GetCategoriesUseCaseProtocol
     private let pinnedCategoryId: UUID?
 
     init(
-        trackersCategoryService: TrackersCategoryServiceProtocol,
         trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol,
+        getCategoriesUseCase: GetCategoriesUseCaseProtocol,
         pinnedCategoryId: UUID? = nil
     ) {
-        self.trackersCategoryService = trackersCategoryService
         self.trackersCategoryAddingService = trackersCategoryAddingService
+        self.getCategoriesUseCase = getCategoriesUseCase
         self.pinnedCategoryId = pinnedCategoryId
     }
 }
@@ -38,10 +39,9 @@ extension AddingRouter: AddingRouterProtocol {
         viewController.present(vc, animated: true)
     }
 
-    func navigateToCategoryScreen(selectedCategory: TrackerCategory?, from viewController: UIViewController) {
+    func navigateToCategoryScreen(selectedCategory: Category?, from viewController: UIViewController) {
         let viewModel = CategoryViewModel(
-            trackersCategoryService: self.trackersCategoryService,
-            pinnedCategoryId: self.pinnedCategoryId
+            getCategoriesUseCase: self.getCategoriesUseCase
         )
         viewModel.delegate = viewController as? CategoryViewControllerDelegate
 
@@ -51,9 +51,7 @@ extension AddingRouter: AddingRouterProtocol {
         let vc = CategoryViewController(
             viewModel: viewModel,
             helper: helper,
-            router: router,
-            flow: .normal,
-            selectedCategory: selectedCategory
+            router: router
         )
 
         viewController.present(vc, animated: true)

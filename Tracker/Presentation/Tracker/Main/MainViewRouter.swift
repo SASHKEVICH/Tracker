@@ -2,37 +2,37 @@ import UIKit
 
 protocol MainViewRouterProtocol {
     func navigateToTrackerTypeScreen()
-    func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?)
-    func navigateToEditTrackerScreen(tracker: Tracker)
+    func navigateToFilterScreen(chosenDate: Date, selectedFilter: Category?)
+    func navigateToEditTrackerScreen(tracker: OldTrackerEntity)
 }
 
 final class MainViewRouter {
     private weak var viewController: UIViewController?
-    private let trackersCategoryService: TrackersCategoryServiceProtocol
     private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
     private let trackersService: TrackersServiceFilteringProtocol
     private let trackersAddingService: TrackersAddingServiceProtocol
     private let trackersRecordService: TrackersRecordServiceProtocol
     private let trackersCompletingService: TrackersCompletingServiceProtocol
+    private let getCategoriesUseCase: GetCategoriesUseCaseProtocol
     private let pinnedCategoryId: UUID
 
     init(
         viewController: UIViewController,
-        trackersCategoryService: TrackersCategoryServiceProtocol,
         trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol,
         trackersService: TrackersServiceFilteringProtocol,
         trackersAddingService: TrackersAddingServiceProtocol,
         trackersRecordService: TrackersRecordServiceProtocol,
         trackersCompletingService: TrackersCompletingServiceProtocol,
+        getCategoriesUseCase: GetCategoriesUseCaseProtocol,
         pinnedCategoryId: UUID
     ) {
         self.viewController = viewController
-        self.trackersCategoryService = trackersCategoryService
         self.trackersCategoryAddingService = trackersCategoryAddingService
         self.trackersService = trackersService
         self.trackersAddingService = trackersAddingService
         self.trackersRecordService = trackersRecordService
         self.trackersCompletingService = trackersCompletingService
+        self.getCategoriesUseCase = getCategoriesUseCase
         self.pinnedCategoryId = pinnedCategoryId
     }
 }
@@ -45,8 +45,8 @@ extension MainViewRouter: MainViewRouterProtocol {
         let router = SelectingTypeRouter(
             viewController: vc,
             trackersAddingService: self.trackersAddingService,
-            trackersCategoryService: self.trackersCategoryService,
             trackersCategoryAddingService: self.trackersCategoryAddingService,
+            getCategoriesUseCase: self.getCategoriesUseCase,
             pinnedCategoryId: self.pinnedCategoryId
         )
         let presenter = SelectingTypePresenter(router: router)
@@ -56,9 +56,9 @@ extension MainViewRouter: MainViewRouterProtocol {
         self.viewController?.present(vc, animated: true)
     }
 
-    func navigateToFilterScreen(chosenDate: Date, selectedFilter: TrackerCategory?) {
+    func navigateToFilterScreen(chosenDate: Date, selectedFilter: Category?) {
         let trackersFactory = TrackersFactory()
-        let categoryFactory = TrackersCategoryFactory(trackersFactory: trackersFactory)
+        let categoryFactory = TrackersCategoryMapper(trackersFactory: trackersFactory)
 
         let viewModel = FilterViewModel(
             chosenDate: chosenDate,
@@ -71,18 +71,16 @@ extension MainViewRouter: MainViewRouterProtocol {
         let vc = CategoryViewController(
             viewModel: viewModel,
             helper: helper,
-            router: nil,
-            flow: .filter,
-            selectedCategory: selectedFilter
+            router: nil
         )
 
         self.viewController?.present(vc, animated: true)
     }
 
-    func navigateToEditTrackerScreen(tracker: Tracker) {
+    func navigateToEditTrackerScreen(tracker: OldTrackerEntity) {
         let router = AddingRouter(
-            trackersCategoryService: self.trackersCategoryService,
             trackersCategoryAddingService: self.trackersCategoryAddingService,
+            getCategoriesUseCase: self.getCategoriesUseCase,
             pinnedCategoryId: self.pinnedCategoryId
         )
 
@@ -95,7 +93,6 @@ extension MainViewRouter: MainViewRouterProtocol {
             trackersAddingService: self.trackersAddingService,
             trackersRecordService: self.trackersRecordService,
             trackersCompletingService: self.trackersCompletingService,
-            trackersCategoryService: trackersCategoryService,
             tracker: tracker
         )
 

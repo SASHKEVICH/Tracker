@@ -8,22 +8,22 @@ protocol SelectingTypeRouterProtocol {
 final class SelectingTypeRouter {
     private weak var viewController: SelectingTypeViewController?
     private let trackersAddingService: TrackersAddingServiceProtocol
-    private let trackersCategoryService: TrackersCategoryServiceProtocol
     private let trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol
+    private let getCategoriesUseCase: GetCategoriesUseCaseProtocol
     private let pinnedCategoryId: UUID?
 
     init(
         viewController: SelectingTypeViewController,
         trackersAddingService: TrackersAddingServiceProtocol,
-        trackersCategoryService: TrackersCategoryServiceProtocol,
         trackersCategoryAddingService: TrackersCategoryAddingServiceProtocol,
+        getCategoriesUseCase: GetCategoriesUseCaseProtocol,
         pinnedCategoryId: UUID?
 
     ) {
         self.viewController = viewController
         self.trackersAddingService = trackersAddingService
-        self.trackersCategoryService = trackersCategoryService
         self.trackersCategoryAddingService = trackersCategoryAddingService
+        self.getCategoriesUseCase = getCategoriesUseCase
         self.pinnedCategoryId = pinnedCategoryId
     }
 }
@@ -41,7 +41,7 @@ extension SelectingTypeRouter: SelectingTypeRouterProtocol {
 }
 
 private extension SelectingTypeRouter {
-    func presentAddingViewController(trackerType: Tracker.TrackerType) {
+    func presentAddingViewController(trackerType: OldTrackerEntity.TrackerType) {
         let optionsHelper = OptionsTableViewHelper()
         let textFieldHelper = TitleTextFieldHelper()
         let colorsHelper = ColorsCollectionViewHelper()
@@ -56,8 +56,8 @@ private extension SelectingTypeRouter {
         )
 
         let router = AddingRouter(
-            trackersCategoryService: self.trackersCategoryService,
             trackersCategoryAddingService: self.trackersCategoryAddingService,
+            getCategoriesUseCase: self.getCategoriesUseCase,
             pinnedCategoryId: self.pinnedCategoryId
         )
 
@@ -86,7 +86,7 @@ private extension SelectingTypeRouter {
 }
 
 private extension SelectingTypeRouter {
-    func prepareOptionsTitles(for type: Tracker.TrackerType) -> [String] {
+    func prepareOptionsTitles(for type: OldTrackerEntity.TrackerType) -> [String] {
         let localizable = R.string.localizable
         let categoryTitle = localizable.trackerAddingOptionTitleCategory()
         switch type {
@@ -98,7 +98,7 @@ private extension SelectingTypeRouter {
         }
     }
 
-    func prepareAddingViewControllerTitle(for type: Tracker.TrackerType) -> String {
+    func prepareAddingViewControllerTitle(for type: OldTrackerEntity.TrackerType) -> String {
         let localizable = R.string.localizable
         switch type {
         case .tracker:
