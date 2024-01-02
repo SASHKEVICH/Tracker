@@ -8,4 +8,6 @@ protocol OnboardingViewFactory {
     func makeOnboardingView(
         finishCompletion: @escaping () -> Void
     ) -> OnboardingPageViewController
+
+    func makeOnboardingPages() -> [OnboardingSinglePageViewController]
 }

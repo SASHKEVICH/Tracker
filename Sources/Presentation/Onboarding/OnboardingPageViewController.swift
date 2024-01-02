@@ -7,26 +7,19 @@
 
 import UIKit
 
-protocol OnboardingViewControllerProtocol: AnyObject {
-    var presenter: OnboardingViewPresenterProtocol? { get set }
-    func setCurrentPage(index: Int)
-}
-
 final class OnboardingPageViewController: UIPageViewController {
-
-    // MARK: - Internal properties
-
-    var presenter: OnboardingViewPresenterProtocol?
 
     // MARK: - Private properties
 
     private let viewModel: OnboardingViewModelProtocol
+    private let pageViewDelegate: UIPageViewControllerDelegate
+    private let pageViewDataSource: OnboardingPageControllerDataSource
 
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.translatesAutoresizingMaskIntoConstraints = false
-        pageControl.numberOfPages = self.presenter?.pagesCount ?? 0
-        pageControl.currentPage = 0
+        pageControl.numberOfPages = self.pageViewDataSource.pagesCount
+        pageControl.currentPage = self.pageViewDataSource.currentPage
 
         pageControl.currentPageIndicatorTintColor = .Static.black
         pageControl.pageIndicatorTintColor = .Static.black.withAlphaComponent(0.3)
@@ -43,9 +36,19 @@ final class OnboardingPageViewController: UIPageViewController {
 
     // MARK: - Init
 
-    init(viewModel: OnboardingViewModelProtocol) {
+    init(
+        viewModel: OnboardingViewModelProtocol,
+        pageViewDelegate: UIPageViewControllerDelegate,
+        pageViewDataSource: OnboardingPageControllerDataSource
+    ) {
         self.viewModel = viewModel
+        self.pageViewDelegate = pageViewDelegate
+        self.pageViewDataSource = pageViewDataSource
+
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
+
+        self.delegate = pageViewDelegate
+        self.dataSource = pageViewDataSource
     }
 
     required init?(coder: NSCoder) {
@@ -57,26 +60,17 @@ final class OnboardingPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.dataSource = self.presenter?.pagesViewControllerHelper
-        self.delegate = self.presenter?.pagesViewControllerHelper
-
         self.setViewControllers()
         self.addSubviews()
         self.addConstraints()
-    }
-}
-
-// MARK: - OnboardingViewControllerProtocol
-
-extension OnboardingPageViewController: OnboardingViewControllerProtocol {
-    func setCurrentPage(index: Int) {
-        self.pageControl.currentPage = index
+        self.bind()
     }
 }
 
 // MARK: - Actions
 
 extension OnboardingPageViewController {
+
     @objc
     private func didTapOnboardingButton() {
         self.viewModel.didTapOnboardingButton()
@@ -84,6 +78,7 @@ extension OnboardingPageViewController {
 }
 
 private extension OnboardingPageViewController {
+
     enum Constants {
         static let buttonHorizontalSpacing: CGFloat = 20
         static let buttonBottomOffset: CGFloat = 50
@@ -93,7 +88,7 @@ private extension OnboardingPageViewController {
     }
 
     func setViewControllers() {
-        guard let viewController = presenter?.pagesViewControllerHelper?.firstViewController else { return }
+        guard let viewController = self.pageViewDataSource.firstViewController else { return }
         self.setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
     }
 
@@ -126,5 +121,11 @@ private extension OnboardingPageViewController {
             ),
             pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
+    }
+
+    func bind() {
+        self.viewModel.currentPageIndex.bind { [weak self] index in
+            self?.pageControl.currentPage = index
+        }
     }
 }

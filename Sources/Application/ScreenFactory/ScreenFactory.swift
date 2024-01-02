@@ -33,6 +33,35 @@ extension ScreenFactory: OnboardingViewFactory {
     ) -> OnboardingPageViewController {
         let viewModel = OnboardingViewModel(finishCompletion: finishCompletion)
 
-        return OnboardingPageViewController(viewModel: viewModel)
+        let pages = self.makeOnboardingPages()
+        let delegate = OnboardingPageControllerDelegate(
+            viewModel: viewModel,
+            pages: pages
+        )
+        let dataSource = OnboardingPageControllerDataSourceImpl(pages: pages)
+
+        return OnboardingPageViewController(
+            viewModel: viewModel,
+            pageViewDelegate: delegate,
+            pageViewDataSource: dataSource
+        )
+    }
+
+    func makeOnboardingPages() -> [OnboardingSinglePageViewController] {
+        let firstPage = OnboardingSinglePageViewController(
+            viewData: OnboardingSinglePageViewController.ViewData(
+                image: .Onboarding.first,
+                text: R.string.localizable.onboardingPageLabelFirst()
+            )
+        )
+
+        let secondPage = OnboardingSinglePageViewController(
+            viewData: OnboardingSinglePageViewController.ViewData(
+                image: .Onboarding.second,
+                text: R.string.localizable.onboardingPageLabelSecond()
+            )
+        )
+
+        return [firstPage, secondPage]
     }
 }
