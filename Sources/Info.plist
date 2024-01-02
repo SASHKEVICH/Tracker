@@ -4,8 +4,20 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(TRACKER_MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(TRACKER_MARKETING_VERSION)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -23,5 +35,9 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UILaunchScreen</key>
+	<string>$(SRCROOT)/Sources/Resources/LaunchScreen.storyboard</string>
+	<key>UIMainStoryboardFile</key>
+	<string></string>
 </dict>
 </plist>

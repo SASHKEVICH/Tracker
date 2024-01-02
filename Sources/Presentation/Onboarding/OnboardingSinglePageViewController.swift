@@ -1,24 +1,15 @@
-//
-//  OnboardingPageViewController.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 24.05.2023.
-//
-
 import UIKit
 
-final class OnboardingPageViewController: UIViewController {
-    var image: UIImage? {
-        didSet {
-            imageView.image = image
-        }
+final class OnboardingSinglePageViewController: UIViewController {
+
+    struct ViewData {
+        let image: UIImage?
+        let text: String
     }
 
-    var onboardingText: String? {
-        didSet {
-            onboardingLabel.text = onboardingText
-        }
-    }
+    // MARK: - Private properties
+
+    private let constantConfiguration = OnboardingConstants.configuration
 
     private let imageView: UIImageView = {
         let imageView = UIImageView()
@@ -37,7 +28,20 @@ final class OnboardingPageViewController: UIViewController {
         return label
     }()
 
-    private let constantConfiguration = OnboardingConstants.configuration
+    // MARK: - Init
+
+    init(viewData: ViewData) {
+        self.imageView.image = viewData.image
+        self.onboardingLabel.text = viewData.text
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Overrides
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +51,12 @@ final class OnboardingPageViewController: UIViewController {
     }
 }
 
-private extension OnboardingPageViewController {
+private extension OnboardingSinglePageViewController {
+
+    enum Constants {
+        static let labelHorizontalSpacing: CGFloat = 16
+    }
+
     func addSubviews() {
         self.view.addSubview(imageView)
         self.view.addSubview(onboardingLabel)
@@ -72,9 +81,12 @@ private extension OnboardingPageViewController {
             ),
             onboardingLabel.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor,
-                constant: 16
+                constant: Constants.labelHorizontalSpacing
             ),
-            onboardingLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+            onboardingLabel.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: -Constants.labelHorizontalSpacing
+            )
         ])
     }
 }

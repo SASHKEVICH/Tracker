@@ -14,10 +14,17 @@ final class AppFactory {
     }()
 }
 
+// MARK: - First Launch
+
+extension AppFactory {
+    func makeCheckFirstLaunchUseCase() -> CheckFirstLaunchUseCaseProtocol {
+        CheckFirstLaunchUseCase()
+    }
+}
+
 // MARK: - Categories
 
 extension AppFactory {
-
     func makeGetCategoriesUseCase() -> GetCategoriesUseCaseProtocol {
         return GetCategoriesUseCase(
             categoriesRepository: categoriesRepository
