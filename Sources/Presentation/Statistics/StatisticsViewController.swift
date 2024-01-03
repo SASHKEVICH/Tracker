@@ -1,10 +1,3 @@
-//
-//  StatisticsViewController.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 31.03.2023.
-//
-
 import UIKit
 
 final class StatisticsViewController: UIViewController {
@@ -67,7 +60,7 @@ final class StatisticsViewController: UIViewController {
 
 extension StatisticsViewController: StatisticsTableViewHelperDelegate {
     var statistics: [Statistics] {
-        Array(self.viewModel.statistics)
+        Array(self.viewModel.statistics.value)
     }
 }
 
@@ -100,13 +93,13 @@ private extension StatisticsViewController {
     }
 
     func bind() {
-        self.viewModel.onIsPlaceholderHiddenChanged = { [weak self] in
-            guard let self = self else { return }
-            self.placeholderView.isHidden = self.viewModel.isPlaceholderHidden
+        self.viewModel.statistics.bind { [weak self] _ in
+            self?.statisticsTableView.reloadData()
         }
 
-        self.viewModel.onStatisticsChanged = { [weak self] in
-            self?.statisticsTableView.reloadData()
+        self.viewModel.isPlaceholderHidden.bind { [weak self] isHidden in
+            guard let self = self else { return }
+            self.placeholderView.isHidden = isHidden
         }
     }
 }

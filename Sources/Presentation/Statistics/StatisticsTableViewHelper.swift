@@ -1,10 +1,3 @@
-//
-//  StatisticsTableViewHelper.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 17.07.2023.
-//
-
 import UIKit
 
 protocol StatisticsTableViewHelperDelegate: AnyObject {
