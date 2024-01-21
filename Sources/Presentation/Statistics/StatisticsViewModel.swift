@@ -1,37 +1,15 @@
-//
-//  StatisticsViewModel.swift
-//  Tracker
-//
-//  Created by Александр Бекренев on 17.07.2023.
-//
-
 import Foundation
 
 protocol StatisticsViewModelProtocol {
-    var onStatisticsChanged: (() -> Void)? { get set }
-    var statistics: Set<Statistics> { get }
-
-    var onIsPlaceholderHiddenChanged: (() -> Void)? { get set }
-    var isPlaceholderHidden: Bool { get }
+    var statistics: Box<Set<Statistics>> { get }
+    var isPlaceholderHidden: Box<Bool> { get }
 
     func fetchCompletedTrackers()
 }
 
 final class StatisticsViewModel {
-    var onStatisticsChanged: (() -> Void)?
-    var onIsPlaceholderHiddenChanged: (() -> Void)?
-
-    var statistics: Set<Statistics> = [] {
-        didSet {
-            self.onStatisticsChanged?()
-        }
-    }
-
-    var isPlaceholderHidden: Bool = false {
-        didSet {
-            self.onIsPlaceholderHiddenChanged?()
-        }
-    }
+    var statistics = Box<Set<Statistics>>([])
+    var isPlaceholderHidden = Box<Bool>(false)
 
     private let trackersCompletingService: TrackersCompletingServiceStatisticsProtocol
 
@@ -47,15 +25,15 @@ extension StatisticsViewModel: StatisticsViewModelProtocol {
     func fetchCompletedTrackers() {
         let completedTrackersCount = self.trackersCompletingService.completedTrackersCount
         guard completedTrackersCount > 0 else {
-            self.isPlaceholderHidden = false
+            self.isPlaceholderHidden.value = false
             return
         }
 
         let title = R.string.localizable.statisticsStatisticTrackersCompletedTitle()
         let statistics = Statistics(title: title, count: completedTrackersCount)
-        self.statistics.insert(statistics)
+        self.statistics.value.insert(statistics)
 
-        self.isPlaceholderHidden = true
+        self.isPlaceholderHidden.value = true
     }
 }
 
@@ -65,17 +43,17 @@ extension StatisticsViewModel: TrackersCompletingServiceStatisticsDelegate {
     func didChangeCompletedTrackers() {
         let completedTrackersCount = self.trackersCompletingService.completedTrackersCount
         guard completedTrackersCount > 0 else {
-            self.isPlaceholderHidden = false
+            self.isPlaceholderHidden.value = false
             return
         }
 
         let title = R.string.localizable.statisticsStatisticTrackersCompletedTitle()
         let newStatistics = Statistics(title: title, count: completedTrackersCount)
 
-        guard let completedTrackersStatistics = self.statistics.first(where: { $0.title == title }) else { return }
-        self.statistics.remove(completedTrackersStatistics)
-        self.statistics.insert(newStatistics)
+        guard let completedTrackersStatistics = self.statistics.value.first(where: { $0.title == title }) else { return }
+        self.statistics.value.remove(completedTrackersStatistics)
+        self.statistics.value.insert(newStatistics)
 
-        self.isPlaceholderHidden = true
+        self.isPlaceholderHidden.value = true
     }
 }

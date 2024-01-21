@@ -11,3 +11,11 @@ protocol OnboardingViewFactory {
 
     func makeOnboardingPages() -> [OnboardingSinglePageViewController]
 }
+
+protocol MainViewFactory {
+    func makeMainView()
+}
+
+protocol StatisticsViewFactory {
+    func makeStatisticsView() -> StatisticsViewController
+}

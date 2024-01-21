@@ -35,7 +35,7 @@ final class AppCoordinator: Coordinator {
         if didAppLaunchOnce {
             self.showOnboarding()
         } else {
-            self.showMain()
+//            self.showMain()
         }
     }
 }
@@ -43,7 +43,7 @@ final class AppCoordinator: Coordinator {
 private extension AppCoordinator {
     func showOnboarding() {
         let view = screenFactory.makeOnboardingView { [weak self] in
-            self?.showMain()
+//            self?.showMain()
         }
 
         self.navigationController.pushViewController(view, animated: false)
@@ -51,12 +51,12 @@ private extension AppCoordinator {
         self.navigationController.hidesBottomBarWhenPushed = true
     }
 
-    func showMain() {
-        let mainCoordinator = MainCoordinator(
-            navigationController: self.navigationController,
-            screenFactory: self.screenFactory
-        )
-        self.childCoordinators[.main] = mainCoordinator
-        mainCoordinator.start()
-    }
+//    func showMain() {
+//        let mainCoordinator = MainTabBarCoordinator(
+//            tabBarController: self.navigationController,
+//            screenFactory: self.screenFactory as! MainViewFactory
+//        )
+//        self.childCoordinators[.main] = mainCoordinator
+//        mainCoordinator.start()
+//    }
 }

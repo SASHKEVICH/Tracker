@@ -51,6 +51,7 @@ final class TrackerPlaceholderView: UIView {
         self.addConstraints()
 
         self.backgroundColor = .Dynamic.whiteDay
+        self.translatesAutoresizingMaskIntoConstraints = false
     }
 
     required init?(coder: NSCoder) {
