@@ -1,7 +1,6 @@
 import Foundation
 
 final class ScreenFactory {
-
     private let appFactory: AppFactory
 
     init(appFactory: AppFactory) {
@@ -65,3 +64,17 @@ extension ScreenFactory: OnboardingViewFactory {
         return [firstPage, secondPage]
     }
 }
+
+// MARK: - StatisticsViewFactory
+//extension ScreenFactory: StatisticsViewFactory {
+//    func makeStatisticsView() -> StatisticsViewController {
+//        let viewModel = StatisticsViewModel(
+//            trackersCompletingService: <#T##TrackersCompletingServiceStatisticsProtocol#>
+//        )
+//
+//        return StatisticsViewController(
+//            viewModel: viewModel,
+//            tableViewHelper: <#T##StatisticsTableViewHelperProtocol#>
+//        )
+//    }
+//}

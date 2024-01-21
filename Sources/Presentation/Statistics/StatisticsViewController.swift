@@ -1,6 +1,11 @@
 import UIKit
 
 final class StatisticsViewController: UIViewController {
+
+    private let tableViewHelper: StatisticsTableViewHelperProtocol
+
+    private var viewModel: StatisticsViewModelProtocol
+
     private lazy var statisticsTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -19,13 +24,9 @@ final class StatisticsViewController: UIViewController {
 
     private lazy var placeholderView: TrackerPlaceholderView = {
         let view = TrackerPlaceholderView()
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.set(state: .emptyStatistics)
         return view
     }()
-
-    private var viewModel: StatisticsViewModelProtocol
-    private let tableViewHelper: StatisticsTableViewHelperProtocol
 
     init(viewModel: StatisticsViewModelProtocol, tableViewHelper: StatisticsTableViewHelperProtocol) {
         self.viewModel = viewModel
@@ -41,11 +42,12 @@ final class StatisticsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = .Dynamic.whiteDay
         self.setupNavigationItem()
         self.addSubviews()
         self.addConstraints()
         self.bind()
+
+        self.view.backgroundColor = .Dynamic.whiteDay
     }
 
     override func viewWillAppear(_ animated: Bool) {

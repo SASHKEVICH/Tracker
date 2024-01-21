@@ -47,8 +47,8 @@ extension StatisticsTableViewHelper: StatisticsTableViewHelperProtocol {
         else { return UITableViewCell() }
 
         guard let statistics = self.delegate?.statistics[indexPath.row] else { return UITableViewCell() }
-        cell.count = "\(statistics.count)"
-        cell.title = statistics.title
+//        cell.count = "\(statistics.count)"
+//        cell.title = statistics.title
         return cell
     }
 }

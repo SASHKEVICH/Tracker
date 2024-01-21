@@ -1,52 +1,53 @@
 import UIKit
 
 final class StatisticsTableViewCell: UITableViewCell {
-    var count: String? {
-        didSet {
-            self.countLabel.text = self.count
-        }
+
+    // MARK: - Types
+
+    struct ViewData {
+        let title: String
+        let count: String
     }
 
-    var title: String? {
-        didSet {
-            self.titleLabel.text = self.title
-        }
-    }
+    // MARK: - Private Properties
 
-    private let containerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
+    private let containerView: BaseView = {
+        let view = BaseView()
+        view.layer.cornerRadius = Constants.containerCornerRadius
+        view.layer.masksToBounds = true
         return view
     }()
 
-    private let countLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
+    private let countLabel: BaseLabel = {
+        let label = BaseLabel()
         label.font = .Bold.big
         label.textColor = .Dynamic.blackDay
         return label
     }()
 
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
+    private let titleLabel: BaseLabel = {
+        let label = BaseLabel()
         label.font = .Medium.medium
         label.textColor = .Dynamic.blackDay
         return label
     }()
+    
+    // MARK: - Init
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         self.addSubviews()
         self.addConstraints()
-        self.configure()
+        self.setup()
     }
 
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Overrides
 
     override func draw(_ rect: CGRect) {
         super.draw(rect)
@@ -55,16 +56,41 @@ final class StatisticsTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.count = nil
-        self.title = nil
+        self.countLabel.text = nil
+        self.titleLabel.text = nil
+    }
+
+    // MARK: - Internal Methods
+
+    func configure(viewData: ViewData) {
+        self.countLabel.text = viewData.count
+        self.titleLabel.text = viewData.title
     }
 }
 
+// MARK: - Private methods
+
 private extension StatisticsTableViewCell {
-    func configure() {
+
+    enum Constants {
+        static let containerCornerRadius: CGFloat = 16
+        static let containerTopOffset: CGFloat = 12
+        static let containerSideSpacing: CGFloat = 16
+        static let containerHeight: CGFloat = 90
+
+        static let countLabelTopOffset: CGFloat = 12
+        static let countLabelSideSpacing: CGFloat = 12
+        static let countLabelHeight: CGFloat = 41
+
+        static let titleLabelTopOffset: CGFloat = 7
+        static let titleLabelSideSpacing: CGFloat = 12
+        static let titleLabelBottomOffset: CGFloat = 12
+    }
+
+    func setup() {
         self.backgroundColor = .Dynamic.whiteDay
-        self.containerView.layer.cornerRadius = 16
-        self.containerView.layer.masksToBounds = true
+        //        self.containerView.layer.cornerRadius = Constants.containerCornerRadius
+        //        self.containerView.layer.masksToBounds = true
     }
 
     func addSubviews() {
@@ -76,37 +102,82 @@ private extension StatisticsTableViewCell {
 
     func addConstraints() {
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 12),
-            containerView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
-            containerView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
-            containerView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
-            containerView.heightAnchor.constraint(equalToConstant: 90)
+            containerView.topAnchor.constraint(
+                equalTo: self.contentView.topAnchor,
+                constant: Constants.containerTopOffset
+            ),
+            containerView.leadingAnchor.constraint(
+                equalTo: self.contentView.leadingAnchor,
+                constant: Constants.containerSideSpacing
+            ),
+            containerView.trailingAnchor.constraint(
+                equalTo: self.contentView.trailingAnchor,
+                constant: -Constants.containerSideSpacing
+            ),
+            containerView.bottomAnchor.constraint(
+                equalTo: self.contentView.bottomAnchor
+            ),
+            containerView.heightAnchor.constraint(
+                equalToConstant: Constants.containerHeight
+            )
         ])
 
         NSLayoutConstraint.activate([
-            countLabel.topAnchor.constraint(equalTo: self.containerView.topAnchor, constant: 12),
-            countLabel.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor, constant: 12),
-            countLabel.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor, constant: -12),
-            countLabel.heightAnchor.constraint(equalToConstant: 41)
+            countLabel.topAnchor.constraint(
+                equalTo: self.containerView.topAnchor,
+                constant: Constants.countLabelTopOffset
+            ),
+            countLabel.leadingAnchor.constraint(
+                equalTo: self.containerView.leadingAnchor,
+                constant: Constants.countLabelSideSpacing
+            ),
+            countLabel.trailingAnchor.constraint(
+                equalTo: self.containerView.trailingAnchor,
+                constant: -Constants.countLabelSideSpacing
+            ),
+            countLabel.heightAnchor.constraint(
+                equalToConstant: Constants.countLabelHeight
+            )
         ])
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: self.countLabel.bottomAnchor, constant: 7),
-            titleLabel.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor, constant: 12),
-            titleLabel.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor, constant: -12),
-            titleLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -12)
+            titleLabel.topAnchor.constraint(
+                equalTo: self.countLabel.bottomAnchor,
+                constant: Constants.titleLabelTopOffset
+            ),
+            titleLabel.leadingAnchor.constraint(
+                equalTo: self.containerView.leadingAnchor,
+                constant: Constants.titleLabelSideSpacing
+            ),
+            titleLabel.trailingAnchor.constraint(
+                equalTo: self.containerView.trailingAnchor,
+                constant: -Constants.titleLabelSideSpacing
+            ),
+            titleLabel.bottomAnchor.constraint(
+                equalTo: self.contentView.bottomAnchor,
+                constant: -Constants.titleLabelBottomOffset
+            )
         ])
     }
+}
+
+// MARK: - Gradient
+
+private extension StatisticsTableViewCell {
 
     func setGradientBorder() {
-        self.containerView.layer.cornerRadius = 16
+        self.containerView.layer.cornerRadius = Constants.containerCornerRadius
         self.containerView.clipsToBounds = true
 
         let gradient = CAGradientLayer()
         gradient.frame = CGRect(origin: CGPoint.zero, size: self.containerView.frame.size)
-        gradient.colors = [UIColor.Selection.color1.cgColor,
-                           UIColor.Selection.color9.cgColor,
-                           UIColor.Selection.color3.cgColor]
+
+        gradient.colors = [
+            UIColor.Selection.color1.cgColor,
+            UIColor.Selection.color9.cgColor,
+            UIColor.Selection.color3.cgColor
+        ]
+
         gradient.startPoint = CGPoint(x: 0, y: 0.5)
         gradient.endPoint = CGPoint(x: 1, y: 0.5)
 
